@@ -1,0 +1,17 @@
+[Unit]
+Description=Celery Worker Service
+After=network.target
+
+[Service]
+Type=forking
+User=eduorbit
+Group=eduorbit
+EnvironmentFile=/var/www/eduorbit/backend/.env
+WorkingDirectory=/var/www/eduorbit/backend
+ExecStart=/var/www/eduorbit/venv/bin/celery multi start worker1 -A backend.celery_app --pidfile=/var/run/celery/worker1.pid --logfile=/var/log/eduorbit/celery.log --loglevel=INFO
+ExecStop=/var/www/eduorbit/venv/bin/celery multi stopwait worker1 --pidfile=/var/run/celery/worker1.pid
+ExecReload=/var/www/eduorbit/venv/bin/celery multi restart worker1 -A backend.celery_app --pidfile=/var/run/celery/worker1.pid --logfile=/var/log/eduorbit/celery.log --loglevel=INFO
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

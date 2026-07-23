@@ -1,0 +1,63 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Student Timeline - EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  
+  <!-- Header -->
+  <div class="mb-8 border-b border-slate-200 dark:border-slate-700/80 pb-6">
+    <p class="text-xs font-semibold tracking-widest text-primary uppercase mb-1">EduOrbit · Students</p>
+    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Student Event Timeline</h2>
+    <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Chronological history of enrollment, promotions, achievements, and lifecycle records.</p>
+  </div>
+
+  <!-- Timeline Spine -->
+  <div class="relative pl-6 border-l-2 border-slate-200 dark:border-slate-700 space-y-8 ml-4">
+    {% for log in timelines %}
+      <div class="relative">
+        
+        <!-- Timeline node bullet indicator -->
+        <span class="absolute -left-[31px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-white dark:bg-slate-800 border-2 border-primary ring-4 ring-primary-light">
+          <span class="h-1.5 w-1.5 rounded-full bg-primary"></span>
+        </span>
+        
+        <!-- Timeline Event Card -->
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 p-5 rounded-2xl shadow-sm hover:shadow-md transition duration-150">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 mb-2">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              {% if log.event_type == 'achievement' %}🏅{% else %}📌{% endif %}
+              {{ log.title }}
+            </h3>
+            <span class="text-xs font-medium text-slate-500 dark:text-slate-400 shrink-0">
+              {{ log.occurred_at|date:"F d, Y · H:i" }}
+            </span>
+          </div>
+          
+          <p class="text-xs text-slate-600 dark:text-slate-350">
+            Student: <span class="font-semibold text-primary">{{ log.student.person.first_name }} {{ log.student.person.last_name }}</span> ({{ log.student.student_number }})
+          </p>
+          
+          {% if log.description %}
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-100 dark:border-slate-700/30">
+              {{ log.description }}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <div class="text-center py-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
+        <div class="text-4xl mb-3">📅</div>
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-white">No Event History Found</h3>
+        <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">There are no logged timeline milestones for this student yet.</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="mt-8 flex justify-center">
+    <a href="/students/portfolio/" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-primary transition">
+      ← Back to Portfolios Directory
+    </a>
+  </div>
+</div>
+{% endblock %}

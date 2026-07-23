@@ -1,0 +1,138 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Daily Attendance Register - EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="{ openMarkModal: false }">
+  
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8 border-b border-slate-200 dark:border-slate-700/80 pb-6">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-primary uppercase mb-1">EduOrbit · Operations</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Daily Attendance Register</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+        Mark and manage attendance roll calls for <strong>{{ active_school.name }}</strong> (Session: {{ session.date|date:"F d, Y" }})
+      </p>
+    </div>
+    <div class="mt-4 md:mt-0 flex items-center gap-3">
+      <form method="GET" action="{% url 'attendance_register_web' %}" class="flex items-center gap-2">
+        <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date Selector:</label>
+        <input type="date" name="date" value="{{ session.date|date:'Y-m-d' }}" onchange="this.form.submit()" class="bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl text-xs font-semibold px-3 py-2 text-slate-900 dark:text-white focus:outline-none">
+      </form>
+      {% if session %}
+      <button @click="openMarkModal = true" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-slate-900 dark:text-white text-sm font-semibold transition duration-150 shadow-lg shadow-primary/30">
+        📝 Mark Attendance
+      </button>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Attendance Register Table -->
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-750">
+        <thead class="bg-slate-100 dark:bg-slate-800/40 text-slate-600 dark:text-slate-400">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Person Name</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Session Context</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Checked Status</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Time Checked</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-300">
+          {% for rec in records %}
+          <tr class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="h-9 w-9 rounded-xl bg-indigo-900/10 text-indigo-400 border border-indigo-900/20 flex items-center justify-center font-bold text-sm">
+                  {{ rec.person.first_name|slice:":1" }}{{ rec.person.last_name|slice:":1" }}
+                </div>
+                <div class="ml-3">
+                  <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ rec.person.first_name }} {{ rec.person.last_name }}</div>
+                  <div class="text-xs text-slate-500 dark:text-slate-500">{{ rec.person.person_number }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              {{ rec.session }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {% if rec.status.code == 'present' %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                  ● Present
+                </span>
+              {% elif rec.status.code == 'late' %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                  ● Late
+                </span>
+              {% else %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-500 border border-rose-500/20">
+                  ● Absent
+                </span>
+              {% endif %}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              {{ rec.time_marked|date:"H:i:s" }}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="px-6 py-12 text-center text-slate-500 dark:text-slate-500">
+              <div class="text-3xl mb-2">📋</div>
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">No attendance marks logged today.</p>
+              <p class="text-xs text-slate-500 dark:text-slate-500 mt-1">Click "Mark Attendance" above to record student presence.</p>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Mark Attendance Modal -->
+  {% if session %}
+  <div x-show="openMarkModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" x-cloak>
+    <div @click.away="openMarkModal = false" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-xl p-6 relative">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Mark Attendance Roll Call</h3>
+        <button @click="openMarkModal = false" class="text-slate-500 hover:text-slate-700 dark:hover:text-white font-bold text-lg">×</button>
+      </div>
+
+      <form hx-post="{% url 'attendance_register_web' %}" hx-target="#mark-result" class="space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="session_id" value="{{ session.id }}">
+        
+        <!-- Select Person -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Select Person</label>
+          <select name="person_id" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+            <option value="">-- Choose Student / Staff --</option>
+            {% for person in people %}
+              <option value="{{ person.id }}">{{ person.first_name }} {{ person.last_name }} ({{ person.person_number }})</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Select Status -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Attendance Status</label>
+          <select name="status_id" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+            <option value="">-- Choose Status --</option>
+            {% for status in statuses %}
+              <option value="{{ status.id }}">{{ status.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div id="mark-result" class="text-sm"></div>
+
+        <button type="submit" class="w-full py-3 bg-primary hover:bg-primary-hover text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition duration-150 shadow-lg shadow-primary/30">
+          Save Mark Record
+        </button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

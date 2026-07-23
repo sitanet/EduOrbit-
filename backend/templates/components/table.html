@@ -1,0 +1,28 @@
+{# table.html #}
+{# Variables: header_content, body_content, prev_url, next_url, page_start, page_end, total_items, hx_target #}
+<div class="w-full overflow-x-auto bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">
+    <table class="w-full text-sm text-left text-slate-600 dark:text-slate-700 dark:text-slate-300">
+        <thead class="text-xs text-slate-500 dark:text-slate-500 uppercase bg-slate-50 dark:bg-slate-700/50 dark:text-slate-600 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+            <tr>
+                {{ header_content|safe }}
+            </tr>
+        </thead>
+        <tbody>
+            {{ body_content|safe }}
+            {# Expected row classes: hover:bg-slate-50 dark:hover:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700 last:border-0 transition-colors #}
+        </tbody>
+    </table>
+    <div class="p-4 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+        <div class="text-sm text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400">
+            Showing <span class="font-medium text-slate-900 dark:text-slate-200">{{ page_start|default:"1" }}</span> to <span class="font-medium text-slate-900 dark:text-slate-200">{{ page_end|default:"10" }}</span> of <span class="font-medium text-slate-900 dark:text-slate-200">{{ total_items|default:"100" }}</span>
+        </div>
+        <div class="flex gap-2">
+            <button {% if prev_url %}hx-get="{{ prev_url }}"{% endif %} hx-target="{{ hx_target|default:'#table-container' }}" class="px-3 py-1.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-full hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-700 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 disabled:opacity-50 disabled:cursor-not-allowed" {% if not prev_url %}disabled{% endif %}>
+                Previous
+            </button>
+            <button {% if next_url %}hx-get="{{ next_url }}"{% endif %} hx-target="{{ hx_target|default:'#table-container' }}" class="px-3 py-1.5 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-full hover:bg-slate-50 dark:bg-slate-800 dark:text-slate-700 dark:text-slate-300 dark:border-slate-600 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-1 dark:focus:ring-offset-slate-800 disabled:opacity-50 disabled:cursor-not-allowed" {% if not next_url %}disabled{% endif %}>
+                Next
+            </button>
+        </div>
+    </div>
+</div>

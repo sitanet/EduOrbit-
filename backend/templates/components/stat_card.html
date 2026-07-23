@@ -1,0 +1,27 @@
+{# stat_card.html #}
+{# Variables: title, value, icon, trend, trend_value #}
+<div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 p-6 flex flex-col justify-between transition-shadow hover:shadow-md">
+    <div class="flex justify-between items-start">
+        <div>
+            <p class="text-sm font-medium text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 mb-1">{{ title }}</p>
+            <h3 class="text-2xl font-semibold text-slate-900 dark:text-slate-900 dark:text-white">{{ value }}</h3>
+        </div>
+        {% if icon %}
+        <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl text-blue-600 dark:text-blue-400">
+            {{ icon|safe }}
+        </div>
+        {% endif %}
+    </div>
+    {% if trend %}
+    <div class="mt-4 flex items-center text-sm">
+        {% if trend == 'up' %}
+            <svg class="w-4 h-4 text-emerald-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+            <span class="font-medium text-emerald-600 dark:text-emerald-400">{{ trend_value }}</span>
+        {% elif trend == 'down' %}
+            <svg class="w-4 h-4 text-red-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0v-8m0 8l-8-8-4 4-6-6"></path></svg>
+            <span class="font-medium text-red-600 dark:text-red-400">{{ trend_value }}</span>
+        {% endif %}
+        <span class="ml-2 text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400">vs last month</span>
+    </div>
+    {% endif %}
+</div>

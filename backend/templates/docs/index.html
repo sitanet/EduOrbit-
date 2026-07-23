@@ -1,0 +1,556 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduOrbit Platform Documentation &amp; User Manual</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              dark: '#05020c',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #05020c;
+      background-image: radial-gradient(rgba(124, 58, 237, 0.04) 1.5px, transparent 0);
+      background-size: 28px 28px;
+    }
+    .glass-card {
+      background: rgba(15, 17, 28, 0.45);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+    .step-badge {
+      background: linear-gradient(135deg, #7c3aed 0%, #c084fc 100%);
+    }
+  </style>
+</head>
+<body class="text-slate-200 font-sans antialiased overflow-x-hidden pt-28 pb-16">
+
+  <!-- Ambient background glows -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-[10%] left-[-10%] w-[45vw] h-[45vw] bg-brand-600/5 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-[20%] right-[-10%] w-[45vw] h-[45vw] bg-brand-600/5 rounded-full blur-[120px]"></div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#05020c]/85 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 hover:scale-105 transition-transform duration-300">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-brand-700 flex items-center justify-center shadow-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/>
+          </svg>
+        </div>
+        <span class="text-2xl font-black text-white font-display tracking-tight">EduOrbit</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <a href="/" class="text-sm font-semibold text-slate-400 hover:text-white transition">&larr; Back to Home</a>
+        <a href="/login/" class="inline-flex items-center gap-1 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold transition shadow-lg">
+          Sign In &rarr;
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-6xl mx-auto px-6" x-data="{ currentRole: 'vendor' }">
+    
+    <!-- Title -->
+    <div class="text-center mb-12">
+      <p class="text-xs font-semibold tracking-widest text-brand-300 uppercase mb-2">Enterprise Operations Manual</p>
+      <h1 class="text-4xl font-extrabold text-white tracking-tight font-display bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">Roles &amp; Features Documentation</h1>
+      <p class="mt-3 text-slate-400 text-sm max-w-2xl mx-auto">Explore step-by-step onboarding sequences, module definitions, and workspace configuration flows tailored specifically for each user profile.</p>
+    </div>
+
+    <!-- Timeline Progress selector for new users -->
+    <div class="grid grid-cols-5 gap-3 mb-10 text-center text-[10px] sm:text-xs font-bold">
+      <button @click="currentRole = 'vendor'" :class="currentRole === 'vendor' ? 'text-brand-400' : 'text-slate-500'" class="pb-2 border-b-2" :class="currentRole === 'vendor' ? 'border-brand-500' : 'border-slate-800'">Stage 1: SaaS Vendor</button>
+      <button @click="currentRole = 'admin_setup'" :class="currentRole === 'admin_setup' ? 'text-brand-400' : 'text-slate-500'" class="pb-2 border-b-2" :class="currentRole === 'admin_setup' ? 'border-brand-500' : 'border-slate-800'">Stage 2: School Admin</button>
+      <button @click="currentRole = 'teacher_work'" :class="currentRole === 'teacher_work' ? 'text-brand-400' : 'text-slate-500'" class="pb-2 border-b-2" :class="currentRole === 'teacher_work' ? 'border-brand-500' : 'border-slate-800'">Stage 3: Class Teacher</button>
+      <button @click="currentRole = 'student_use'" :class="currentRole === 'student_use' ? 'text-brand-400' : 'text-slate-500'" class="pb-2 border-b-2" :class="currentRole === 'student_use' ? 'border-brand-500' : 'border-slate-800'">Stage 4: Student</button>
+      <button @click="currentRole = 'parent_track'" :class="currentRole === 'parent_track' ? 'text-brand-400' : 'text-slate-500'" class="pb-2 border-b-2" :class="currentRole === 'parent_track' ? 'border-brand-500' : 'border-slate-800'">Stage 5: Parent</button>
+    </div>
+
+    <!-- Documentation Glass Card -->
+    <div class="glass-card rounded-3xl p-8 sm:p-10 border border-slate-700/35 relative">
+      <div class="absolute top-0 left-10 right-10 h-[1.5px] bg-gradient-to-r from-transparent via-brand-500/40 to-transparent"></div>
+
+      <!-- STAGE 1: VENDOR ONBOARD -->
+      <div x-show="currentRole === 'vendor'" class="space-y-8">
+        <div>
+          <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] uppercase font-bold tracking-widest">SaaS Vendor Profile</span>
+          <h2 class="text-3xl font-bold text-white font-display mt-3">Stage 1: Platform Provisioning &amp; Analytics</h2>
+          <p class="text-xs text-slate-400 mt-1">SaaS vendors manage the high-level multitenant architecture, monitor server analytics, and onboard new school corporations.</p>
+        </div>
+
+        <div class="p-4 bg-slate-950/50 rounded-2xl border border-slate-800/80 text-xs">
+          <p class="font-semibold text-indigo-400 uppercase tracking-wider mb-2">Stage 1 Sandbox Credentials</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-350">
+            <div><strong>Profile Username:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">superadmin</code></div>
+            <div><strong>Profile Password:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">ChangeMe123!</code></div>
+          </div>
+        </div>
+
+        <!-- Features Definitions -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">SaaS Vendor Workspace Modules</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">1. Control Center</h4>
+              <p class="text-slate-400 mt-1">The primary system administrative dashboard (ESSACC). Use it to check database metrics, view system diagnostic logs, check recent audit events, and trigger quick reloads using the **Refresh Status** button.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">2. SaaS Analytics</h4>
+              <p class="text-slate-400 mt-1">Tracks global SaaS telemetry. View Monthly Recurring Revenue (MRR), total active user growth, module licensing numbers, and active plan distributions across all onboarded tenant domains.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">3. Tenant Schools</h4>
+              <p class="text-slate-400 mt-1">Manages physical school campus records. Onboard new campuses via the **Provision New Tenant** form wizard. In the school listing, click **Manage** next to any campus to switch your active session context to that school, or click **Calendar** / **Admissions** to run configuration wizards directly.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">4. Platform Settings</h4>
+              <p class="text-slate-400 mt-1">Configure global application properties. Manage security timeouts, backup policies, email SMTP servers, system-wide maintenance modes, and storage configurations.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">5. Roles &amp; Permissions</h4>
+              <p class="text-slate-400 mt-1">Define system-wide Role-Based Access Controls (RBAC). Setup granular permissions profiles for teachers, students, parents, and administrative profiles. Appends unique suffixes to prevent tenant name clashes.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">6. AI Workspace</h4>
+              <p class="text-slate-400 mt-1">Configure the built-in AI Assistant engine settings. Select active LLM models, set token spend ceilings, adjust system prompt safety parameters, and manage search indexing pipelines.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step by Step Setup -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">Step-by-Step Initial Setup Guide</h3>
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">1</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Log in to SaaS Control Center</h4>
+                <p class="text-xs text-slate-400 mt-1">Access <code>http://127.0.0.1:8000/login/</code>, log in using <code>superadmin</code> / <code>ChangeMe123!</code>, and navigate to the SaaS dashboard at <code>/administration/dashboard/</code>.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">2</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Onboard a New School</h4>
+                <p class="text-xs text-slate-400 mt-1">Click the **Provision New Tenant** button. Fill out the wizard form with the corporate name (e.g., *Grace Academy*), admin contact details, and chosen billing model. Click **Confirm Onboarding**.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">3</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Retrieve School URL Context</h4>
+                <p class="text-xs text-slate-400 mt-1">The wizard will return a successful confirmation card displaying your local testing URL: <code>http://grace-academy.localhost:8000/</code>. Click the link to switch your active context to the school.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 2: ADMIN SETUP -->
+      <div x-show="currentRole === 'admin_setup'" class="space-y-8" style="display:none;">
+        <div>
+          <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] uppercase font-bold tracking-widest">School Administrator Profile</span>
+          <h2 class="text-3xl font-bold text-white font-display mt-3">Stage 2: Core Workspace Configurations</h2>
+          <p class="text-xs text-slate-400 mt-1">School Administrators manage the campus directories, build lesson timetables, and issue student tuition bills.</p>
+        </div>
+
+        <div class="p-4 bg-slate-950/50 rounded-2xl border border-slate-800/80 text-xs">
+          <p class="font-semibold text-indigo-400 uppercase tracking-wider mb-2">Stage 2 Sandbox Credentials</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-350">
+            <div><strong>Profile Username:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">admin</code></div>
+            <div><strong>Profile Password:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">ChangeMe123!</code></div>
+          </div>
+        </div>
+
+        <!-- Features Definitions -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">School Admin Sidebar Modules &amp; Manual</h3>
+          <div class="space-y-6 text-xs">
+            
+            <!-- Category 1 -->
+            <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-4">
+              <h4 class="text-sm font-bold text-white tracking-wider uppercase text-brand-300">📁 1. School Group</h4>
+              <div class="pl-4 space-y-3">
+                <div>
+                  <strong class="text-slate-200">My Dashboard:</strong>
+                  <p class="text-slate-400 mt-0.5">The home landing screen for school operations. It displays daily calendar stats, recent student portfolios milestones, active notifications lists, and quick shortcuts.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **My Dashboard** in the sidebar to review system-wide campus health summaries, check announcements feed, and click dashboard shortcuts.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-4">
+              <h4 class="text-sm font-bold text-white tracking-wider uppercase text-brand-300">🎓 2. Academics Group</h4>
+              <div class="pl-4 space-y-4">
+                <div>
+                  <strong class="text-slate-200">Admissions:</strong>
+                  <p class="text-slate-400 mt-0.5">Manages prospective student registrations and applications.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Admissions** -> click **New Applicant** -> fill out applicant name, parent contact, and grade level -> click Save to add them to the review pipeline.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Students:</strong>
+                  <p class="text-slate-400 mt-0.5">Handles active student academic records and digital profiles.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Students** -> click **Portfolios** next to a student -> click **+ Log Milestone** -> enter details (e.g. "Outstanding Art Class Project") and award behavior badges -> click Save to update the student's progress timeline.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Timetable:</strong>
+                  <p class="text-slate-400 mt-0.5">Creates class scheduling and manages classroom allocations.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Timetable** -> click **+ Schedule Lesson** -> select class, time slot, room, and teacher -> click Save. The scheduler automatically runs conflict checks.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Attendance:</strong>
+                  <p class="text-slate-400 mt-0.5">Oversees teacher roll calls and tracks student check-ins.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Attendance** -> select grade and date -> click check-in status options (Present/Absent/Late) for students -> click Save to update records.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Exams &amp; Grades:</strong>
+                  <p class="text-slate-400 mt-0.5">Manages examination schedules and sets grading frameworks.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Exams &amp; Grades** -> click **Create Exam Period** -> select academic term and class -> enter grade weight parameters -> click Save.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Reports &amp; CBT:</strong>
+                  <p class="text-slate-400 mt-0.5">Handles computer-based testing parameters and compiles report cards.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Reports &amp; CBT** -> choose a student -> click **Compile Report Card** to compute final grades -> click Print to export PDFs.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">E-Learning (LMS):</strong>
+                  <p class="text-slate-400 mt-0.5">The learning management platform where courses and lessons are constructed.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **E-Learning (LMS)** -> click **+ Add Module** -> input module name, upload attachments, and choose class -> click Publish to release materials to students.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-4">
+              <h4 class="text-sm font-bold text-white tracking-wider uppercase text-brand-300">💰 3. Finance Group</h4>
+              <div class="pl-4 space-y-4">
+                <div>
+                  <strong class="text-slate-200">Finance &amp; Billing:</strong>
+                  <p class="text-slate-400 mt-0.5">Sells tuition fees, manages payments, and logs transaction records.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Finance &amp; Billing** -> click **Create Invoice** -> choose recipient, billing item, and amount -> click Issue to send bill to the parent portal.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Inventory:</strong>
+                  <p class="text-slate-400 mt-1">Tracks school supplies, textbook allocations, and equipment.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Inventory** -> click **+ Add Item** -> enter supply name, starting quantity, and unit price -> click Save to track assets.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 4 -->
+            <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-4">
+              <h4 class="text-sm font-bold text-white tracking-wider uppercase text-brand-300">👥 4. People &amp; Ops Group</h4>
+              <div class="pl-4 space-y-4">
+                <div>
+                  <strong class="text-slate-200">Human Resources:</strong>
+                  <p class="text-slate-400 mt-0.5">Tracks teacher employment contracts, leave requests, and payroll registers.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Human Resources** -> select a staff member -> click **Adjust Payroll** or **Review Leave Request** to update status.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">People Directory:</strong>
+                  <p class="text-slate-400 mt-0.5">Onboard users and auto-generate credentials.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **People Directory** -> click **+ Register Person** -> fill out name, choose role (Student, Teacher, Parent) -> click Save -> click **View** on the newly created profile row to retrieve generated logins.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Communication:</strong>
+                  <p class="text-slate-400 mt-0.5">Sends school bulletins and facilitates chats.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Communication** -> click **New Broadcast** -> write announcement message -> click Send to dispatch timeline alerts globally.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Workflow &amp; Approvals:</strong>
+                  <p class="text-slate-400 mt-0.5">Tracks purchase approvals or administrative tasks validations.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Workflow &amp; Approvals** -> review active requests list -> click **Approve** or **Decline** to finalize.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 5 -->
+            <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-4">
+              <h4 class="text-sm font-bold text-white tracking-wider uppercase text-brand-300">🏫 5. Facilities Group</h4>
+              <div class="pl-4 space-y-4">
+                <div>
+                  <strong class="text-slate-200">Library:</strong>
+                  <p class="text-slate-400 mt-0.5">Manages library books inventory and check-out logs.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Library** -> click **Checkout Book** -> select student profile and enter book title -> click Confirm checkout.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Transport:</strong>
+                  <p class="text-slate-400 mt-0.5">Manages school bus routes, driver assignments, and bus stops.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Transport** -> click **Create Route** -> specify bus number, route stops, and assign a driver -> click Save.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Hostel:</strong>
+                  <p class="text-slate-400 mt-0.5">Tracks dormitories allocations and student bed slots assignments.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Hostel** -> choose a dormitory room -> click **Assign Bed** -> select student profile -> click Save.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Clinic:</strong>
+                  <p class="text-slate-400 mt-0.5">Registers student check-ins to sick bay, records health notes, and logs drug supplies.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Clinic** -> click **Log Visit** -> select student -> enter health symptoms details and prescription -> click Save.</p>
+                </div>
+                <div>
+                  <strong class="text-slate-200">Facilities:</strong>
+                  <p class="text-slate-400 mt-0.5">Logs classrooms maintenance work orders and utilities usage logs.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Facilities** -> click **+ New Work Order** -> enter issue description (e.g. "Broken Light Bulb in Lab B") -> click Submit.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category 6 -->
+            <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-4">
+              <h4 class="text-sm font-bold text-white tracking-wider uppercase text-brand-300">📊 6. Analytics Group</h4>
+              <div class="pl-4 space-y-3">
+                <div>
+                  <strong class="text-slate-200">Analytics:</strong>
+                  <p class="text-slate-400 mt-0.5">Displays student academic trends graphs, enrollment histories, and financial collections comparisons.</p>
+                  <p class="text-brand-300 font-semibold mt-1">Step-by-step: Click **Analytics** in the sidebar -> choose target tab (Academic or Finance) to review performance comparison charts.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Step by Step Setup -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">Step-by-Step School Setup Flow</h3>
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">1</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Select Your School Context</h4>
+                <p class="text-xs text-slate-400 mt-1">Access the school list dashboard at <code>/tenants/tenant-dashboard/</code>. Locate your newly onboarded school and click <strong>⚙️ Manage</strong>. This activates your school workspace context.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">2</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Onboard School Staff &amp; Students</h4>
+                <p class="text-xs text-slate-400 mt-1">Navigate to **People Directory** in the side navigation menu. Click **+ Register Person**. Choose the assigned role (*Student* or *Teacher*) and submit. Note the generated login details card on success.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">3</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Build the Master Timetable</h4>
+                <p class="text-xs text-slate-400 mt-1">Open **Timetable** -> click **+ Schedule Lesson**. Map classes to designated time slots, rooms, and teachers. If a teacher or classroom is double-booked, the system will prevent the entry and list a conflict alert.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 3: TEACHER INSTRUCT -->
+      <div x-show="currentRole === 'teacher_work'" class="space-y-8" style="display:none;">
+        <div>
+          <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] uppercase font-bold tracking-widest">Class Teacher Profile</span>
+          <h2 class="text-3xl font-bold text-white font-display mt-3">Stage 3: Attendance, Grades, &amp; E-Learning Modules</h2>
+          <p class="text-xs text-slate-400 mt-1">Teachers handle daily student attendance registries, assign assessment scores, and build curriculum study materials.</p>
+        </div>
+
+        <div class="p-4 bg-slate-950/50 rounded-2xl border border-slate-800/80 text-xs">
+          <p class="font-semibold text-indigo-400 uppercase tracking-wider mb-2">Stage 3 Sandbox Credentials</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-350">
+            <div><strong>Profile Username:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">teacher1</code></div>
+            <div><strong>Profile Password:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">ChangeMe123!</code></div>
+          </div>
+        </div>
+
+        <!-- Features Definitions -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">Teacher Side Menu Modules</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">1. Attendance Register</h4>
+              <p class="text-slate-400 mt-1">Daily class roll call. Load your assigned class list and select attendance status (Present, Absent, or Late) with one-click toggles. Logs check-in history to parents' feeds.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">2. E-Learning (LMS)</h4>
+              <p class="text-slate-400 mt-1">Course syllabus module builder. Upload worksheets, post homework descriptions, add YouTube learning videos, and assign lesson modules for students to view.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">3. Academics Ledger</h4>
+              <p class="text-slate-400 mt-1">Enter scores for quizzes, term exams, or assignments. The platform compiles final report cards automatically based on your grading scales.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step by Step Setup -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">Step-by-Step Classroom Instructions</h3>
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">1</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Mark Attendance Registers</h4>
+                <p class="text-xs text-slate-400 mt-1">Go to **Attendance** -> choose your grade level and click **Mark Attendance**. Mark student check-in status and save. The record updates parents' portal timelines immediately.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">2</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Publish LMS E-Learning Modules</h4>
+                <p class="text-xs text-slate-400 mt-1">Open **E-Learning (LMS) Dashboard** -> click **+ Add Module**. Write the module name, upload resources, select active courses, and click publish to make it visible to students.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 4: STUDENT LEARN -->
+      <div x-show="currentRole === 'student_use'" class="space-y-8" style="display:none;">
+        <div>
+          <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] uppercase font-bold tracking-widest">Student Profile</span>
+          <h2 class="text-3xl font-bold text-white font-display mt-3">Stage 4: Read Calendars &amp; Review E-Learning Courses</h2>
+          <p class="text-xs text-slate-400 mt-1">Students view weekly lesson calendars, review course modules, and view earned milestones.</p>
+        </div>
+
+        <div class="p-4 bg-slate-950/50 rounded-2xl border border-slate-800/80 text-xs">
+          <p class="font-semibold text-indigo-400 uppercase tracking-wider mb-2">Stage 4 Sandbox Credentials</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-350">
+            <div><strong>Profile Username:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">student1</code></div>
+            <div><strong>Profile Password:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">ChangeMe123!</code></div>
+          </div>
+        </div>
+
+        <!-- Features Definitions -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">Student Side Menu Modules</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">1. Timetable Matrix</h4>
+              <p class="text-slate-400 mt-1">Provides students with a read-only view of their weekly class calendar. Edit headers, inputs, and delete triggers are automatically hidden to protect scheduling integrity.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">2. E-Learning Modules</h4>
+              <p class="text-slate-400 mt-1">Check coursework details, download syllabus files, watch linked videos, and review homework instructions assigned by teachers.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">3. Achievements &amp; Badges</h4>
+              <p class="text-slate-400 mt-1">Open your dashboard or check the LMS sidebars to view earned badges, awards, and milestones logged by the school administration.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step by Step Setup -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">Student Classroom Walkthrough</h3>
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">1</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Review Weekly Timetable Grid</h4>
+                <p class="text-xs text-slate-400 mt-1">Log in using student credentials, click **Timetable** in the sidebar. This loads your classes, instructors, and room allocations for the week.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">2</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Study LMS Modules</h4>
+                <p class="text-xs text-slate-400 mt-1">Navigate to **E-Learning (LMS)** to view coursework materials published by your class teacher. Open files, read assignments instructions, and submit work.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 5: PARENT MONITOR -->
+      <div x-show="currentRole === 'parent_track'" class="space-y-8" style="display:none;">
+        <div>
+          <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-300 text-[10px] uppercase font-bold tracking-widest">Parent Profile</span>
+          <h2 class="text-3xl font-bold text-white font-display mt-3">Stage 5: Attendance Milestones &amp; Financial Ledgers</h2>
+          <p class="text-xs text-slate-400 mt-1">Parents use the portal to track chronological progress timelines, check achievement logs, and pay outstanding school fee bills.</p>
+        </div>
+
+        <div class="p-4 bg-slate-950/50 rounded-2xl border border-slate-800/80 text-xs">
+          <p class="font-semibold text-indigo-400 uppercase tracking-wider mb-2">Stage 5 Sandbox Credentials</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-350">
+            <div><strong>Profile Username:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">parent1</code></div>
+            <div><strong>Profile Password:</strong> <code class="text-white bg-slate-900 px-1 py-0.5 rounded">ChangeMe123!</code></div>
+          </div>
+        </div>
+
+        <!-- Features Definitions -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">Parent Side Menu Modules</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">1. Timeline Feed</h4>
+              <p class="text-slate-400 mt-1">Chronological event stream aggregating daily attendance status, disciplinary notes, achievement updates, and report cards for child profiles.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">2. Billing Ledger</h4>
+              <p class="text-slate-400 mt-1">View outstanding school invoice statements, check transaction history receipts, and click Pay to settle tuition balances online.</p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800">
+              <h4 class="font-bold text-slate-200">3. Academic Reports</h4>
+              <p class="text-slate-400 mt-1">Review finalized report cards, watch teacher comments, and monitor dynamic learning metrics across grading semesters.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step by Step Setup -->
+        <div>
+          <h3 class="text-lg font-bold text-white mb-4 border-l-2 border-brand-500 pl-3">Parent Monitoring Walkthrough</h3>
+          <div class="space-y-6">
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">1</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Review Student Timeline Log</h4>
+                <p class="text-xs text-slate-400 mt-1">Log in using parent credentials. The homepage loads the chronological timeline showing your child's daily class check-in entries and behavior badges.</p>
+              </div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 rounded-full step-badge flex items-center justify-center font-bold text-xs text-white shrink-0">2</div>
+              <div>
+                <h4 class="text-sm font-semibold text-white">Settle Invoice Balances</h4>
+                <p class="text-xs text-slate-400 mt-1">Navigate to **Finance / Billing** to view tuition invoice line-items, check payment history receipts, and click Pay to settle the school balance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

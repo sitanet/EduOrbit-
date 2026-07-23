@@ -1,0 +1,36 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Prompt Library - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Prompts Library</h2>
+    <p style="color: var(--color-text-secondary);">Manage system instructions templates for report card generators and lesson planners.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
+    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">System Prompts Templates</h3>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Template Name</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prompt in prompts %}
+        <tr style="border-bottom: 1px solid var(--color-border);">
+          <td style="padding: var(--spacing-md);"><strong>{{ prompt.name }}</strong></td>
+          <td style="padding: var(--spacing-md);"><span class="badge badge-success">{{ prompt.category|upper }}</span></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="2" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No prompt templates defined. Click "Add Template" to begin.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

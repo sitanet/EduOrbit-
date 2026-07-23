@@ -1,0 +1,88 @@
+{% extends "base/_document.html" %}
+{% block title %}Inventory — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-1">EduOrbit · Logistics</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Inventory &amp; Asset Management</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Track laboratory assets, school furniture, supplier procurements, and restock logs.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/inventory/items/" class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
+        All Stock Items
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Total Warehouses</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ warehouses|length|default:"3" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Main Store, Lab, Office Supply</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Fixed Assets Value</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">₦{{ assets_value|default:"18.4M" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Furniture, Computers, Vehicles</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Low Stock Alerts</p>
+      <p class="text-3xl font-bold text-rose-500">{{ low_stock_items|length|default:"4" }}</p>
+      <p class="text-xs text-rose-400 mt-2">Reorder levels reached</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Pending POs</p>
+      <p class="text-3xl font-bold text-amber-500">2</p>
+      <p class="text-xs text-amber-400 mt-2">Awaiting vendor deliveries</p>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+      <h3 class="font-semibold text-slate-900 dark:text-white">Key Inventory Assets</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
+          <tr>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Asset Name</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Category</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Barcode / ID</th>
+            <th class="text-right px-6 py-3 font-semibold uppercase">Qty / Value</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+          {% for asset in assets %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ asset.name }}</td>
+            <td class="px-6 py-4">{{ asset.category.name|default:"General" }}</td>
+            <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">{{ asset.serial_number|default:"—" }}</td>
+            <td class="px-6 py-4 text-right font-semibold">₦{{ asset.value }}</td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Dell Inspiron 15 Computers (ICT Lab)</td>
+            <td class="px-6 py-4">Electronics</td>
+            <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">SRN-DELL-903</td>
+            <td class="px-6 py-4 text-right font-semibold">₦6,400,000</td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Biology Lab Microscope Sets</td>
+            <td class="px-6 py-4">Laboratory</td>
+            <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">SRN-MICR-114</td>
+            <td class="px-6 py-4 text-right font-semibold">₦2,100,000</td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Classroom Whiteboards &amp; Desks</td>
+            <td class="px-6 py-4">Furniture</td>
+            <td class="px-6 py-4 text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">SRN-DESK-882</td>
+            <td class="px-6 py-4 text-right font-semibold">₦9,900,000</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

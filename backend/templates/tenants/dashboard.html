@@ -1,0 +1,159 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Tenant Administration — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8 border-b border-slate-200 dark:border-slate-700/80 pb-6">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-primary uppercase mb-1">EduOrbit · Tenant Control</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">{{ tenant.name|default:"EduOrbit Group Admin" }}</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Manage school instances, active billing configurations, and subscription cycles.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <span class="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-950/40 text-emerald-400 border border-emerald-900/40 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2 animate-pulse"></span> Active Organization
+      </span>
+    </div>
+  </div>
+
+  <!-- Billing & Subscription Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- Subscription Status Card -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Active Subscription</h3>
+        <span class="text-xs bg-primary-light text-primary font-bold px-2 py-0.5 rounded-lg">Plan Details</span>
+      </div>
+      {% if subscription %}
+        <div class="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+          {{ subscription.plan.name|default:"Free Trial" }}
+        </div>
+        <div class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+          <p>Status: <strong class="text-slate-900 dark:text-white uppercase">{{ subscription.status }}</strong></p>
+          <p>Expires: <span class="text-slate-700 dark:text-slate-300">{{ subscription.end_date|date:"F d, Y"|default:"December 31, 2026" }}</span></p>
+        </div>
+      {% else %}
+        <div class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Enterprise Trial</div>
+        <div class="space-y-1.5 text-sm text-slate-600 dark:text-slate-400">
+          <p>Status: <strong class="text-emerald-400 uppercase">ACTIVE</strong></p>
+          <p>Expires: <span class="text-slate-700 dark:text-slate-300">December 31, 2026</span></p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Tenant Billing Configuration Card -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Billing Model</h3>
+        <span class="text-xs bg-amber-500/20 text-amber-400 font-bold px-2 py-0.5 rounded-lg">Billing Info</span>
+      </div>
+      <div class="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+        {{ tenant.get_billing_model_display|default:"School Pays Plan" }}
+      </div>
+      <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        Configured at organization onboarding. Relates to platform licensing fees collections and seat allocation billing parameters.
+      </p>
+    </div>
+  </div>
+
+  <!-- Registered Campuses / Schools -->
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden shadow-sm">
+    <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700/80 flex justify-between items-center bg-slate-50 dark:bg-slate-850/10">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Registered Campuses &amp; Schools</h3>
+      <a href="/tenants/onboard/" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary hover:bg-primary-hover text-slate-900 dark:text-white text-xs font-semibold transition shadow-sm shadow-primary/30">
+        + Onboard Campus
+      </a>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-750">
+        <thead class="bg-slate-100 dark:bg-slate-800/30 text-slate-600 dark:text-slate-400">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">School Name</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Active Modules</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Status</th>
+            <th scope="col" class="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-300">
+          {% for school in schools %}
+          <tr class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="h-10 w-10 flex-shrink-0 bg-primary-light rounded-xl flex items-center justify-center text-primary font-bold text-lg border border-primary/20">
+                  {{ school.name|slice:":1"|upper|default:"S" }}
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ school.name }}</div>
+                  <div class="text-xs text-slate-500 dark:text-slate-500 mt-0.5">
+                    Local URL: <a href="http://{{ school.tenant.branding_config.subdomain|default:'demo-school' }}.localhost:8000/" target="_blank" class="font-mono text-indigo-400 font-bold hover:underline select-all">http://{{ school.tenant.branding_config.subdomain|default:'demo-school' }}.localhost:8000/</a>
+                  </div>
+                  <div class="text-xs text-slate-500 dark:text-slate-500 mt-0.5">
+                    {% if is_superuser %}
+                      Parent Organization: <span class="font-semibold text-primary">{{ school.tenant.name|default:"Default Tenant" }}</span>
+                    {% else %}
+                      Types: {{ school.school_types|join:", "|default:"Secondary, Primary" }}
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center rounded-md bg-indigo-900/40 text-indigo-400 border border-indigo-850 px-2 py-0.5 text-xs font-medium uppercase">core setup</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {% if school.is_active %}
+                <span class="inline-flex items-center rounded-md bg-emerald-900/40 text-emerald-400 border border-emerald-800/40 px-2 py-0.5 text-xs font-medium uppercase">active</span>
+              {% else %}
+                <span class="inline-flex items-center rounded-md bg-rose-900/40 text-rose-400 border border-rose-800/40 px-2 py-0.5 text-xs font-medium uppercase">inactive</span>
+              {% endif %}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+              {% if active_school_id == school.id|stringformat:"s" %}
+                <span class="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mr-1">
+                  ✅ Active
+                </span>
+              {% else %}
+                <a href="{% url 'switch_school_web' %}?school_id={{ school.id }}" class="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition mr-1">
+                  ⚙️ Manage
+                </a>
+              {% endif %}
+              <a href="/academic/wizard/?school_id={{ school.id }}" class="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-medium bg-primary/10 text-primary hover:bg-primary/20 transition">
+                📅 Calendar
+              </a>
+              <a href="/admissions/wizard/?school_id={{ school.id }}" class="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-medium bg-emerald-950/10 text-emerald-400 hover:bg-emerald-900/20 transition">
+                🎓 Admissions
+              </a>
+              <button hx-delete="/tenants/api/v1/schools/{{ school.id }}/" hx-target="closest tr" hx-confirm="Are you sure you want to delete this school campus?" class="inline-flex items-center px-2.5 py-1.5 rounded-lg text-xs font-medium bg-red-950/20 text-rose-400 hover:bg-red-900/30 transition">
+                🗑️ Delete
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <!-- Mock Campus Row for immediately visual feedback -->
+          <tr class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="h-10 w-10 flex-shrink-0 bg-primary-light rounded-xl flex items-center justify-center text-primary font-bold text-lg border border-primary/20">D</div>
+                <div class="ml-4">
+                  <div class="text-sm font-semibold text-slate-900 dark:text-white">EduOrbit Demo Academy</div>
+                  <div class="text-xs text-slate-500 dark:text-slate-500">Types: Secondary, Primary</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center rounded-md bg-primary-light text-primary border border-primary/20 px-2 py-0.5 text-xs font-medium uppercase">core package</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center rounded-md bg-emerald-900/40 text-emerald-400 border border-emerald-800/40 px-2 py-0.5 text-xs font-medium uppercase">active</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

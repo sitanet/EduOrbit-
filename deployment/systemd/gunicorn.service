@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn daemon for EduOrbit
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=eduorbit
+Group=eduorbit
+WorkingDirectory=/var/www/eduorbit/backend
+ExecStart=/var/www/eduorbit/venv/bin/gunicorn -c /var/www/eduorbit/deployment/gunicorn/gunicorn.conf.py backend.asgi:application
+
+[Install]
+WantedBy=multi-user.target

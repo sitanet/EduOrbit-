@@ -1,0 +1,98 @@
+{% extends "base/_document.html" %}
+{% block title %}Workflow &amp; Approvals — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-violet-400 uppercase mb-1">EduOrbit · Admin</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Workflow &amp; Approvals</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Approve document requisitions, expenses vouchers, and enrollment approvals.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/workflow/inbox/" class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
+        Approval Inbox
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Pending Requests</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ pending_tasks|length|default:"5" }}</p>
+      <p class="text-xs text-amber-400 mt-2">Awaiting your signature</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Approved This Week</p>
+      <p class="text-3xl font-bold text-emerald-400">18</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Completed workflows</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Rejections Raised</p>
+      <p class="text-3xl font-bold text-rose-500">2</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Returned for adjustments</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Document Vault</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ documents|length|default:"32" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Signed PDF records</p>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+      <h3 class="font-semibold text-slate-900 dark:text-white">Workflows Awaiting Approval</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
+          <tr>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Request Details</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Initiator</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Category</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Date Raised</th>
+            <th class="text-right px-6 py-3 font-semibold uppercase">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+          {% for task in pending_tasks %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ task.instance.version.workflow.name }}</td>
+            <td class="px-6 py-4">{{ task.instance.initiator.get_full_name|default:"Teacher" }}</td>
+            <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-indigo-900/40 text-indigo-400">{{ task.step.name }}</span></td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">{{ task.created_at|date:"M d, Y" }}</td>
+            <td class="px-6 py-4 text-right">
+              <a href="/workflow/inbox/" class="text-xs text-indigo-400 hover:underline">Review &amp; Sign</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Purchase of Physics Lab Materials</td>
+            <td class="px-6 py-4">Adeyemi Tunde</td>
+            <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-indigo-900/40 text-indigo-400">Expense Approval</span></td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">July 21, 2026</td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex gap-2 justify-end">
+                <button class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white rounded-lg text-xs">Approve</button>
+                <button class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white rounded-lg text-xs">Reject</button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">JSS1 English Lesson Plan Review</td>
+            <td class="px-6 py-4">Okafor Amara</td>
+            <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-purple-900/40 text-purple-400">Lesson Review</span></td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">July 22, 2026</td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex gap-2 justify-end">
+                <button class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white rounded-lg text-xs">Approve</button>
+                <button class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white rounded-lg text-xs">Reject</button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

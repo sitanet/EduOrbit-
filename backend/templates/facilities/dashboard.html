@@ -1,0 +1,88 @@
+{% extends "base/_document.html" %}
+{% block title %}Facilities — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-1">EduOrbit · Infrastructure</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Facilities &amp; Work Orders</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Manage building repairs, track classrooms utility consumption, and assign maintenance personnel.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/facilities/board/" class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
+        Work Orders Board
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Total Buildings</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ buildings|length|default:"5" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Classrooms, Hostel blocks, Labs</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Open Work Orders</p>
+      <p class="text-3xl font-bold text-rose-500">{{ active_orders|length|default:"3" }}</p>
+      <p class="text-xs text-rose-400 mt-2">Requires immediate attention</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Utility Meters</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ utility_meters|length|default:"8" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Monitoring power &amp; water grid</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Completed Tasks</p>
+      <p class="text-3xl font-bold text-emerald-400">47</p>
+      <p class="text-xs text-emerald-400 mt-2">Fixed this term</p>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+      <h3 class="font-semibold text-slate-900 dark:text-white">Active Work Orders</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
+          <tr>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Request Detail</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Location</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Priority</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+          {% for order in active_orders %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ order.description }}</td>
+            <td class="px-6 py-4">{{ order.request.room.floor.building.name }}</td>
+            <td class="px-6 py-4"><strong>{{ order.priority|upper }}</strong></td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400 border border-amber-700/40">IN PROGRESS</span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">AC replacement and gas refill</td>
+            <td class="px-6 py-4">ICT Lab - Block A</td>
+            <td class="px-6 py-4"><span class="text-rose-500 font-semibold">HIGH</span></td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400 border border-amber-700/40">IN PROGRESS</span>
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Fix broken window latch</td>
+            <td class="px-6 py-4">JSS 2B Classroom</td>
+            <td class="px-6 py-4"><span class="text-slate-600 dark:text-slate-600 dark:text-slate-400 font-semibold">LOW</span></td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-600 dark:text-slate-400 border border-gray-700">ASSIGNED</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

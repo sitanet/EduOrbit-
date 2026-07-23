@@ -1,0 +1,52 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Session Management - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Active Device Sessions</h2>
+    <p style="color: var(--color-text-secondary);">Manage and revoke your active logins across mobile and web interfaces.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Device / Browser</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">IP Address</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Login Time</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for session in sessions %}
+        <tr style="border-bottom: 1px solid var(--color-border);" id="session-{{ session.id }}">
+          <td style="padding: var(--spacing-md);">
+            <div><strong>{{ session.device_name|default:"Unknown Device" }}</strong></div>
+            <span style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">{{ session.browser }} | {{ session.operating_system }}</span>
+          </td>
+          <td style="padding: var(--spacing-md);">{{ session.ip_address|default:"-" }}</td>
+          <td style="padding: var(--spacing-md);">{{ session.login_time|date:"Y-m-d H:i" }}</td>
+          <td style="padding: var(--spacing-md);">
+            <button 
+              hx-delete="{% url 'identity_api:session_revoke' session.access_token_id %}" 
+              hx-target="#session-{{ session.id }}" 
+              hx-swap="outerHTML" 
+              class="btn btn-outline" 
+              style="padding: var(--spacing-xs) var(--spacing-sm); font-size: var(--font-size-xs); border-color: var(--color-error); color: var(--color-error);"
+            >
+              Revoke
+            </button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No active sessions found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

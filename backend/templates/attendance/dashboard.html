@@ -1,0 +1,89 @@
+{% extends "base/_document.html" %}
+{% block title %}Attendance — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-yellow-400 uppercase mb-1">EduOrbit · Operations</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Attendance Workspace</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Review register corrections, view attendance compliance statistics, and track students.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/attendance/register/" class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
+        Mark Register Today
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Today's Attendance</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">94.2%</p>
+      <p class="text-xs text-emerald-400 mt-2">↑ 0.5% compared to yesterday</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Students Present</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">482</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Out of 512 total enrolled</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Unexcused Absences</p>
+      <p class="text-3xl font-bold text-rose-500">22</p>
+      <p class="text-xs text-rose-400 mt-2">Notifications sent to parents</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Pending Adjustments</p>
+      <p class="text-3xl font-bold text-amber-500">{{ corrections|length|default:"3" }}</p>
+      <p class="text-xs text-amber-400 mt-2">Awaiting principal approval</p>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+      <h3 class="font-semibold text-slate-900 dark:text-white">Pending Attendance Correction Requests</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 dark:bg-slate-800/50">
+          <tr class="text-slate-600 dark:text-slate-600 dark:text-slate-400">
+            <th class="text-left px-6 py-3 font-semibold uppercase">Student</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Requested Status</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Reason Notes</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Decision Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+          {% for corr in corrections %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ corr.record.person.first_name }} {{ corr.record.person.last_name }}</td>
+            <td class="px-6 py-4"><strong>{{ corr.requested_status.name }}</strong></td>
+            <td class="px-6 py-4">{{ corr.reason }}</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400 border border-amber-700/40">PENDING</span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Tunde Adeyemi (JSS 3A)</td>
+            <td class="px-6 py-4"><span class="text-emerald-400">Present</span></td>
+            <td class="px-6 py-4">Medical appointment run late, arrived at 9:00 AM</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400 border border-amber-700/40">PENDING</span>
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Chioma Eze (SS 2B)</td>
+            <td class="px-6 py-4"><span class="text-indigo-400">Excused</span></td>
+            <td class="px-6 py-4">Participated in inter-school debate competition representing school</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400 border border-amber-700/40">PENDING</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+[project]
+name = "eduorbit"
+version = "1.0.0"
+description = "Enterprise Multi-Tenant School Management System"
+authors = [
+    { name = "EduOrbit Architects", email = "architects@eduorbit.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+multi_line_output = 3
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+select = ["E", "F", "W", "I", "N"]
+ignore = ["E501"]

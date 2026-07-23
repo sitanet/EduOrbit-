@@ -1,0 +1,305 @@
+{% extends "base/_document.html" %}
+
+{% block title %}People Directory - EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" 
+     x-data="{ 
+       openAddModal: false, 
+       submitting: false,
+       openViewModal: false,
+       openEditModal: false,
+       viewPerson: { name: '', username: '', email: '', person_number: '' },
+       editPerson: { id: '', first_name: '', last_name: '', middle_name: '', gender: '', date_of_birth: '' }
+     }"
+     hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8 border-b border-slate-200 dark:border-slate-700/80 pb-6">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-primary uppercase mb-1">EduOrbit · Operations</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">People Directory</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Enterprise unified listing of all active students, teachers, parents, and administrative staff profiles.</p>
+    </div>
+    <div class="mt-4 md:mt-0 flex-shrink-0">
+      <button @click="openAddModal = true; submitting = false;" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-slate-900 dark:text-white text-sm font-semibold transition duration-150 shadow-lg shadow-primary/30">
+        + Register Person
+      </button>
+    </div>
+  </div>
+
+  <!-- Search Filter Form -->
+  <div class="mb-8">
+    <form method="GET" action="{% url 'people_directory_web' %}" class="flex flex-col sm:flex-row gap-3">
+      <div class="flex-grow relative">
+        <input 
+          type="text" 
+          name="q" 
+          value="{{ query|default:'' }}" 
+          class="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-4 pr-10 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-550 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" 
+          placeholder="Search by first name, last name, or person number..." 
+        >
+      </div>
+      <button type="submit" class="px-6 py-3 bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 dark:hover:bg-slate-600 text-white rounded-xl text-sm font-semibold transition">
+        Search Directory
+      </button>
+    </form>
+  </div>
+
+  <!-- People Directory Table -->
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-750">
+        <thead class="bg-slate-100 dark:bg-slate-800/40 text-slate-600 dark:text-slate-400">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Person ID</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Full Name</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Gender</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Date of Birth</th>
+            <th scope="col" class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-300">
+          {% for person in people %}
+          <tr class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-primary">
+              {{ person.person_number }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="h-9 w-9 rounded-xl bg-indigo-900/10 text-indigo-400 border border-indigo-900/20 flex items-center justify-center font-bold text-sm">
+                  {{ person.first_name|slice:":1" }}{{ person.last_name|slice:":1" }}
+                </div>
+                <div class="ml-3">
+                  <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ person.first_name }} {% if person.middle_name %}{{ person.middle_name }} {% endif %}{{ person.last_name }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm capitalize text-slate-600 dark:text-slate-400">
+              {{ person.gender }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              {{ person.date_of_birth|date:"F d, Y" }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-semibold space-x-3">
+              <!-- View login credentials -->
+              <button @click="viewPerson = { name: '{{ person.first_name }} {{ person.last_name }}', username: '{{ person.user.username|default:'No account linked' }}', email: '{{ person.user.email|default:'No email registered' }}', person_number: '{{ person.person_number }}' }; openViewModal = true;"
+                      class="text-indigo-400 hover:text-indigo-300">View</button>
+              
+              <!-- Edit Details -->
+              <button @click="editPerson = { id: '{{ person.id }}', first_name: '{{ person.first_name }}', last_name: '{{ person.last_name }}', middle_name: '{{ person.middle_name|default:'' }}', gender: '{{ person.gender }}', date_of_birth: '{{ person.date_of_birth|date:'Y-m-d' }}' }; openEditModal = true; submitting = false;"
+                      class="text-amber-400 hover:text-amber-300">Edit</button>
+
+              <!-- Delete profile -->
+              <button hx-delete="{% url 'people_directory_web' %}?person_id={{ person.id }}"
+                      hx-confirm="Are you sure you want to delete this profile and associated user credentials?"
+                      hx-target="closest tr"
+                      hx-swap="outerHTML"
+                      class="text-rose-400 hover:text-rose-300">Delete</button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="5" class="px-6 py-12 text-center text-slate-500 dark:text-slate-500">
+              <div class="text-3xl mb-2">👥</div>
+              <p class="text-sm font-semibold text-slate-900 dark:text-white">No people profiles found.</p>
+              <p class="text-xs text-slate-500 dark:text-slate-500 mt-1">Register a person to begin mapping school roles.</p>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Register Person Modal -->
+  <div x-show="openAddModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" x-cloak>
+    <div @click.away="openAddModal = false" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-xl p-6 relative">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Register Person Profile</h3>
+        <button @click="openAddModal = false" class="text-slate-500 hover:text-slate-700 dark:hover:text-white font-bold text-lg">×</button>
+      </div>
+
+      <form hx-post="{% url 'people_directory_web' %}" 
+            hx-target="#add-result" 
+            @submit="submitting = true"
+            class="space-y-4">
+        {% csrf_token %}
+        
+        <!-- Person Number -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Person ID (Optional)</label>
+          <input type="text" name="person_number" placeholder="e.g. PER-1234 (Leave blank to auto-generate)"
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-550 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- First Name -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">First Name</label>
+          <input type="text" name="first_name" placeholder="First name" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Last Name -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Last Name</label>
+          <input type="text" name="last_name" placeholder="Last name" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Middle Name -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Middle Name (Optional)</label>
+          <input type="text" name="middle_name" placeholder="Middle name"
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Gender -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Gender</label>
+          <select name="gender" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+            <option value="">-- Choose Gender --</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <!-- Date of Birth -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Date of Birth</label>
+          <input type="date" name="date_of_birth" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Assigned Role Type -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Assigned School Role</label>
+          <select name="role_type" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+            <option value="">-- Select System Role --</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="parent">Parent</option>
+            <option value="none">General Staff (Staff Only)</option>
+          </select>
+        </div>
+
+        <div id="add-result" class="text-sm"></div>
+
+        <button type="submit" 
+                :disabled="submitting"
+                class="w-full py-3 bg-primary hover:bg-primary-hover disabled:bg-slate-700 disabled:text-slate-400 text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition duration-150 shadow-lg shadow-primary/30">
+          <span x-text="submitting ? 'Registering Profile...' : 'Save Person Profile'"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Person Modal -->
+  <div x-show="openEditModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" x-cloak>
+    <div @click.away="openEditModal = false" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-xl p-6 relative">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Edit Person Profile</h3>
+        <button @click="openEditModal = false" class="text-slate-500 hover:text-slate-700 dark:hover:text-white font-bold text-lg">×</button>
+      </div>
+
+      <form hx-post="{% url 'people_directory_web' %}" 
+            hx-target="#edit-result" 
+            @submit="submitting = true"
+            class="space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="edit">
+        <input type="hidden" name="person_id" :value="editPerson.id">
+        
+        <!-- First Name -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">First Name</label>
+          <input type="text" name="first_name" x-model="editPerson.first_name" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Last Name -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Last Name</label>
+          <input type="text" name="last_name" x-model="editPerson.last_name" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Middle Name -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Middle Name (Optional)</label>
+          <input type="text" name="middle_name" x-model="editPerson.middle_name"
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Gender -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Gender</label>
+          <select name="gender" x-model="editPerson.gender" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <!-- Date of Birth -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Date of Birth</label>
+          <input type="date" name="date_of_birth" x-model="editPerson.date_of_birth" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <div id="edit-result" class="text-sm"></div>
+
+        <button type="submit" 
+                :disabled="submitting"
+                class="w-full py-3 bg-primary hover:bg-primary-hover disabled:bg-slate-700 disabled:text-slate-400 text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition duration-150 shadow-lg shadow-primary/30">
+          <span x-text="submitting ? 'Updating Profile...' : 'Save Changes'"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Credentials Modal -->
+  <div x-show="openViewModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" x-cloak>
+    <div @click.away="openViewModal = false" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-xl p-6 relative">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">User Security Profile</h3>
+        <button @click="openViewModal = false" class="text-slate-500 hover:text-slate-700 dark:hover:text-white font-bold text-lg">×</button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block text-xs font-semibold text-slate-505 dark:text-slate-400 uppercase mb-1">Full Name</label>
+          <div class="text-sm font-semibold text-slate-900 dark:text-white" x-text="viewPerson.name"></div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-505 dark:text-slate-400 uppercase mb-1">Person ID</label>
+          <div class="text-sm font-semibold text-slate-900 dark:text-white font-mono" x-text="viewPerson.person_number"></div>
+        </div>
+
+        <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+          <p class="font-bold text-slate-900 dark:text-white mb-2">IAM Login Credentials</p>
+          <div class="bg-slate-50 dark:bg-slate-900/60 p-3 rounded-lg border border-slate-100 dark:border-slate-750 font-mono space-y-2">
+            <div>
+              <span class="text-slate-500">Username:</span>
+              <strong class="text-slate-900 dark:text-white select-all ml-1" x-text="viewPerson.username"></strong>
+            </div>
+            <div>
+              <span class="text-slate-500">Email:</span>
+              <strong class="text-slate-900 dark:text-white select-all ml-1" x-text="viewPerson.email"></strong>
+            </div>
+            <div>
+              <span class="text-slate-500">Default Password:</span>
+              <strong class="text-slate-900 dark:text-white select-all ml-1">ChangeMe123!</strong>
+            </div>
+          </div>
+          <p class="text-[10px] text-slate-500 mt-2">Note: For demo security, new accounts are provisioned with the standard default password.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Routes Planner - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Routes Planner</h2>
+    <p style="color: var(--color-text-secondary);">Manage pickup stops list, estimated distance, and passenger routing boundaries.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
+    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Configured Transit Paths</h3>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Route Name</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Start Point</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">End Point</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Distance</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for route in routes %}
+        <tr style="border-bottom: 1px solid var(--color-border);">
+          <td style="padding: var(--spacing-md);"><strong>{{ route.name }}</strong></td>
+          <td style="padding: var(--spacing-md);">{{ route.start_point }}</td>
+          <td style="padding: var(--spacing-md);">{{ route.end_point }}</td>
+          <td style="padding: var(--spacing-md);">{{ route.total_distance_km }} km</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No routes registered in routes planner.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base/_document.html' %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+    <!-- Dashboard Actions -->
+    <div class="sm:flex sm:justify-between sm:items-center mb-8">
+        <!-- Left: Title -->
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Analytics Dashboard ✨</h1>
+        </div>
+        <!-- Right: Actions -->
+        <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+            <button class="btn bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-slate-500 dark:text-slate-500 hover:text-slate-600 dark:text-slate-600 dark:text-slate-400 dark:hover:text-slate-700 dark:text-slate-300">
+                <svg class="w-4 h-4 fill-current text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 shrink-0" viewBox="0 0 16 16">
+                    <path d="M15 2h-2V0h-2v2H9V0H7v2H5V0H3v2H1a1 1 0 00-1 1v12a1 1 0 001 1h14a1 1 0 001-1V3a1 1 0 00-1-1zm-1 12H2V6h12v8z" />
+                </svg>
+                <span class="hidden xs:block ml-2">Select Date Range</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-12 gap-6 mb-8">
+        <!-- Stat Cards -->
+        {% include 'components/stat_card.html' with title="Avg Enrollment Growth" value="8.5%" trend="+1.2%" icon="trending-up" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Overall Attendance Rate" value="94.2%" trend="+0.5%" icon="check-circle" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Retention Rate" value="97.8%" trend="+0.1%" icon="shield-check" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid grid-cols-12 gap-6 mb-8">
+        <!-- Demographics Pie Chart -->
+        <div class="col-span-12 md:col-span-6">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Student Demographics</h2>
+            <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700 p-5 h-80 flex items-center justify-center">
+                <div class="text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 italic">Pie Chart Placeholder (ApexCharts)</div>
+            </div>
+        </div>
+
+        <!-- Revenue vs Expenses Bar Chart -->
+        <div class="col-span-12 md:col-span-6">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Revenue vs Expenses</h2>
+            <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700 p-5 h-80 flex items-center justify-center">
+                <div class="text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 italic">Bar Chart Placeholder (ApexCharts)</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Rooms Directory - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Rooms & Beds Directory</h2>
+    <p style="color: var(--color-text-secondary);">Browse room configurations, check bed layout occupancies, and schedule hygiene inspections.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
+    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Residential Rooms</h3>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Room No.</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Hostel / Block</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Floor</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Capacity</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for room in rooms %}
+        <tr style="border-bottom: 1px solid var(--color-border);">
+          <td style="padding: var(--spacing-md);"><strong>Room {{ room.room_number }}</strong></td>
+          <td style="padding: var(--spacing-md);">{{ room.block.hostel.name }} - {{ room.block.name }}</td>
+          <td style="padding: var(--spacing-md);">{{ room.floor|default:"-" }}</td>
+          <td style="padding: var(--spacing-md);">{{ room.capacity }} Beds</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No rooms registered in directory.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

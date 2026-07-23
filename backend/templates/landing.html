@@ -1,0 +1,430 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduOrbit — Unified School Management SaaS Platform</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              200: '#ddd6fe',
+              300: '#c084fc',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              dark: '#05020c',
+              accent: '#f43f5e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #05020c;
+    }
+    .grid-glow {
+      background-image: radial-gradient(rgba(124, 58, 237, 0.08) 1.5px, transparent 0);
+      background-size: 32px 32px;
+    }
+    .glass-nav {
+      background: rgba(5, 2, 12, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .glow-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glow-card:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(124, 58, 237, 0.35);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -15px rgba(124, 58, 237, 0.25);
+    }
+    /* Animated Gradient Text */
+    .text-glow {
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 50%, #f43f5e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+</head>
+<body class="text-slate-100 font-sans antialiased overflow-x-hidden grid-glow">
+
+  <!-- Navigation Bar -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-nav">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 hover:scale-105 transition-transform duration-300">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-brand-700 flex items-center justify-center shadow-lg shadow-brand-500/20">
+          <svg class="w-6 h-6 text-white animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+          </svg>
+        </div>
+        <span class="text-2xl font-black text-white font-display tracking-tight">EduOrbit</span>
+      </a>
+
+      <!-- Navigation links -->
+      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-350">
+        <a href="#features" class="hover:text-white transition duration-200">Core Features</a>
+        <a href="#roles" class="hover:text-white transition duration-200">Portals</a>
+        <a href="#pricing" class="hover:text-white transition duration-200">Pricing Plans</a>
+        <a href="#faq" class="hover:text-white transition duration-200">FAQ</a>
+        <a href="/docs/" class="text-indigo-400 hover:text-indigo-300 transition duration-200">Documentation</a>
+      </div>
+
+      <!-- Action Button -->
+      <div class="flex items-center gap-3">
+        <a href="/login/" class="text-xs font-semibold text-slate-300 hover:text-white transition">Login</a>
+        <a href="/request-demo/" class="inline-flex items-center gap-1 px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-bold transition shadow-lg shadow-brand-500/20">
+          Book Demo &rarr;
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="relative pt-40 pb-24 overflow-hidden">
+    <!-- Floating ambient background blobs -->
+    <div class="absolute top-[10%] left-[-15%] w-[55vw] h-[55vw] bg-brand-600/10 rounded-full blur-[130px] pointer-events-none"></div>
+    <div class="absolute bottom-[0%] right-[-15%] w-[55vw] h-[55vw] bg-brand-accent/5 rounded-full blur-[130px] pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-semibold uppercase tracking-wider mb-8">
+        <span>🌌 Enterprise Academic Multi-School OS</span>
+      </div>
+      
+      <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black text-white tracking-tight font-display leading-[1.05] mb-8 bg-gradient-to-b from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+        The Orbiting Dashboard <br>
+        <span class="text-glow">For Modern Classrooms</span>
+      </h1>
+
+      <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-400 leading-relaxed mb-12">
+        Unify learning module builders, timetable clash-resolution engines, billing structures, student timeline portfolios, and clinic check-ins into a single unified school operating system.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+        <a href="/request-demo/" class="w-full sm:w-auto px-8 py-4.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-bold transition shadow-xl shadow-brand-500/20 hover:scale-105 duration-200">
+          Book a Free Demo
+        </a>
+        <a href="#features" class="w-full sm:w-auto px-8 py-4.5 rounded-xl bg-slate-900 border border-slate-700/60 hover:bg-slate-800 text-slate-350 font-semibold transition">
+          Explore Features
+        </a>
+      </div>
+
+      <!-- High-fidelity Dashboard Mock Preview -->
+      <div class="relative max-w-4xl mx-auto rounded-3xl border border-slate-700/50 bg-slate-900/60 p-4 shadow-2xl backdrop-blur-md">
+        <!-- Floating Glass Panels (Mock HUD) -->
+        <div class="absolute -left-12 top-16 w-44 rounded-2xl border border-indigo-500/20 bg-slate-950/70 p-3 shadow-xl backdrop-blur-lg hidden lg:block text-left">
+          <p class="text-[10px] uppercase font-bold tracking-widest text-indigo-400">Total Enrolled</p>
+          <p class="text-2xl font-black text-white mt-1">1,482</p>
+          <p class="text-[9px] text-emerald-400 flex items-center mt-1">▲ +12% this term</p>
+        </div>
+        <div class="absolute -right-16 bottom-16 w-48 rounded-2xl border border-pink-500/20 bg-slate-950/70 p-3 shadow-xl backdrop-blur-lg hidden lg:block text-left">
+          <p class="text-[10px] uppercase font-bold tracking-widest text-pink-400">Timetable Clashes</p>
+          <div class="flex items-center gap-1.5 mt-1">
+            <span class="text-emerald-400">●</span>
+            <span class="text-xs font-bold text-white">0 Conflicts Detected</span>
+          </div>
+          <p class="text-[9px] text-slate-450 mt-1">Real-time room clash scheduler active</p>
+        </div>
+
+        <div class="rounded-2xl overflow-hidden border border-slate-850 bg-slate-950/90 aspect-[16/10] flex flex-col">
+          <!-- Window Header -->
+          <div class="bg-slate-900 px-4 py-3 border-b border-slate-850 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+              <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+            </div>
+            <div class="text-[11px] font-semibold text-slate-500 tracking-wider">portal.eduorbit.com/dashboard/</div>
+            <div class="w-12"></div>
+          </div>
+          <!-- Grid Preview -->
+          <div class="flex-grow p-6 grid grid-cols-12 gap-4 text-left">
+            <!-- Sidebar mock -->
+            <div class="col-span-3 border-r border-slate-900 pr-4 space-y-3">
+              <div class="h-6 w-full rounded-lg bg-slate-900 flex items-center px-2 text-[10px] text-brand-300 font-bold">● Overview</div>
+              <div class="h-6 w-[80%] rounded-lg bg-slate-900/50 flex items-center px-2 text-[9px] text-slate-500">Academics</div>
+              <div class="h-6 w-[90%] rounded-lg bg-slate-900/50 flex items-center px-2 text-[9px] text-slate-500">Timetables</div>
+              <div class="h-6 w-[70%] rounded-lg bg-slate-900/50 flex items-center px-2 text-[9px] text-slate-500">Finance</div>
+            </div>
+            <!-- Main mock -->
+            <div class="col-span-9 space-y-4">
+              <div class="flex justify-between items-center">
+                <div class="space-y-1">
+                  <div class="h-3 w-32 rounded bg-slate-900"></div>
+                  <div class="h-2 w-48 rounded bg-slate-900/60"></div>
+                </div>
+                <div class="h-7 w-20 rounded-lg bg-brand-600/30 border border-brand-500/35"></div>
+              </div>
+              <div class="grid grid-cols-3 gap-3">
+                <div class="h-16 rounded-xl bg-slate-900 p-3 space-y-2 border border-slate-850"><div class="h-2 w-12 rounded bg-slate-800"></div><div class="h-4 w-6 rounded bg-slate-700"></div></div>
+                <div class="h-16 rounded-xl bg-slate-900 p-3 space-y-2 border border-slate-850"><div class="h-2 w-16 rounded bg-slate-800"></div><div class="h-4 w-8 rounded bg-slate-700"></div></div>
+                <div class="h-16 rounded-xl bg-slate-900 p-3 space-y-2 border border-slate-850"><div class="h-2 w-10 rounded bg-slate-800"></div><div class="h-4 w-5 rounded bg-slate-700"></div></div>
+              </div>
+              <div class="h-24 rounded-xl bg-slate-900/40 border border-slate-850 p-4 flex items-center justify-center">
+                <div class="text-center space-y-2">
+                  <div class="h-2 w-36 rounded bg-slate-800 mx-auto"></div>
+                  <div class="h-1.5 w-44 rounded bg-slate-800/60 mx-auto"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Core Modules Section -->
+  <section id="features" class="py-24 border-t border-slate-800/40 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center mb-16">
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-300 mb-2">Everything You Need</p>
+        <h2 class="text-3xl sm:text-4xl font-bold font-display text-white">Full-Suite Academic Operating System</h2>
+        <p class="mt-3 text-sm text-slate-400 max-w-xl mx-auto">Explore the integrated system modules pre-configured to automate your school administration.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="glow-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-2xl mb-5">🏫</div>
+          <h3 class="text-lg font-bold text-white font-display mb-2">Multi-School Dashboard</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Control multiple campuses, manage subscriptions, view centralized revenue analytics, and onboard new organizations seamlessly.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glow-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-2xl mb-5">📅</div>
+          <h3 class="text-lg font-bold text-white font-display mb-2">Master Timetable Builder</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Resolve lesson slot clashes, optimize room resources, manage teacher availability schedules, and render dynamic calendars automatically.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glow-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-2xl mb-5">📖</div>
+          <h3 class="text-lg font-bold text-white font-display mb-2">Learning Management (LMS)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Structure lessons, compile class modules, assign video content, upload worksheets, and track student completion progressions.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="glow-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-2xl mb-5">💳</div>
+          <h3 class="text-lg font-bold text-white font-display mb-2">Finance &amp; Wallet Systems</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Configure tuition invoices, assign installment payment terms, manage scholarship allocations, and support online transaction portals.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="glow-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-2xl mb-5">📝</div>
+          <h3 class="text-lg font-bold text-white font-display mb-2">Exams, CBT &amp; Report Cards</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Log exam/test grades, set automated grading formulas, administer CBT tests, and download PDF broadsheets or report cards.</p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="glow-card rounded-2xl p-6">
+          <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-2xl mb-5">🤖</div>
+          <h3 class="text-lg font-bold text-white font-display mb-2">AI Workspace Assistant</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Leverage artificial intelligence to generate lesson schedules, suggest teaching resources, draft announcements, and analyze student logs.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Portals Roles Section -->
+  <section id="roles" class="py-24 bg-slate-900/30 border-t border-b border-slate-800/40 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center mb-16">
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-300 mb-2">Tailored Workspaces</p>
+        <h2 class="text-3xl sm:text-4xl font-bold font-display text-white">Specific Portals for Every Role</h2>
+        <p class="mt-3 text-sm text-slate-400 max-w-xl mx-auto">EduOrbit dynamically alters the workspace to deliver role-specific capabilities.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Admin -->
+        <div class="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl">
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">School Administrators</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Full controls over academic cycles, fee invoices, staff leaves, library records, transport routes, and school configurations.</p>
+        </div>
+        <!-- Teacher -->
+        <div class="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl">
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Teachers</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Manage roll calls, mark attendance, record student assessment grades, upload syllabus material, and message parents.</p>
+        </div>
+        <!-- Student -->
+        <div class="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl">
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Students</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">View daily class schedules, download reading materials, check portfolio milestones, and complete online quiz sheets.</p>
+        </div>
+        <!-- Parent -->
+        <div class="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl">
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider mb-2">Parents</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">Pay outstanding school fees, review child attendance reports, see chronological timelines, and check report cards.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <div class="text-center mb-16">
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-300 mb-2">Fair Pricing</p>
+        <h2 class="text-3xl sm:text-4xl font-bold font-display text-white">Choose the Ideal Plan for Your School</h2>
+        <p class="mt-3 text-sm text-slate-400 max-w-xl mx-auto">Scale your platform with transparent, per-student monthly billing tiers.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <!-- Standard -->
+        <div class="glow-card rounded-3xl p-8 flex flex-col justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-white font-display mb-2">Standard Plan</h3>
+            <p class="text-xs text-slate-400 mb-6">Perfect for small, single-campus private schools.</p>
+            <p class="text-3xl font-extrabold text-white mb-6">$1.50 <span class="text-xs font-normal text-slate-400">/ student / mo</span></p>
+            
+            <ul class="text-xs text-slate-350 space-y-3 mb-8">
+              <li>✓ Basic Student &amp; Parent Profiles</li>
+              <li>✓ Manual Attendance Logs</li>
+              <li>✓ Class Assignments &amp; Grading</li>
+              <li>✓ Standard PDF Report Sheets</li>
+              <li>✕ Master Timetable Builder</li>
+            </ul>
+          </div>
+          <a href="/request-demo/" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-center text-xs font-bold transition">Get Started</a>
+        </div>
+
+        <!-- Professional -->
+        <div class="glow-card rounded-3xl p-8 border-brand-500/50 bg-brand-500/5 relative flex flex-col justify-between">
+          <!-- Recommended Badge -->
+          <div class="absolute top-0 right-8 transform -translate-y-1/2 px-3 py-1 rounded-full bg-brand-500 text-[10px] font-bold text-white uppercase tracking-wider">
+            Most Popular
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white font-display mb-2">Professional Plan</h3>
+            <p class="text-xs text-slate-400 mb-6">Best for medium schools requiring master scheduling.</p>
+            <p class="text-3xl font-extrabold text-white mb-6">$2.99 <span class="text-xs font-normal text-slate-400">/ student / mo</span></p>
+            
+            <ul class="text-xs text-slate-350 space-y-3 mb-8">
+              <li>✓ Everything in Standard</li>
+              <li>✓ Master Timetable Builder</li>
+              <li>✓ Billing Invoices &amp; Installments</li>
+              <li>✓ LMS Course Module Builder</li>
+              <li>✓ IoT QR Code Check-ins</li>
+            </ul>
+          </div>
+          <a href="/request-demo/" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-center text-xs font-bold transition shadow-lg shadow-brand-500/20">Get Started</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="glow-card rounded-3xl p-8 flex flex-col justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-white font-display mb-2">Enterprise Plan</h3>
+            <p class="text-xs text-slate-400 mb-6">Designed for multi-campus groups &amp; state-wide platforms.</p>
+            <p class="text-3xl font-extrabold text-white mb-6">Custom <span class="text-xs font-normal text-slate-400">pricing</span></p>
+            
+            <ul class="text-xs text-slate-350 space-y-3 mb-8">
+              <li>✓ Everything in Professional</li>
+              <li>✓ Multi-School Central Control</li>
+              <li>✓ Biometric &amp; IoT Integrations</li>
+              <li>✓ AI Schedule Optimization</li>
+              <li>✓ SLA Support &amp; API Keys</li>
+            </ul>
+          </div>
+          <a href="/request-demo/" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-center text-xs font-bold transition">Contact Sales</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-24 bg-slate-900/30 border-t border-slate-800/40 relative" x-data="{ activeFaq: null }">
+    <div class="max-w-4xl mx-auto px-6">
+      
+      <div class="text-center mb-16">
+        <p class="text-xs font-semibold uppercase tracking-widest text-brand-300 mb-2">Got Questions?</p>
+        <h2 class="text-3xl font-bold font-display text-white">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Question 1 -->
+        <div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden">
+          <button @click="activeFaq = (activeFaq === 1 ? null : 1)" class="w-full p-6 flex justify-between items-center text-left hover:bg-slate-800/35 transition">
+            <span class="font-bold text-white text-sm">Can I manage multiple school campuses from one dashboard?</span>
+            <svg class="w-5 h-5 text-slate-400 transform transition" :class="activeFaq === 1 ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div x-show="activeFaq === 1" class="p-6 pt-0 border-t border-slate-800/40 text-xs text-slate-400 leading-relaxed" style="display:none;" x-cloak>
+            Yes! EduOrbit's multi-tenant architecture is designed exactly for this. From the SaaS control panel, supervisors can view statistics, manage subscriptions, and navigate between individual registered campuses.
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden">
+          <button @click="activeFaq = (activeFaq === 2 ? null : 2)" class="w-full p-6 flex justify-between items-center text-left hover:bg-slate-800/35 transition">
+            <span class="font-bold text-white text-sm">Does the timetable builder prevent teacher or room booking conflicts?</span>
+            <svg class="w-5 h-5 text-slate-400 transform transition" :class="activeFaq === 2 ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div x-show="activeFaq === 2" class="p-6 pt-0 border-t border-slate-800/40 text-xs text-slate-400 leading-relaxed" style="display:none;" x-cloak>
+            Absolutely. The system runs real-time clash verification checks. If you attempt to assign a teacher to two classes at once, or allocate a classroom that is already occupied during that time slot, the system flags a visual conflict alert and locks the submission.
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="bg-slate-900/40 border border-slate-800 rounded-2xl overflow-hidden">
+          <button @click="activeFaq = (activeFaq === 3 ? null : 3)" class="w-full p-6 flex justify-between items-center text-left hover:bg-slate-800/35 transition">
+            <span class="font-bold text-white text-sm">How secure is student academic data on the platform?</span>
+            <svg class="w-5 h-5 text-slate-400 transform transition" :class="activeFaq === 3 ? 'rotate-180' : ''" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div x-show="activeFaq === 3" class="p-6 pt-0 border-t border-slate-800/40 text-xs text-slate-400 leading-relaxed" style="display:none;" x-cloak>
+            Data security is our top priority. We use strict role-based access controls (RBAC) and database-level tenant isolation parameters. School operations are completely sandboxed so that one tenant cannot access another's information, and the SaaS vendor is restricted from seeing individual student identities.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/60 py-12 bg-brand-dark relative">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-500 to-brand-700 flex items-center justify-center text-white font-bold text-sm shrink-0">E</div>
+        <span class="text-lg font-bold text-white font-display">EduOrbit SaaS</span>
+      </div>
+      <p class="text-xs text-slate-500">&copy; 2026 EduOrbit. Empowering classrooms globally. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

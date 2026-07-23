@@ -1,0 +1,120 @@
+{% extends "base/_document.html" %}
+{% block title %}Chat Room — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 h-[calc(100vh-100px)] flex flex-col">
+  <div class="flex-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden flex shadow-sm">
+    
+    <!-- Chats Sidebar -->
+    <div class="w-80 border-r border-slate-200 dark:border-slate-700/80 flex flex-col shrink-0">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-700/80 bg-slate-50 dark:bg-slate-800/40">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Conversations</h3>
+        <p class="text-xs text-slate-500 mt-1">Direct messaging channels</p>
+      </div>
+      <div class="flex-1 overflow-y-auto divide-y divide-slate-200 dark:divide-slate-750/40">
+        {% for conv in conversations %}
+        <a href="?conversation_id={{ conv.id }}" 
+           class="p-4 flex gap-3 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition duration-150 {% if conv.id == active_conversation.id %}bg-slate-50 dark:bg-slate-700/40 border-l-4 border-primary{% endif %}">
+          <div class="w-10 h-10 rounded-xl bg-indigo-900/10 text-indigo-400 border border-indigo-900/20 flex items-center justify-center font-bold shrink-0">
+            {{ conv.display_title|slice:":1"|upper }}
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold text-slate-900 dark:text-white truncate">{{ conv.display_title }}</p>
+            <p class="text-xs text-slate-500 truncate mt-1">Click to open chat session</p>
+          </div>
+        </a>
+        {% empty %}
+        <div class="p-8 text-center text-slate-500 dark:text-slate-500">
+          <div class="text-2xl mb-2">💬</div>
+          <p class="text-xs font-semibold">No chats started.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Active Chat Panel -->
+    <div class="flex-grow flex flex-col bg-slate-50/30 dark:bg-slate-900/10">
+      {% if active_conversation %}
+      <!-- Active Chat Header -->
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80 flex items-center justify-between bg-white dark:bg-slate-800/60 shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-900/10 text-indigo-400 border border-indigo-900/20 flex items-center justify-center font-bold">
+            {{ active_conversation.display_title|slice:":1"|upper }}
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white text-sm">{{ active_conversation.display_title }}</h4>
+            <p class="text-xs text-emerald-400 mt-0.5">● Connected</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Messages Viewbox -->
+      <div id="chat-messages" class="flex-1 p-6 overflow-y-auto space-y-4 text-sm scroll-smooth">
+        {% for msg in messages %}
+          {% if msg.sender.user == request.user %}
+            <!-- Sent by current user -->
+            <div class="flex gap-3 justify-end">
+              <div class="bg-primary text-slate-900 dark:text-white rounded-2xl rounded-tr-none p-3 max-w-[70%]">
+                {{ msg.text }}
+              </div>
+              <div class="w-8 h-8 rounded-lg bg-indigo-900/10 text-indigo-400 border border-indigo-900/20 flex items-center justify-center text-xs font-bold shrink-0">
+                {{ msg.sender.first_name|slice:":1" }}{{ msg.sender.last_name|slice:":1" }}
+              </div>
+            </div>
+          {% else %}
+            <!-- Received from others -->
+            <div class="flex gap-3">
+              <div class="w-8 h-8 rounded-lg bg-indigo-900/10 text-indigo-400 border border-indigo-900/20 flex items-center justify-center text-xs font-bold shrink-0">
+                {{ msg.sender.first_name|slice:":1" }}{{ msg.sender.last_name|slice:":1" }}
+              </div>
+              <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl rounded-tl-none p-3 max-w-[70%] text-slate-800 dark:text-slate-250">
+                {{ msg.text }}
+              </div>
+            </div>
+          {% endif %}
+        {% empty %}
+          <div class="text-center py-12 text-slate-500 dark:text-slate-500">
+            <p class="text-xs">No messages logged in this conversation yet. Send a message below to start chatting!</p>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Message Composer Bar -->
+      <div class="p-4 border-t border-slate-200 dark:border-slate-700/80 bg-white dark:bg-slate-800/40 shrink-0">
+        <form hx-post="{% url 'chat_room_web' %}" 
+              hx-target="#chat-messages" 
+              hx-swap="beforeend"
+              hx-on="htmx:afterRequest: this.reset(); document.getElementById('chat-messages').scrollTop = document.getElementById('chat-messages').scrollHeight;"
+              class="flex gap-2">
+          {% csrf_token %}
+          <input type="hidden" name="conversation_id" value="{{ active_conversation.id }}">
+          <input type="text" name="text" required placeholder="Type a message here..." 
+                 class="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          <button type="submit" class="px-5 py-3 bg-primary hover:bg-primary-hover text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition">
+            Send Message
+          </button>
+        </form>
+      </div>
+      {% else %}
+      <div class="flex-grow flex items-center justify-center p-8 text-center text-slate-500 dark:text-slate-500">
+        <div>
+          <div class="text-4xl mb-3">💬</div>
+          <h3 class="text-sm font-semibold text-slate-900 dark:text-white">No Active Chat Session</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Select an active conversation from the sidebar directory to begin.</p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Automatically scroll messages block to bottom on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const chatMsg = document.getElementById('chat-messages');
+    if (chatMsg) {
+      chatMsg.scrollTop = chatMsg.scrollHeight;
+    }
+  });
+</script>
+{% endblock %}

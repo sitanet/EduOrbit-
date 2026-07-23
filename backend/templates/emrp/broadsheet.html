@@ -1,0 +1,43 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Broadsheet View - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Marks Broadsheet: {{ exam.title }}</h2>
+    <p style="color: var(--color-text-secondary);">Comprehensive class-wide results grid and GPA rankings.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Student Code</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Student Name</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Raw Marks</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Computed Score</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Letter Grade</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Grade Point</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for res in results %}
+        <tr style="border-bottom: 1px solid var(--color-border);">
+          <td style="padding: var(--spacing-md);">{{ res.student.student_number }}</td>
+          <td style="padding: var(--spacing-md);">{{ res.student.person.first_name }} {{ res.student.person.last_name }}</td>
+          <td style="padding: var(--spacing-md);">{{ res.raw_score }}</td>
+          <td style="padding: var(--spacing-md);"><strong>{{ res.computed_score }}</strong></td>
+          <td style="padding: var(--spacing-md);">{{ res.letter_grade }}</td>
+          <td style="padding: var(--spacing-md);">{{ res.gp }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="6" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No grades calculated for this exam yet.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

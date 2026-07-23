@@ -1,0 +1,48 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Family Relationships Manager - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Family & Guardians Relationship Manager</h2>
+    <p style="color: var(--color-text-secondary);">Verify fee responsibilities, custody authorization, and emergency priority lists.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Student</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Guardian / Parent</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Relationship</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Status & Permissions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rel in relationships %}
+        <tr style="border-bottom: 1px solid var(--color-border);">
+          <td style="padding: var(--spacing-md);">{{ rel.student.first_name }} {{ rel.student.last_name }}</td>
+          <td style="padding: var(--spacing-md);">{{ rel.relative.first_name }} {{ rel.relative.last_name }}</td>
+          <td style="padding: var(--spacing-md); text-transform: capitalize;">{{ rel.relationship_type }}</td>
+          <td style="padding: var(--spacing-md);">
+            <div style="display: flex; gap: var(--spacing-xs); flex-wrap: wrap;">
+              {% if rel.legal_guardian %}
+                <span style="font-size: var(--font-size-xs); background: var(--color-primary-light); color: var(--color-primary); padding: 2px 6px; border-radius: 4px;">Legal Guardian</span>
+              {% endif %}
+              {% if rel.pickup_authorized %}
+                <span style="font-size: var(--font-size-xs); background: var(--color-secondary-light); color: var(--color-secondary); padding: 2px 6px; border-radius: 4px;">Pickup Authorized</span>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No relationships linked.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

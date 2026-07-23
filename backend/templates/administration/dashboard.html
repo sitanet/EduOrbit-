@@ -1,0 +1,285 @@
+{% extends "base/_document.html" %}
+
+{% block title %}ESSACC Platform Control Center - EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  
+  <!-- Header Section -->
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">SaaS Control Center (ESSACC)</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Oversee active tenant schools, manage module licensing seats, and view system diagnostic audit logs across the global platform.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <button type="button" onclick="window.location.reload()" class="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-650 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white transition duration-150">
+        Refresh Status
+      </button>
+      <a href="{% url 'onboard_wizard' %}" class="ml-3 inline-flex items-center rounded-lg bg-primary hover:bg-primary-hover px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
+        Provision New Tenant
+      </a>
+    </div>
+  </div>
+
+  <!-- Key Metrics Cards -->
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+    <!-- Card 1 -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="flex items-center">
+        <div class="flex-shrink-0 bg-primary-light rounded-xl p-3">
+          <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6.75h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">Active Tenants</dt>
+            <dd class="text-3xl font-bold text-slate-900 dark:text-white mt-1">{{ schools|length|default:"1" }}</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="flex items-center">
+        <div class="flex-shrink-0 bg-emerald-500/20 rounded-xl p-3">
+          <svg class="h-6 w-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">Total Network Users</dt>
+            <dd class="text-3xl font-bold text-slate-900 dark:text-white mt-1">613</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="flex items-center">
+        <div class="flex-shrink-0 bg-purple-500/20 rounded-xl p-3">
+          <svg class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">MRR</dt>
+            <dd class="text-3xl font-bold text-slate-900 dark:text-white mt-1">$14,500</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <!-- Card 4 -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="flex items-center">
+        <div class="flex-shrink-0 bg-rose-500/20 rounded-xl p-3">
+          <svg class="h-6 w-6 text-rose-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3Z" />
+          </svg>
+        </div>
+        <div class="ml-5 w-0 flex-1">
+          <dl>
+            <dt class="text-sm font-medium text-slate-600 dark:text-slate-400 truncate">System Alerts</dt>
+            <dd class="text-3xl font-bold text-slate-900 dark:text-white mt-1">0</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+    
+    <!-- Data Table of Tenants -->
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
+      <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700/80 flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">SaaS Corporate Tenants</h3>
+        <span class="text-xs text-primary font-bold px-2.5 py-1 bg-primary-light border border-primary/25 rounded-lg">Managed List</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-750">
+          <thead class="bg-slate-100 dark:bg-slate-800/40 text-slate-600 dark:text-slate-400">
+            <tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">School Name</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Plan Tier</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Users</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Status</th>
+              <th scope="col" class="relative px-6 py-3"><span class="sr-only">Manage</span></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-300">
+            {% for school in schools %}
+            <tr class="hover:bg-slate-100 dark:bg-slate-800/30 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 flex-shrink-0 bg-primary-light rounded-xl flex items-center justify-center text-primary font-bold text-lg border border-primary/20">
+                    {{ school.name|slice:":1"|upper|default:"D" }}
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ school.name|default:"Demo International School" }}</div>
+                    <div class="text-sm text-slate-500 dark:text-slate-500">{{ school.domain|default:"demo.eduorbit.com" }}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center rounded-md bg-purple-900/40 text-purple-400 border border-purple-800/40 px-2 py-1 text-xs font-medium">Enterprise</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                613 Active
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center rounded-md bg-emerald-900/40 text-emerald-400 border border-emerald-800/40 px-2 py-1 text-xs font-medium">Active</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                {% if active_school_id == school.id|stringformat:"s" %}
+                  <span class="text-emerald-400 font-semibold text-xs">Active Context</span>
+                {% else %}
+                  <a href="{% url 'switch_school_web' %}?school_id={{ school.id }}" class="text-primary hover:text-primary-hover transition-colors font-semibold">Manage</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <!-- Mock Row for immediate visual feedback if database is unseeded -->
+            <tr class="hover:bg-slate-100 dark:bg-slate-800/30 transition duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="h-10 w-10 flex-shrink-0 bg-primary-light rounded-xl flex items-center justify-center text-primary font-bold text-lg border border-primary/20">E</div>
+                  <div class="ml-4">
+                    <div class="text-sm font-semibold text-slate-900 dark:text-white">EduOrbit Demo Academy</div>
+                    <div class="text-sm text-slate-500 dark:text-slate-500">demo.localhost</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center rounded-md bg-purple-900/40 text-purple-400 border border-purple-800/40 px-2 py-1 text-xs font-medium">Enterprise</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                613 Active
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center rounded-md bg-emerald-900/40 text-emerald-400 border border-emerald-800/40 px-2 py-1 text-xs font-medium">Active</span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <a href="#" class="text-primary hover:text-primary-hover transition-colors font-semibold">Manage</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Active Subscription Plans -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
+      <h3 class="font-semibold text-slate-900 dark:text-white text-lg mb-4">Subscription Tiers</h3>
+      <div class="space-y-4">
+        {% for plan in plans %}
+        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700">
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="font-semibold text-slate-900 dark:text-white text-sm">{{ plan.name }}</h4>
+            <span class="text-xs text-primary font-semibold">₦{{ plan.price_monthly }}/mo</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-500">Includes all standard school management models.</p>
+        </div>
+        {% empty %}
+        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80">
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="font-semibold text-slate-900 dark:text-white text-sm">Basic Plan</h4>
+            <span class="text-xs text-primary font-semibold">₦15,000/mo</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-500">Up to 250 students, core modules.</p>
+        </div>
+        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80">
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="font-semibold text-slate-900 dark:text-white text-sm">Pro Plan</h4>
+            <span class="text-xs text-primary font-semibold">₦35,000/mo</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-500">Up to 750 students, all standard modules.</p>
+        </div>
+        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80">
+          <div class="flex justify-between items-center mb-1">
+            <h4 class="font-semibold text-slate-900 dark:text-white text-sm">Enterprise Plan</h4>
+            <span class="text-xs text-primary font-semibold">₦75,000/mo</span>
+          </div>
+          <p class="text-xs text-slate-500 dark:text-slate-500">Unlimited students, priority support &amp; custom branding.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit Logs Feed -->
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
+    <h3 class="font-semibold text-slate-900 dark:text-white text-lg mb-4">Platform System Diagnostic Audit Logs</h3>
+    <div class="flow-root">
+      <ul role="list" class="-mb-8">
+        {% for audit in audits %}
+        <li>
+          <div class="relative pb-8">
+            {% if not forloop.last %}
+            <span class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-slate-100 dark:bg-slate-700" aria-hidden="true"></span>
+            {% endif %}
+            <div class="relative flex space-x-3">
+              <div>
+                <span class="h-8 w-8 rounded-lg bg-primary-light flex items-center justify-center ring-8 ring-gray-900 text-primary text-xs">
+                  🛡️
+                </span>
+              </div>
+              <div class="flex-1 min-w-0 pt-1.5 flex justify-between space-x-4">
+                <div>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                    {{ audit.action }} <span class="text-slate-900 dark:text-white font-semibold">{{ audit.description }}</span>
+                  </p>
+                </div>
+                <div class="text-right text-xs whitespace-nowrap text-slate-500 dark:text-slate-500">
+                  <time datetime="{{ audit.timestamp|date:'Y-m-d H:i' }}">{{ audit.timestamp|timesince }} ago</time>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% empty %}
+        <!-- Mock system logs if unseeded -->
+        <li>
+          <div class="relative pb-8">
+            <span class="absolute left-4 top-4 -ml-px h-full w-0.5 bg-slate-100 dark:bg-slate-700" aria-hidden="true"></span>
+            <div class="relative flex space-x-3">
+              <div>
+                <span class="h-8 w-8 rounded-lg bg-primary-light flex items-center justify-center ring-8 ring-gray-900 text-primary text-xs">⚙️</span>
+              </div>
+              <div class="flex-1 min-w-0 pt-1.5 flex justify-between space-x-4">
+                <div>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 font-medium">System initialized: <span class="text-slate-900 dark:text-white font-semibold">ESSACC SaaS Controller boot complete</span></p>
+                </div>
+                <div class="text-right text-xs whitespace-nowrap text-slate-500 dark:text-slate-500">
+                  <time>3 mins ago</time>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="relative pb-8">
+            <div class="relative flex space-x-3">
+              <div>
+                <span class="h-8 w-8 rounded-lg bg-emerald-500/20 flex items-center justify-center ring-8 ring-gray-900 text-emerald-400 text-xs">🔑</span>
+              </div>
+              <div class="flex-1 min-w-0 pt-1.5 flex justify-between space-x-4">
+                <div>
+                  <p class="text-xs text-slate-600 dark:text-slate-400 font-medium">Session authorized: <span class="text-slate-900 dark:text-white font-semibold">User superadmin logged in from 127.0.0.1</span></p>
+                </div>
+                <div class="text-right text-xs whitespace-nowrap text-slate-500 dark:text-slate-500">
+                  <time>5 mins ago</time>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base/_document.html" %}
+{% block title %}Communication Hub — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-indigo-400 uppercase mb-1">EduOrbit · CEH</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Announcements &amp; News Center</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Publish news, events, newsletters, and view real-time delivery logs.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0 gap-3">
+      <a href="/communication/chat-room/" class="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:bg-slate-600 border border-gray-700 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white transition">
+        💬 Chat Workspace
+      </a>
+      <button class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white transition">
+        Create Announcement
+      </button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
+      <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Published School Announcements</h3>
+      <div class="space-y-4">
+        {% for ann in announcements %}
+        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-gray-700/60 transition">
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="font-semibold text-slate-900 dark:text-white">{{ ann.title }}</h4>
+            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/50 text-indigo-400">{{ ann.priority|upper|default:"NORMAL" }}</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">{{ ann.content|default:ann.body }}</p>
+        </div>
+        {% empty %}
+        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80">
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="font-semibold text-slate-900 dark:text-white">Inter-House Sports Heat Commences</h4>
+            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900/50 text-red-400">HIGH</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Heats for the annual inter-house sports games starts tomorrow by 2:00 PM at the main sports complex. All students are expected to dress in sportswear.</p>
+        </div>
+        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80">
+          <div class="flex justify-between items-center mb-2">
+            <h4 class="font-semibold text-slate-900 dark:text-white">First Term Tuition Payment Deadline</h4>
+            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400">MEDIUM</span>
+          </div>
+          <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Parents and guardians are reminded that the first term tuition payment window closes in five working days. Invoices can be paid directly from the Parent Wallet.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Quick Compose -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
+      <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Quick Compose</h3>
+      <form class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-1">Announcement Title</label>
+          <input type="text" placeholder="e.g. Mid-term break notification" class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-1">Target Audience</label>
+          <select class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-3 py-2 text-sm text-slate-700 dark:text-slate-700 dark:text-slate-300">
+            <option>All Staff, Students &amp; Parents</option>
+            <option>Teachers Only</option>
+            <option>Parents Only</option>
+            <option>Students Only</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-1">Priority</label>
+          <select class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-3 py-2 text-sm text-slate-700 dark:text-slate-700 dark:text-slate-300">
+            <option>Normal</option>
+            <option>Medium</option>
+            <option>High</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-1">Message Content</label>
+          <textarea rows="4" placeholder="Enter announcement body text..." class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white"></textarea>
+        </div>
+        <button type="submit" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition">Publish Announcement</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% comment %}
+Reusable Text Input Component
+Parameters:
+  - name: Input field name
+  - label: Label text
+  - placeholder: Placeholder text
+  - value: Current input value
+  - type: 'text', 'email', 'number', 'password' (default: 'text')
+  - attrs: Extra HTML attributes for HTMX validation / handlers
+  - error: Validation error message if any
+{% endcomment %}
+<div class="input-group" style="margin-bottom: var(--spacing-md); display: flex; flex-direction: column; gap: var(--spacing-xs);">
+  {% if label %}
+    <label class="input-label" style="font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-secondary);">
+      {{ label }}
+    </label>
+  {% endif %}
+  <input 
+    type="{{ type|default:'text' }}" 
+    name="{{ name }}" 
+    value="{{ value|default:'' }}" 
+    placeholder="{{ placeholder|default:'' }}"
+    class="input-field {% if error %}error{% endif %}"
+    {{ attrs|safe }}
+  >
+  {% if error %}
+    <span class="input-error" style="font-size: var(--font-size-xs); color: var(--color-error); font-weight: var(--font-weight-medium);">
+      {{ error }}
+    </span>
+  {% endif %}
+</div>

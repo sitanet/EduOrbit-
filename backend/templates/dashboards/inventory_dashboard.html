@@ -1,0 +1,76 @@
+{% extends 'base/_document.html' %}
+
+{% block content %}
+<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+
+    <!-- Dashboard Actions -->
+    <div class="sm:flex sm:justify-between sm:items-center mb-8">
+        <!-- Left: Title -->
+        <div class="mb-4 sm:mb-0">
+            <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Inventory Dashboard ✨</h1>
+        </div>
+        <!-- Right: Actions -->
+        <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-slate-900 dark:text-white">
+                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                </svg>
+                <span class="hidden xs:block ml-2">New Order</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="grid grid-cols-12 gap-6 mb-8">
+        <!-- Stat Cards -->
+        {% include 'components/stat_card.html' with title="Total Items" value="1,204" trend="+54" icon="archive" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Low Stock Alerts" value="15" trend="+2" icon="exclamation-circle" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Pending Orders" value="8" trend="-3" icon="shopping-cart" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+    </div>
+
+    <!-- Recent Restocks Table -->
+    <div>
+        <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Recent Restocks & Orders</h2>
+        <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700">
+            <div class="overflow-x-auto">
+                <table class="table-auto w-full dark:text-slate-700 dark:text-slate-300">
+                    <!-- Table header -->
+                    <thead class="text-xs uppercase text-slate-600 dark:text-slate-400 dark:text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
+                        <tr>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Order ID</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Item Name</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Category</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-right">Quantity</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-center">Status</div></th>
+                        </tr>
+                    </thead>
+                    <!-- Table body -->
+                    <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
+                        <tr>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left text-indigo-500">#ORD-5021</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">Whiteboard Markers</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left">Stationery</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-right">500 units</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">Delivered</span></div></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left text-indigo-500">#ORD-5022</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">A4 Paper Rims</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left">Stationery</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-right">100 boxes</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-amber-100 dark:bg-amber-400/30 text-amber-600 dark:text-amber-400 rounded-full px-2 py-0.5 text-xs">Pending</span></div></td>
+                        </tr>
+                        <tr>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left text-indigo-500">#ORD-5023</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">Chemistry Lab Beakers</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left">Lab Equipment</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-right">50 units</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-amber-100 dark:bg-amber-400/30 text-amber-600 dark:text-amber-400 rounded-full px-2 py-0.5 text-xs">Shipped</span></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

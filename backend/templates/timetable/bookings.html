@@ -1,0 +1,202 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Resource Booking Calendar — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="{ addResourceModal: false }">
+  
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8 border-b border-slate-200 dark:border-slate-700/80 pb-6">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-primary uppercase mb-1">EduOrbit · Logistics</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Resource Booking Planner</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Reserve, configure, and manage classrooms, library facilities, and laboratory equipment.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0 gap-3">
+      <a href="/timetable/builder/" class="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:bg-slate-600 border border-gray-700 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white transition">
+        &larr; Timetable Matrix
+      </a>
+      <button @click="addResourceModal = true" class="inline-flex items-center rounded-lg bg-primary hover:bg-primary-hover px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
+        + Create Resource Room
+      </button>
+    </div>
+  </div>
+
+  <!-- Table Card -->
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden shadow-sm">
+    <div class="px-6 py-5 border-b border-slate-200 dark:border-slate-700/80 flex justify-between items-center bg-slate-50 dark:bg-slate-850/10">
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Registered School Resource Rooms</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-750">
+        <thead class="bg-slate-100 dark:bg-slate-800/30 text-slate-600 dark:text-slate-400">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Resource Name</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Facility Type</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Max Capacity</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Availability Status</th>
+            <th scope="col" class="relative px-6 py-3"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-300">
+          {% for res in resources %}
+          <tr class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <strong class="text-slate-900 dark:text-white text-sm font-semibold">{{ res.name }}</strong>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm capitalize text-slate-600 dark:text-slate-400">
+              {{ res.resource_type }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              {{ res.capacity }} seats
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {% if res.status == 'available' %}
+                <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40 uppercase">available</span>
+              {% else %}
+                <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/50 text-rose-400 border border-rose-700/40 uppercase">unavailable</span>
+              {% endif %}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+              <button class="text-indigo-400 hover:text-indigo-300 font-semibold" @click="alert('Edit room details action triggered.')">Edit</button>
+              <button class="text-rose-400 hover:text-rose-300 font-semibold" 
+                      hx-delete="/timetable/api/v1/schedules/resources/{{ res.id }}/" 
+                      hx-confirm="Are you sure you want to delete this resource room?"
+                      hx-target="closest tr" 
+                      hx-swap="outerHTML">Delete</button>
+            </td>
+          </tr>
+          {% empty %}
+          <!-- Mock Resources Rows for demo visual fallback -->
+          <tr x-data="{ deleted: false }" x-show="!deleted" class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <strong class="text-slate-900 dark:text-white text-sm font-semibold">Physics Laboratory Room</strong>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm capitalize text-slate-600 dark:text-slate-400">
+              Laboratory
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              45 seats
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40 uppercase">available</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+              <button class="text-indigo-400 hover:text-indigo-300 font-semibold" @click="alert('Edit room details action triggered.')">Edit</button>
+              <button class="text-rose-400 hover:text-rose-300 font-semibold" @click="if(confirm('Are you sure you want to delete this resource room?')) deleted = true">Delete</button>
+            </td>
+          </tr>
+          <tr x-data="{ deleted: false }" x-show="!deleted" class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <strong class="text-slate-900 dark:text-white text-sm font-semibold">Chemistry Laboratory Room</strong>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm capitalize text-slate-600 dark:text-slate-400">
+              Laboratory
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              40 seats
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40 uppercase">available</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+              <button class="text-indigo-400 hover:text-indigo-300 font-semibold" @click="alert('Edit room details action triggered.')">Edit</button>
+              <button class="text-rose-400 hover:text-rose-300 font-semibold" @click="if(confirm('Are you sure you want to delete this resource room?')) deleted = true">Delete</button>
+            </td>
+          </tr>
+          <tr x-data="{ deleted: false }" x-show="!deleted" class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <strong class="text-slate-900 dark:text-white text-sm font-semibold">ICT Center Computer Lab</strong>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm capitalize text-slate-600 dark:text-slate-400">
+              Laboratory
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              60 seats
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/50 text-rose-400 border border-rose-700/40 uppercase">unavailable</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+              <button class="text-indigo-400 hover:text-indigo-300 font-semibold" @click="alert('Edit room details action triggered.')">Edit</button>
+              <button class="text-rose-400 hover:text-rose-300 font-semibold" @click="if(confirm('Are you sure you want to delete this resource room?')) deleted = true">Delete</button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Create Resource Room Modal -->
+  <div x-show="addResourceModal" class="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" style="display: none;">
+    <div @click.away="addResourceModal = false" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-6">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Create Resource Room</h3>
+        <button @click="addResourceModal = false" class="text-slate-600 dark:text-slate-400 hover:text-slate-200 text-lg">&times;</button>
+      </div>
+
+      <!-- Action Form -->
+      <form class="space-y-4" hx-post="/timetable/api/v1/schedules/resources/" hx-target="#resource-result" hx-swap="innerHTML">
+        {% csrf_token %}
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Resource Room Name</label>
+          <input type="text" name="name" placeholder="e.g. Biology Laboratory Room" required
+                 class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Facility Type</label>
+          <select name="resource_type" class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+            <option value="classroom">Classroom</option>
+            <option value="laboratory">Laboratory</option>
+            <option value="sports">Sports Center</option>
+            <option value="hall">General Hall</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Max Seating Capacity</label>
+          <input type="number" name="capacity" placeholder="e.g. 45" required
+                 class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <div id="resource-result"></div>
+
+        <button type="submit" class="w-full py-3 bg-primary hover:bg-primary-hover text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition duration-150 shadow-lg shadow-primary/30">
+          Save Resource Room
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+{% block extra_scripts %}
+<script>
+  document.body.addEventListener('htmx:afterRequest', function (evt) {
+      if (evt.detail.target.id === 'resource-result') {
+          const target = evt.detail.target;
+          try {
+              const data = JSON.parse(evt.detail.xhr.responseText);
+              if (evt.detail.xhr.status >= 400) {
+                  const errorMsg = data.detail || Object.values(data).flat().join(', ') || 'Validation failed.';
+                  target.innerHTML = `
+                      <div class="p-3 text-xs text-red-800 rounded-lg bg-red-50 dark:bg-slate-900 dark:text-red-400 border border-red-200 dark:border-red-900/30" role="alert">
+                          <span class="font-semibold">Error:</span> ${errorMsg}
+                      </div>`;
+              } else {
+                  target.innerHTML = `
+                      <div class="p-3 text-xs text-emerald-800 rounded-lg bg-emerald-50 dark:bg-slate-900 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" role="alert">
+                          <span class="font-semibold">Success:</span> Resource room registered successfully! Reloading...
+                      </div>`;
+                  setTimeout(() => { window.location.reload(); }, 1500);
+              }
+          } catch (e) {
+              // Fallback
+          }
+      }
+  });
+</script>
+{% endblock %}
+{% endblock %}

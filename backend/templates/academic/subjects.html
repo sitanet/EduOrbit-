@@ -1,0 +1,196 @@
+{% extends "base/_document.html" %}
+{% block title %}Manage Subjects — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto" x-data="{ openAddModal: false, openCategoryModal: false }">
+
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <div>
+      <a href="{% url 'academic_dashboard_web' %}" class="text-xs font-semibold text-indigo-500 hover:underline">← Back to Academic Management</a>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-white mt-2">Manage Subjects</h1>
+      <p class="text-slate-500 dark:text-slate-400 mt-1">Configure curriculum-defined subjects offered across classes.</p>
+    </div>
+    <div class="flex gap-2">
+      <button @click="openCategoryModal = true" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-xl hover:bg-slate-50 transition">
+        + Add Category
+      </button>
+      <button @click="openAddModal = true" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-650 hover:bg-indigo-600 text-slate-900 dark:text-white text-sm font-semibold rounded-xl transition">
+        + Add Subject
+      </button>
+    </div>
+  </div>
+
+  <!-- Grid Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Left 2 Columns: Subjects Grid/Table -->
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden h-fit">
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+        <h3 class="font-semibold text-slate-900 dark:text-white">Active Subjects</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 dark:bg-slate-750/30">
+            <tr>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Subject Code</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Subject Name</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Category</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Credit Units</th>
+              <th class="relative px-6 py-3"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-700 text-slate-800 dark:text-slate-200">
+            {% for sub in subjects %}
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+              <td class="px-6 py-4 font-mono text-xs font-bold text-indigo-400">{{ sub.code }}</td>
+              <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ sub.name }}</td>
+              <td class="px-6 py-4">
+                <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 text-xs font-semibold capitalize">{{ sub.category }}</span>
+              </td>
+              <td class="px-6 py-4 text-slate-550">{{ sub.credit_units }} Unit(s)</td>
+              <td class="px-6 py-4 text-right">
+                <form method="POST" action="{% url 'subject_management_web' %}" onsubmit="return confirm('Are you sure you want to delete this subject?');">
+                  {% csrf_token %}
+                  <input type="hidden" name="action" value="delete">
+                  <input type="hidden" name="subject_id" value="{{ sub.id }}">
+                  <button type="submit" class="text-xs font-bold text-rose-500 hover:text-rose-455 hover:underline">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="px-6 py-12 text-center text-slate-500 dark:text-slate-450">
+                <p class="text-base font-semibold">No subjects registered yet.</p>
+                <p class="text-xs text-slate-500 mt-1">Click "+ Add Subject" to register your first subject (e.g. Mathematics, English).</p>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right 1 Column: Categories List -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 h-fit">
+      <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Subject Categories</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-2">System Categories</div>
+          <div class="flex flex-wrap gap-1">
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-350 text-xs font-medium">Core</span>
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-350 text-xs font-medium">Elective</span>
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-350 text-xs font-medium">Language</span>
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-350 text-xs font-medium">STEM</span>
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-350 text-xs font-medium">Arts</span>
+            <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-700/50 text-slate-600 dark:text-slate-350 text-xs font-medium">Commercial</span>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-200 dark:border-slate-700 pt-3">
+          <div class="text-[10px] text-slate-500 font-bold uppercase tracking-wider mb-2">Custom Categories</div>
+          <div class="space-y-2">
+            {% for cat in custom_categories %}
+            <div class="flex justify-between items-center p-3 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700/60">
+              <div>
+                <span class="text-xs font-semibold text-slate-800 dark:text-slate-250">{{ cat.name }}</span>
+                <span class="block text-[10px] text-slate-500 font-mono">{{ cat.code }}</span>
+              </div>
+              <form method="POST" action="{% url 'subject_management_web' %}" onsubmit="return confirm('Are you sure you want to delete this category?');">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete_category">
+                <input type="hidden" name="category_id" value="{{ cat.id }}">
+                <button type="submit" class="text-xs text-rose-500 hover:text-rose-600 font-bold">✕</button>
+              </form>
+            </div>
+            {% empty %}
+            <div class="p-4 text-center text-xs text-slate-500">No custom categories registered yet.</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Add Subject Modal -->
+  <div x-show="openAddModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" x-cloak>
+    <div @click.away="openAddModal = false" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-xl p-6 relative">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Add Curriculum Subject</h3>
+        <button @click="openAddModal = false" class="text-slate-500 hover:text-slate-700 dark:hover:text-white font-bold text-lg">&times;</button>
+      </div>
+
+      <form method="POST" action="{% url 'subject_management_web' %}" class="space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="create">
+        <input type="hidden" name="school_id" value="{{ active_school.id }}">
+        
+        <div>
+          <label class="block text-xs font-semibold text-slate-650 dark:text-slate-400 uppercase tracking-wider mb-2">Subject Name</label>
+          <input type="text" name="name" required placeholder="e.g. Mathematics" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-650 dark:text-slate-400 uppercase tracking-wider mb-2">Subject Code</label>
+          <input type="text" name="code" required placeholder="e.g. MATH-101" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-650 dark:text-slate-400 uppercase tracking-wider mb-2">Category</label>
+          <select name="category" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="core">Core</option>
+            <option value="elective">Elective</option>
+            <option value="language">Language</option>
+            <option value="stem">STEM</option>
+            <option value="arts">Arts</option>
+            <option value="commercial">Commercial</option>
+            {% for cat in custom_categories %}
+            <option value="{{ cat.code }}">{{ cat.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-650 dark:text-slate-400 uppercase tracking-wider mb-2">Credit Units</label>
+          <input type="number" name="credit_units" value="1" min="1" max="10" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-indigo-650 hover:bg-indigo-600 text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">
+          Save Subject
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Category Modal -->
+  <div x-show="openCategoryModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" x-cloak>
+    <div @click.away="openCategoryModal = false" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-xl p-6 relative">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Add Subject Category</h3>
+        <button @click="openCategoryModal = false" class="text-slate-500 hover:text-slate-700 dark:hover:text-white font-bold text-lg">&times;</button>
+      </div>
+
+      <form method="POST" action="{% url 'subject_management_web' %}" class="space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="create_category">
+        <input type="hidden" name="school_id" value="{{ active_school.id }}">
+        
+        <div>
+          <label class="block text-xs font-semibold text-slate-650 dark:text-slate-400 uppercase tracking-wider mb-2">Category Name</label>
+          <input type="text" name="name" required placeholder="e.g. Vocational Study" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-650 dark:text-slate-400 uppercase tracking-wider mb-2">Category Code</label>
+          <input type="text" name="code" required placeholder="e.g. vocational" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-indigo-650 hover:bg-indigo-600 text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-500/20">
+          Save Category
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

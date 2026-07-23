@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" 
+      x-data="{ 
+        darkMode: false, 
+        theme: localStorage.getItem('theme') || 'indigo' 
+      }" 
+      x-init="$watch('theme', value => localStorage.setItem('theme', value))"
+      x-bind:class="darkMode ? 'dark' : ''" 
+      :data-theme="theme">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EduOrbit{% endblock %}</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: 'var(--color-primary)',
+                            hover: 'var(--color-primary-hover)',
+                            light: 'var(--color-primary-light)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root, [data-theme="indigo"] {
+            --color-primary: #4f46e5;
+            --color-primary-hover: #4338ca;
+            --color-primary-light: rgba(79, 70, 229, 0.1);
+        }
+        [data-theme="emerald"] {
+            --color-primary: #10b981;
+            --color-primary-hover: #059669;
+            --color-primary-light: rgba(16, 185, 129, 0.1);
+        }
+        [data-theme="amber"] {
+            --color-primary: #f59e0b;
+            --color-primary-hover: #d97706;
+            --color-primary-light: rgba(245, 158, 11, 0.1);
+        }
+        [data-theme="rose"] {
+            --color-primary: #f43f5e;
+            --color-primary-hover: #e11d48;
+            --color-primary-light: rgba(244, 63, 94, 0.1);
+        }
+        [data-theme="purple"] {
+            --color-primary: #a855f7;
+            --color-primary-hover: #9333ea;
+            --color-primary-light: rgba(168, 85, 247, 0.1);
+        }
+        
+        /* Inject primary theme classes for dynamic mapping */
+        .bg-primary { background-color: var(--color-primary); }
+        .hover\:bg-primary-hover:hover { background-color: var(--color-primary-hover); }
+        .text-primary { color: var(--color-primary); }
+        .border-primary { border-color: var(--color-primary); }
+        .focus\:ring-primary:focus { --tw-ring-color: var(--color-primary); }
+
+        /* HTMX indicator setup */
+        .htmx-indicator {
+            display: none !important;
+        }
+        .htmx-request .htmx-indicator, .htmx-request.htmx-indicator {
+            display: flex !important;
+        }
+    </style>
+    
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.addEventListener('htmx:beforeOnLoad', function (evt) {
+                if (evt.detail.xhr.status >= 400) {
+                    evt.detail.shouldSwap = true;
+                    evt.detail.isError = false;
+                }
+            });
+        });
+    </script>
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- ApexCharts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="flex h-screen antialiased bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 overflow-hidden">
+    
+    {% include 'base/_sidebar.html' %}
+    
+    <div class="flex flex-col flex-1 w-full overflow-hidden">
+        {% include 'base/_topbar.html' %}
+        
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

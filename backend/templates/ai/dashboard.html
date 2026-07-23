@@ -1,0 +1,96 @@
+{% extends "base/_document.html" %}
+{% block title %}AI Workspace — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-indigo-400 uppercase mb-1">EduOrbit · AI Hub</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">AI &amp; Automation Platform</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Generate lesson plans, grade essays, analyze student risk, and automate admin tasks.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/ai/prompts/" class="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:bg-slate-600 border border-gray-700 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white transition duration-150">
+        Prompt Library
+      </a>
+    </div>
+  </div>
+
+  <!-- AI Tools Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 mb-4 text-xl">📝</div>
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Lesson Plan Generator</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-4">Create comprehensive structured lesson plans for any subject and level in seconds.</p>
+      <button class="text-xs text-indigo-400 hover:underline">Launch Tool &rarr;</button>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center text-violet-400 mb-4 text-xl">💯</div>
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Essay Grader</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-4">Submit student essays for detailed rubrics, corrections, and grading feedback suggestions.</p>
+      <button class="text-xs text-violet-400 hover:underline">Launch Tool &rarr;</button>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="w-10 h-10 rounded-xl bg-sky-500/20 flex items-center justify-center text-sky-400 mb-4 text-xl">⚡</div>
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Comments Generator</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-4">Draft personalized and constructive report card comments based on grades.</p>
+      <button class="text-xs text-sky-400 hover:underline">Launch Tool &rarr;</button>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="w-10 h-10 rounded-xl bg-rose-500/20 flex items-center justify-center text-rose-400 mb-4 text-xl">🎯</div>
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Student Risk Predictor</h3>
+      <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-4">Analyze attendance &amp; grades to predict academic risks and dropout chances.</p>
+      <button class="text-xs text-rose-400 hover:underline">Launch Tool &rarr;</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Chat Simulator -->
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 flex flex-col h-[400px]">
+      <h3 class="font-semibold text-slate-900 dark:text-white mb-4">EduOrbit Assistant Playground</h3>
+      <div class="flex-1 overflow-y-auto space-y-4 mb-4 text-sm pr-2">
+        <div class="flex gap-3">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-slate-900 dark:text-white text-xs font-bold">AI</div>
+          <div class="bg-slate-100 dark:bg-slate-700 rounded-2xl rounded-tl-none p-3 max-w-[80%] text-slate-800 dark:text-slate-200">
+            Hello! I am your EduOrbit AI assistant. How can I help you with your school tasks today?
+          </div>
+        </div>
+        {% for conv in conversations %}
+        <div class="flex gap-3 justify-end">
+          <div class="bg-indigo-600/20 border border-indigo-500/30 rounded-2xl rounded-tr-none p-3 max-w-[80%] text-slate-800 dark:text-slate-200">
+            {{ conv.title }}
+          </div>
+          <div class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-600 flex items-center justify-center text-slate-900 dark:text-white text-xs font-bold">ME</div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="flex gap-2">
+        <input type="text" placeholder="Ask AI anything (e.g. Generate a quiz on Photosynthesis)..." class="flex-1 bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500">
+        <button class="px-4 py-2 bg-indigo-600 text-slate-900 dark:text-white rounded-xl text-sm font-semibold hover:bg-indigo-500 transition">Send</button>
+      </div>
+    </div>
+
+    <!-- Conversations list -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
+      <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Saved Conversations</h3>
+      <div class="space-y-3">
+        {% for conv in conversations %}
+        <div class="p-3 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:bg-slate-600/60 rounded-xl cursor-pointer transition border border-gray-700/30">
+          <p class="text-sm font-medium text-slate-900 dark:text-white truncate">{{ conv.title }}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-1">Created: {{ conv.created_at|date:"M d, Y" }}</p>
+        </div>
+        {% empty %}
+        <div class="p-3 bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/80 rounded-xl">
+          <p class="text-sm text-slate-900 dark:text-white truncate">Lesson Plan: Newton's Laws</p>
+          <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-1">July 18, 2026</p>
+        </div>
+        <div class="p-3 bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/80 rounded-xl">
+          <p class="text-sm text-slate-900 dark:text-white truncate">Risk Analysis: Grade 10 Math</p>
+          <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-1">July 17, 2026</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

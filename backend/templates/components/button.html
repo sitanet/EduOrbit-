@@ -1,0 +1,20 @@
+{# button.html #}
+{# Variables: text, type, icon #}
+<button
+    class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors rounded-full shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-slate-900 
+    {% if type == 'primary' %}
+        bg-blue-600 text-slate-900 dark:text-white hover:bg-blue-700 focus:ring-blue-500
+    {% elif type == 'secondary' %}
+        bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 focus:ring-slate-500 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600 dark:hover:bg-slate-700
+    {% elif type == 'danger' %}
+        bg-red-600 text-slate-900 dark:text-white hover:bg-red-700 focus:ring-red-500
+    {% else %}
+        bg-blue-600 text-slate-900 dark:text-white hover:bg-blue-700 focus:ring-blue-500
+    {% endif %}"
+    {% if kwargs %}{{ kwargs|safe }}{% endif %}
+>
+    {% if icon %}
+        <span class="mr-2 -ml-1 w-5 h-5">{{ icon|safe }}</span>
+    {% endif %}
+    {{ text }}
+</button>

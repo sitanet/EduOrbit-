@@ -1,0 +1,147 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Module Builder - EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="{ openAddModal: false }">
+  
+  <!-- Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8 border-b border-slate-200 dark:border-slate-700/80 pb-6">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-primary uppercase mb-1">EduOrbit · LMS</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Course Module Builder</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Design curriculum units, structure learning paths, and manage versioned syllabus materials.</p>
+    </div>
+    <div class="mt-4 md:mt-0 flex-shrink-0">
+      <button @click="openAddModal = true" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-slate-900 dark:text-white text-sm font-semibold transition duration-150 shadow-lg shadow-primary/30">
+        + Create Course Module
+      </button>
+    </div>
+  </div>
+
+  <!-- Course Modules List -->
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-750">
+        <thead class="bg-slate-100 dark:bg-slate-800/40 text-slate-600 dark:text-slate-400">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Module Title</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Topic Focus</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Subject Domain</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider">Syllabus Version</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-300">
+          {% for mod in modules %}
+          <tr class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-white">
+              📖 {{ mod.title }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-450">
+              {{ mod.topic|default:"-" }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                {{ mod.subject.name }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              v{{ mod.version }}
+            </td>
+          </tr>
+          {% empty %}
+          <!-- Seeded demo modules for visual high-fidelity feedback -->
+          <tr class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-white">
+              📖 Introduction to Algebra
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-450">
+              Linear Equations &amp; Variables
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                Mathematics
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              v1
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-50 dark:bg-slate-800/20 transition duration-150">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-white">
+              📖 Newtonian Mechanics
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-450">
+              Forces &amp; Laws of Motion
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                Physics
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+              v2
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Create Learning Module Modal -->
+  <div x-show="openAddModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" x-cloak>
+    <div @click.away="openAddModal = false" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-xl p-6 relative">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-slate-900 dark:text-white">Create Learning Module</h3>
+        <button @click="openAddModal = false" class="text-slate-500 hover:text-slate-700 dark:hover:text-white font-bold text-lg">×</button>
+      </div>
+
+      <form hx-post="{% url 'module_builder_web' %}" hx-target="#add-result" class="space-y-4">
+        {% csrf_token %}
+        
+        <!-- Select Subject -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Subject Domain</label>
+          <select name="subject_id" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+            <option value="">-- Choose Subject --</option>
+            {% for subject in subjects %}
+              <option value="{{ subject.id }}">{{ subject.name }}</option>
+            {% empty %}
+              <option value="">Mathematics</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Module Title -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Module Title</label>
+          <input type="text" name="title" placeholder="e.g. Quadratic Equations" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Topic Focus -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Topic Focus</label>
+          <input type="text" name="topic" placeholder="e.g. Graphing and solving binomials" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <!-- Version -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Syllabus Version</label>
+          <input type="number" name="version" min="1" value="1" required
+                 class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+        </div>
+
+        <div id="add-result" class="text-sm"></div>
+
+        <button type="submit" class="w-full py-3 bg-primary hover:bg-primary-hover text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition duration-150 shadow-lg shadow-primary/30">
+          Save Learning Module
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

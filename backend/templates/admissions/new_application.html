@@ -1,0 +1,186 @@
+{% extends "base/_document.html" %}
+
+{% block title %}New Admission Application - EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+     x-data="{ submitting: false }">
+  
+  <!-- Header -->
+  <div class="mb-8 border-b border-slate-200 dark:border-slate-700/80 pb-6">
+    <a href="{% url 'admissions_dashboard_web' %}" class="text-xs font-semibold text-primary hover:underline">&larr; Back to Admissions Dashboard</a>
+    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-4">New Student Admission Application</h2>
+    <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Register demographic details, parent contacts, academic histories, and attach documents.</p>
+  </div>
+
+  <!-- Form Card -->
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 sm:p-8 shadow-sm">
+    <!-- Notice we do NOT use hx-post directly on form so that native multipart files upload works cleanly. We submit via standard form POST or HTMX AJAX with files -->
+    <form action="{% url 'admissions_application_new' %}" 
+          method="POST"
+          enctype="multipart/form-data"
+          @submit="submitting = true"
+          class="space-y-6">
+      {% csrf_token %}
+      
+      <!-- Section 1: Target Placement -->
+      <div>
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-l-2 border-primary pl-2">1. Target Placement</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Admission Intake / Batch</label>
+            <select name="intake" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+              <option value="">-- Select Intake Batch --</option>
+              {% for intake in intakes %}
+                <option value="{{ intake.id }}">{{ intake.name }} ({{ intake.campaign.name }})</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Target Grade / Level</label>
+            <select name="target_level" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+              <option value="">-- Select Target Level --</option>
+              {% for lvl in levels %}
+                <option value="{{ lvl.id }}">{{ lvl.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Student Demographics -->
+      <div class="border-t border-slate-200 dark:border-slate-700 pt-6">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-l-2 border-primary pl-2">2. Applicant Demographics</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">First Name</label>
+            <input type="text" name="first_name" placeholder="First name" required
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Middle Name</label>
+            <input type="text" name="middle_name" placeholder="Middle name (optional)"
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Last Name</label>
+            <input type="text" name="last_name" placeholder="Last name" required
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Gender</label>
+            <select name="gender" required class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+              <option value="">-- Choose Gender --</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Date of Birth</label>
+            <input type="date" name="date_of_birth" required
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Nationality</label>
+            <input type="text" name="nationality" value="Nigerian" required
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">State of Origin</label>
+            <input type="text" name="state_of_origin" placeholder="e.g. Lagos" required
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Religion</label>
+            <input type="text" name="religion" placeholder="e.g. Christian/Muslim"
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Parent Contacts -->
+      <div class="border-t border-slate-200 dark:border-slate-700 pt-6">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-l-2 border-primary pl-2">3. Parent / Guardian Contact</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Parent Full Name</label>
+            <input type="text" name="parent_name" placeholder="Parent name" required
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Parent Phone</label>
+            <input type="tel" name="parent_phone" placeholder="e.g. +2348030000000" required
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Parent Email</label>
+            <input type="email" name="parent_email" placeholder="email@address.com" required
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Academic History & Medicals -->
+      <div class="border-t border-slate-200 dark:border-slate-700 pt-6">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-l-2 border-primary pl-2">4. Background &amp; Academic History</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Previous School Attended</label>
+            <input type="text" name="prev_school" placeholder="School name"
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Last Term Average (%) / GPA</label>
+            <input type="text" name="prev_gpa" placeholder="e.g. 84% or 3.8 GPA"
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Medical Conditions / Allergies</label>
+            <input type="text" name="medical_allergies" placeholder="e.g. Asthma, Peanuts allergy"
+                   class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Document Uploads -->
+      <div class="border-t border-slate-200 dark:border-slate-700 pt-6">
+        <h3 class="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider mb-4 border-l-2 border-primary pl-2">5. Document Attachments</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Birth Certificate</label>
+            <input type="file" name="birth_certificate" accept="image/*,application/pdf"
+                   class="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 dark:file:bg-slate-700 file:text-slate-800 dark:file:text-slate-200 hover:file:bg-slate-200 transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Academic Transcript</label>
+            <input type="file" name="academic_transcript" accept="image/*,application/pdf"
+                   class="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 dark:file:bg-slate-700 file:text-slate-800 dark:file:text-slate-200 hover:file:bg-slate-200 transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Passport Photograph</label>
+            <input type="file" name="passport_photo" accept="image/*"
+                   class="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 dark:file:bg-slate-700 file:text-slate-800 dark:file:text-slate-200 hover:file:bg-slate-200 transition">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Additional Document (Recommendation letter, medical, etc.)</label>
+            <input type="file" name="additional_document" accept="image/*,application/pdf"
+                   class="w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-100 dark:file:bg-slate-700 file:text-slate-800 dark:file:text-slate-200 hover:file:bg-slate-200 transition">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-4 border-t border-slate-200 dark:border-slate-700 pt-6">
+        <button type="submit" 
+                :disabled="submitting"
+                class="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 disabled:text-slate-400 text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition duration-150 shadow-lg shadow-emerald-900/30">
+          <span x-text="submitting ? 'Submitting Application & Uploading Files...' : 'Submit Application'"></span>
+        </button>
+        <a href="{% url 'admissions_dashboard_web' %}" class="px-6 py-3.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-650 text-slate-800 dark:text-slate-200 rounded-xl text-sm font-semibold transition">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

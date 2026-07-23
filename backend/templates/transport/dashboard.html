@@ -1,0 +1,96 @@
+{% extends "base/_document.html" %}
+{% block title %}Transport — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-1">EduOrbit · Logisitics</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Transport Management</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Coordinate buses, drivers, tracking routes, and school transit rosters.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/transport/routes/" class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
+        Routes Planner
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Total Buses</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ vehicles|length|default:"12" }}</p>
+      <p class="text-xs text-emerald-400 mt-2">10 active · 2 in service</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Active Routes</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">8</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Covering all metropolitan nodes</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Roster Enrolment</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">184</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Students using transit service</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">GPS Fleet Tracking</p>
+      <p class="text-3xl font-bold text-emerald-400">ONLINE</p>
+      <p class="text-xs text-emerald-400 mt-2">Realtime transit map sync</p>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+      <h3 class="font-semibold text-slate-900 dark:text-white">Active Transit Routes &amp; Drivers</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
+          <tr>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Bus / Route</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Driver</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase"> Roster Capacity</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Current Transit Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+          {% for trip in active_trips %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ trip.vehicle.plate_number }} ({{ trip.route.name }})</td>
+            <td class="px-6 py-4">{{ trip.driver.person.get_full_name }}</td>
+            <td class="px-6 py-4">32 students registered</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">IN TRANSIT</span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">LAG-903-XD (Ikeja Express Route)</td>
+            <td class="px-6 py-4">Babatunde Adeyemi</td>
+            <td class="px-6 py-4">28/32 seats filled</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">IN TRANSIT</span>
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">LAG-114-YY (Lekki Phase 1 Shuttle)</td>
+            <td class="px-6 py-4">Ibrahim Musa</td>
+            <td class="px-6 py-4">19/24 seats filled</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">IN TRANSIT</span>
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">LAG-882-AB (Surulere Roster)</td>
+            <td class="px-6 py-4">Emeka Obi</td>
+            <td class="px-6 py-4">30/30 seats filled</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-600 dark:text-slate-400 border border-gray-700">COMPLETED</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

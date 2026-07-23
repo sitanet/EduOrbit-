@@ -1,0 +1,15 @@
+[Unit]
+Description=Flower Celery Monitor
+After=network.target celery.service
+
+[Service]
+Type=simple
+User=eduorbit
+Group=eduorbit
+EnvironmentFile=/var/www/eduorbit/backend/.env
+WorkingDirectory=/var/www/eduorbit/backend
+ExecStart=/var/www/eduorbit/venv/bin/celery -A backend.celery_app flower --port=5555 --address=127.0.0.1
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

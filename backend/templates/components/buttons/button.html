@@ -1,0 +1,15 @@
+{% comment %}
+Reusable Button Component
+Parameters:
+  - type: 'primary', 'secondary', 'outline' (default: 'primary')
+  - text: Button text (default: 'Click')
+  - attrs: Extra HTML attributes (e.g. hx-post="/url" hx-target="#target")
+  - id: optional id
+{% endcomment %}
+<button 
+  class="btn btn-{{ type|default:'primary' }}"
+  {% if id %}id="{{ id }}"{% endif %}
+  {{ attrs|safe }}
+>
+  {{ text|default:'Click' }}
+</button>

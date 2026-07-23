@@ -1,0 +1,36 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Report Builder - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Report Builder Workspace</h2>
+    <p style="color: var(--color-text-secondary);">Design custom filters and schedule daily summary exports.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
+    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Analytical Report Templates</h3>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Report Name</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Category</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rep in reports %}
+        <tr style="border-bottom: 1px solid var(--color-border);">
+          <td style="padding: var(--spacing-md);"><strong>{{ rep.name }}</strong></td>
+          <td style="padding: var(--spacing-md);"><span style="text-transform: capitalize;">{{ rep.category }}</span></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="2" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No report designs configured. Click "Create Template" to begin.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

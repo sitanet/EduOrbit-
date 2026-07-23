@@ -1,0 +1,83 @@
+{% extends "base/_document.html" %}
+{% block title %}Exams &amp; Assessments — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-indigo-400 uppercase mb-1">EduOrbit · Academics</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Exams &amp; Assessments (EAE)</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Configure online CBT tests, manage class grading formulas, and review attempt logs.</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Active Assessments</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ assessments|length|default:"6" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Active this term</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Questions Bank</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">412</p>
+      <p class="text-xs text-emerald-400 mt-2">Across 18 subjects</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Completed Attempts</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ recent_attempts|length|default:"194" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">CBT tests processed</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Average Score</p>
+      <p class="text-3xl font-bold text-amber-500">76.4%</p>
+      <p class="text-xs text-emerald-400 mt-2">↑ 1.2% this term</p>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+      <h3 class="font-semibold text-slate-900 dark:text-white">Active Online CBT Assessments</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
+          <tr>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Assessment Name</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Class &amp; Subject</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Test Type</th>
+            <th class="text-right px-6 py-3 font-semibold uppercase">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+          {% for assessment in assessments %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ assessment.title }}</td>
+            <td class="px-6 py-4">{{ assessment.school_class.name }} · {{ assessment.subject.name }}</td>
+            <td class="px-6 py-4">CBT Test Session</td>
+            <td class="px-6 py-4 text-right">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">ACTIVE</span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">JSS1 Mathematics Mid-Term Exam</td>
+            <td class="px-6 py-4">JSS 1 · Mathematics</td>
+            <td class="px-6 py-4"><span class="px-2 py-0.5 bg-indigo-900/40 text-indigo-400 text-xs font-medium rounded-lg">CBT</span></td>
+            <td class="px-6 py-4 text-right">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">ACTIVE</span>
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">SS2 Physics Term Assessment Test</td>
+            <td class="px-6 py-4">SS 2 · Physics</td>
+            <td class="px-6 py-4"><span class="px-2 py-0.5 bg-indigo-900/40 text-indigo-400 text-xs font-medium rounded-lg">CBT</span></td>
+            <td class="px-6 py-4 text-right">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">ACTIVE</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

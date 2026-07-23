@@ -1,0 +1,36 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Wallets Administration - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Pre-paid Parent Wallets</h2>
+    <p style="color: var(--color-text-secondary);">Manage pre-paid wallet accounts, refunds processing, and platform billing.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; padding: var(--spacing-lg);">
+    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Wallet Balances</h3>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Parent Name</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Wallet Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for w in wallets %}
+        <tr style="border-bottom: 1px solid var(--color-border);">
+          <td style="padding: var(--spacing-md);">{{ w.parent.first_name }} {{ w.parent.last_name }}</td>
+          <td style="padding: var(--spacing-md);"><strong>₦{{ w.balance }}</strong></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="2" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No pre-paid wallets registered.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends "base/_document.html" %}
+
+{% block title %}SaaS Analytics — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  
+  <!-- Page Header -->
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-indigo-400 uppercase mb-1">EduOrbit · Platform Owner</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">SaaS Business Analytics</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Monitor platform health, monthly recurring revenue, subscription funnels, and module adoption rates.</p>
+    </div>
+  </div>
+
+  <!-- Metric Grid -->
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+    <!-- Active Tenants -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Active Tenants</span>
+        <span class="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-sm">🏢</span>
+      </div>
+      <div class="text-3xl font-bold text-slate-900 dark:text-white">{{ active_tenants }} <span class="text-sm font-normal text-slate-500 dark:text-slate-500">/ {{ total_tenants }}</span></div>
+      <div class="mt-2 w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+        <div class="bg-indigo-500 h-1.5 rounded-full" style="width: {% widthratio active_tenants total_tenants 100|default:"100" %}%"></div>
+      </div>
+      <p class="text-xs text-slate-500 dark:text-slate-500 mt-2">Active organizations on the network</p>
+    </div>
+
+    <!-- Active Schools -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Total School Campuses</span>
+        <span class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-sm">🎓</span>
+      </div>
+      <div class="text-3xl font-bold text-slate-900 dark:text-white">{{ total_schools }}</div>
+      <p class="text-xs text-emerald-400 mt-4 font-medium">↑ 100% active state</p>
+    </div>
+
+    <!-- Monthly Recurring Revenue -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Monthly Revenue (MRR)</span>
+        <span class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 text-sm">₦</span>
+      </div>
+      <div class="text-3xl font-bold text-slate-900 dark:text-white">₦{{ mrr|default:"0.00" }}</div>
+      <p class="text-xs text-slate-500 dark:text-slate-500 mt-4">Based on plan pricing and intervals</p>
+    </div>
+
+    <!-- Annual Recurring Revenue -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 hover:shadow-lg transition">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Annual Revenue (ARR)</span>
+        <span class="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-400 text-sm">📊</span>
+      </div>
+      <div class="text-3xl font-bold text-slate-900 dark:text-white">₦{{ arr|default:"0.00" }}</div>
+      <p class="text-xs text-slate-500 dark:text-slate-500 mt-4">Projected annual platform yield</p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Module License Distribution -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
+      <div class="border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Module License Distribution</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mt-0.5">Adoption rates of premium modules across schools</p>
+      </div>
+      <div class="space-y-4">
+        {% for mod, count in module_adoption.items %}
+        <div>
+          <div class="flex justify-between items-center text-sm mb-1">
+            <span class="font-medium text-slate-700 dark:text-slate-300 capitalize">{{ mod }}</span>
+            <span class="text-xs text-emerald-400 font-semibold bg-emerald-950/40 border border-emerald-900/40 px-2 py-0.5 rounded-lg">{{ count }} Licensed</span>
+          </div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+            <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 100%"></div>
+          </div>
+        </div>
+        {% empty %}
+        <!-- Standard placeholder modules if DB empty -->
+        <div>
+          <div class="flex justify-between items-center text-sm mb-1">
+            <span class="font-medium text-slate-700 dark:text-slate-300">Academics</span>
+            <span class="text-xs text-emerald-400 font-semibold bg-emerald-950/40 border border-emerald-900/40 px-2 py-0.5 rounded-lg">1 Active</span>
+          </div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+            <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 100%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center text-sm mb-1">
+            <span class="font-medium text-slate-700 dark:text-slate-300">Identity &amp; Authentication</span>
+            <span class="text-xs text-emerald-400 font-semibold bg-emerald-950/40 border border-emerald-900/40 px-2 py-0.5 rounded-lg">1 Active</span>
+          </div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+            <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 100%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center text-sm mb-1">
+            <span class="font-medium text-slate-700 dark:text-slate-300">LMS (E-Learning)</span>
+            <span class="text-xs text-slate-500 dark:text-slate-500 font-semibold bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-lg">Not Yet Adopted</span>
+          </div>
+          <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+            <div class="bg-indigo-500 h-1.5 rounded-full" style="width: 0%"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Subscriber Pipeline Funnel -->
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
+      <div class="border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Subscription Funnel</h3>
+        <p class="text-xs text-slate-500 dark:text-slate-500 mt-0.5">Track free trials, conversion goals, and churn.</p>
+      </div>
+      <div class="space-y-6">
+        <div class="flex justify-between items-center p-4 bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-xl">
+          <div>
+            <h4 class="text-sm font-semibold text-slate-900 dark:text-white">Active Free Trials</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-500 mt-1">Tenant schools currently on trials</p>
+          </div>
+          <span class="text-2xl font-bold text-slate-900 dark:text-white">{{ trial_count }}</span>
+        </div>
+        <div class="flex justify-between items-center p-4 bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-xl">
+          <div>
+            <h4 class="text-sm font-semibold text-slate-900 dark:text-white">Conversion Rate Goal</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-500 mt-1">Expected trials-to-paid target</p>
+          </div>
+          <span class="text-2xl font-bold text-indigo-400">12.5%</span>
+        </div>
+        <div class="flex justify-between items-center p-4 bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-xl">
+          <div>
+            <h4 class="text-sm font-semibold text-slate-900 dark:text-white">Average Churn Rate</h4>
+            <p class="text-xs text-slate-500 dark:text-slate-500 mt-1">Active subscriptions canceled</p>
+          </div>
+          <span class="text-2xl font-bold text-emerald-400">0.0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

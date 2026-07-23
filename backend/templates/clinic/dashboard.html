@@ -1,0 +1,86 @@
+{% extends "base/_document.html" %}
+{% block title %}Clinic — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">School Clinic</h1>
+      <p class="text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 mt-1">Student health records, visits, and medical management.</p>
+    </div>
+    <a href="/clinic/consultation/" class="inline-flex items-center gap-2 px-4 py-2 bg-rose-600 text-slate-900 dark:text-white text-sm font-medium rounded-xl hover:bg-rose-700 transition-colors">🩺 New Consultation</a>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-gradient-to-br from-rose-500 to-pink-600 rounded-2xl p-5 text-slate-900 dark:text-white shadow-lg">
+      <div class="text-xs font-medium text-rose-100 mb-1">Visits Today</div>
+      <div class="text-3xl font-bold">{{ visits_today|default:"14" }}</div>
+    </div>
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+      <div class="text-xs text-slate-500 dark:text-slate-500 mb-1">Admitted</div>
+      <div class="text-2xl font-bold text-amber-600 dark:text-amber-400">{{ admitted|default:"2" }}</div>
+    </div>
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+      <div class="text-xs text-slate-500 dark:text-slate-500 mb-1">Referrals</div>
+      <div class="text-2xl font-bold text-rose-600 dark:text-rose-400">{{ referrals|default:"1" }}</div>
+    </div>
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700">
+      <div class="text-xs text-slate-500 dark:text-slate-500 mb-1">This Month</div>
+      <div class="text-2xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">{{ monthly_visits|default:"87" }}</div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700"><h3 class="font-semibold text-slate-900 dark:text-slate-900 dark:text-white">Recent Clinic Visits</h3></div>
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 dark:bg-slate-700/50">
+          <tr>
+            <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-500 uppercase">Student</th>
+            <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-500 uppercase">Complaint</th>
+            <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-500 uppercase">Time</th>
+            <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-500 uppercase">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+          {% for visit in recent_visits %}
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-slate-900 dark:text-white">{{ visit.student }}</td>
+            <td class="px-6 py-4 text-slate-500 dark:text-slate-500">{{ visit.complaint }}</td>
+            <td class="px-6 py-4 text-slate-500 dark:text-slate-500">{{ visit.time }}</td>
+            <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-emerald-100 text-emerald-700">{{ visit.status }}</span></td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30"><td class="px-6 py-4 font-medium text-slate-900 dark:text-slate-900 dark:text-white">Amina Yusuf</td><td class="px-6 py-4 text-slate-500 dark:text-slate-500">Headache</td><td class="px-6 py-4 text-slate-500 dark:text-slate-500">09:15 AM</td><td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-emerald-100 text-emerald-700">Treated</span></td></tr>
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30"><td class="px-6 py-4 font-medium text-slate-900 dark:text-slate-900 dark:text-white">Tunde Adeyemi</td><td class="px-6 py-4 text-slate-500 dark:text-slate-500">Stomach Pain</td><td class="px-6 py-4 text-slate-500 dark:text-slate-500">10:30 AM</td><td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-amber-100 text-amber-700">Admitted</span></td></tr>
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30"><td class="px-6 py-4 font-medium text-slate-900 dark:text-slate-900 dark:text-white">Chisom Eze</td><td class="px-6 py-4 text-slate-500 dark:text-slate-500">Fever</td><td class="px-6 py-4 text-slate-500 dark:text-slate-500">11:00 AM</td><td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-rose-100 text-rose-700">Referred</span></td></tr>
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30"><td class="px-6 py-4 font-medium text-slate-900 dark:text-slate-900 dark:text-white">Emeka Obi</td><td class="px-6 py-4 text-slate-500 dark:text-slate-500">Malaria</td><td class="px-6 py-4 text-slate-500 dark:text-slate-500">01:45 PM</td><td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-emerald-100 text-emerald-700">Treated</span></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="space-y-5">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 class="font-semibold text-slate-900 dark:text-slate-900 dark:text-white mb-4">Common Ailments</h3>
+        <div class="space-y-3">
+          {% for ailment in top_ailments %}
+          <div><div class="flex justify-between text-xs text-slate-500 dark:text-slate-500 mb-1"><span>{{ ailment.name }}</span><span>{{ ailment.count }}</span></div><div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2"><div class="bg-rose-500 h-2 rounded-full" style="width:{{ ailment.pct }}%"></div></div></div>
+          {% empty %}
+          <div><div class="flex justify-between text-xs text-slate-500 dark:text-slate-500 mb-1"><span>Malaria</span><span>24</span></div><div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2"><div class="bg-rose-500 h-2 rounded-full" style="width:80%"></div></div></div>
+          <div><div class="flex justify-between text-xs text-slate-500 dark:text-slate-500 mb-1"><span>Fever</span><span>18</span></div><div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2"><div class="bg-rose-400 h-2 rounded-full" style="width:60%"></div></div></div>
+          <div><div class="flex justify-between text-xs text-slate-500 dark:text-slate-500 mb-1"><span>Headache</span><span>15</span></div><div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-2"><div class="bg-rose-300 h-2 rounded-full" style="width:50%"></div></div></div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 class="font-semibold text-slate-900 dark:text-slate-900 dark:text-white mb-3">Actions</h3>
+        <div class="space-y-2">
+          <a href="/clinic/consultation/" class="block text-sm px-3 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/40 text-slate-700 dark:text-slate-700 dark:text-slate-300 transition-colors">🩺 Open Consultation Desk</a>
+          <button class="w-full text-left text-sm px-3 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/40 text-slate-700 dark:text-slate-700 dark:text-slate-300 transition-colors">💊 Manage Drug Inventory</button>
+          <button class="w-full text-left text-sm px-3 py-2.5 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/40 text-slate-700 dark:text-slate-700 dark:text-slate-300 transition-colors">📋 Monthly Health Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

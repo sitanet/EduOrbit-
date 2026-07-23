@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}EduOrbit - Multi-Tenant School Management{% endblock %}</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Design Tokens & Reset -->
+  <link rel="stylesheet" href="{% static 'css/theme.css' %}">
+  
+  <!-- HTMX Client Local Integration -->
+  <script src="{% static 'js/htmx.min.js' %}"></script>
+  
+  <!-- CSRF Config for HTMX -->
+  <script>
+    document.addEventListener('htmx:configRequest', (event) => {
+      event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+    });
+  </script>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  
+  <div class="app-layout" style="display: flex; min-height: 100vh;">
+    <!-- Sidebar navigation slot -->
+    {% block sidebar %}{% endblock %}
+    
+    <div class="main-content" style="flex: 1; display: flex; flex-direction: column; min-width: 0;">
+      <!-- Navbar slot -->
+      {% block navbar %}{% endblock %}
+      
+      <main style="flex: 1; padding: var(--spacing-lg);">
+        {% block content %}{% endblock %}
+      </main>
+      
+      <!-- Footer slot -->
+      {% block footer %}{% endblock %}
+    </div>
+  </div>
+
+  <!-- Custom Modern JS Logic -->
+  <script type="module" src="{% static 'js/app.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,51 @@
+name: eduorbit_mobile
+repository: https://github.com/eduorbit/mobile
+
+packages:
+  - apps/*
+  - packages/*
+
+command:
+  bootstrap:
+    usePubspecOverrides: true
+
+scripts:
+  analyze:
+    run: dart analyze .
+    exec:
+      concurrency: 5
+    packageFilters:
+      flutter: true
+
+  test:
+    run: flutter test --coverage
+    exec:
+      concurrency: 5
+    packageFilters:
+      flutter: true
+      dirExists: test
+
+  clean:
+    run: flutter clean
+    exec:
+      concurrency: 5
+
+  build:android:dev:
+    run: flutter build apk --flavor development --dart-define-from-file=config/dev.env
+    packageFilters:
+      scope: eduorbit_app
+
+  build:android:staging:
+    run: flutter build apk --flavor staging --dart-define-from-file=config/staging.env
+    packageFilters:
+      scope: eduorbit_app
+
+  build:android:prod:
+    run: flutter build appbundle --flavor production --dart-define-from-file=config/prod.env
+    packageFilters:
+      scope: eduorbit_app
+
+  build:ios:prod:
+    run: flutter build ipa --flavor production --dart-define-from-file=config/prod.env
+    packageFilters:
+      scope: eduorbit_app

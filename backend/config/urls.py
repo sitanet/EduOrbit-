@@ -1,0 +1,38 @@
+from django.urls import path, include
+from django.views.generic import RedirectView, TemplateView
+from backend.apps.communication.views_web import DemoRequestWebView, DocumentationWebView
+
+urlpatterns = [
+    path('', TemplateView.as_view(template_name='landing.html'), name='landing_page'),
+    path('request-demo/', DemoRequestWebView.as_view(), name='demo_request_form'),
+    path('request-demo/submit/', DemoRequestWebView.as_view(), name='demo_request_submit'),
+    path('docs/', DocumentationWebView.as_view(), name='documentation_index'),
+    path('dashboard/', RedirectView.as_view(url='/tenants/tenant-dashboard/'), name='dashboard_redirect'),
+    path('', include('backend.apps.identity.urls')),
+    path('tenants/', include('backend.apps.tenants.urls')),
+    path('academic/', include('backend.apps.academic.urls')),
+    path('people/', include('backend.apps.people.urls')),
+    path('admissions/', include('backend.apps.admissions.urls')),
+    path('students/', include('backend.apps.students.urls')),
+    path('timetable/', include('backend.apps.timetable.urls')),
+    path('teachers/', include('backend.apps.teachers.urls')),
+    path('attendance/', include('backend.apps.attendance.urls')),
+    path('lms/', include('backend.apps.lms.urls')),
+    path('eae/', include('backend.apps.eae.urls')),
+    path('emrp/', include('backend.apps.emrp.urls')),
+    path('efbm/', include('backend.apps.efbm.urls')),
+    path('communication/', include('backend.apps.communication.urls')),
+    path('hr/', include('backend.apps.hr.urls')),
+    path('library/', include('backend.apps.library.urls')),
+    path('transport/', include('backend.apps.transport.urls')),
+    path('hostel/', include('backend.apps.hostel.urls')),
+    path('clinic/', include('backend.apps.clinic.urls')),
+    path('inventory/', include('backend.apps.inventory.urls')),
+    path('workflow/', include('backend.apps.workflow.urls')),
+    path('facilities/', include('backend.apps.facilities.urls')),
+    path('analytics/', include('backend.apps.analytics.urls')),
+    path('portal/', include('backend.apps.portal.urls')),
+    path('administration/', include('backend.apps.administration.urls')),
+    path('ai/', include('backend.apps.ai.urls')),
+    path('health/', include('backend.apps.core.health_urls')),
+]

@@ -1,0 +1,298 @@
+{% extends "base/_document.html" %}
+{% block content %}
+
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 px-6 py-8">
+
+  <!-- Page Header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div>
+      <p class="text-xs font-semibold tracking-widest text-emerald-400 uppercase mb-1">EduOrbit · Admissions</p>
+      <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Admissions Dashboard</h1>
+      <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-1">
+        Term:
+        <span class="text-emerald-300 font-semibold">First Term — 2024/2025</span>
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="{% url 'admissions_application_new' %}"
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-650 hover:bg-emerald-505 text-slate-900 dark:text-white text-sm font-semibold transition-all duration-200 shadow-lg shadow-emerald-900/40">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        New Application
+      </a>
+      <a href="/admissions/reports/"
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:bg-slate-600 border border-gray-700 text-slate-800 dark:text-slate-200 text-sm font-medium transition-all duration-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Export Report
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+    <!-- Total Applications -->
+    <div class="relative rounded-2xl bg-gradient-to-br from-emerald-600/20 to-emerald-900/10 border border-emerald-700/30 p-5 overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 bg-emerald-600/10 rounded-full blur-2xl"></div>
+      <p class="text-xs font-semibold text-emerald-400 uppercase tracking-wider mb-3">Applications This Term</p>
+      <p class="text-4xl font-extrabold text-slate-900 dark:text-white">{{ applications|length|default:"187" }}</p>
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-2">Across all class levels</p>
+      <div class="mt-4 flex items-center gap-1 text-emerald-400 text-xs font-medium">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        +23 vs. last term
+      </div>
+    </div>
+
+    <!-- Approved -->
+    <div class="relative rounded-2xl bg-gradient-to-br from-sky-600/20 to-sky-900/10 border border-sky-700/30 p-5 overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 bg-sky-600/10 rounded-full blur-2xl"></div>
+      <p class="text-xs font-semibold text-sky-400 uppercase tracking-wider mb-3">Approved</p>
+      <p class="text-4xl font-extrabold text-slate-900 dark:text-white">112</p>
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-2">Admission granted</p>
+      <div class="mt-4 w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+        <div class="bg-sky-500 h-1.5 rounded-full" style="width: 60%"></div>
+      </div>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-1">60% approval rate</p>
+    </div>
+
+    <!-- Pending -->
+    <div class="relative rounded-2xl bg-gradient-to-br from-amber-600/20 to-amber-900/10 border border-amber-700/30 p-5 overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 bg-amber-600/10 rounded-full blur-2xl"></div>
+      <p class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3">Pending Review</p>
+      <p class="text-4xl font-extrabold text-slate-900 dark:text-white">48</p>
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-2">Awaiting decision</p>
+      <div class="mt-4 flex items-center gap-1 text-amber-400 text-xs font-medium">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/></svg>
+        8 require urgency
+      </div>
+    </div>
+
+    <!-- Rejected -->
+    <div class="relative rounded-2xl bg-gradient-to-br from-rose-600/20 to-rose-900/10 border border-rose-700/30 p-5 overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 bg-rose-600/10 rounded-full blur-2xl"></div>
+      <p class="text-xs font-semibold text-rose-400 uppercase tracking-wider mb-3">Rejected</p>
+      <p class="text-4xl font-extrabold text-slate-900 dark:text-white">27</p>
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-2">Not meeting criteria</p>
+      <div class="mt-4 flex items-center gap-1 text-rose-400 text-xs font-medium">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 012 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        14.4% rejection rate
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main Content -->
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+    <!-- Applications Table -->
+    <div class="xl:col-span-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+        <div>
+          <h2 class="text-base font-semibold text-slate-900 dark:text-white">Recent Applications</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-0.5">Latest 10 submissions</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <select class="bg-slate-100 dark:bg-slate-700 border border-gray-700 text-slate-700 dark:text-slate-700 dark:text-slate-300 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+            <option>All Status</option>
+            <option>Pending</option>
+            <option>Approved</option>
+            <option>Rejected</option>
+          </select>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-slate-100 dark:bg-slate-800/50">
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Applicant</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Class Applied</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Status</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Date</th>
+              <th class="text-right px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-750/60">
+            {% for app in applications %}
+            <tr class="hover:bg-slate-100 dark:bg-slate-800/40 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-slate-900 dark:text-white text-xs font-bold">
+                    {{ app.applicant_name|slice:":1"|upper }}
+                  </div>
+                  <div>
+                    <p class="font-medium text-slate-900 dark:text-white">{{ app.applicant_name|default:"—" }}</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">ID: {{ app.id|default:"APP-001" }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-slate-700 dark:text-slate-700 dark:text-slate-300">{{ app.class_applied|default:"—" }}</td>
+              <td class="px-6 py-4">
+                {% if app.status == "approved" %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">Approved</span>
+                {% elif app.status == "pending" %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400 border border-amber-700/40">Pending</span>
+                {% elif app.status == "rejected" %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/50 text-rose-400 border border-rose-700/40">Rejected</span>
+                {% else %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-600 dark:text-slate-400 border border-gray-700">Unknown</span>
+                {% endif %}
+              </td>
+              <td class="px-6 py-4 text-slate-600 dark:text-slate-600 dark:text-slate-400 text-xs">{{ app.created_at|date:"M d, Y"|default:"—" }}</td>
+              <td class="px-6 py-4 text-right">
+                <a href="/admissions/{{ app.id }}/review/" class="text-xs text-emerald-400 hover:underline">Review</a>
+              </td>
+            </tr>
+            {% empty %}
+            <!-- Fallback demo rows -->
+            {% for i in "1234567890"|make_list %}
+            <tr class="hover:bg-slate-100 dark:bg-slate-800/40 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-slate-900 dark:text-white text-xs font-bold">
+                    {% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% elif forloop.counter == 5 %}E{% elif forloop.counter == 6 %}F{% elif forloop.counter == 7 %}G{% elif forloop.counter == 8 %}H{% elif forloop.counter == 9 %}I{% else %}J{% endif %}
+                  </div>
+                  <div>
+                    <p class="font-medium text-slate-900 dark:text-white">
+                      {% if forloop.counter == 1 %}Amara Okonkwo{% elif forloop.counter == 2 %}Babatunde Adeyemi{% elif forloop.counter == 3 %}Chidi Nwosu{% elif forloop.counter == 4 %}Damilola Eze{% elif forloop.counter == 5 %}Emmanuel Lawal{% elif forloop.counter == 6 %}Fatima Bello{% elif forloop.counter == 7 %}Grace Uche{% elif forloop.counter == 8 %}Hassan Musa{% elif forloop.counter == 9 %}Ijeoma Okeke{% else %}James Olusegun{% endif %}
+                    </p>
+                    <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">APP-2024-0{% if forloop.counter < 10 %}0{{ forloop.counter }}{% else %}{{ forloop.counter }}{% endif %}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+                {% if forloop.counter == 1 %}JSS 1{% elif forloop.counter == 2 %}SSS 1{% elif forloop.counter == 3 %}JSS 2{% elif forloop.counter == 4 %}SSS 2{% elif forloop.counter == 5 %}JSS 1{% elif forloop.counter == 6 %}SSS 3{% elif forloop.counter == 7 %}JSS 3{% elif forloop.counter == 8 %}SSS 1{% elif forloop.counter == 9 %}JSS 1{% else %}SSS 2{% endif %}
+              </td>
+              <td class="px-6 py-4">
+                {% if forloop.counter == 1 or forloop.counter == 3 or forloop.counter == 6 or forloop.counter == 9 %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">Approved</span>
+                {% elif forloop.counter == 2 or forloop.counter == 5 or forloop.counter == 7 or forloop.counter == 10 %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400 border border-amber-700/40">Pending</span>
+                {% else %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/50 text-rose-400 border border-rose-700/40">Rejected</span>
+                {% endif %}
+              </td>
+              <td class="px-6 py-4 text-slate-600 dark:text-slate-600 dark:text-slate-400 text-xs">
+                {% if forloop.counter == 1 %}Jul 14, 2024{% elif forloop.counter == 2 %}Jul 15, 2024{% elif forloop.counter == 3 %}Jul 15, 2024{% elif forloop.counter == 4 %}Jul 16, 2024{% elif forloop.counter == 5 %}Jul 16, 2024{% elif forloop.counter == 6 %}Jul 17, 2024{% elif forloop.counter == 7 %}Jul 17, 2024{% elif forloop.counter == 8 %}Jul 18, 2024{% elif forloop.counter == 9 %}Jul 18, 2024{% else %}Jul 19, 2024{% endif %}
+              </td>
+              <td class="px-6 py-4 text-right">
+                <a href="#" class="text-xs text-emerald-400 hover:underline">Review</a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="flex flex-col gap-5">
+
+      <!-- Status Breakdown -->
+      <div class="rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 p-5">
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-white mb-4">Application Pipeline</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-700 dark:text-slate-300">Approved</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-24 bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+                <div class="bg-emerald-500 h-1.5 rounded-full" style="width:60%"></div>
+              </div>
+              <span class="text-sm font-semibold text-slate-900 dark:text-white w-8 text-right">112</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-700 dark:text-slate-300">Pending</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-24 bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+                <div class="bg-amber-500 h-1.5 rounded-full" style="width:26%"></div>
+              </div>
+              <span class="text-sm font-semibold text-slate-900 dark:text-white w-8 text-right">48</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+              <span class="text-sm text-slate-700 dark:text-slate-700 dark:text-slate-300">Rejected</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-24 bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+                <div class="bg-rose-500 h-1.5 rounded-full" style="width:14%"></div>
+              </div>
+              <span class="text-sm font-semibold text-slate-900 dark:text-white w-8 text-right">27</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 p-5">
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-white mb-4">Quick Actions</h3>
+        <div class="space-y-2">
+          <a href="{% url 'admissions_application_new' %}" class="flex items-center gap-3 p-3 rounded-xl bg-emerald-600/10 hover:bg-emerald-600/20 border border-emerald-700/20 transition-all group">
+            <div class="w-8 h-8 rounded-lg bg-emerald-600/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </div>
+            <p class="text-sm font-medium text-emerald-300">Start New Application</p>
+          </a>
+          <a href="/admissions/bulk-import/" class="flex items-center gap-3 p-3 rounded-xl bg-sky-600/10 hover:bg-sky-600/20 border border-sky-700/20 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-sky-600/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            </div>
+            <p class="text-sm font-medium text-sky-300">Bulk Import CSV</p>
+          </a>
+          <a href="/admissions/pending/" class="flex items-center gap-3 p-3 rounded-xl bg-amber-600/10 hover:bg-amber-600/20 border border-amber-700/20 transition-all">
+            <div class="w-8 h-8 rounded-lg bg-amber-600/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+            <p class="text-sm font-medium text-amber-300">Review Pending (48)</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- Class Demand -->
+      <div class="rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 p-5">
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-white mb-3">Most Applied Classes</h3>
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-600 dark:text-slate-600 dark:text-slate-400">JSS 1</span>
+            <div class="flex items-center gap-2">
+              <div class="w-20 bg-slate-100 dark:bg-slate-700 rounded-full h-1"><div class="bg-emerald-500 h-1 rounded-full" style="width:85%"></div></div>
+              <span class="text-slate-900 dark:text-white font-medium text-xs">67</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-600 dark:text-slate-600 dark:text-slate-400">SSS 1</span>
+            <div class="flex items-center gap-2">
+              <div class="w-20 bg-slate-100 dark:bg-slate-700 rounded-full h-1"><div class="bg-emerald-500 h-1 rounded-full" style="width:60%"></div></div>
+              <span class="text-slate-900 dark:text-white font-medium text-xs">48</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-600 dark:text-slate-600 dark:text-slate-400">JSS 2</span>
+            <div class="flex items-center gap-2">
+              <div class="w-20 bg-slate-100 dark:bg-slate-700 rounded-full h-1"><div class="bg-emerald-500 h-1 rounded-full" style="width:40%"></div></div>
+              <span class="text-slate-900 dark:text-white font-medium text-xs">32</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-600 dark:text-slate-600 dark:text-slate-400">SSS 2</span>
+            <div class="flex items-center gap-2">
+              <div class="w-20 bg-slate-100 dark:bg-slate-700 rounded-full h-1"><div class="bg-emerald-500 h-1 rounded-full" style="width:25%"></div></div>
+              <span class="text-slate-900 dark:text-white font-medium text-xs">24</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

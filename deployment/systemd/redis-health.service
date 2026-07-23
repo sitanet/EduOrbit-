@@ -1,0 +1,9 @@
+[Unit]
+Description=Redis Health Check Service
+After=network.target redis-server.service
+
+[Service]
+Type=oneshot
+User=eduorbit
+Group=eduorbit
+ExecStart=/usr/bin/redis-cli ping

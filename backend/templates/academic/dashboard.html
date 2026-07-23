@@ -1,0 +1,242 @@
+{% extends "base/_document.html" %}
+{% block content %}
+
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 px-6 py-8">
+
+  <!-- Page Header -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+    <div>
+      <p class="text-xs font-semibold tracking-widest text-indigo-400 uppercase mb-1">EduOrbit · Academic</p>
+      <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Academic Management</h1>
+      <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-1">
+        Active Year:
+        <span class="text-indigo-300 font-semibold">{{ academic_year.name|default:"2024/2025 Academic Session" }}</span>
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="/academic/wizard/"
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white text-sm font-medium transition-all duration-200 shadow-lg shadow-indigo-900/40">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Setup Academic Year
+      </a>
+      <a href="/timetable/builder/"
+         class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:bg-slate-600 border border-gray-700 text-slate-800 dark:text-slate-200 text-sm font-medium transition-all duration-200">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3M3 11h18M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Manage Timetable
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+    <!-- Total Classes -->
+    <div class="relative rounded-2xl bg-gradient-to-br from-indigo-600/20 to-indigo-900/10 border border-indigo-700/30 p-5 overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 bg-indigo-600/10 rounded-full blur-2xl"></div>
+      <p class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3">Total Classes</p>
+      <p class="text-4xl font-extrabold text-slate-900 dark:text-white">{{ classes|length|default:"24" }}</p>
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-2">Across all arms &amp; levels</p>
+      <div class="mt-4 flex items-center gap-1 text-emerald-400 text-xs font-medium">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        +2 from last term
+      </div>
+    </div>
+
+    <!-- Subjects -->
+    <div class="relative rounded-2xl bg-gradient-to-br from-violet-600/20 to-violet-900/10 border border-violet-700/30 p-5 overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 bg-violet-600/10 rounded-full blur-2xl"></div>
+      <p class="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-3">Subjects</p>
+      <p class="text-4xl font-extrabold text-slate-900 dark:text-white">{{ subjects|length|default:"38" }}</p>
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-2">Active this session</p>
+      <div class="mt-4 flex items-center gap-1 text-emerald-400 text-xs font-medium">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+        +5 newly added
+      </div>
+    </div>
+
+    <!-- Teachers -->
+    <div class="relative rounded-2xl bg-gradient-to-br from-sky-600/20 to-sky-900/10 border border-sky-700/30 p-5 overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 bg-sky-600/10 rounded-full blur-2xl"></div>
+      <p class="text-xs font-semibold text-sky-400 uppercase tracking-wider mb-3">Teachers</p>
+      <p class="text-4xl font-extrabold text-slate-900 dark:text-white">56</p>
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-2">Assigned to active classes</p>
+      <div class="mt-4 flex items-center gap-1 text-sky-400 text-xs font-medium">
+        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM6 8a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        4 unassigned subjects
+      </div>
+    </div>
+
+    <!-- Academic Year -->
+    <div class="relative rounded-2xl bg-gradient-to-br from-amber-600/20 to-amber-900/10 border border-amber-700/30 p-5 overflow-hidden">
+      <div class="absolute -top-4 -right-4 w-20 h-20 bg-amber-600/10 rounded-full blur-2xl"></div>
+      <p class="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-3">Current Term</p>
+      <p class="text-2xl font-extrabold text-slate-900 dark:text-white">{{ academic_year.term|default:"First Term" }}</p>
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 mt-2">Sep 2024 – Dec 2024</p>
+      <div class="mt-4 w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5">
+        <div class="bg-amber-500 h-1.5 rounded-full" style="width: 68%"></div>
+      </div>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-1">68% of term completed</p>
+    </div>
+
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+    <!-- Active Classes Table -->
+    <div class="xl:col-span-2 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+        <div>
+          <h2 class="text-base font-semibold text-slate-900 dark:text-white">Active Classes</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-0.5">All registered classes this session</p>
+        </div>
+        <a href="/academic/classes/" class="text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors">View all →</a>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-slate-100 dark:bg-slate-800/50">
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Class</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Form Teacher</th>
+              <th class="text-left px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Subjects</th>
+              <th class="text-right px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Students</th>
+              <th class="text-right px-6 py-3 text-xs font-semibold text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider">Action</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-750/60">
+            {% for class in classes %}
+            <tr class="hover:bg-slate-100 dark:bg-slate-800/40 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-indigo-600/20 flex items-center justify-center text-indigo-400 text-xs font-bold">
+                    {{ class.name|slice:":2"|upper }}
+                  </div>
+                  <div>
+                    <p class="font-medium text-slate-900 dark:text-white">{{ class.name }}</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">{{ class.arm|default:"Arm A" }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-slate-700 dark:text-slate-700 dark:text-slate-300">{{ class.form_teacher|default:"—" }}</td>
+              <td class="px-6 py-4 text-slate-700 dark:text-slate-700 dark:text-slate-300">{{ class.subject_count|default:"9" }}</td>
+              <td class="px-6 py-4 text-right">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-900/40 text-emerald-400 text-xs font-bold">
+                  {{ class.student_count|default:"42" }}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <a href="/academic/classes/{{ class.id }}/" class="text-xs text-indigo-400 hover:underline">Manage</a>
+              </td>
+            </tr>
+            {% empty %}
+            <!-- Demo fallback data -->
+            {% for row in "123456789"|make_list %}
+            <tr class="hover:bg-slate-100 dark:bg-slate-800/40 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-indigo-600/20 flex items-center justify-center text-indigo-400 text-xs font-bold">
+                    {% if forloop.counter == 1 %}JS{% elif forloop.counter == 2 %}SS{% elif forloop.counter == 3 %}JS{% elif forloop.counter == 4 %}SS{% elif forloop.counter == 5 %}JS{% elif forloop.counter == 6 %}SS{% elif forloop.counter == 7 %}JS{% elif forloop.counter == 8 %}SS{% else %}BS{% endif %}
+                  </div>
+                  <div>
+                    <p class="font-medium text-slate-900 dark:text-white">
+                      {% if forloop.counter == 1 %}JSS 1A{% elif forloop.counter == 2 %}SSS 2B{% elif forloop.counter == 3 %}JSS 2A{% elif forloop.counter == 4 %}SSS 3A{% elif forloop.counter == 5 %}JSS 3B{% elif forloop.counter == 6 %}SSS 1C{% elif forloop.counter == 7 %}JSS 1B{% elif forloop.counter == 8 %}SSS 2A{% else %}Basic 5{% endif %}
+                    </p>
+                    <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">
+                      {% if forloop.counter == 1 %}Arm A{% elif forloop.counter == 2 %}Arm B{% elif forloop.counter == 3 %}Arm A{% elif forloop.counter == 4 %}Arm A{% elif forloop.counter == 5 %}Arm B{% elif forloop.counter == 6 %}Arm C{% elif forloop.counter == 7 %}Arm B{% elif forloop.counter == 8 %}Arm A{% else %}Arm A{% endif %}
+                    </p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+                {% if forloop.counter == 1 %}Mr. A. Okafor{% elif forloop.counter == 2 %}Mrs. B. Nwosu{% elif forloop.counter == 3 %}Mr. C. Eze{% elif forloop.counter == 4 %}Ms. D. Adeyemi{% elif forloop.counter == 5 %}Mr. E. Bello{% elif forloop.counter == 6 %}Mrs. F. Uche{% elif forloop.counter == 7 %}Mr. G. Lawal{% elif forloop.counter == 8 %}Mrs. H. Dike{% else %}Mr. I. Musa{% endif %}
+              </td>
+              <td class="px-6 py-4 text-slate-700 dark:text-slate-700 dark:text-slate-300">{% if forloop.counter == 1 %}10{% elif forloop.counter == 2 %}12{% elif forloop.counter == 3 %}11{% elif forloop.counter == 4 %}13{% elif forloop.counter == 5 %}10{% elif forloop.counter == 6 %}12{% elif forloop.counter == 7 %}11{% elif forloop.counter == 8 %}13{% else %}9{% endif %}</td>
+              <td class="px-6 py-4 text-right">
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-900/40 text-emerald-400 text-xs font-bold">
+                  {% if forloop.counter == 1 %}38{% elif forloop.counter == 2 %}45{% elif forloop.counter == 3 %}41{% elif forloop.counter == 4 %}39{% elif forloop.counter == 5 %}44{% elif forloop.counter == 6 %}37{% elif forloop.counter == 7 %}42{% elif forloop.counter == 8 %}40{% else %}36{% endif %}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <a href="#" class="text-xs text-indigo-400 hover:underline">Manage</a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="flex flex-col gap-5">
+
+      <!-- Quick Links -->
+      <div class="rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 p-5">
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-white mb-4">Quick Actions</h3>
+        <div class="space-y-2">
+          <a href="/academic/wizard/" class="flex items-center gap-3 p-3 rounded-xl bg-indigo-600/10 hover:bg-indigo-600/20 border border-indigo-700/20 hover:border-indigo-600/40 transition-all group">
+            <div class="w-8 h-8 rounded-lg bg-indigo-600/30 flex items-center justify-center group-hover:bg-indigo-600/50 transition-colors">
+              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-indigo-300">New Academic Year</p>
+              <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">Setup wizard</p>
+            </div>
+          </a>
+          <a href="/timetable/builder/" class="flex items-center gap-3 p-3 rounded-xl bg-violet-600/10 hover:bg-violet-600/20 border border-violet-700/20 hover:border-violet-600/40 transition-all group">
+            <div class="w-8 h-8 rounded-lg bg-violet-600/30 flex items-center justify-center group-hover:bg-violet-600/50 transition-colors">
+              <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3M3 11h18M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-violet-300">Timetable Builder</p>
+              <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">Schedule classes</p>
+            </div>
+          </a>
+          <a href="/academic/subjects/" class="flex items-center gap-3 p-3 rounded-xl bg-sky-600/10 hover:bg-sky-600/20 border border-sky-700/20 hover:border-sky-600/40 transition-all group">
+            <div class="w-8 h-8 rounded-lg bg-sky-600/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-sky-300">Manage Subjects</p>
+              <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">Add &amp; assign subjects</p>
+            </div>
+          </a>
+          <a href="/academic/promotions/" class="flex items-center gap-3 p-3 rounded-xl bg-amber-600/10 hover:bg-amber-600/20 border border-amber-700/20 hover:border-amber-600/40 transition-all group">
+            <div class="w-8 h-8 rounded-lg bg-amber-600/30 flex items-center justify-center">
+              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-amber-300">Student Promotions</p>
+              <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500">End-of-year processing</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <!-- Subject Distribution -->
+      <div class="rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 p-5">
+        <h3 class="text-sm font-semibold text-slate-900 dark:text-white mb-4">Subject Categories</h3>
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between text-xs mb-1"><span class="text-slate-600 dark:text-slate-600 dark:text-slate-400">Sciences</span><span class="text-slate-900 dark:text-white font-semibold">78%</span></div>
+            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5"><div class="bg-indigo-500 h-1.5 rounded-full" style="width:78%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1"><span class="text-slate-600 dark:text-slate-600 dark:text-slate-400">Humanities</span><span class="text-slate-900 dark:text-white font-semibold">62%</span></div>
+            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5"><div class="bg-violet-500 h-1.5 rounded-full" style="width:62%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1"><span class="text-slate-600 dark:text-slate-600 dark:text-slate-400">Languages</span><span class="text-slate-900 dark:text-white font-semibold">91%</span></div>
+            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5"><div class="bg-sky-500 h-1.5 rounded-full" style="width:91%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1"><span class="text-slate-600 dark:text-slate-600 dark:text-slate-400">Tech &amp; Vocational</span><span class="text-slate-900 dark:text-white font-semibold">55%</span></div>
+            <div class="w-full bg-slate-100 dark:bg-slate-700 rounded-full h-1.5"><div class="bg-amber-500 h-1.5 rounded-full" style="width:55%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

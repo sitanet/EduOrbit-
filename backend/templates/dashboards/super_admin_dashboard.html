@@ -1,0 +1,60 @@
+{% extends 'base/_document.html' %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+    <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-slate-900 dark:text-white">Super Admin Dashboard</h1>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% include 'components/stat_card.html' with title="Total Schools" value="142" icon="office-building" trend="+12%" trend_color="text-green-500" %}
+        {% include 'components/stat_card.html' with title="Active Users" value="24.5K" icon="users" trend="+5.2%" trend_color="text-green-500" %}
+        {% include 'components/stat_card.html' with title="Monthly MRR" value="$124,500" icon="currency-dollar" trend="+8.4%" trend_color="text-green-500" %}
+        {% include 'components/stat_card.html' with title="Server Uptime" value="99.99%" icon="server" trend="Stable" trend_color="text-blue-500" %}
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- ApexChart Placeholder -->
+        <div class="lg:col-span-2 bg-white dark:bg-slate-100 dark:bg-slate-700 rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-slate-900 dark:text-white mb-4">Revenue Growth</h2>
+            <div id="revenue-chart" class="w-full h-80 bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 rounded flex items-center justify-center border border-dashed border-gray-300 dark:border-gray-600">
+                <span class="text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400 font-medium">ApexChart Placeholder</span>
+            </div>
+        </div>
+
+        <!-- Recent School Signups -->
+        <div class="bg-white dark:bg-slate-100 dark:bg-slate-700 rounded-lg shadow p-6">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-slate-900 dark:text-white mb-4">Recent Signups</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400">
+                        <tr>
+                            <th scope="col" class="px-4 py-3">School Name</th>
+                            <th scope="col" class="px-4 py-3">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b dark:border-gray-700">
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Lincoln High</td>
+                            <td class="px-4 py-3">Today</td>
+                        </tr>
+                        <tr class="border-b dark:border-gray-700">
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Oakridge Academy</td>
+                            <td class="px-4 py-3">Yesterday</td>
+                        </tr>
+                        <tr class="border-b dark:border-gray-700">
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Springfield Elem</td>
+                            <td class="px-4 py-3">Oct 12</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Westview Middle</td>
+                            <td class="px-4 py-3">Oct 10</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

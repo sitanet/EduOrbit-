@@ -1,0 +1,15 @@
+[Unit]
+Description=Celery Beat Service
+After=network.target
+
+[Service]
+Type=simple
+User=eduorbit
+Group=eduorbit
+EnvironmentFile=/var/www/eduorbit/backend/.env
+WorkingDirectory=/var/www/eduorbit/backend
+ExecStart=/var/www/eduorbit/venv/bin/celery -A backend.celery_app beat --pidfile=/var/run/celery/beat.pid --logfile=/var/log/eduorbit/celerybeat.log --loglevel=INFO
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

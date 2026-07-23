@@ -1,0 +1,92 @@
+{% extends "base/_document.html" %}
+{% block title %}Library — EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="md:flex md:items-center md:justify-between mb-8">
+    <div class="min-w-0 flex-1">
+      <p class="text-xs font-semibold tracking-widest text-indigo-400 uppercase mb-1">EduOrbit · Academics</p>
+      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">School Library</h2>
+      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Track book copies stock count, catalog loans, student library tickets, and overdue returns.</p>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <a href="/library/catalog/" class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
+        Book Catalog
+      </a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Total Books</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ books|length|default:"1,452" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Across 24 genres &amp; subjects</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Issued Books</p>
+      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ recent_issues|length|default:"48" }}</p>
+      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">On active loan sessions</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Overdue Returns</p>
+      <p class="text-3xl font-bold text-rose-500">12</p>
+      <p class="text-xs text-rose-400 mt-2">Fines alerts sent</p>
+    </div>
+    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
+      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Library Tickets</p>
+      <p class="text-3xl font-bold text-emerald-400">410</p>
+      <p class="text-xs text-emerald-400 mt-2">Active student members</p>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
+      <h3 class="font-semibold text-slate-900 dark:text-white">Recent Borrowed Books</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
+          <tr>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Book Title</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Borrower</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Issue Date</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Due Date</th>
+            <th class="text-left px-6 py-3 font-semibold uppercase">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+          {% for issue in recent_issues %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ issue.copy.book.title }}</td>
+            <td class="px-6 py-4">{{ issue.borrower.get_full_name }}</td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">{{ issue.issued_at|date:"M d, Y" }}</td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">{{ issue.due_date|date:"M d, Y" }}</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">ISSUED</span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">New School Physics for Senior Secondary</td>
+            <td class="px-6 py-4">Tunde Adeyemi (Student)</td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">July 15, 2026</td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">July 29, 2026</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">ON LOAN</span>
+            </td>
+          </tr>
+          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
+            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Oxford English Dictionary (12th Edition)</td>
+            <td class="px-6 py-4">Amina Yusuf (Student)</td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">July 10, 2026</td>
+            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">July 17, 2026</td>
+            <td class="px-6 py-4">
+              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-900/50 text-rose-400 border border-rose-700/40">OVERDUE</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

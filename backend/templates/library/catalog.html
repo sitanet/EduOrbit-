@@ -1,0 +1,42 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Book Catalog (OPAC) - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1000px; margin: 0 auto;">
+  <div style="margin-bottom: var(--spacing-lg);">
+    <h2 style="font-weight: var(--font-weight-semibold);">Online Public Access Catalog (OPAC)</h2>
+    <p style="color: var(--color-text-secondary);">Browse titles collections, check physical copies shelf locations, and download resources.</p>
+  </div>
+
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
+    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Search Catalog</h3>
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Book Title</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Authors</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Category</th>
+          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">ISBN</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+        <tr style="border-bottom: 1px solid var(--color-border);">
+          <td style="padding: var(--spacing-md);"><strong>{{ book.title }}</strong></td>
+          <td style="padding: var(--spacing-md);">
+            {% for author in book.authors.all %}{{ author.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+          </td>
+          <td style="padding: var(--spacing-md);">{{ book.category }}</td>
+          <td style="padding: var(--spacing-md);">{{ book.isbn }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No books registered in OPAC catalog.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
