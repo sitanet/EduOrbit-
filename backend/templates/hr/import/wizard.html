@@ -1,0 +1,44 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Import Wizard — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <div>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Excel & CSV Bulk Import Wizard</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1">Import Employees, Attendance Records, Leave Balances, or Applicants with validation preview.</p>
+    </div>
+
+    <!-- Step Progress Indicator -->
+    <div class="flex items-center justify-between bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-2 text-sm font-bold text-indigo-600 dark:text-indigo-400">
+            <span class="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs">1</span> Upload File
+        </div>
+        <div class="w-12 h-0.5 bg-slate-200 dark:bg-slate-700"></div>
+        <div class="flex items-center gap-2 text-sm font-medium text-slate-400">
+            <span class="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs">2</span> Map Columns
+        </div>
+        <div class="w-12 h-0.5 bg-slate-200 dark:bg-slate-700"></div>
+        <div class="flex items-center gap-2 text-sm font-medium text-slate-400">
+            <span class="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs">3</span> Preview & Import
+        </div>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 border border-slate-200 dark:border-slate-700 text-center space-y-4">
+        <div class="w-16 h-16 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 mx-auto flex items-center justify-center text-2xl font-bold">
+            📥
+        </div>
+        <div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Drop your Excel (.xlsx) or CSV file here</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Supports Employee master lists, Attendance check-in logs, and Leave balance allocations.</p>
+        </div>
+        <input type="file" class="hidden" id="file-upload">
+        <button onclick="document.getElementById('file-upload').click()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl transition-all shadow-md">
+            Choose File from Device
+        </button>
+    </div>
+
+</div>
+{% endblock %}

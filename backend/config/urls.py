@@ -1,13 +1,15 @@
 from django.urls import path, include
-from django.views.generic import RedirectView, TemplateView
+from django.views.generic import TemplateView
 from backend.apps.communication.views_web import DemoRequestWebView, DocumentationWebView
+from backend.apps.identity.views_demo import DemoCredentialsView
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='landing.html'), name='landing_page'),
+    path('demo-credentials/', DemoCredentialsView.as_view(), name='demo_credentials'),
     path('request-demo/', DemoRequestWebView.as_view(), name='demo_request_form'),
     path('request-demo/submit/', DemoRequestWebView.as_view(), name='demo_request_submit'),
     path('docs/', DocumentationWebView.as_view(), name='documentation_index'),
-    path('dashboard/', RedirectView.as_view(url='/tenants/tenant-dashboard/'), name='dashboard_redirect'),
+    path('dashboard/', include('backend.apps.dashboard.urls')),
     path('', include('backend.apps.identity.urls')),
     path('tenants/', include('backend.apps.tenants.urls')),
     path('academic/', include('backend.apps.academic.urls')),
@@ -23,6 +25,7 @@ urlpatterns = [
     path('efbm/', include('backend.apps.efbm.urls')),
     path('communication/', include('backend.apps.communication.urls')),
     path('hr/', include('backend.apps.hr.urls')),
+    path('api/v1/hr/', include('backend.apps.hr.api.urls')),
     path('library/', include('backend.apps.library.urls')),
     path('transport/', include('backend.apps.transport.urls')),
     path('hostel/', include('backend.apps.hostel.urls')),
@@ -34,5 +37,6 @@ urlpatterns = [
     path('portal/', include('backend.apps.portal.urls')),
     path('administration/', include('backend.apps.administration.urls')),
     path('ai/', include('backend.apps.ai.urls')),
+    path('integration/', include('backend.apps.integration.urls')),
     path('health/', include('backend.apps.core.health_urls')),
 ]

@@ -1,0 +1,23 @@
+{% extends 'base/_document.html' %}
+{% block title %}Access Denied — EduOrbit{% endblock %}
+{% block content %}
+<div class="min-h-screen flex flex-col items-center justify-center p-6">
+  <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-10 max-w-lg w-full text-center border border-red-200 dark:border-red-900">
+    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+      <svg class="w-10 h-10 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+      </svg>
+    </div>
+    <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-3">403 — Access Denied</h1>
+    <p class="text-slate-500 dark:text-slate-400 mb-6">
+      You do not have permission to view this dashboard.<br>
+      Your role: <span class="font-semibold text-indigo-600 dark:text-indigo-400">{{ user_role|default:"unknown" }}</span>
+    </p>
+    <a href="{{ correct_url }}"
+       class="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors">
+      ← Go to My Dashboard
+    </a>
+  </div>
+</div>
+{% endblock %}

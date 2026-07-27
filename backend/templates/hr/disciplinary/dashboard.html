@@ -1,0 +1,75 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Disciplinary Cases — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Disciplinary & Compliance Cases</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Track queries, warnings, investigations, hearings, and resolutions.</p>
+        </div>
+        <button onclick="document.getElementById('disciplinaryModal').classList.remove('hidden')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl transition-all shadow-sm cursor-pointer">
+            + File Disciplinary Case
+        </button>
+    </div>
+
+    <!-- File Disciplinary Case Modal -->
+    <div id="disciplinaryModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-md w-full border border-slate-200 dark:border-slate-700 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">File Disciplinary Query</h3>
+                <button onclick="document.getElementById('disciplinaryModal').classList.add('hidden')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('Disciplinary Query issued successfully!'); document.getElementById('disciplinaryModal').classList.add('hidden');" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Employee Name</label>
+                    <input type="text" value="David Eze (Biology Teacher)" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Offense Category</label>
+                    <select class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                        <option value="Absence">Unexcused Absence / Tardiness</option>
+                        <option value="Conduct">Professional Misconduct</option>
+                        <option value="Insubordination">Insubordination</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Incident Summary</label>
+                    <textarea rows="3" required placeholder="Describe the incident details..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"></textarea>
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="document.getElementById('disciplinaryModal').classList.add('hidden')" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 font-semibold">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-md">Issue Query</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {% include 'hr/components/_stat_card.html' with title="Open Cases" value="1 Case" subtitle="Under investigation" icon="users" %}
+        {% include 'hr/components/_stat_card.html' with title="Pending Queries" value="0 Pending" subtitle="All queries answered" icon="clock" %}
+        {% include 'hr/components/_stat_card.html' with title="Resolved (2026)" value="3 Cases" subtitle="Closed with resolution" icon="calendar" %}
+        {% include 'hr/components/_stat_card.html' with title="Suspension Status" value="0 Active" subtitle="No active suspensions" icon="cash" %}
+    </div>
+
+    <!-- Active Case View -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Case Registry</h3>
+        <div class="p-4 bg-slate-50 dark:bg-slate-750/50 rounded-xl border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-slate-900 dark:text-white">CASE-2026-001: Unexcused Absence Inquiry</span>
+                    {% include 'hr/components/_badge.html' with status='Pending' %}
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Employee: David Eze • Reported by: Chioma Okafor (HOD)</p>
+            </div>
+            <button class="px-3 py-1.5 bg-indigo-500/10 text-indigo-600 rounded-lg text-xs font-semibold hover:bg-indigo-500/20">
+                View Case Timeline
+            </button>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Rewards & Wall of Fame — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Rewards & Recognition Wall</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Celebrate employee excellence, monthly awards, and outstanding contributions.</p>
+        </div>
+        <button onclick="document.getElementById('nominateModal').classList.remove('hidden')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl transition-all shadow-sm cursor-pointer">
+            🏆 Nominate Employee
+        </button>
+    </div>
+
+    <!-- Nominate Employee Modal -->
+    <div id="nominateModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-md w-full border border-slate-200 dark:border-slate-700 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Nominate Peer for Award</h3>
+                <button onclick="document.getElementById('nominateModal').classList.add('hidden')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('Peer Nomination submitted for review!'); document.getElementById('nominateModal').classList.add('hidden');" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Nominee Name</label>
+                    <input type="text" value="Chioma Okafor (HOD Sciences)" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Award Category</label>
+                    <select class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                        <option value="Teaching">Teaching Excellence Award</option>
+                        <option value="Innovation">Innovation in Operations</option>
+                        <option value="Leadership">Outstanding Leadership</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Reason for Nomination</label>
+                    <textarea rows="3" required placeholder="Describe why this employee deserves recognition..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"></textarea>
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="document.getElementById('nominateModal').classList.add('hidden')" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 font-semibold">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold rounded-lg shadow-md">Submit Nomination</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Spotlight Employee of Month -->
+    <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 rounded-2xl p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-6">
+            <div class="w-20 h-20 rounded-full bg-white/20 border-4 border-white/40 flex items-center justify-center font-bold text-3xl text-amber-100 shadow-inner">
+                DE
+            </div>
+            <div>
+                <div class="inline-block px-3 py-1 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider mb-2">⭐ Employee of the Month — July 2026</div>
+                <h2 class="text-3xl font-extrabold tracking-tight">David Eze</h2>
+                <p class="text-amber-100 text-sm mt-1">Biology Teacher • Department of Sciences</p>
+                <p class="text-xs text-amber-50 mt-2 max-w-xl italic">"Recognized for outstanding student mentorship and leading the school Science Olympiad team to 1st place in the state finals!"</p>
+            </div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20 text-center min-w-[160px]">
+            <div class="text-2xl font-extrabold text-white">₦50,000</div>
+            <div class="text-xs text-amber-100 mt-0.5">Bonus Awarded</div>
+        </div>
+    </div>
+
+    <!-- Wall of Fame Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <div class="text-amber-500 text-2xl mb-2">🥇</div>
+            <h3 class="font-bold text-slate-900 dark:text-white">Teaching Excellence Award</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Chioma Okafor — Head of Sciences</p>
+            <div class="mt-4 text-xs text-slate-400 font-medium">Awarded Q2 2026</div>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <div class="text-indigo-500 text-2xl mb-2">🚀</div>
+            <h3 class="font-bold text-slate-900 dark:text-white">Innovation in Administrative Ops</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Tunde Bakare — Payroll Lead</p>
+            <div class="mt-4 text-xs text-slate-400 font-medium">Awarded Q2 2026</div>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <div class="text-emerald-500 text-2xl mb-2">🌟</div>
+            <h3 class="font-bold text-slate-900 dark:text-white">Long Service Award (10 Years)</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Grace Adeyemi — HR Director</p>
+            <div class="mt-4 text-xs text-slate-400 font-medium">Awarded Q1 2026</div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

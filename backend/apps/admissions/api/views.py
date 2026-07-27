@@ -1,61 +1,57 @@
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
-from django.shortcuts import get_object_or_404
-from backend.apps.admissions.models import (
-    AdmissionCampaign, AdmissionIntake, AdmissionApplication, ApplicationDocument, AdmissionOffer
-)
-from backend.apps.admissions.api.serializers import (
-    CampaignSerializer, IntakeSerializer, ApplicationSerializer,
-    ApplicationDocumentSerializer, OfferSerializer
-)
-from backend.apps.admissions.services import EnrollmentService
-from backend.apps.core.events import event_bus, DomainEvent
+from django.db import transaction
+from backend.apps.admissions.models import AdmissionApplication
+from backend.apps.academic.models import AcademicYear, AcademicClass
+from backend.apps.admissions.services import AdmissionConversionService
 
-class CampaignAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class ApplicationListAPIView(APIView):
+    """
+    List Admission Applications for current tenant.
+    """
     def get(self, request):
-        school_id = request.query_params.get('school_id')
-        campaigns = AdmissionCampaign.objects.filter(school_id=school_id, tenant=request.tenant)
-        serializer = CampaignSerializer(campaigns, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        tenant = getattr(request, 'tenant', None)
+        apps_qs = AdmissionApplication.objects.filter(tenant=tenant).select_related('applicant__person', 'intake__campaign')
+        data = [
+            {
+                "id": str(a.id),
+                "applicant_number": a.applicant.applicant_number,
+                "applicant_name": f"{a.applicant.person.first_name} {a.applicant.person.last_name}",
+                "intake": a.intake.name,
+                "status": a.status,
+                "application_date": a.application_date.isoformat()
+            }
+            for a in apps_qs
+        ]
+        return Response({"status": "success", "count": len(data), "data": data})
 
-
-class IntakeAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        campaign_id = request.query_params.get('campaign_id')
-        intakes = AdmissionIntake.objects.filter(campaign_id=campaign_id, tenant=request.tenant)
-        serializer = IntakeSerializer(intakes, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class ApplicationAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        applications = AdmissionApplication.objects.filter(tenant=request.tenant)
-        serializer = ApplicationSerializer(applications, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class EnrollmentAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class ApplicantConversionAPIView(APIView):
+    """
+    One-click conversion of an applicant to an enrolled student.
+    """
+    @transaction.atomic
     def post(self, request):
+        tenant = getattr(request, 'tenant', None)
         application_id = request.data.get('application_id')
-        class_id = request.data.get('class_id')
-        
+        academic_year_id = request.data.get('academic_year_id')
+        academic_class_id = request.data.get('academic_class_id')
+
+        if not application_id or not academic_year_id or not academic_class_id:
+            return Response({"status": "error", "message": "application_id, academic_year_id, and academic_class_id are required."}, status=status.HTTP_400_BAD_REQUEST)
+
         try:
-            student_profile = EnrollmentService.enroll_applicant(
-                application_id=application_id,
-                class_id=class_id
+            application = AdmissionApplication.objects.get(id=application_id, tenant=tenant)
+            academic_year = AcademicYear.objects.get(id=academic_year_id, tenant=tenant)
+            academic_class = AcademicClass.objects.get(id=academic_class_id, tenant=tenant)
+
+            res = AdmissionConversionService.convert_applicant_to_student(
+                application=application,
+                academic_year=academic_year,
+                academic_class=academic_class
             )
-            return Response({
-                "detail": "Applicant successfully promoted to Student Profile.",
-                "student_number": student_profile.student_number
-            }, status=status.HTTP_201_CREATED)
+            return Response({"status": "success", "message": "Applicant converted to student successfully.", "data": res}, status=status.HTTP_200_OK)
+        except AdmissionApplication.DoesNotExist:
+            return Response({"status": "error", "message": "Application not found."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)

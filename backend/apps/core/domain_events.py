@@ -1,0 +1,26 @@
+class DomainEvents:
+    EMPLOYEE_CREATED = "employee.created"
+    EMPLOYEE_UPDATED = "employee.updated"
+    EMPLOYEE_TERMINATED = "employee.terminated"
+    LEAVE_REQUESTED = "leave.requested"
+    LEAVE_APPROVED = "leave.approved"
+    LEAVE_REJECTED = "leave.rejected"
+    CANDIDATE_HIRED = "candidate.hired"
+    ONBOARDING_STARTED = "onboarding.started"
+    ONBOARDING_COMPLETED = "onboarding.completed"
+    
+    PAYROLL_GENERATED = "payroll.generated"
+    PAYROLL_APPROVED = "payroll.approved"
+    PAYROLL_POSTED = "payroll.posted"
+
+    # Attendance Domain Events
+    ATTENDANCE_CLOCKED_IN = "attendance.clocked_in"
+    ATTENDANCE_CLOCKED_OUT = "attendance.clocked_out"
+    ATTENDANCE_GENERATED = "attendance.generated"
+    ATTENDANCE_ADJUSTED = "attendance.adjusted"
+    ATTENDANCE_APPROVED = "attendance.approved"
+    ATTENDANCE_RECALCULATED = "attendance.recalculated"
+    ATTENDANCE_AUTO_CLOSED = "attendance.auto_closed"
+    ATTENDANCE_SUMMARY_GENERATED = "attendance.summary_generated"
+    ATTENDANCE_ABSENT_GENERATED = "attendance.absent_generated"
+    ATTENDANCE_OVERTIME_CALCULATED = "attendance.overtime_calculated"

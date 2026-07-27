@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduOrbit HRMS v1.0.0 — Interactive User Manual & Walkthrough</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { 50: '#eef2ff', 100: '#e0e7ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca', 900: '#312e81' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .gradient-text { background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gradient-bg { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen selection:bg-indigo-500 selection:text-white">
+
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-50 glass border-b border-slate-800/80 px-6 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg shadow-indigo-500/20 font-extrabold text-white text-xl">
+                EO
+            </div>
+            <div>
+                <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                    EduOrbit HRMS
+                    <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">v1.0.0 RELEASE</span>
+                </h1>
+                <p class="text-xs text-slate-400">Interactive User Manual & Step-by-Step Demonstration Suite</p>
+            </div>
+        </div>
+
+        <!-- Search & Controls -->
+        <div class="flex items-center space-x-4">
+            <div class="relative w-72">
+                <svg class="w-4 h-4 absolute left-3 top-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" id="searchInput" oninput="filterTopics()" placeholder="Search guides, credentials, URLs..." class="w-full bg-slate-900/90 border border-slate-700/60 rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+            </div>
+
+            <!-- Role Selector -->
+            <select id="roleSelector" onchange="filterByRole()" class="bg-slate-900 border border-slate-700 text-xs text-indigo-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="all">🌐 All Roles View</option>
+                <option value="hr_admin">👑 HR Admin / Director</option>
+                <option value="payroll_admin">💵 Payroll Specialist</option>
+                <option value="supervisor">👥 Supervisor / HOD</option>
+                <option value="staff">👤 Staff Member (ESS)</option>
+                <option value="finance">🏛️ Finance Officer</option>
+            </select>
+
+            <button onclick="startLiveDemo()" class="gradient-bg text-white px-4 py-1.5 rounded-lg text-xs font-semibold shadow-md hover:opacity-90 transition-all flex items-center gap-1.5 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Start Live Demo Simulator
+            </button>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-8">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="col-span-3 space-y-6 sticky top-24 h-[calc(100vh-7rem)] overflow-y-auto pr-2">
+            
+            <div class="glass p-4 rounded-xl space-y-3">
+                <div class="flex justify-between items-center text-xs font-semibold text-slate-300">
+                    <span>Documentation Index</span>
+                    <span class="text-indigo-400 font-bold">100%</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                    <div class="gradient-bg h-full w-full"></div>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <nav class="space-y-1 text-xs" id="navContainer">
+                <a href="#roles" onclick="setActiveNav('roles')" class="nav-item active flex items-center justify-between px-3 py-2 rounded-lg text-indigo-300 bg-indigo-600/20 font-medium border-l-2 border-indigo-500"><span>🔑 0. Demo Credentials & Roles</span> <span class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-400">Security</span></a>
+                <a href="#ess" onclick="setActiveNav('ess')" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"><span>👤 1. Employee Self-Service</span> <span class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-400">Portal</span></a>
+                <a href="#dashboard" onclick="setActiveNav('dashboard')" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"><span>📊 2. HR Master Dashboard</span> <span class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-400">Executive</span></a>
+                <a href="#directory" onclick="setActiveNav('directory')" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"><span>📁 3. Staff Directory</span> <span class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-400">Admin</span></a>
+                <a href="#recruitment" onclick="setActiveNav('recruitment')" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"><span>💼 4. Recruitment ATS</span> <span class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-400">Hiring</span></a>
+                <a href="#payroll" onclick="setActiveNav('payroll')" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"><span>💵 5. Payroll & Tax Engine</span> <span class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-400">Payroll</span></a>
+                <a href="#finance" onclick="setActiveNav('finance')" class="nav-item flex items-center justify-between px-3 py-2 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-900/50"><span>🏛️ 6. Finance GL Postings</span> <span class="bg-slate-800 px-1.5 py-0.5 rounded text-[10px] text-slate-400">Finance</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="col-span-9 space-y-10">
+
+            <!-- Hero Welcome Banner -->
+            <div class="relative overflow-hidden rounded-2xl glass p-8 border border-indigo-500/20 shadow-2xl">
+                <div class="relative z-10 space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-medium">
+                        ✨ Enterprise HR User Guide & Walkthrough Suite
+                    </div>
+                    <h2 class="text-3xl font-extrabold tracking-tight text-white">
+                        Welcome to <span class="gradient-text">EduOrbit HRMS</span> User Manual
+                    </h2>
+                    <p class="text-slate-300 text-sm max-w-2xl leading-relaxed">
+                        Step-by-step interactive manual covering every HR screen, role credentials, 1-click candidate hiring, dual-approval leave workflows, statutory tax calculation engines, and double-entry General Ledger postings.
+                    </p>
+
+                    <!-- Quick Stats Badges -->
+                    <div class="pt-4 grid grid-cols-4 gap-4">
+                        <div class="glass-card p-3.5 rounded-xl border border-slate-800">
+                            <div class="text-xs text-slate-400">Total HR Modules</div>
+                            <div class="text-lg font-extrabold text-white mt-1">22 Screens</div>
+                        </div>
+                        <div class="glass-card p-3.5 rounded-xl border border-slate-800">
+                            <div class="text-xs text-slate-400">Role Tiers</div>
+                            <div class="text-lg font-extrabold text-indigo-400 mt-1">6 Security Roles</div>
+                        </div>
+                        <div class="glass-card p-3.5 rounded-xl border border-slate-800">
+                            <div class="text-xs text-slate-400">Double-Entry Balance</div>
+                            <div class="text-lg font-extrabold text-emerald-400 mt-1">₦1.1M = ₦1.1M</div>
+                        </div>
+                        <div class="glass-card p-3.5 rounded-xl border border-slate-800">
+                            <div class="text-xs text-slate-400">Status</div>
+                            <div class="text-lg font-extrabold text-purple-400 mt-1">v1.0.0 LOCKED</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role Credentials & Capabilities Card Section -->
+            <section id="roles" class="module-sec glass rounded-2xl p-6 border border-slate-800 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-2xl">🔑</span>
+                        <div>
+                            <h3 class="text-base font-bold text-white">0. Demo Role Credentials & Capabilities Guide</h3>
+                            <p class="text-xs text-slate-400">Pre-seeded login credentials and permission boundaries for all 5 demo accounts (Password: Demo@2026).</p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 text-xs rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-mono">Demo Accounts</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 text-xs">
+                    
+                    <!-- Role 1: HR Admin -->
+                    <div class="glass-card p-5 rounded-xl border border-indigo-500/30 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+                            <span class="font-bold text-indigo-300 text-sm flex items-center gap-2">👑 HR Admin / Director (Grace Adeyemi)</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono text-[11px] border border-indigo-500/30">Full System Control</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 py-1.5 font-mono text-slate-300 bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                            <div><span class="text-slate-500">Username:</span> <strong class="text-white">hr.admin</strong></div>
+                            <div><span class="text-slate-500">Email:</span> <strong class="text-white">hr.admin@eduorbit.com</strong></div>
+                            <div><span class="text-slate-500">Password:</span> <strong class="text-emerald-400">Demo@2026</strong></div>
+                        </div>
+                        <div class="space-y-1.5 pt-1">
+                            <div class="text-slate-400 font-semibold text-xs uppercase tracking-wider">Capabilities & What They Can Do:</div>
+                            <ul class="space-y-1.5 text-slate-300 text-xs">
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Full administrative authority across all 22 HR web pages.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Add, edit, promote, transfer, or terminate staff profiles in Staff Directory.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Publish job vacancies, screen candidates, schedule interview panels, and execute 1-click hiring in Recruitment ATS.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Grant final HR approvals on leave applications and deduct leave balances.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Configure statutory PAYE tax brackets, pension rates (8%), NHF (2.5%), and shift grace minutes (15 mins).</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Inspect security audit logs, import CSV staff files, and run bulk operations.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Role 2: Payroll Admin -->
+                    <div class="glass-card p-5 rounded-xl border border-emerald-500/30 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+                            <span class="font-bold text-emerald-300 text-sm flex items-center gap-2">💵 Payroll Specialist (Tunde Bakare)</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[11px] border border-emerald-500/30">Payroll & Tax Processing</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 py-1.5 font-mono text-slate-300 bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                            <div><span class="text-slate-500">Username:</span> <strong class="text-white">payroll.admin</strong></div>
+                            <div><span class="text-slate-500">Email:</span> <strong class="text-white">payroll.admin@eduorbit.com</strong></div>
+                            <div><span class="text-slate-500">Password:</span> <strong class="text-emerald-400">Demo@2026</strong></div>
+                        </div>
+                        <div class="space-y-1.5 pt-1">
+                            <div class="text-slate-400 font-semibold text-xs uppercase tracking-wider">Capabilities & What They Can Do:</div>
+                            <ul class="space-y-1.5 text-slate-300 text-xs">
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Select active accounting periods (e.g. July 2026) and trigger <code class="text-indigo-300 font-mono">PayrollCalculationEngineV1</code>.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>View gross salaries, statutory PAYE tax, 8% pension, 2.5% NHF, and net pay breakdowns.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Approve payroll runs and post double-entry journal entries to the Finance General Ledger.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Generate individual PDF payslips for employees.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-rose-400 font-bold shrink-0 mt-0.5">🔒</span> <span class="text-rose-300">Restricted: Accessing Staff Directory admin or Settings returns 403 Forbidden.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Role 3: Supervisor / HOD -->
+                    <div class="glass-card p-5 rounded-xl border border-amber-500/30 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+                            <span class="font-bold text-amber-300 text-sm flex items-center gap-2">👥 Department Head / Supervisor (Chioma Okafor)</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[11px] border border-amber-500/30">Team Management</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 py-1.5 font-mono text-slate-300 bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                            <div><span class="text-slate-500">Username:</span> <strong class="text-white">dept.manager</strong></div>
+                            <div><span class="text-slate-500">Email:</span> <strong class="text-white">dept.manager@eduorbit.com</strong></div>
+                            <div><span class="text-slate-500">Password:</span> <strong class="text-emerald-400">Demo@2026</strong></div>
+                        </div>
+                        <div class="space-y-1.5 pt-1">
+                            <div class="text-slate-400 font-semibold text-xs uppercase tracking-wider">Capabilities & What They Can Do:</div>
+                            <ul class="space-y-1.5 text-slate-300 text-xs">
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>View direct report staff grid and monitor daily attendance status (Present, Late, Absent).</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Approve or reject first-level leave requests from direct reports.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Approve attendance clock adjustment requests for missed check-outs.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Conduct KPI appraisals and submit competency ratings for team members.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-rose-400 font-bold shrink-0 mt-0.5">🔒</span> <span class="text-rose-300">Restricted: Accessing Payroll Console or HR Settings returns 403 Forbidden.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Role 4: Staff Member -->
+                    <div class="glass-card p-5 rounded-xl border border-purple-500/30 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+                            <span class="font-bold text-purple-300 text-sm flex items-center gap-2">👤 Staff Member / Teacher (David Eze)</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono text-[11px] border border-purple-500/30">Employee Self-Service</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 py-1.5 font-mono text-slate-300 bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                            <div><span class="text-slate-500">Username:</span> <strong class="text-white">staff.member</strong></div>
+                            <div><span class="text-slate-500">Email:</span> <strong class="text-white">staff.member@eduorbit.com</strong></div>
+                            <div><span class="text-slate-500">Password:</span> <strong class="text-emerald-400">Demo@2026</strong></div>
+                        </div>
+                        <div class="space-y-1.5 pt-1">
+                            <div class="text-slate-400 font-semibold text-xs uppercase tracking-wider">Capabilities & What They Can Do:</div>
+                            <ul class="space-y-1.5 text-slate-300 text-xs">
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Access personal Employee Self-Service (ESS) workspace at <code class="text-indigo-300 font-mono">/hr/ess/</code>.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Clock in and clock out using the ⏰ Clock In / Out terminal button.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Submit leave applications and view real-time remaining leave balances.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Download digital PDF payslips for monthly salary runs.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>View assigned school assets (laptop, office keys, uniform), and nominate colleagues on Wall of Fame.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Role 5: Finance Officer -->
+                    <div class="glass-card p-5 rounded-xl border border-blue-500/30 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2.5">
+                            <span class="font-bold text-blue-300 text-sm flex items-center gap-2">🏛️ Finance Officer (Fatima Bello)</span>
+                            <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 font-mono text-[11px] border border-blue-500/30">GL Postings & Audit</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 py-1.5 font-mono text-slate-300 bg-slate-900/90 p-2.5 rounded-lg border border-slate-800">
+                            <div><span class="text-slate-500">Username:</span> <strong class="text-white">finance.officer</strong></div>
+                            <div><span class="text-slate-500">Email:</span> <strong class="text-white">finance.officer@eduorbit.com</strong></div>
+                            <div><span class="text-slate-500">Password:</span> <strong class="text-emerald-400">Demo@2026</strong></div>
+                        </div>
+                        <div class="space-y-1.5 pt-1">
+                            <div class="text-slate-400 font-semibold text-xs uppercase tracking-wider">Capabilities & What They Can Do:</div>
+                            <ul class="space-y-1.5 text-slate-300 text-xs">
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Access Finance GL Postings Log at <code class="text-indigo-300 font-mono">/hr/finance/postings/</code>.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Inspect double-entry journal entries posted from Payroll runs.</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Verify debit/credit balance (Debit Salary Expense 5001 == Credit Liabilities/Net).</span></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold shrink-0 mt-0.5">✓</span> <span>Audit transaction idempotency keys and export financial tax summary reports.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Live Demo Simulator Panel -->
+            <div id="demoModal" class="hidden glass rounded-2xl p-6 border border-indigo-500/40 space-y-6 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-full gradient-bg flex items-center justify-center font-bold text-xs text-white" id="demoStepNum">1</span>
+                        <div>
+                            <h3 class="text-base font-bold text-white" id="demoStepTitle">1. Sign In as HR Director</h3>
+                            <p class="text-xs text-slate-400" id="demoStepRole">Role: HR Admin (hr.admin@eduorbit.com)</p>
+                        </div>
+                    </div>
+                    <button onclick="closeLiveDemo()" class="text-slate-400 hover:text-white text-xs bg-slate-800 px-3 py-1 rounded cursor-pointer">✕ Close Simulator</button>
+                </div>
+
+                <!-- Step Content Card -->
+                <div class="grid grid-cols-12 gap-6 items-center">
+                    <div class="col-span-5 space-y-4">
+                        <div class="text-xs font-semibold uppercase tracking-wider text-indigo-400" id="demoStepHeader">STEP 1 OF 7</div>
+                        <p class="text-sm text-slate-300 leading-relaxed" id="demoStepDesc">Navigate to /login/, enter hr.admin / Demo@2026 and click Sign In. Land directly on Executive Dashboard /hr/admin/dashboard/.</p>
+                        
+                        <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+                            <div class="text-[11px] font-semibold text-slate-400">Target URL / Action:</div>
+                            <div class="text-xs font-mono text-indigo-300 bg-slate-950 p-2 rounded border border-slate-800" id="demoStepUrl">http://127.0.0.1:8000/login/</div>
+                        </div>
+
+                        <!-- Action Controls -->
+                        <div class="flex items-center space-x-3 pt-2">
+                            <button id="prevBtn" onclick="prevDemoStep()" class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-slate-300 hover:bg-slate-700 disabled:opacity-40 cursor-pointer">Previous</button>
+                            <button id="nextBtn" onclick="nextDemoStep()" class="gradient-bg px-4 py-1.5 rounded-lg text-xs font-semibold text-white hover:opacity-90 cursor-pointer">Next Step →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step Visual Mockup Box -->
+                    <div class="col-span-7 glass-card p-5 rounded-xl border border-slate-800 space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-2 text-xs text-slate-400">
+                            <span class="font-mono text-indigo-300" id="mockupTitle">Login Response</span>
+                            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px]" id="mockupBadge">200 OK Redirect</span>
+                        </div>
+                        <div class="space-y-2 text-xs font-mono" id="mockupLines">
+                            <div class="flex justify-between py-1 border-b border-slate-800/40 text-slate-300"><span class="text-slate-400">Authenticated User:</span><span class="font-semibold text-white">Grace Adeyemi (HR Director)</span></div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/40 text-slate-300"><span class="text-slate-400">Assigned Role Code:</span><span class="font-semibold text-white">hr_admin</span></div>
+                            <div class="flex justify-between py-1 border-b border-slate-800/40 text-slate-300"><span class="text-slate-400">Target Portal Landing:</span><span class="font-semibold text-white">/hr/admin/dashboard/</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Statutory Tax Calculator Widget -->
+            <div id="calculator" class="glass rounded-2xl p-6 border border-slate-800 space-y-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            🧮 Interactive Statutory Tax Calculator (Nigerian PAYE)
+                        </h3>
+                        <p class="text-xs text-slate-400">Type any gross monthly salary to see live calculation of CRA, PAYE Tax, Pension (8%), NHF (2.5%), and Net Salary.</p>
+                    </div>
+                    <span class="text-xs font-mono bg-indigo-500/20 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30">Tax Engine V1</span>
+                </div>
+
+                <div class="grid grid-cols-12 gap-6 items-center">
+                    <div class="col-span-5 space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-300 mb-1.5">Gross Monthly Salary (₦)</label>
+                            <input type="number" id="calcGrossInput" value="250000" oninput="updateTaxCalculator()" step="10000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-base font-bold text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        </div>
+
+                        <div class="space-y-2 text-xs text-slate-400">
+                            <div class="flex justify-between"><span>Consolidated Relief (CRA):</span> <span class="text-slate-200" id="calcCraVal">₦66,666.67</span></div>
+                            <div class="flex justify-between"><span>Employee Pension (8%):</span> <span class="text-slate-200" id="calcPensionVal">₦20,000.00</span></div>
+                            <div class="flex justify-between"><span>NHF Contribution (2.5%):</span> <span class="text-slate-200" id="calcNhfVal">₦6,250.00</span></div>
+                        </div>
+                    </div>
+
+                    <div class="col-span-7 glass-card p-5 rounded-xl border border-slate-800 space-y-3">
+                        <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Calculation Results Breakdown</div>
+                        <div class="grid grid-cols-2 gap-4 pt-2">
+                            <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800">
+                                <div class="text-[11px] text-slate-400">Monthly PAYE Tax</div>
+                                <div class="text-lg font-extrabold text-rose-400 mt-0.5" id="calcPayeVal">₦18,250.00</div>
+                            </div>
+                            <div class="p-3 bg-slate-900/90 rounded-lg border border-slate-800">
+                                <div class="text-[11px] text-slate-400">Net Salary Payable</div>
+                                <div class="text-lg font-extrabold text-emerald-400 mt-0.5" id="calcNetVal">₦205,500.00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sections Container -->
+            <div class="space-y-8" id="sectionsContainer">
+                
+                <!-- Section 1 -->
+                <section id="ess" class="module-sec glass rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">👤</span>
+                            <div>
+                                <h3 class="text-base font-bold text-white">1. Employee Self-Service (ESS) & Clock-In</h3>
+                                <p class="text-xs text-slate-400">URL: /hr/ess/ | Permission: Authenticated Staff</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 text-xs rounded-full bg-slate-800 text-indigo-300 border border-slate-700 font-mono">Portal</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Click-by-Click Instructions</h4>
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>Open left sidebar menu and click <strong>My Portal (ESS)</strong>. Log in with <strong>staff.member</strong> / <strong>Demo@2026</strong>.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>Look at top right header and click the blue <strong>⏰ Clock In / Out</strong> button to register attendance timestamp.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>Click 3rd tab <strong>My Leave</strong> -> click purple <strong>+ Apply for Leave</strong> button.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span><span>Select Leave Type (Annual Leave), Start Date (2026-08-01), End Date (2026-08-05), enter reason, and click green <strong>Submit Application</strong>.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">5</span><span>Click 4th tab <strong>My Payslips</strong> -> click blue <strong>Download PDF</strong> button to download official payslip.</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2 -->
+                <section id="dashboard" class="module-sec glass rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">📊</span>
+                            <div>
+                                <h3 class="text-base font-bold text-white">2. HR Executive Master Dashboard</h3>
+                                <p class="text-xs text-slate-400">URL: /hr/dashboard/ | Permission: IsHRAdmin / IsHROfficer</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 text-xs rounded-full bg-slate-800 text-indigo-300 border border-slate-700 font-mono">Executive</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Click-by-Click Instructions</h4>
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>Click <strong>Human Resources</strong> -> <strong>Master Dashboard</strong>. Log in with <strong>hr.admin</strong> / <strong>Demo@2026</strong>.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>Review 4 KPI cards: <strong>Total Staff (87)</strong>, <strong>On Leave Today (5)</strong>, <strong>Pending Appraisals (12)</strong>, <strong>Monthly Payroll (₦4.2M)</strong>.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>Use search box at top right of directory table to filter staff by name or role.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span><span>Click purple <strong>Recruitment (ATS)</strong> button in top header to jump to recruitment pipeline.</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 3 -->
+                <section id="directory" class="module-sec glass rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">📁</span>
+                            <div>
+                                <h3 class="text-base font-bold text-white">3. Staff Directory & Add Employee</h3>
+                                <p class="text-xs text-slate-400">URL: /hr/admin/directory/ | Permission: IsHRAdmin / IsHROfficer</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 text-xs rounded-full bg-slate-800 text-indigo-300 border border-slate-700 font-mono">Admin</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Click-by-Click Instructions</h4>
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>Click <strong>Human Resources</strong> -> <strong>Staff Directory</strong>.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>Click blue <strong>+ Add Staff Member</strong> button at top right.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>Fill form: First Name (Natasha), Last Name (Romanoff), Email, Department (Academics), Job Title (Physics Teacher), Grade, Base Salary.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span><span>Click green <strong>Save Employee Profile</strong> button. Profile is created instantly.</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4 -->
+                <section id="recruitment" class="module-sec glass rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">💼</span>
+                            <div>
+                                <h3 class="text-base font-bold text-white">4. Recruitment ATS & 1-Click Hiring</h3>
+                                <p class="text-xs text-slate-400">URL: /hr/recruitment/ | Permission: IsHRAdmin / IsHROfficer</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 text-xs rounded-full bg-slate-800 text-indigo-300 border border-slate-700 font-mono">ATS</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Click-by-Click Instructions</h4>
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>Click <strong>Human Resources</strong> -> <strong>Recruitment</strong>.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>Click <strong>+ Publish Job Vacancy</strong> -> enter Title, Department, Openings -> Click Publish.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>Select applicant Natasha Romanoff -> Click <strong>Score Candidate</strong> (Score: 95.0, Recommend).</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span><span>Click green <strong>Hire Candidate</strong> button. Spawns User, Person, TenantMembership, EmployeeProfile, and Onboarding tasks automatically.</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5 -->
+                <section id="payroll" class="module-sec glass rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">💵</span>
+                            <div>
+                                <h3 class="text-base font-bold text-white">5. Payroll Console & Statutory Tax</h3>
+                                <p class="text-xs text-slate-400">URL: /hr/payroll/ | Permission: IsPayrollAdmin</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 text-xs rounded-full bg-slate-800 text-indigo-300 border border-slate-700 font-mono">Payroll</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Click-by-Click Instructions</h4>
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>Click <strong>Human Resources</strong> -> <strong>Payroll</strong>. Log in with <strong>payroll.admin</strong> / <strong>Demo@2026</strong>.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>Select active period <strong>July 2026</strong> from period dropdown.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>Click blue <strong>Calculate Payroll Run</strong> button. Evaluates gross pay, PAYE tax, 8% pension, 2.5% NHF.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">4</span><span>Click green <strong>Approve & Post to GL</strong> button. Dispatches balanced journal entries to Finance module.</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 6 -->
+                <section id="finance" class="module-sec glass rounded-2xl p-6 border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">🏛️</span>
+                            <div>
+                                <h3 class="text-base font-bold text-white">6. Finance Double-Entry GL Log</h3>
+                                <p class="text-xs text-slate-400">URL: /hr/finance/postings/ | Permission: IsFinanceViewer</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 text-xs rounded-full bg-slate-800 text-indigo-300 border border-slate-700 font-mono">Finance</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300">Click-by-Click Instructions</h4>
+                        <div class="space-y-2 text-xs text-slate-300 leading-relaxed">
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">1</span><span>Click <strong>Finance</strong> -> <strong>GL Postings</strong>. Log in with <strong>finance.officer</strong> / <strong>Demo@2026</strong>.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">2</span><span>Verify journal entry row: Debit Salary Expense (5001) = ₦1,100,000.00, Credit Liabilities/Net = ₦1,100,000.00.</span></div>
+                            <div class="flex items-start space-x-2 p-2.5 rounded-lg bg-slate-900/50 border border-slate-800/60"><span class="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">3</span><span>Assert double-entry balance: <strong>Total Debits == Total Credits</strong>.</span></div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script Application Logic -->
+    <script>
+        let demoStep = 1;
+        const demoSteps = [
+            {
+                title: "1. Sign In as HR Director",
+                roleText: "Role: HR Admin (Username: hr.admin | Password: Demo@2026)",
+                description: "Navigate to /login/, enter hr.admin / Demo@2026 and click Sign In. Land directly on Executive Dashboard /hr/admin/dashboard/.",
+                actionUrl: "http://127.0.0.1:8000/login/",
+                mockupTitle: "Login Credentials & Response",
+                mockupBadge: "200 OK Redirect",
+                mockupLines: [
+                    { label: "Username / Password:", val: "hr.admin / Demo@2026" },
+                    { label: "Authenticated User:", val: "Grace Adeyemi (HR Director)" },
+                    { label: "Assigned Role Code:", val: "hr_admin" },
+                    { label: "Target Portal Landing:", val: "/hr/admin/dashboard/" }
+                ]
+            },
+            {
+                title: "2. 1-Click Candidate Hiring",
+                roleText: "Role: HR Officer / Director (Username: hr.admin | Password: Demo@2026)",
+                description: "Navigate to /hr/recruitment/. Locate candidate Natasha Romanoff and click green 'Hire Candidate' button.",
+                actionUrl: "http://127.0.0.1:8000/hr/recruitment/",
+                mockupTitle: "RecruitmentService.hire_candidate()",
+                mockupBadge: "Profile Created",
+                mockupLines: [
+                    { label: "Generated Employee ID:", val: "EMP-2026-089" },
+                    { label: "Created User Account:", val: "natasha.romanoff@eduorbit.com" },
+                    { label: "Onboarding Checklist:", val: "5 Default Tasks Created" }
+                ]
+            },
+            {
+                title: "3. Staff ESS Clock-In",
+                roleText: "Role: Staff Member (Username: staff.member | Password: Demo@2026)",
+                description: "Log in as staff.member, land on /hr/ess/, and click ⏰ Clock In / Out button at top right header.",
+                actionUrl: "http://127.0.0.1:8000/hr/ess/",
+                mockupTitle: "AttendanceService.clock_in()",
+                mockupBadge: "Present",
+                mockupLines: [
+                    { label: "Username / Password:", val: "staff.member / Demo@2026" },
+                    { label: "Recorded Check-In:", val: "07:58:14 AM" },
+                    { label: "Evaluated Shift Grace:", val: "15 Mins (On Time)" },
+                    { label: "Outbox Event:", val: "attendance.clocked_in" }
+                ]
+            },
+            {
+                title: "4. Leave Application & Approval",
+                roleText: "Role: Staff Member -> Supervisor -> HR Admin",
+                description: "Staff submits 5-day Annual Leave. Supervisor (dept.manager) approves on /hr/manager/team/. HR Admin finalizes on /hr/leave-calendar/.",
+                actionUrl: "http://127.0.0.1:8000/hr/leave-calendar/",
+                mockupTitle: "LeaveService.approve_leave_request()",
+                mockupBadge: "Approved",
+                mockupLines: [
+                    { label: "Supervisor Login:", val: "dept.manager / Demo@2026" },
+                    { label: "Requested Days:", val: "5 Working Days" },
+                    { label: "Prior Balance:", val: "20 Days" },
+                    { label: "Updated Remaining Balance:", val: "15 Days" }
+                ]
+            },
+            {
+                title: "5. Payroll Engine Calculation",
+                roleText: "Role: Payroll Admin (Username: payroll.admin | Password: Demo@2026)",
+                description: "Log in as payroll.admin, land on /hr/payroll/, select July 2026 period, click 'Calculate Payroll Run'.",
+                actionUrl: "http://127.0.0.1:8000/hr/payroll/",
+                mockupTitle: "PayrollCalculationEngineV1",
+                mockupBadge: "Calculated",
+                mockupLines: [
+                    { label: "Username / Password:", val: "payroll.admin / Demo@2026" },
+                    { label: "Gross Payroll Total:", val: "₦1,100,000.00" },
+                    { label: "Statutory PAYE Tax:", val: "₦180,000.00" },
+                    { label: "Statutory 8% Pension:", val: "₦88,000.00" }
+                ]
+            },
+            {
+                title: "6. Post Payroll to GL Accounting",
+                roleText: "Role: Payroll Admin -> Finance Officer (Username: finance.officer | Password: Demo@2026)",
+                description: "Click 'Approve & Post to GL'. AccountingPostingInterface posts double-entry journal entries.",
+                actionUrl: "http://127.0.0.1:8000/hr/finance/postings/",
+                mockupTitle: "Double-Entry Ledger Balancing",
+                mockupBadge: "Debits == Credits",
+                mockupLines: [
+                    { label: "Finance Login:", val: "finance.officer / Demo@2026" },
+                    { label: "Debit Salary Expense (5001):", val: "₦1,100,000.00" },
+                    { label: "Credit PAYE/Pension/NHF/Net:", val: "₦1,100,000.00" },
+                    { label: "Idempotency Key:", val: "tenant:july2026:v1" }
+                ]
+            },
+            {
+                title: "7. Download Digital Payslip PDF",
+                roleText: "Role: Staff Member (Username: staff.member | Password: Demo@2026)",
+                description: "Staff member logs into ESS (/hr/ess/) -> My Payslips tab -> clicks 'Download PDF'.",
+                actionUrl: "http://127.0.0.1:8000/hr/ess/",
+                mockupTitle: "PDF Payslip Generator",
+                mockupBadge: "PDF Downloaded",
+                mockupLines: [
+                    { label: "File Name:", val: "Payslip_July_2026.pdf" },
+                    { label: "Content-Type:", val: "application/pdf" },
+                    { label: "Net Pay:", val: "₦168,250.00" }
+                ]
+            }
+        ];
+
+        function startLiveDemo() {
+            document.getElementById('demoModal').classList.remove('hidden');
+            demoStep = 1;
+            renderDemoStep();
+        }
+
+        function closeLiveDemo() {
+            document.getElementById('demoModal').classList.add('hidden');
+        }
+
+        function renderDemoStep() {
+            const stepData = demoSteps[demoStep - 1];
+            document.getElementById('demoStepNum').innerText = demoStep;
+            document.getElementById('demoStepTitle').innerText = stepData.title;
+            document.getElementById('demoStepRole').innerText = stepData.roleText;
+            document.getElementById('demoStepHeader').innerText = `STEP ${demoStep} OF ${demoSteps.length}`;
+            document.getElementById('demoStepDesc').innerText = stepData.description;
+            document.getElementById('demoStepUrl').innerText = stepData.actionUrl;
+            document.getElementById('mockupTitle').innerText = stepData.mockupTitle;
+            document.getElementById('mockupBadge').innerText = stepData.mockupBadge;
+
+            let html = '';
+            stepData.mockupLines.forEach(l => {
+                html += `<div class="flex justify-between py-1 border-b border-slate-800/40 text-slate-300"><span class="text-slate-400">${l.label}</span><span class="font-semibold text-white">${l.val}</span></div>`;
+            });
+            document.getElementById('mockupLines').innerHTML = html;
+
+            document.getElementById('prevBtn').disabled = (demoStep === 1);
+            document.getElementById('nextBtn').disabled = (demoStep === demoSteps.length);
+        }
+
+        function nextDemoStep() {
+            if (demoStep < demoSteps.length) {
+                demoStep++;
+                renderDemoStep();
+            }
+        }
+
+        function prevDemoStep() {
+            if (demoStep > 1) {
+                demoStep--;
+                renderDemoStep();
+            }
+        }
+
+        function updateTaxCalculator() {
+            const gross = parseFloat(document.getElementById('calcGrossInput').value) || 0;
+            const cra = (gross * 0.20) + (200000 / 12);
+            const pension = gross * 0.08;
+            const nhf = gross * 0.025;
+
+            let taxableAnnual = Math.max(0, (gross - cra - pension) * 12);
+            let taxAnnual = 0;
+            if (taxableAnnual > 300000) {
+                taxAnnual += 300000 * 0.07;
+                taxableAnnual -= 300000;
+                if (taxableAnnual > 300000) {
+                    taxAnnual += 300000 * 0.11;
+                    taxableAnnual -= 300000;
+                    if (taxableAnnual > 500000) {
+                        taxAnnual += 500000 * 0.15;
+                    } else {
+                        taxAnnual += taxableAnnual * 0.15;
+                    }
+                } else {
+                    taxAnnual += taxableAnnual * 0.11;
+                }
+            } else {
+                taxAnnual += taxableAnnual * 0.07;
+            }
+
+            const payeMonthly = taxAnnual / 12;
+            const netMonthly = gross - payeMonthly - pension - nhf;
+
+            document.getElementById('calcCraVal').innerText = '₦' + cra.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('calcPensionVal').innerText = '₦' + pension.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('calcNhfVal').innerText = '₦' + nhf.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('calcPayeVal').innerText = '₦' + payeMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('calcNetVal').innerText = '₦' + netMonthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function filterTopics() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const secs = document.querySelectorAll('.module-sec');
+            secs.forEach(sec => {
+                const text = sec.innerText.toLowerCase();
+                if (text.includes(q)) {
+                    sec.classList.remove('hidden');
+                } else {
+                    sec.classList.add('hidden');
+                }
+            });
+        }
+
+        function filterByRole() {
+            const role = document.getElementById('roleSelector').value;
+            const secs = document.querySelectorAll('.module-sec');
+            secs.forEach(sec => {
+                if (role === 'all') {
+                    sec.classList.remove('hidden');
+                } else if (role === 'payroll_admin') {
+                    if (sec.id === 'payroll' || sec.id === 'finance' || sec.id === 'ess' || sec.id === 'roles') {
+                        sec.classList.remove('hidden');
+                    } else {
+                        sec.classList.add('hidden');
+                    }
+                } else if (role === 'supervisor') {
+                    if (sec.id === 'ess' || sec.id === 'dashboard' || sec.id === 'roles') {
+                        sec.classList.remove('hidden');
+                    } else {
+                        sec.classList.add('hidden');
+                    }
+                } else if (role === 'staff') {
+                    if (sec.id === 'ess' || sec.id === 'roles') {
+                        sec.classList.remove('hidden');
+                    } else {
+                        sec.classList.add('hidden');
+                    }
+                } else if (role === 'finance') {
+                    if (sec.id === 'finance' || sec.id === 'payroll' || sec.id === 'ess' || sec.id === 'roles') {
+                        sec.classList.remove('hidden');
+                    } else {
+                        sec.classList.add('hidden');
+                    }
+                } else {
+                    sec.classList.remove('hidden');
+                }
+            });
+        }
+
+        function setActiveNav(secId) {
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('bg-indigo-600/20', 'text-indigo-300', 'border-l-2', 'border-indigo-500', 'font-medium');
+                el.classList.add('text-slate-400');
+            });
+        }
+    </script>
+</body>
+</html>

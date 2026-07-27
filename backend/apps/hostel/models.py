@@ -55,6 +55,21 @@ class HostelBed(TenantBaseModel):
 # BED ALLOCATIONS & ASSIGNMENTS
 # ==============================================================
 
+class HostelApplication(TenantBaseModel):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected')
+    ]
+    student = models.ForeignKey('people.Person', on_delete=models.CASCADE, related_name='hostel_applications')
+    hostel = models.ForeignKey(Hostel, on_delete=models.CASCADE)
+    application_date = models.DateField(default=timezone.now)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='pending')
+
+    def __str__(self):
+        return f"Hostel App for {self.student.person_number} ({self.status})"
+
+
 class BedAllocation(TenantBaseModel):
     """
     Student residential assignments.

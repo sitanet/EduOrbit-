@@ -1,70 +1,76 @@
-import logging
 from django.db import transaction
-from django.utils import timezone
+from backend.apps.people.models import StudentProfile
+from backend.apps.students.models import StudentStatusHistory, AcademicPlacementHistory
+from backend.apps.students.services.student_number import StudentNumberGeneratorService
 from backend.apps.admissions.models import AdmissionApplication, AdmissionOffer
-from backend.apps.people.models import StudentProfile, PersonRole
-from backend.apps.academic.models import AcademicClass
-from backend.apps.core.events import event_bus, DomainEvent
-from backend.apps.core.logging import EduOrbitLogger
+from backend.apps.core.services.notifications import UnifiedNotificationService
 
-logger = logging.getLogger("eduorbit.admissions.services")
-
-class EnrollmentService:
+class AdmissionConversionService:
     """
-    Enrollment orchestrator that atomically converts successful applicants 
-    to active Student Profiles.
+    Service for 1-click conversion of an accepted Applicant into an enrolled Student.
+    Executes atomically inside transaction.atomic().
     """
-    @staticmethod
+    @classmethod
     @transaction.atomic
-    def enroll_applicant(application_id: str, class_id: str) -> StudentProfile:
-        application = AdmissionApplication.objects.select_related('applicant__person', 'intake__campaign').get(
-            id=application_id
-        )
-        
-        target_class = AcademicClass.objects.select_related('academic_level').get(id=class_id)
-        
-        # Verify application status makes it eligible for enrollment
-        if application.status not in ['accepted', 'submitted', 'under_review']:
-            # For testing flexibility, we allow execution but log warning
+    def convert_applicant_to_student(cls, application, academic_year, academic_class, house=None):
+        if application.status not in ['accepted', 'offered', 'submitted']:
+            # Allow conversion for accepted or submitted applications
             pass
-            
+
         person = application.applicant.person
-        school = application.intake.campaign.school
         tenant = application.tenant
-        
-        # 1. Create or retrieve StudentProfile
-        student_number = f"STU-{timezone.now().year}-{application.applicant.applicant_number[-6:]}" if hasattr(timezone, 'now') else f"STU-2026-{application.id}"
-        
+
+        # 1. Generate Student ID
+        student_number = StudentNumberGeneratorService.generate_next_student_number(tenant=tenant)
+        admission_number = f"ADM-{student_number.split('-')[-1]}"
+
+        # 2. Create StudentProfile
         student_profile, created = StudentProfile.objects.get_or_create(
             person=person,
             tenant=tenant,
             defaults={
                 'student_number': student_number,
-                'current_school': school,
-                'enrollment_status': 'enrolled',
-                'boarding_status': 'day'
+                'admission_number': admission_number,
+                'current_school': application.intake.campaign.school,
+                'enrollment_status': 'active'
             }
         )
-        
-        # 2. Map direct student role to this person
-        PersonRole.objects.get_or_create(
-            person=person,
-            role='student',
-            school=school,
+
+        # 3. Create AcademicPlacementHistory
+        placement = AcademicPlacementHistory.objects.create(
             tenant=tenant,
-            defaults={'status': 'active', 'is_primary': True}
+            student=student_profile,
+            academic_year=academic_year,
+            academic_class=academic_class,
+            house=house,
+            campus=academic_class.academic_level.education_level.school.campuses.first() if hasattr(academic_class.academic_level.education_level.school, 'campuses') else None
         )
-        
-        # 3. Update application status to enrolled
+
+        # 4. Record StudentStatusHistory
+        status_history = StudentStatusHistory.objects.create(
+            tenant=tenant,
+            student=student_profile,
+            status='active',
+            reason=f"Converted from Admission Application #{application.id}"
+        )
+
+        # 5. Update Application Status
         application.status = 'enrolled'
-        application.save(update_fields=['status'])
-        
-        # 4. Trigger system domain events
-        event_bus.publish(DomainEvent("student.enrolled", tenant_id=str(tenant.id), data={
+        application.save()
+
+        # 6. Dispatch Unified Notification
+        UnifiedNotificationService.send_notification(
+            recipient=person.first_name,
+            title="Admission Conversion Complete",
+            message=f"Welcome to {application.intake.campaign.school.name}! Your Student ID is {student_number}.",
+            channels=['in_app', 'email']
+        )
+
+        return {
+            "status": "success",
+            "student_profile_id": str(student_profile.id),
             "student_number": student_profile.student_number,
-            "school_id": str(school.id)
-        }))
-        
-        EduOrbitLogger.audit(f"Applicant promoted to Student Profile: {student_profile.student_number}", tenant_id=tenant.id)
-        
-        return student_profile
+            "admission_number": student_profile.admission_number,
+            "placement_id": str(placement.id),
+            "status_history_id": str(status_history.id)
+        }

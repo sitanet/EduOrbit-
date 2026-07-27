@@ -1,0 +1,47 @@
+{# ─── Hostel Warden Sidebar ───────────────────────────────────────────────── #}
+{# Roles: warden, hostel_officer                                                #}
+<aside id="sidebar-hostel"
+       class="hidden lg:flex flex-col w-64 min-h-screen bg-slate-900 text-white shadow-xl"
+       aria-label="Hostel Navigation">
+
+  <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+    <span class="w-9 h-9 rounded-xl bg-orange-600 flex items-center justify-center text-white font-bold text-lg">E</span>
+    <div>
+      <div class="text-sm font-bold text-white leading-tight">EduOrbit</div>
+      <div class="text-xs text-orange-400 font-medium">Hostel</div>
+    </div>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+
+    <a href="/dashboard/hostel/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors font-medium text-sm">🏠 Dashboard</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Hostel</div>
+    <a href="/hostel/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🏠 Hostel Management</a>
+    <a href="/hostel/rooms/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🛏️ Rooms</a>
+    <a href="/hostel/boarders/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">👨‍👧 Boarders</a>
+    <a href="/hostel/incidents/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">⚠️ Incidents</a>
+    <a href="/hostel/maintenance/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🔧 Maintenance</a>
+    <a href="/hostel/reports/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📊 Reports</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Communication</div>
+    <a href="/communication/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📢 Notices</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Self-Service</div>
+    <a href="/hr/ess/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">💼 ESS Portal</a>
+
+  </nav>
+
+  <div class="px-4 py-4 border-t border-slate-700/60">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-orange-600 flex items-center justify-center text-white text-sm font-bold">
+        {{ request.user.username|first|upper }}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</p>
+        <p class="text-xs text-slate-400 truncate">Hostel Warden</p>
+      </div>
+      <a href="/?next=logout" class="text-slate-400 hover:text-white text-xs">↩</a>
+    </div>
+  </div>
+</aside>

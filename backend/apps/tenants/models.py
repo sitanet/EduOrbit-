@@ -91,24 +91,36 @@ class Branch(TenantBaseModel):
 
 class SubscriptionPlan(PlatformBaseModel):
     """
-    Platform recurring subscription packages.
+    Platform recurring subscription packages supporting School Pay, Parent Pay, and Hybrid models.
     """
-    INTERVALS = [
-        ('monthly', 'Monthly'),
-        ('termly', 'Termly'),
-        ('quarterly', 'Quarterly'),
-        ('annual', 'Annual'),
-        ('custom', 'Custom')
+    BILLING_MODELS = [
+        ('SCHOOL_PAY', 'School Pay'),
+        ('PARENT_PAY', 'Parent Pay'),
+        ('HYBRID', 'Hybrid')
     ]
     name = models.CharField(max_length=100)
-    interval = models.CharField(max_length=20, choices=INTERVALS, default='monthly')
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    currency = models.CharField(max_length=10, default='NGN')
+    description = models.TextField(blank=True)
+    billing_model = models.CharField(max_length=20, choices=BILLING_MODELS, default='SCHOOL_PAY')
+    
+    monthly_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    termly_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    yearly_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    
+    trial_days = models.IntegerField(default=14)
+    grace_period_days = models.IntegerField(default=7)
+    max_students = models.IntegerField(default=500)
+    max_staff = models.IntegerField(default=50)
+    max_campuses = models.IntegerField(default=1)
+    
+    parent_portal_enabled = models.BooleanField(default=True)
+    mobile_app_enabled = models.BooleanField(default=True)
+    lms_enabled = models.BooleanField(default=True)
+    cbt_enabled = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     features = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
-        return f"{self.name} ({self.interval})"
+        return f"{self.name} ({self.billing_model})"
 
 
 class TenantSubscription(TenantBaseModel):
@@ -116,29 +128,55 @@ class TenantSubscription(TenantBaseModel):
     Licenses and active subscriptions per Tenant (Organization).
     """
     STATUS_CHOICES = [
-        ('trial', 'Trial'),
-        ('active', 'Active'),
-        ('suspended', 'Suspended'),
-        ('expired', 'Expired')
+        ('TRIAL', 'Trial'),
+        ('ACTIVE', 'Active'),
+        ('GRACE', 'Grace Period'),
+        ('EXPIRED', 'Expired'),
+        ('SUSPENDED', 'Suspended'),
+        ('CANCELLED', 'Cancelled')
+    ]
+    BILLING_CYCLES = [
+        ('MONTHLY', 'Monthly'),
+        ('TERMLY', 'Termly'),
+        ('YEARLY', 'Yearly')
     ]
     plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE, null=True, blank=True)
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='trial')
+    billing_model = models.CharField(max_length=20, default='SCHOOL_PAY')
+    billing_cycle = models.CharField(max_length=20, choices=BILLING_CYCLES, default='MONTHLY')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='TRIAL')
     
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField()
     grace_period_ends_at = models.DateTimeField(null=True, blank=True)
+    auto_renew = models.BooleanField(default=True)
+    payment_provider = models.CharField(max_length=50, default='OPay')
     
-    # Module-based licensing system
-    modules_licensed = models.JSONField(default=dict, blank=True, help_text="e.g. {'ai_tutor': {'enabled': true, 'expiry': '...'}}")
+    modules_licensed = models.JSONField(default=dict, blank=True)
     renewal_history = models.JSONField(default=list, blank=True)
 
     def __str__(self):
         return f"{self.tenant.name} - {self.plan.name if self.plan else 'Custom'} ({self.status})"
 
     def is_active_license(self) -> bool:
-        if self.status == 'suspended':
+        if self.status in ['SUSPENDED', 'CANCELLED']:
             return False
         return self.end_date > timezone.now() or (self.grace_period_ends_at and self.grace_period_ends_at > timezone.now())
+
+
+class StudentPlatformSubscription(TenantBaseModel):
+    """
+    Direct parent platform subscription for PARENT_PAY and HYBRID billing models.
+    """
+    student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE, related_name='platform_subscriptions')
+    plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE)
+    billing_cycle = models.CharField(max_length=20, default='MONTHLY')
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    paid_until = models.DateTimeField()
+    payment_status = models.CharField(max_length=20, default='ACTIVE')  # ACTIVE, EXPIRED
+    payment_reference = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return f"Parent Subscription: {self.student.student_number} ({self.payment_status})"
 
 
 # ==============================================================

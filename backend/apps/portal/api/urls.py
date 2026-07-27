@@ -1,12 +1,13 @@
 from django.urls import path
 from backend.apps.portal.api.views import (
-    PortalProfileAPIView, PortalNotificationAPIView, PortalShortcutAPIView
+    ParentDashboardAPIView, StudentDashboardAPIView, StaffDashboardAPIView, PortalProfileAPIView
 )
 
 app_name = 'portal_api'
 
 urlpatterns = [
-    path('profile/', PortalProfileAPIView.as_view(), name='profile'),
-    path('notifications/', PortalNotificationAPIView.as_view(), name='notifications'),
-    path('shortcuts/', PortalShortcutAPIView.as_view(), name='shortcuts'),
+    path('parent/dashboard/', ParentDashboardAPIView.as_view(), name='parent_dashboard'),
+    path('student/dashboard/', StudentDashboardAPIView.as_view(), name='student_dashboard'),
+    path('staff/dashboard/', StaffDashboardAPIView.as_view(), name='staff_dashboard'),
+    path('profile/', PortalProfileAPIView.as_view(), name='portal_profile'),
 ]

@@ -1,0 +1,28 @@
+{% comment %}
+Reusable Status Badge Component
+Usage: {% include 'hr/components/_badge.html' with status=staff.status %}
+{% endcomment %}
+{% with s=status|lower %}
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border transition-all
+    {% if s == 'active' or s == 'present' or s == 'approved' or s == 'posted' or s == 'hired' or s == 'confirmed' %}
+        bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20
+    {% elif s == 'pending' or s == 'probation' or s == 'calculated' or s == 'submitted' or s == 'draft' or s == 'screening' or s == 'interviewing' or s == 'offered' %}
+        bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20
+    {% elif s == 'late' or s == 'extended' or s == 'on_hold' %}
+        bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 border-yellow-500/20
+    {% elif s == 'absent' or s == 'rejected' or s == 'exited' or s == 'cancelled' or s == 'suspended' or s == 'posting_failed' %}
+        bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20
+    {% elif s == 'leave' or s == 'holiday' or s == 'weekend' or s == 'remote' or s == 'paid' %}
+        bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20
+    {% else %}
+        bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20
+    {% endif %}">
+    <span class="w-1.5 h-1.5 rounded-full mr-1.5 
+        {% if s == 'active' or s == 'present' or s == 'approved' or s == 'posted' or s == 'hired' or s == 'confirmed' %}bg-emerald-500
+        {% elif s == 'pending' or s == 'probation' or s == 'calculated' or s == 'submitted' or s == 'draft' or s == 'screening' or s == 'interviewing' or s == 'offered' %}bg-amber-500
+        {% elif s == 'late' or s == 'extended' or s == 'on_hold' %}bg-yellow-500
+        {% elif s == 'absent' or s == 'rejected' or s == 'exited' or s == 'cancelled' or s == 'suspended' or s == 'posting_failed' %}bg-rose-500
+        {% else %}bg-indigo-500{% endif %}"></span>
+    {{ status|title }}
+</span>
+{% endwith %}

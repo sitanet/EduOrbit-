@@ -1,0 +1,243 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Enterprise Employee Onboarding Wizard — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6" id="onboardingWizardApp">
+
+    <!-- Header & Auto-Save Banner -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900/90 text-white p-6 rounded-2xl border border-slate-800 shadow-xl">
+        <div>
+            <div class="flex items-center gap-2 mb-1">
+                <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-mono font-bold">WIZARD V1.1.0</span>
+                <span class="text-xs text-slate-400 font-mono" id="autoSaveIndicator">⚡ Auto-saving draft every 5s...</span>
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight">Enterprise Employee Onboarding Wizard</h1>
+            <p class="text-xs text-slate-400 mt-1">Multi-step employee creation workflow with Dojah KYC, NUBAN resolution, and automatic payroll provisioning.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="saveDraftManual()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-colors">
+                💾 Save Draft
+            </button>
+            <a href="{% url 'hr_admin_directory' %}" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors">
+                &larr; Exit to Directory
+            </a>
+        </div>
+    </div>
+
+    <!-- 8-Step Progress Bar -->
+    <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 overflow-x-auto">
+        <div class="flex items-center justify-between min-w-[700px] text-xs">
+            <div class="step-nav active flex items-center gap-2 cursor-pointer" onclick="goToStep(1)">
+                <span class="w-7 h-7 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow-md">1</span>
+                <span class="font-semibold text-indigo-300">Identity & Personal</span>
+            </div>
+            <div class="h-0.5 w-8 bg-slate-800"></div>
+            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(2)">
+                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">2</span>
+                <span class="text-slate-400">Employment</span>
+            </div>
+            <div class="h-0.5 w-8 bg-slate-800"></div>
+            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(3)">
+                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">3</span>
+                <span class="text-slate-400">Bank & Tax</span>
+            </div>
+            <div class="h-0.5 w-8 bg-slate-800"></div>
+            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(4)">
+                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">4</span>
+                <span class="text-slate-400">Compensation</span>
+            </div>
+            <div class="h-0.5 w-8 bg-slate-800"></div>
+            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(5)">
+                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">5</span>
+                <span class="text-slate-400">Emergency</span>
+            </div>
+            <div class="h-0.5 w-8 bg-slate-800"></div>
+            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(6)">
+                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">6</span>
+                <span class="text-slate-400">Documents</span>
+            </div>
+            <div class="h-0.5 w-8 bg-slate-800"></div>
+            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(7)">
+                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">7</span>
+                <span class="text-slate-400">System Access</span>
+            </div>
+            <div class="h-0.5 w-8 bg-slate-800"></div>
+            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(8)">
+                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">8</span>
+                <span class="text-slate-400">Review</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Step Forms Container -->
+    <div class="bg-slate-900 rounded-2xl p-6 border border-slate-800 text-slate-100 shadow-2xl">
+        
+        <!-- STEP 1: Personal & Dojah Identity -->
+        <div id="step-1" class="wizard-step space-y-6">
+            <div class="border-b border-slate-800 pb-3 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-bold text-white">Step 1: Personal Information & Dojah Identity Verification</h3>
+                    <p class="text-xs text-slate-400">Collect demographics and perform real-time NIN and BVN identity checks.</p>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono">Dojah API Ready</span>
+            </div>
+
+            <!-- Demographics Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">First Name *</label>
+                    <input type="text" id="firstNameInput" value="Natasha" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Middle Name</label>
+                    <input type="text" id="middleNameInput" value="Alianovna" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Last Name *</label>
+                    <input type="text" id="lastNameInput" value="Romanoff" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Date of Birth *</label>
+                    <input type="date" id="dobInput" value="1992-06-15" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Gender *</label>
+                    <select id="genderInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                        <option value="female" selected>Female</option>
+                        <option value="male">Male</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Marital Status</label>
+                    <select id="maritalStatusInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                        <option value="single">Single</option>
+                        <option value="married">Married</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Dojah Verification Interactive Panel -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                
+                <!-- NIN Verification Card -->
+                <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs text-white">National Identity Number (NIN)</span>
+                        <span id="ninBadge" class="px-2 py-0.5 text-[10px] rounded bg-amber-500/20 text-amber-300 font-mono">Pending Verification</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="ninInput" value="12345678901" maxlength="11" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-indigo-300">
+                        <button onclick="triggerNINVerify()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shrink-0 cursor-pointer">
+                            ⚡ Verify NIN
+                        </button>
+                    </div>
+                    <div id="ninResultCard" class="hidden p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs text-slate-200 space-y-1">
+                        <div class="font-bold text-emerald-400 flex items-center gap-1">✅ Identity Verified (Dojah API)</div>
+                        <div class="text-[11px] text-slate-300">Match Name: Natasha Romanoff | DOB: 1992-06-15</div>
+                        <div class="text-[10px] text-slate-400 font-mono">Verified At: 2026-07-27 14:15:00</div>
+                    </div>
+                </div>
+
+                <!-- BVN Verification Card -->
+                <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-xs text-white">Bank Verification Number (BVN)</span>
+                        <span id="bvnBadge" class="px-2 py-0.5 text-[10px] rounded bg-amber-500/20 text-amber-300 font-mono">Pending Verification</span>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="bvnInput" value="22345678901" maxlength="11" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-indigo-300">
+                        <button onclick="triggerBVNVerify()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shrink-0 cursor-pointer">
+                            ⚡ Verify BVN
+                        </button>
+                    </div>
+                    <div id="bvnResultCard" class="hidden p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs text-slate-200 space-y-1">
+                        <div class="font-bold text-emerald-400 flex items-center gap-1">✅ BVN Verified (Dojah API)</div>
+                        <div class="text-[11px] text-slate-300">Match Name: Natasha Romanoff</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center pt-6 border-t border-slate-800">
+            <button onclick="prevStep()" id="prevStepBtn" disabled class="px-4 py-2 bg-slate-800 text-slate-400 text-xs font-semibold rounded-xl disabled:opacity-50 cursor-pointer">
+                &larr; Previous Step
+            </button>
+            <button onclick="nextStep()" id="nextStepBtn" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg cursor-pointer">
+                Next Step &rarr;
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentStep = 1;
+    let draftId = null;
+
+    function triggerNINVerify() {
+        const nin = document.getElementById('ninInput').value;
+        fetch('/hr/api/v1/kyc/verify-nin/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({nin: nin})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.is_verified) {
+                document.getElementById('ninBadge').className = 'px-2 py-0.5 text-[10px] rounded bg-emerald-500/20 text-emerald-300 font-mono';
+                document.getElementById('ninBadge').innerText = '✅ Verified';
+                document.getElementById('ninResultCard').classList.remove('hidden');
+            }
+        });
+    }
+
+    function triggerBVNVerify() {
+        const bvn = document.getElementById('bvnInput').value;
+        fetch('/hr/api/v1/kyc/verify-bvn/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({bvn: bvn})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.is_verified) {
+                document.getElementById('bvnBadge').className = 'px-2 py-0.5 text-[10px] rounded bg-emerald-500/20 text-emerald-300 font-mono';
+                document.getElementById('bvnBadge').innerText = '✅ Verified';
+                document.getElementById('bvnResultCard').classList.remove('hidden');
+            }
+        });
+    }
+
+    function saveDraftAuto() {
+        const draftData = {
+            first_name: document.getElementById('firstNameInput').value,
+            last_name: document.getElementById('lastNameInput').value,
+            nin: document.getElementById('ninInput').value,
+            bvn: document.getElementById('bvnInput').value
+        };
+        fetch('/hr/api/v1/onboarding/draft/auto-save/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                draft_id: draftId,
+                current_step: currentStep,
+                draft_data: draftData
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.draft_id) {
+                draftId = data.draft_id;
+                document.getElementById('autoSaveIndicator').innerText = `⚡ Saved at ${data.auto_saved_at}`;
+            }
+        });
+    }
+
+    setInterval(saveDraftAuto, 5000);
+
+    function nextStep() {
+        alert('Step 1 Validated! Navigating to Step 2 Employment Details.');
+    }
+</script>
+{% endblock %}

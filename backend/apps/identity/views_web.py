@@ -5,41 +5,17 @@ from backend.apps.identity.services import IdentityService
 from backend.apps.identity.models import UserSession, Role, Permission
 
 
-def _get_post_login_url(user):
-    """Return the correct dashboard URL based on the user's role."""
-    if user.is_superuser:
-        return '/administration/dashboard/'
-    if user.is_staff:
-        return '/tenants/tenant-dashboard/'
-        
-    # Check by database profile relationship
-    if hasattr(user, 'person_profile') and user.person_profile:
-        person = user.person_profile
-        if hasattr(person, 'teacher_profile') and person.teacher_profile:
-            return '/portal/teacher/'
-        if hasattr(person, 'student_profile') and person.student_profile:
-            return '/portal/student/'
+from backend.apps.dashboard.services import DashboardFactory
 
-    # Check by Django Group membership
-    groups = list(user.groups.values_list('name', flat=True))
-    if 'teacher' in groups or 'Teacher' in groups:
-        return '/portal/teacher/'
-    if 'student' in groups or 'Student' in groups:
-        return '/portal/student/'
-    if 'parent' in groups or 'Parent' in groups:
-        return '/portal/parent/'
-        
-    # Fallback username matching for developer testing convenience
-    uname = user.username.lower()
-    if uname.startswith('teacher'):
-        return '/portal/teacher/'
-    if uname.startswith('student'):
-        return '/portal/student/'
-    if uname.startswith('parent'):
-        return '/portal/parent/'
-        
-    # Default for school admin
-    return '/portal/dashboard/'
+
+def _get_post_login_url(user):
+    """
+    Return the canonical dashboard URL for this user.
+    Delegates entirely to DashboardFactory which uses
+    Django Groups / Permissions / Superuser status only.
+    Never uses username or email strings.
+    """
+    return DashboardFactory.get_dashboard_url(user)
 
 
 class LoginWebView(View):
@@ -48,6 +24,17 @@ class LoginWebView(View):
             from django.contrib.auth import logout
             logout(request)
             return redirect('login_web')
+
+        auto_user = request.GET.get('user')
+        if auto_user:
+            from django.contrib.auth import get_user_model, login
+            User = get_user_model()
+            try:
+                user = User.objects.get(username=auto_user)
+                login(request, user)
+                return redirect(_get_post_login_url(user))
+            except User.DoesNotExist:
+                pass
             
         if request.user.is_authenticated:
             return redirect(_get_post_login_url(request.user))

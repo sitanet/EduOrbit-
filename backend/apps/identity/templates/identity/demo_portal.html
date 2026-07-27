@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduOrbit ERP v3.0.0 — Web Role Credentials & Navigation Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-blue: #38bdf8;
+            --accent-purple: #c084fc;
+            --accent-green: #4ade80;
+            --accent-orange: #fb923c;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--accent-blue);
+            color: var(--accent-blue);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .role-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .role-badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-admin { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #ef4444; }
+        .badge-teacher { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid #3b82f6; }
+        .badge-student { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+        .badge-parent { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #a855f7; }
+        .badge-finance { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid #eab308; }
+        .badge-hr { background: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid #ec4899; }
+        .badge-staff { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #94a3b8; }
+
+        .cred-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 14px;
+            margin: 16px 0;
+            font-size: 0.9rem;
+        }
+
+        .cred-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .cred-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .cred-label {
+            color: var(--text-muted);
+        }
+
+        .cred-val {
+            font-family: monospace;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .modules-list {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>EduOrbit ERP v3.0.0</h1>
+        <p>Interactive Web Role Credentials & Live Navigation Hub</p>
+        <span class="badge">Multi-Tenant SaaS Demo Environment • Tag: v3.0.0-RELEASE-CANDIDATE</span>
+    </div>
+
+    <div class="grid">
+        <!-- 1. School Administrator / Principal -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">School Admin / Principal</span>
+                    <span class="role-badge badge-admin">Administrator</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Executive Dashboards, Approvals, Global Setup, Staff RBAC, BI Analytics, AI Copilot.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">admin.principal</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/portal/dashboard/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=admin.principal" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('admin.principal', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 2. Teacher / Educator -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">Teacher / Educator</span>
+                    <span class="role-badge badge-teacher">Academic Staff</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Daily Attendance, LMS Courses, CBT Exams, Gradebook, Assessment Broadsheets.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">teacher.john</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/portal/teacher/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=teacher.john" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('teacher.john', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 3. Parent / Guardian -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">Parent / Guardian</span>
+                    <span class="role-badge badge-parent">Parent Portal</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Multi-Child Switcher, Fee Payments (Paystack/OPay), Report Cards, Transport GPS.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">parent.david</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/portal/parent/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=parent.david" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('parent.david', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 4. Student -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">Student</span>
+                    <span class="role-badge badge-student">Learner Portal</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> LMS Lessons & Homework, CBT Online Exams, Digital Library, Pocket Money Wallet.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">student.romeo</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/portal/student/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=student.romeo" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('student.romeo', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 5. Finance Officer / Accountant -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">Finance Officer / Accountant</span>
+                    <span class="role-badge badge-finance">Finance</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Fee Structure, Invoices, Payment Collection, General Ledger Double-Entry, Trial Balance.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">finance.officer</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/hr/finance/postings/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=finance.officer" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('finance.officer', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 6. HR Officer / Payroll Manager -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">HR Officer / Payroll Manager</span>
+                    <span class="role-badge badge-hr">Human Resources</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Employee Directory, Onboarding, Leave Applications, Monthly Payroll & Hostinger Payslips.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">hr.admin</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/hr/admin/dashboard/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=hr.admin" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('hr.admin', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 7. Librarian -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">Library Staff / Librarian</span>
+                    <span class="role-badge badge-staff">Operations</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Catalog Accessioning, Barcode Scanning, Circulation Issues/Returns, Overdue Fines.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">librarian.mary</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/library/dashboard/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=librarian.mary" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('librarian.mary', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 8. Hostel Warden -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">Hostel Warden / Housing</span>
+                    <span class="role-badge badge-staff">Operations</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Hostel Blocks, Room & Bed Space Allocations, Nightly Attendance Roll Call.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">warden.sam</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/hostel/dashboard/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=warden.sam" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('warden.sam', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 9. Transport Officer -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">Transport Officer</span>
+                    <span class="role-badge badge-staff">Operations</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Vehicle Fleet, Driver Assign, Route Stops, Termly Subscriptions, GPS Dispatch.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">transport.officer</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/transport/dashboard/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=transport.officer" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('transport.officer', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 10. School Nurse / Clinic -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">School Nurse / Medical Staff</span>
+                    <span class="role-badge badge-staff">Medical</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Student Health EHR, Sick Bay Visits, Pharmacy Inventory, Termii SMS Alerts.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">nurse.sarah</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/clinic/dashboard/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=nurse.sarah" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('nurse.sarah', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 11. SaaS Platform Super Admin -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">SaaS Super Admin / Owner</span>
+                    <span class="role-badge badge-admin">Super Admin</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> Multi-Tenant Provisioning, SaaS Billing Engine, Feature Flags, System Logs.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">super.admin</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/administration/dashboard/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=super.admin" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('super.admin', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+
+        <!-- 12. Exam Officer -->
+        <div class="card">
+            <div>
+                <div class="card-header">
+                    <span class="role-title">Exam Officer / CBT Lead</span>
+                    <span class="role-badge badge-teacher">Academic Lead</span>
+                </div>
+                <p class="modules-list">
+                    <strong>Accessible Modules:</strong> CBT Exam Scheduling, Proctoring Rules, Candidate Start, Auto-Marking, Result Sync.
+                </p>
+                <div class="cred-box">
+                    <div class="cred-row"><span class="cred-label">Username:</span><span class="cred-val">exam.officer</span></div>
+                    <div class="cred-row"><span class="cred-label">Password:</span><span class="cred-val">EduOrbit@2026</span></div>
+                    <div class="cred-row"><span class="cred-label">Dashboard:</span><span class="cred-val">/eae/dashboard/</span></div>
+                </div>
+            </div>
+            <div class="btn-group">
+                <a href="/identity/login/?user=exam.officer" class="btn btn-primary">Auto Sign-In</a>
+                <button class="btn btn-secondary" onclick="copyCreds('exam.officer', 'EduOrbit@2026')">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2026 EduOrbit ERP Enterprise Edition. All Rights Reserved. Powered by Hostinger SMTP & Termii SMS.</p>
+    </div>
+</div>
+
+<script>
+    function copyCreds(username, password) {
+        const text = `Username: ${username}\nPassword: ${password}`;
+        navigator.clipboard.writeText(text).then(() => {
+            alert(`Credentials for ${username} copied to clipboard!`);
+        });
+    }
+</script>
+
+</body>
+</html>

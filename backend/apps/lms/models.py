@@ -297,3 +297,70 @@ class LearningSearchIndex(TenantBaseModel):
 
     def __str__(self):
         return f"Search Index: {self.topic}"
+
+
+# ==============================================================
+# ENTERPRISE LMS EXTENSIONS (v1.8.0)
+# ==============================================================
+
+class CourseCategory(TenantBaseModel):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Course(TenantBaseModel):
+    school = models.ForeignKey('tenants.School', on_delete=models.CASCADE)
+    subject = models.ForeignKey('academic.Subject', on_delete=models.CASCADE)
+    category = models.ForeignKey(CourseCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    is_published = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
+class CourseLesson(TenantBaseModel):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
+    title = models.CharField(max_length=200)
+    content_body = models.TextField(blank=True)
+    video_url = models.CharField(max_length=255, blank=True)
+    order = models.IntegerField(default=1)
+    is_published = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.course.title} - Lesson {self.order}: {self.title}"
+
+
+class Quiz(TenantBaseModel):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='quizzes')
+    title = models.CharField(max_length=200)
+    total_marks = models.IntegerField(default=100)
+    pass_marks = models.IntegerField(default=50)
+
+    def __str__(self):
+        return f"Quiz: {self.title} ({self.course.title})"
+
+
+class QuizQuestion(TenantBaseModel):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
+    question_text = models.TextField()
+    question_type = models.CharField(max_length=30, default='multiple_choice')  # multiple_choice, true_false, essay
+    marks = models.IntegerField(default=10)
+
+    def __str__(self):
+        return f"Question for {self.quiz.title}: {self.question_text[:30]}"
+
+
+class QuizAttempt(TenantBaseModel):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='attempts')
+    student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE)
+    score_achieved = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    is_passed = models.BooleanField(default=False)
+    submitted_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Attempt by {self.student.student_number} on {self.quiz.title} ({self.score_achieved})"
+

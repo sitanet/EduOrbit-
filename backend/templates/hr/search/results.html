@@ -1,0 +1,40 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Enterprise HR Search — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto space-y-6">
+
+    <div>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Enterprise HR Search</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1">Search across employee profiles, NIN, BVN, staff numbers, email addresses, and departments.</p>
+    </div>
+
+    <!-- Search Input -->
+    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        {% include 'hr/components/_search_bar.html' with placeholder="Type name, staff ID (e.g. EMP-004), email, department..." target_id="search-results-container" %}
+    </div>
+
+    <!-- Search Results Container -->
+    <div id="search-results-container" class="space-y-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
+            <h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">Search Results (Sample Data)</h3>
+            <div class="space-y-3">
+                <div class="p-3.5 bg-slate-50 dark:bg-slate-750/50 rounded-xl border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center text-xs">
+                            DE
+                        </div>
+                        <div>
+                            <div class="font-bold text-slate-900 dark:text-white text-sm">David Eze <span class="text-xs text-indigo-500 font-mono">(EMP-004)</span></div>
+                            <div class="text-xs text-slate-500">Biology Teacher • Department of Sciences • staff.member@eduorbit.com</div>
+                        </div>
+                    </div>
+                    {% include 'hr/components/_badge.html' with status='Active' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

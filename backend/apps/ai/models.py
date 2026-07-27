@@ -100,3 +100,78 @@ class AutomationRule(TenantBaseModel):
 
     def __str__(self):
         return self.name
+
+
+# ==============================================================
+# PREDICTIVE INTELLIGENCE & MODELS
+# ==============================================================
+
+class PredictiveModel(TenantBaseModel):
+    name = models.CharField(max_length=150)
+    target_metric = models.CharField(max_length=100)  # dropout_risk, fee_default_risk
+
+    def __str__(self):
+        return self.name
+
+
+class PredictionResult(TenantBaseModel):
+    model = models.ForeignKey(PredictiveModel, on_delete=models.CASCADE, related_name='results')
+    subject_identifier = models.CharField(max_length=150)  # Student number or Invoice ID
+    probability = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    confidence = models.DecimalField(max_digits=5, decimal_places=2, default=0.90)
+    explanation = models.TextField(blank=True)
+    recommended_action = models.TextField(blank=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Prediction: {self.model.name} for {self.subject_identifier} (Prob: {self.probability})"
+
+
+# ==============================================================
+# AI AUDIT LOGS, USAGE & RECOMMENDATIONS
+# ==============================================================
+
+class AITokenUsage(TenantBaseModel):
+    provider_name = models.CharField(max_length=100)
+    model_name = models.CharField(max_length=100)
+    prompt_tokens = models.IntegerField(default=0)
+    completion_tokens = models.IntegerField(default=0)
+    total_cost_usd = models.DecimalField(max_digits=8, decimal_places=4, default=0.0000)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Usage: {self.provider_name}/{self.model_name} ({self.prompt_tokens + self.completion_tokens} tokens)"
+
+
+class AIRecommendation(TenantBaseModel):
+    module_category = models.CharField(max_length=50)  # HR, SIS, Finance, LMS
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    priority = models.CharField(max_length=20, default='medium')  # low, medium, high
+    status = models.CharField(max_length=20, default='pending')  # pending, accepted, dismissed
+
+    def __str__(self):
+        return f"Rec [{self.module_category}]: {self.title}"
+
+
+class AIInsight(TenantBaseModel):
+    domain = models.CharField(max_length=50)  # Academic, Financial, Staff
+    summary = models.TextField()
+    score = models.DecimalField(max_digits=5, decimal_places=2, default=95.00)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Insight ({self.domain}): {self.summary[:30]}"
+
+
+class AIAuditLog(TenantBaseModel):
+    user_identity = models.CharField(max_length=150)
+    action_type = models.CharField(max_length=100)  # chat, predict, RAG_query
+    prompt_summary = models.TextField()
+    response_summary = models.TextField()
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Audit: {self.user_identity} -> {self.action_type} at {self.timestamp}"
+
+

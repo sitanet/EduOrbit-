@@ -1,58 +1,70 @@
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
-from backend.apps.transport.models import Route, Trip, VehicleLocation
-from backend.apps.transport.api.serializers import (
-    RouteSerializer, TripSerializer, LocationSerializer
-)
-from backend.apps.core.events import event_bus, DomainEvent
+from backend.apps.tenants.models import School
+from backend.apps.people.models import Person
+from backend.apps.transport.models import Route, Vehicle, Trip
+from backend.apps.transport.services.fleet import TransportAttendanceService, TransportFeeService
 
-class RouteAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class RouteListAPIView(APIView):
     def get(self, request):
-        routes = Route.objects.filter(tenant=request.tenant)
-        serializer = RouteSerializer(routes, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        routes = Route.objects.all()
+        data = [
+            {
+                "id": str(r.id),
+                "name": r.name,
+                "start_point": r.start_point,
+                "end_point": r.end_point,
+                "distance_km": float(r.total_distance_km),
+                "stops_count": r.stops.count()
+            }
+            for r in routes
+        ]
+        return Response({"status": "success", "count": len(data), "data": data})
 
-    def post(self, request):
-        serializer = RouteSerializer(data=request.data)
-        if serializer.is_valid():
-            route = serializer.save(tenant=request.tenant)
-            event_bus.publish(DomainEvent("route.created", tenant_id=str(request.tenant.id), data={"id": str(route.id)}))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class TripAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class VehicleListAPIView(APIView):
     def get(self, request):
-        trips = Trip.objects.filter(tenant=request.tenant)
-        serializer = TripSerializer(trips, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        vehicles = Vehicle.objects.all()
+        data = [
+            {
+                "id": str(v.id),
+                "registration_number": v.registration_number,
+                "plate_number": v.plate_number,
+                "capacity": v.capacity,
+                "status": v.status
+            }
+            for v in vehicles
+        ]
+        return Response({"status": "success", "count": len(data), "data": data})
 
+
+class StudentCheckInAPIView(APIView):
     def post(self, request):
-        serializer = TripSerializer(data=request.data)
-        if serializer.is_valid():
-            trip = serializer.save(tenant=request.tenant)
-            event_bus.publish(DomainEvent("trip.started", tenant_id=str(request.tenant.id), data={"id": str(trip.id)}))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        trip_id = request.data.get('trip_id')
+        student_id = request.data.get('student_id')
+
+        try:
+            trip = Trip.objects.get(id=trip_id)
+            student = Person.objects.get(id=student_id)
+            res = TransportAttendanceService.check_in_student(trip=trip, student=student)
+            return Response({"status": "success", "data": res}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class VehicleLocationAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        locations = VehicleLocation.objects.filter(tenant=request.tenant)
-        serializer = LocationSerializer(locations, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
+class TransportPaymentAPIView(APIView):
     def post(self, request):
-        serializer = LocationSerializer(data=request.data)
-        if serializer.is_valid():
-            loc = serializer.save(tenant=request.tenant)
-            event_bus.publish(DomainEvent("gps.location_logged", tenant_id=str(request.tenant.id), data={"id": str(loc.id)}))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        school_id = request.data.get('school_id')
+        student_id = request.data.get('student_id')
+        route_id = request.data.get('route_id')
+        term_fee = request.data.get('term_fee', 300.00)
+
+        try:
+            school = School.objects.get(id=school_id)
+            student = Person.objects.get(id=student_id)
+            route = Route.objects.get(id=route_id)
+            res = TransportFeeService.generate_transport_fee(school=school, student=student, route=route, term_fee=term_fee)
+            return Response({"status": "success", "data": res}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)

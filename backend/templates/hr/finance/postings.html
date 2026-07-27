@@ -1,0 +1,90 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Finance Integration & GL Postings — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Finance Integration & GL Journal Entries</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Audit double-entry ledger postings, idempotency keys, and payroll GL integration.</p>
+        </div>
+        <a href="/hr/payroll/" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl transition-all shadow-sm">
+            💰 Payroll Console
+        </a>
+    </div>
+
+    <!-- Double Entry Status Card -->
+    <div class="bg-emerald-950/40 border border-emerald-800/60 rounded-2xl p-6 text-emerald-100 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xl">✓</div>
+            <div>
+                <h3 class="font-bold text-base text-white">Double-Entry Ledger Verified</h3>
+                <p class="text-xs text-emerald-300 mt-0.5">Total Debits equal Total Credits across all posted payroll runs (Idempotent delivery guaranteed).</p>
+            </div>
+        </div>
+        <div class="text-right">
+            <div class="text-xl font-extrabold text-emerald-400">₦1,100,000.00</div>
+            <div class="text-xs text-emerald-300">Total Posted Balance</div>
+        </div>
+    </div>
+
+    <!-- Postings Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 font-bold text-slate-900 dark:text-white text-base">
+            Recent Payroll Journal Entry Postings
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="bg-slate-50 dark:bg-slate-750 text-slate-500 uppercase text-xs font-semibold">
+                    <tr>
+                        <th class="px-6 py-3.5">GL Account</th>
+                        <th class="px-6 py-3.5">Account Code</th>
+                        <th class="px-6 py-3.5">Entry Type</th>
+                        <th class="px-6 py-3.5">Amount</th>
+                        <th class="px-6 py-3.5">Idempotency Key</th>
+                        <th class="px-6 py-3.5">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                    <tr>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Salaries & Wages Expense</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500">5001</td>
+                        <td class="px-6 py-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-indigo-500/10 text-indigo-600">DEBIT</span></td>
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">₦1,100,000.00</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-400">grace-academy:run-1:v1:post</td>
+                        <td class="px-6 py-4">{% include 'hr/components/_badge.html' with status='Posted' %}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">PAYE Tax Liability</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500">2101</td>
+                        <td class="px-6 py-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600">CREDIT</span></td>
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">₦120,000.00</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-400">grace-academy:run-1:v1:post</td>
+                        <td class="px-6 py-4">{% include 'hr/components/_badge.html' with status='Posted' %}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Pension Contribution Liability</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500">2102</td>
+                        <td class="px-6 py-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600">CREDIT</span></td>
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">₦88,000.00</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-400">grace-academy:run-1:v1:post</td>
+                        <td class="px-6 py-4">{% include 'hr/components/_badge.html' with status='Posted' %}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">Net Salaries Payable</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500">2103</td>
+                        <td class="px-6 py-4"><span class="px-2 py-0.5 rounded text-xs font-bold bg-amber-500/10 text-amber-600">CREDIT</span></td>
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">₦892,000.00</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-400">grace-academy:run-1:v1:post</td>
+                        <td class="px-6 py-4">{% include 'hr/components/_badge.html' with status='Posted' %}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

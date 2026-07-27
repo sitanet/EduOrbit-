@@ -1,0 +1,32 @@
+{% comment %}
+Timeline Component
+Expects: events = list of dicts with {title, date, description, type, actor}
+{% endcomment %}
+<div class="relative pl-6 border-l-2 border-slate-200 dark:border-slate-700 space-y-6">
+    {% for evt in events %}
+    <div class="relative group">
+        <!-- Dot -->
+        <div class="absolute -left-[31px] top-1 w-4 h-4 rounded-full border-2 border-white dark:border-slate-800 
+            {% if evt.type == 'hired' or evt.type == 'confirmed' or evt.type == 'promoted' %}bg-emerald-500
+            {% elif evt.type == 'suspended' or evt.type == 'warning' or evt.type == 'query' %}bg-amber-500
+            {% elif evt.type == 'terminated' or evt.type == 'exited' %}bg-rose-500
+            {% else %}bg-indigo-500{% endif %}"></div>
+        
+        <!-- Card -->
+        <div class="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <div class="flex items-center justify-between gap-2">
+                <h4 class="font-semibold text-slate-900 dark:text-white text-sm">{{ evt.title }}</h4>
+                <span class="text-xs text-slate-400 font-mono">{{ evt.date }}</span>
+            </div>
+            {% if evt.description %}
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{{ evt.description }}</p>
+            {% endif %}
+            {% if evt.actor %}
+            <div class="text-[11px] text-slate-400 dark:text-slate-500 mt-2 font-medium">By: {{ evt.actor }}</div>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-sm text-slate-400 italic">No timeline events recorded.</p>
+    {% endfor %}
+</div>

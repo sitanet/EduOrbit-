@@ -1,12 +1,13 @@
 from django.urls import path
 from backend.apps.clinic.api.views import (
-    PatientProfileAPIView, AppointmentAPIView, ClinicVisitAPIView
+    PatientRecordListAPIView, ClinicVisitCreateAPIView, ClinicVisitListAPIView, MedicationAdministerAPIView
 )
 
 app_name = 'clinic_api'
 
 urlpatterns = [
-    path('patients/', PatientProfileAPIView.as_view(), name='patients'),
-    path('appointments/', AppointmentAPIView.as_view(), name='appointments'),
-    path('visits/', ClinicVisitAPIView.as_view(), name='visits'),
+    path('records/', PatientRecordListAPIView.as_view(), name='patient_records_list'),
+    path('visits/', ClinicVisitListAPIView.as_view(), name='clinic_visits_list'),
+    path('visits/create/', ClinicVisitCreateAPIView.as_view(), name='clinic_visit_create'),
+    path('medications/administer/', MedicationAdministerAPIView.as_view(), name='medication_administer'),
 ]

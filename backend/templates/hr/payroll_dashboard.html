@@ -1,0 +1,167 @@
+{% extends "base/_document.html" %}
+
+{% block title %}Payroll Engine & GL Postings - EduOrbit{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 0 auto; padding: var(--spacing-lg) 0;">
+
+  <!-- Header Section -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+    <div>
+      <h2 style="font-weight: var(--font-weight-bold); margin: 0; font-size: 1.8rem; color: var(--color-text-primary);">Payroll Engine & GL Ledger Desk</h2>
+      <p style="color: var(--color-text-secondary); margin-top: 4px;">Calculate employee salaries, view payslip snapshots, and post automated accounting journal vouchers to EFBM General Ledger.</p>
+    </div>
+  </div>
+
+  <!-- Main Grid Layout -->
+  <div style="display: grid; grid-template-columns: 1fr 3fr; gap: var(--spacing-lg);">
+
+    <!-- Left Column: Period Selection -->
+    <div>
+      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-md); position: sticky; top: var(--spacing-md);">
+        <h3 style="font-weight: var(--font-weight-semibold); margin: 0 0 var(--spacing-md) 0; font-size: 1.1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 10px;">Select Payroll Period</h3>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          {% for period in periods %}
+          <li style="margin-bottom: var(--spacing-xs);">
+            <a href="?period_id={{ period.id }}" 
+               style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: var(--radius-md); text-decoration: none; font-weight: var(--font-weight-medium); transition: background 0.2s; 
+                      {% if period.id|stringformat:'s' == selected_period_id|stringformat:'s' %}background: var(--color-primary-light, #e0f2fe); color: var(--color-primary); border-left: 4px solid var(--color-primary);{% else %}background: transparent; color: var(--color-text-primary); border-left: 4px solid transparent;{% endif %}">
+              <span>{{ period.name }}</span>
+              <span style="font-size: 0.75rem; padding: 2px 8px; border-radius: 20px; font-weight: var(--font-weight-bold); 
+                           {% if period.status == 'draft' %}background: #f3f4f6; color: #4b5563;
+                           {% elif period.status == 'calculated' %}background: #e0f2fe; color: #0369a1;
+                           {% elif period.status == 'closed' %}background: #dcfce7; color: #15803d;
+                           {% else %}background: #fee2e2; color: #b91c1c;{% endif %}">
+                {{ period.status|title }}
+              </span>
+            </a>
+          </li>
+          {% empty %}
+          <li style="color: var(--color-text-secondary); text-align: center; padding: var(--spacing-md);">No payroll periods available.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right Column: Dashboard Details -->
+    <div>
+      {% if selected_period %}
+        
+        <!-- Period Info & Action Card -->
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg); margin-bottom: var(--spacing-lg); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="margin: 0; font-size: 1.3rem; font-weight: var(--font-weight-bold);">{{ selected_period.name }}</h3>
+            <p style="margin: 4px 0 0 0; color: var(--color-text-secondary); font-size: 0.9rem;">
+              Timeline: {{ selected_period.start_date }} to {{ selected_period.end_date }}
+            </p>
+          </div>
+          
+          <div>
+            {% if not active_run %}
+              <!-- Generate Payroll Form -->
+              <form method="POST" action="{% url 'payroll-generate' %}">
+                {% csrf_token %}
+                <input type="hidden" name="period_id" value="{{ selected_period.id }}">
+                <button type="submit" style="background: var(--color-primary); color: white; border: none; padding: 12px 24px; border-radius: var(--radius-md); font-weight: var(--font-weight-bold); cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                  ⚡ Run Payroll Calculations
+                </button>
+              </form>
+            {% elif active_run.status == 'calculated' or active_run.status == 'posting_failed' %}
+              <!-- Post/Approve Payroll Form -->
+              <div style="display: flex; gap: 10px; align-items: center;">
+                {% if active_run.status == 'posting_failed' %}
+                  <span style="color: var(--color-error, #ef4444); font-size: 0.9rem; font-weight: var(--font-weight-semibold);">⚠️ GL Posting Failed</span>
+                {% endif %}
+                <form method="POST" action="{% url 'payroll-post' active_run.id %}">
+                  {% csrf_token %}
+                  <button type="submit" style="background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: var(--radius-md); font-weight: var(--font-weight-bold); cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                    ✅ Approve & Post General Ledger Vouchers
+                  </button>
+                </form>
+              </div>
+            {% else %}
+              <div style="display: flex; align-items: center; gap: 8px; color: #10b981; font-weight: var(--font-weight-bold);">
+                <span style="background: #dcfce7; padding: 10px 20px; border-radius: var(--radius-md);">Posted & Closed</span>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if active_run %}
+          <!-- Statistics Cards Grid -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm);">
+              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-secondary); font-weight: var(--font-weight-semibold);">Total Gross Pay</span>
+              <h4 style="margin: 8px 0 0 0; font-size: 1.4rem; font-weight: var(--font-weight-bold); color: var(--color-text-primary);">₦{{ active_run.total_gross }}</h4>
+            </div>
+            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm);">
+              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-secondary); font-weight: var(--font-weight-semibold);">Total Tax (PAYE)</span>
+              <h4 style="margin: 8px 0 0 0; font-size: 1.4rem; font-weight: var(--font-weight-bold); color: #ef4444;">₦{{ active_run.total_tax }}</h4>
+            </div>
+            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm);">
+              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-secondary); font-weight: var(--font-weight-semibold);">Total Pension</span>
+              <h4 style="margin: 8px 0 0 0; font-size: 1.4rem; font-weight: var(--font-weight-bold); color: #f59e0b;">₦{{ active_run.total_pension }}</h4>
+            </div>
+            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm);">
+              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-secondary); font-weight: var(--font-weight-semibold);">Total Net Salary</span>
+              <h4 style="margin: 8px 0 0 0; font-size: 1.4rem; font-weight: var(--font-weight-bold); color: #10b981;">₦{{ active_run.total_net }}</h4>
+            </div>
+          </div>
+
+          <!-- Payslip Ledger Table -->
+          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden;">
+            <div style="padding: var(--spacing-md) var(--spacing-lg); background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+              <h4 style="font-weight: var(--font-weight-semibold); margin: 0; font-size: 1.1rem;">Snapshot Payslips</h4>
+            </div>
+            
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+              <thead>
+                <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border); font-size: 0.85rem; text-transform: uppercase; color: var(--color-text-secondary);">
+                  <th style="padding: var(--spacing-md) var(--spacing-lg);">Employee</th>
+                  <th style="padding: var(--spacing-md);">Grade</th>
+                  <th style="padding: var(--spacing-md);">Base Salary</th>
+                  <th style="padding: var(--spacing-md);">Gross Pay</th>
+                  <th style="padding: var(--spacing-md);">Deductions</th>
+                  <th style="padding: var(--spacing-md);">Net Pay</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for payslip in payslips %}
+                <tr style="border-bottom: 1px solid var(--color-border);">
+                  <td style="padding: var(--spacing-md) var(--spacing-lg); font-weight: var(--font-weight-medium);">
+                    {{ payslip.employee.person.first_name }} {{ payslip.employee.person.last_name }}
+                    <span style="display: block; font-size: 0.8rem; color: var(--color-text-secondary);">{{ payslip.employee.employee_number }}</span>
+                  </td>
+                  <td style="padding: var(--spacing-md);">{{ payslip.salary_grade }}</td>
+                  <td style="padding: var(--spacing-md);">₦{{ payslip.base_salary }}</td>
+                  <td style="padding: var(--spacing-md); font-weight: var(--font-weight-semibold);">₦{{ payslip.gross_pay }}</td>
+                  <td style="padding: var(--spacing-md); color: #ef4444;">₦{{ payslip.tax_amount }} (Tax)</td>
+                  <td style="padding: var(--spacing-md); color: #10b981; font-weight: var(--font-weight-bold);">₦{{ payslip.net_pay }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" style="padding: var(--spacing-lg); text-align: center; color: var(--color-text-secondary);">No payslips found for this run.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); text-align: center; color: var(--color-text-secondary);">
+            No payroll run calculated yet. Select calculations action to begin.
+          </div>
+        {% endif %}
+
+      {% else %}
+        <!-- Selection Placeholder -->
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 50px; text-align: center; color: var(--color-text-secondary);">
+          <div style="font-size: 3rem; margin-bottom: var(--spacing-md);">📅</div>
+          <h3 style="margin: 0; color: var(--color-text-primary);">Select a payroll period from the left ledger to review or generate payslips.</h3>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

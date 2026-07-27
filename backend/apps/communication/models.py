@@ -170,3 +170,22 @@ class CommunicationLog(TenantBaseModel):
 
     def __str__(self):
         return f"Log: {self.channel} -> {self.status} on {self.created_at}"
+
+
+# ==============================================================
+# HELPDESK & CRM SUPPORT TICKETS
+# ==============================================================
+
+class SupportTicket(TenantBaseModel):
+    school = models.ForeignKey('tenants.School', on_delete=models.CASCADE)
+    requester = models.ForeignKey('people.Person', on_delete=models.CASCADE, related_name='support_tickets')
+    subject = models.CharField(max_length=200)
+    description = models.TextField()
+    category = models.CharField(max_length=50, default='general')  # academic, finance, technical, portal
+    priority = models.CharField(max_length=20, default='medium')  # low, medium, high, urgent
+    status = models.CharField(max_length=20, default='open')  # open, in_progress, resolved, closed
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Ticket #{self.id}: {self.subject} ({self.status})"
+

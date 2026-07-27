@@ -1,13 +1,16 @@
 from django.urls import path
 from backend.apps.eae.api.views import (
-    QuestionAPIView, AssessmentAPIView, AttemptAPIView, AutoMarkAPIView
+    QuestionBankListAPIView, ExamListAPIView, ExamStartAPIView, ExamSubmitAPIView,
+    ResultListAPIView, ResultPublishAPIView
 )
 
-app_name = 'eae_api'
+app_name = 'cbt_api'
 
 urlpatterns = [
-    path('questions/', QuestionAPIView.as_view(), name='questions'),
-    path('assessments/', AssessmentAPIView.as_view(), name='assessments'),
-    path('attempts/', AttemptAPIView.as_view(), name='attempts'),
-    path('attempts/<uuid:attempt_id>/automark/', AutoMarkAPIView.as_view(), name='automark'),
+    path('question-banks/', QuestionBankListAPIView.as_view(), name='question_banks'),
+    path('exams/', ExamListAPIView.as_view(), name='exam_list'),
+    path('start/', ExamStartAPIView.as_view(), name='exam_start'),
+    path('submit/', ExamSubmitAPIView.as_view(), name='exam_submit'),
+    path('results/', ResultListAPIView.as_view(), name='result_list'),
+    path('results/publish/', ResultPublishAPIView.as_view(), name='result_publish'),
 ]

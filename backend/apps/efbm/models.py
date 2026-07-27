@@ -95,19 +95,22 @@ class PaymentAllocation(TenantBaseModel):
 
 class StudentWallet(TenantBaseModel):
     """
-    Pre-paid funds account held by a Parent.
+    Pre-paid funds account held by a Parent or Student.
     """
-    parent = models.ForeignKey('people.Person', on_delete=models.CASCADE, related_name='wallets')
+    parent = models.ForeignKey('people.Person', on_delete=models.CASCADE, related_name='wallets', null=True, blank=True)
+    student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE, related_name='wallets', null=True, blank=True)
     balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
 
     def __str__(self):
-        return f"Wallet: {self.parent.last_name} ({self.balance})"
+        return f"Wallet ({self.balance})"
 
 
 class WalletTransaction(TenantBaseModel):
     wallet = models.ForeignKey(StudentWallet, on_delete=models.CASCADE, related_name='transactions')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     transaction_type = models.CharField(max_length=20)  # credit, debit
+    reference = models.CharField(max_length=100, blank=True, default='')
+    description = models.TextField(blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -234,3 +237,38 @@ class PlatformCommission(TenantBaseModel):
 
     def __str__(self):
         return f"Commission: {self.commission_amount}"
+
+
+# ==============================================================
+# ENTERPRISE BUDGETING & FINANCIAL CONTROL
+# ==============================================================
+
+class Budget(TenantBaseModel):
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('submitted', 'Submitted'),
+        ('approved', 'Approved'),
+        ('frozen', 'Frozen')
+    ]
+    school = models.ForeignKey('tenants.School', on_delete=models.CASCADE)
+    academic_year = models.ForeignKey('academic.AcademicYear', on_delete=models.CASCADE)
+    name = models.CharField(max_length=150)
+    total_allocated = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    total_committed = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    total_spent = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='draft')
+
+    def __str__(self):
+        return f"{self.name} ({self.status})"
+
+
+class BudgetItem(TenantBaseModel):
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, related_name='items')
+    category_name = models.CharField(max_length=100)  # e.g., IT Hardware, Operating Supplies
+    allocated_amount = models.DecimalField(max_digits=12, decimal_places=2)
+    committed_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    spent_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return f"{self.category_name}: ${self.spent_amount} / ${self.allocated_amount}"
+

@@ -1,0 +1,32 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Bulk Operations Console — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <div>
+        <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Bulk Operations Console</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1">Execute mass transfers, promotions, leave allocations, shift assignments, and payroll approvals.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base">Bulk Leave Balance Allocation</h3>
+            <p class="text-xs text-slate-500">Allocate yearly annual or sick leave days to all staff members in a selected department or salary grade.</p>
+            <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl transition-all">
+                Run Bulk Leave Allocation
+            </button>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base">Bulk Shift Assignment</h3>
+            <p class="text-xs text-slate-500">Assign shift templates (e.g. Morning Shift) to multiple employees simultaneously across dates.</p>
+            <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl transition-all">
+                Assign Shift to Selection
+            </button>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

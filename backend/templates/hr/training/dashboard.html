@@ -1,0 +1,74 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Training & CPD — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Training & Professional Development</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Manage staff certifications, compliance seminars, and CPD hours.</p>
+        </div>
+        <button onclick="document.getElementById('trainingModal').classList.remove('hidden')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl transition-all shadow-sm cursor-pointer">
+            + Schedule Program
+        </button>
+    </div>
+
+    <!-- Schedule Program Modal -->
+    <div id="trainingModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-md w-full border border-slate-200 dark:border-slate-700 space-y-4 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Schedule Training Program</h3>
+                <button onclick="document.getElementById('trainingModal').classList.add('hidden')" class="text-slate-400 hover:text-white text-xl">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('Training Program successfully scheduled!'); document.getElementById('trainingModal').classList.add('hidden');" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Program Title</label>
+                    <input type="text" value="Modern Digital Classroom Pedagogy" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">CPD Credits</label>
+                        <input type="number" value="10" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Max Seats</label>
+                        <input type="number" value="25" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                    </div>
+                </div>
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="document.getElementById('trainingModal').classList.add('hidden')" class="px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-600 dark:text-slate-300 font-semibold">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg shadow-md">Schedule Program</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {% include 'hr/components/_stat_card.html' with title="Enrolled Staff" value="14 Enrolled" subtitle="Across 3 Programs" icon="users" %}
+        {% include 'hr/components/_stat_card.html' with title="CPD Hours Logged" value="120 Hours" subtitle="Year to Date" icon="clock" %}
+        {% include 'hr/components/_stat_card.html' with title="Compliance Status" value="96%" subtitle="Mandatory Safety Training" icon="calendar" %}
+        {% include 'hr/components/_stat_card.html' with title="Budget Spent" value="₦450,000" subtitle="FY 2026 Training Pool" icon="cash" %}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Active Training Programs</h3>
+            <div class="space-y-4">
+                <div class="p-4 bg-slate-50 dark:bg-slate-750/50 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-bold text-slate-900 dark:text-white text-sm">Cambridge Pedagogy & STEM Methods</span>
+                        {% include 'hr/components/_badge.html' with status='Active' %}
+                    </div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-4">
+                        <span>CPD Hours: 15</span>
+                        <span>Enrolled: 8 Teachers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

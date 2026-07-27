@@ -4,9 +4,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-# Local SQLite override if postgres is not active in environment
+# Database Setup - Locked strictly to PostgreSQL engine
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'))
+    'default': env.db('DATABASE_URL', default='postgres://postgres:admin@localhost:5432/eduorbit')
 }
 
 # Console logs and debug email backend

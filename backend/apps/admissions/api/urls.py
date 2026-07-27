@@ -1,13 +1,9 @@
 from django.urls import path
-from backend.apps.admissions.api.views import (
-    CampaignAPIView, IntakeAPIView, ApplicationAPIView, EnrollmentAPIView
-)
+from backend.apps.admissions.api.views import ApplicationListAPIView, ApplicantConversionAPIView
 
 app_name = 'admissions_api'
 
 urlpatterns = [
-    path('admissions/campaigns/', CampaignAPIView.as_view(), name='campaigns'),
-    path('admissions/intakes/', IntakeAPIView.as_view(), name='intakes'),
-    path('admissions/applications/', ApplicationAPIView.as_view(), name='applications'),
-    path('admissions/enrollment/', EnrollmentAPIView.as_view(), name='enroll'),
+    path('applications/', ApplicationListAPIView.as_view(), name='application_list'),
+    path('applications/convert/', ApplicantConversionAPIView.as_view(), name='applicant_convert'),
 ]

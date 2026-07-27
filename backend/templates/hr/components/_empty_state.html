@@ -1,0 +1,18 @@
+{% comment %}
+Empty State Component
+Usage: {% include 'hr/components/_empty_state.html' with title="No records found" message="Try adjusting filters" action_url="/hr/admin/directory/" action_label="Add New" %}
+{% endcomment %}
+<div class="flex flex-col items-center justify-center p-12 text-center bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700">
+    <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-750 flex items-center justify-center text-slate-400 dark:text-slate-500 mb-4">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+        </svg>
+    </div>
+    <h3 class="text-base font-semibold text-slate-900 dark:text-white mb-1">{{ title|default:"No items to show" }}</h3>
+    <p class="text-sm text-slate-500 dark:text-slate-400 max-w-sm mb-6">{{ message|default:"There are currently no records available in this view." }}</p>
+    {% if action_url %}
+    <a href="{{ action_url }}" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition-colors">
+        {{ action_label|default:"Add New" }}
+    </a>
+    {% endif %}
+</div>

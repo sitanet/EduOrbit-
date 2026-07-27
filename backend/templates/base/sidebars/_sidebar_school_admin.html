@@ -1,0 +1,60 @@
+{# ─── School Admin Sidebar ────────────────────────────────────────────────── #}
+{# Roles: school_admin, principal, vice_principal                              #}
+<aside id="sidebar-school-admin"
+       class="hidden lg:flex flex-col w-64 min-h-screen bg-slate-900 text-white shadow-xl"
+       aria-label="School Admin Navigation">
+
+  <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+    <span class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-bold text-lg">E</span>
+    <div>
+      <div class="text-sm font-bold text-white leading-tight">EduOrbit</div>
+      <div class="text-xs text-emerald-400 font-medium">School Admin</div>
+    </div>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+
+    <a href="/dashboard/school-admin/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors font-medium text-sm">🏠 Dashboard</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Academics</div>
+    <a href="/academic/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🎓 Academic Management</a>
+    <a href="/students/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">👨‍🎓 Students</a>
+    <a href="/teachers/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">👨‍🏫 Teachers</a>
+    <a href="/timetable/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📅 Timetable</a>
+    <a href="/attendance/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">✅ Attendance</a>
+    <a href="/admissions/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📋 Admissions</a>
+    <a href="/lms/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📚 LMS</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Finance</div>
+    <a href="/efbm/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">💰 Finance & Billing</a>
+    <a href="/inventory/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📦 Inventory</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Human Resources</div>
+    <a href="/hr/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">👥 HR Management</a>
+    <a href="/people/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🧑‍💼 People</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Modules</div>
+    <a href="/library/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📖 Library</a>
+    <a href="/transport/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🚌 Transport</a>
+    <a href="/hostel/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🏠 Hostel</a>
+    <a href="/clinic/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🏥 Clinic</a>
+    <a href="/eae/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📝 Exams & Assessment</a>
+    <a href="/communication/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📢 Communication</a>
+    <a href="/analytics/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📊 Analytics</a>
+    <a href="/facilities/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🏗️ Facilities</a>
+
+  </nav>
+
+  <div class="px-4 py-4 border-t border-slate-700/60">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-emerald-600 flex items-center justify-center text-white text-sm font-bold">
+        {{ request.user.username|first|upper }}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</p>
+        <p class="text-xs text-slate-400 truncate">School Admin</p>
+      </div>
+      <a href="/?next=logout" class="text-slate-400 hover:text-white text-xs">↩</a>
+    </div>
+  </div>
+</aside>

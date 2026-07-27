@@ -1,0 +1,122 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}My Team Dashboard — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6" x-data="{ selectedTab: 'approvals' }">
+
+    <!-- Manager Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Manager Portal — Team Overview</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Manage direct reports, approve requests, and monitor team performance.</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="/hr/attendance/" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm rounded-xl transition-all shadow-md">
+                ⏰ Team Attendance Grid
+            </a>
+        </div>
+    </div>
+
+    <!-- Team KPIs -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {% include 'hr/components/_stat_card.html' with title="Direct Reports" value="5 Members" subtitle="Sciences Department" icon="users" %}
+        {% include 'hr/components/_stat_card.html' with title="Present Today" value="4 / 5" subtitle="80% On-time" icon="clock" %}
+        {% include 'hr/components/_stat_card.html' with title="Pending Approvals" value="2 Requests" subtitle="1 Leave, 1 Adjustment" icon="calendar" %}
+        {% include 'hr/components/_stat_card.html' with title="Appraisal Due" value="1 Evaluation" subtitle="Q3 Performance Review" icon="cash" %}
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex border-b border-slate-200 dark:border-slate-700 gap-6">
+        <button @click="selectedTab = 'approvals'" :class="selectedTab === 'approvals' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold' : 'border-transparent text-slate-500'" class="pb-3 border-b-2 text-sm transition-colors">
+            Pending Approvals (2)
+        </button>
+        <button @click="selectedTab = 'members'" :class="selectedTab === 'members' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold' : 'border-transparent text-slate-500'" class="pb-3 border-b-2 text-sm transition-colors">
+            Direct Reports (5)
+        </button>
+    </div>
+
+    <!-- Pending Approvals Queue -->
+    <div x-show="selectedTab === 'approvals'" class="space-y-4">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white">Action Required</h3>
+        
+        <!-- Leave Approval Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center flex-shrink-0">
+                    DE
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-slate-900 dark:text-white">David Eze</span>
+                        {% include 'hr/components/_badge.html' with status='Submitted' %}
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Requested <strong class="text-slate-800 dark:text-slate-200">Annual Leave (3 Days)</strong> from July 30 to August 1, 2026.</p>
+                    <p class="text-xs text-slate-400 mt-1 italic">"Family vacation and rest."</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <form method="POST" action="/hr/leave-calendar/">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="approve_leave">
+                    <input type="hidden" name="leave_id" value="1">
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl transition-all shadow-sm">
+                        ✓ Approve Request
+                    </button>
+                </form>
+                <form method="POST" action="/hr/leave-calendar/">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="reject_leave">
+                    <input type="hidden" name="leave_id" value="1">
+                    <button type="submit" class="px-4 py-2 bg-rose-500/10 text-rose-600 hover:bg-rose-500/20 font-semibold text-xs rounded-xl transition-all border border-rose-500/20">
+                        ✕ Reject
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Attendance Adjustment Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-700 font-bold flex items-center justify-center flex-shrink-0">
+                    DE
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-slate-900 dark:text-white">David Eze</span>
+                        {% include 'hr/components/_badge.html' with status='Pending' %}
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Requested <strong class="text-slate-800 dark:text-slate-200">Attendance Adjustment</strong> for yesterday (July 24).</p>
+                    <p class="text-xs text-slate-400 mt-1 italic">"System failed to register check-out time due to network timeout."</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <form method="POST" action="/hr/attendance/">
+                    {% csrf_token %}
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl transition-all shadow-sm">
+                        ✓ Approve Adjustment
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direct Reports Tab -->
+    <div x-show="selectedTab === 'members'" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Direct Reports List</h3>
+        <div class="divide-y divide-slate-100 dark:divide-slate-700">
+            <div class="py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs">DE</div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-900 dark:text-white">David Eze</div>
+                        <div class="text-xs text-slate-400">Biology Teacher • EMP-004</div>
+                    </div>
+                </div>
+                {% include 'hr/components/_badge.html' with status='Active' %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

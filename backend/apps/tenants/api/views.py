@@ -1,81 +1,83 @@
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
-from django.utils import timezone
-from backend.apps.tenants.api.serializers import TenantOnboardSerializer, CampusSerializer, DomainSerializer
-from backend.apps.tenants.models import Campus, CustomDomain
-from backend.apps.tenants.services import TenantOnboardingService
-from backend.apps.core.events import event_bus, DomainEvent
+from backend.apps.tenants.models import Tenant, SubscriptionPlan, TenantSubscription
+from backend.apps.tenants.services.subscription import SubscriptionService, SubscriptionValidationService
+from backend.apps.tenants.services.gateways import OPayGateway, PaystackGateway
 
-class OnboardAPIView(APIView):
-    permission_classes = [permissions.AllowAny]
-
-    def post(self, request):
-        serializer = TenantOnboardSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
-        data = serializer.validated_data
-        tenant, school, admin_user = TenantOnboardingService.onboard_organization(
-            org_name=data['org_name'],
-            admin_email=data['admin_email'],
-            admin_username=data['admin_username'],
-            admin_password_plain=data['admin_password'],
-            billing_model=data.get('billing_model', 'school_pays'),
-            school_name=data.get('school_name'),
-            school_types=data.get('school_types')
-        )
-
-        return Response({
-            "tenant": {
-                "id": str(tenant.id),
-                "name": tenant.name
-            },
-            "school": {
-                "id": str(school.id),
-                "name": school.name
-            },
-            "admin": {
-                "username": admin_user.username
-            }
-        }, status=status.HTTP_201_CREATED)
-
-
-class CampusAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class SubscriptionPlanListAPIView(APIView):
     def get(self, request):
-        if not request.tenant:
-            return Response({"detail": "Active tenant context required."}, status=status.HTTP_400_BAD_REQUEST)
-        campuses = Campus.objects.filter(tenant=request.tenant)
-        serializer = CampusSerializer(campuses, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        plans = SubscriptionPlan.objects.filter(is_active=True)
+        data = [
+            {
+                "id": str(p.id),
+                "name": p.name,
+                "description": p.description,
+                "billing_model": p.billing_model,
+                "monthly_price": float(p.monthly_price),
+                "termly_price": float(p.termly_price),
+                "yearly_price": float(p.yearly_price),
+                "max_students": p.max_students,
+                "max_staff": p.max_staff
+            }
+            for p in plans
+        ]
+        return Response({"status": "success", "count": len(data), "data": data})
 
+
+class SubscriptionSubscribeAPIView(APIView):
     def post(self, request):
-        if not request.tenant:
-            return Response({"detail": "Active tenant context required."}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = CampusSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-        campus = serializer.save(tenant=request.tenant)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        tenant_id = request.data.get('tenant_id')
+        plan_id = request.data.get('plan_id')
+        billing_cycle = request.data.get('billing_cycle', 'MONTHLY')
+        billing_model = request.data.get('billing_model', 'SCHOOL_PAY')
 
-
-class DomainVerificationAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def post(self, request, pk):
         try:
-            domain = CustomDomain.objects.get(id=pk, tenant=request.tenant)
-        except CustomDomain.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            tenant = Tenant.objects.get(id=tenant_id)
+            plan = SubscriptionPlan.objects.get(id=plan_id)
+            res = SubscriptionService.create_tenant_subscription(
+                tenant=tenant, plan=plan, billing_cycle=billing_cycle, billing_model=billing_model
+            )
+            return Response({"status": "success", "data": res}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Mock verification query checking DNS record resolves verification token
-        domain.is_verified = True
-        domain.ssl_active = True
-        domain.save(update_fields=['is_verified', 'ssl_active'])
-        
-        event_bus.publish(DomainEvent("domain.verified", tenant_id=str(request.tenant.id), data={"domain": domain.domain_name}))
 
-        return Response(DomainSerializer(domain).data, status=status.HTTP_200_OK)
+class SubscriptionRenewAPIView(APIView):
+    def post(self, request):
+        subscription_id = request.data.get('subscription_id')
+        payment_reference = request.data.get('payment_reference')
+
+        try:
+            sub = TenantSubscription.objects.get(id=subscription_id)
+            res = SubscriptionService.renew_subscription(subscription=sub, payment_reference=payment_reference)
+            return Response({"status": "success", "data": res}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SubscriptionStatusAPIView(APIView):
+    def get(self, request):
+        tenant_id = request.query_params.get('tenant_id')
+        try:
+            tenant = Tenant.objects.get(id=tenant_id)
+            res = SubscriptionValidationService.validate_tenant_access(tenant=tenant)
+            return Response({"status": "success", "data": res}, status=status.HTTP_200_OK)
+        except Tenant.DoesNotExist:
+            return Response({"status": "error", "message": "Tenant not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+class OPayWebhookAPIView(APIView):
+    def post(self, request):
+        payload = request.data
+        gateway = OPayGateway()
+        res = gateway.handle_webhook(payload)
+        return Response({"status": "success", "data": res}, status=status.HTTP_200_OK)
+
+
+class PaystackWebhookAPIView(APIView):
+    def post(self, request):
+        payload = request.data
+        gateway = PaystackGateway()
+        res = gateway.handle_webhook(payload)
+        return Response({"status": "success", "data": res}, status=status.HTTP_200_OK)

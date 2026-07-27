@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'backend.apps.portal',
     'backend.apps.administration',
     'backend.apps.ai',
+    'backend.apps.integration',
 ]
 
 MIDDLEWARE = [
@@ -79,6 +80,7 @@ MIDDLEWARE = [
     
     # Core Tenant Context Resolver Middleware
     'backend.apps.core.middleware.TenantMiddleware',
+    'backend.apps.hr.middleware.HRContextMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.config.urls'
@@ -94,6 +96,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # EduOrbit RBAC — injects sidebar_template, dashboard_role, etc.
+                'backend.apps.dashboard.context_processors.permission_context',
             ],
         },
     },
@@ -102,9 +106,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.config.wsgi.application'
 ASGI_APPLICATION = 'backend.config.asgi.application'
 
-# Database Setup - Subclasses override this
+# Database Setup - Locked strictly to PostgreSQL engine
 DATABASES = {
-    'default': env.db('DATABASE_URL', default='sqlite:///db.sqlite3')
+    'default': env.db('DATABASE_URL', default='postgres://postgres:admin@localhost:5432/eduorbit')
 }
 
 # Password validation
@@ -229,3 +233,19 @@ CHANNEL_LAYERS = {
 
 # Custom File Storage Provider configuration: 'local', 's3', or 'gcs'
 DEFAULT_FILE_STORAGE_PROVIDER = env.str('DEFAULT_FILE_STORAGE_PROVIDER', default='local')
+
+# Hostinger Email Provider Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env.str('EMAIL_HOST', default='smtp.hostinger.com')
+EMAIL_PORT = env.int('EMAIL_PORT', default=465)
+EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL', default=True)
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=False)
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='noreply@eduorbit.com')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', default='EduOrbit ERP <noreply@eduorbit.com>')
+
+# Termii SMS Provider Settings
+TERMII_API_KEY = env.str('TERMII_API_KEY', default='test_termii_api_key_123')
+TERMII_SENDER_ID = env.str('TERMII_SENDER_ID', default='EduOrbit')
+TERMII_BASE_URL = env.str('TERMII_BASE_URL', default='https://api.ng.termii.com')
+

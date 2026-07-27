@@ -1,46 +1,143 @@
 {% extends "base/_document.html" %}
 
-{% block title %}Leave Calendar - EduOrbit{% endblock %}
+{% block title %}Leave Calendar & Time-Off Management - EduOrbit{% endblock %}
 
 {% block content %}
-<div style="max-width: 1000px; margin: 0 auto;">
-  <div style="margin-bottom: var(--spacing-lg);">
-    <h2 style="font-weight: var(--font-weight-semibold);">Leave Calendar</h2>
-    <p style="color: var(--color-text-secondary);">Track active, pending, and approved employee time-off requests.</p>
+<div style="max-width: 1100px; margin: 0 auto; padding: var(--spacing-lg) 0;">
+
+  <!-- Header Section -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+    <div>
+      <h2 style="font-weight: var(--font-weight-bold); margin: 0;">Leave & Time-Off Calendar</h2>
+      <p style="color: var(--color-text-secondary); margin-top: 4px;">Submit time-off requests, track employee leave balances, and manage approvals.</p>
+    </div>
+    <button onclick="document.getElementById('submitLeaveModal').style.display='flex'" 
+            style="background: var(--color-primary); color: white; border: none; padding: 10px 18px; border-radius: var(--radius-md); font-weight: var(--font-weight-semibold); cursor: pointer;">
+      + Request Leave
+    </button>
   </div>
 
-  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
-    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Recent Requests</h3>
+  <!-- Table Container -->
+  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden;">
+    <div style="padding: var(--spacing-md) var(--spacing-lg); background: var(--color-background); border-bottom: 1px solid var(--color-border);">
+      <h3 style="font-weight: var(--font-weight-semibold); margin: 0; font-size: 1.1rem;">Time-Off Request Ledger</h3>
+    </div>
+    
     <table style="width: 100%; border-collapse: collapse; text-align: left;">
       <thead>
-        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Employee</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Leave Type</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Start Date</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">End Date</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Status</th>
+        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-secondary);">
+          <th style="padding: var(--spacing-md) var(--spacing-lg);">Employee</th>
+          <th style="padding: var(--spacing-md);">Leave Type</th>
+          <th style="padding: var(--spacing-md);">Duration</th>
+          <th style="padding: var(--spacing-md);">Reason</th>
+          <th style="padding: var(--spacing-md);">Status</th>
+          <th style="padding: var(--spacing-md) var(--spacing-lg); text-align: right;">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for leave in leaves %}
         <tr style="border-bottom: 1px solid var(--color-border);">
-          <td style="padding: var(--spacing-md);">{{ leave.employee.person.first_name }} {{ leave.employee.person.last_name }}</td>
-          <td style="padding: var(--spacing-md);">{{ leave.leave_type|title }}</td>
-          <td style="padding: var(--spacing-md);">{{ leave.start_date }}</td>
-          <td style="padding: var(--spacing-md);">{{ leave.end_date }}</td>
+          <td style="padding: var(--spacing-md) var(--spacing-lg); font-weight: var(--font-weight-medium);">
+            {{ leave.employee.person.first_name }} {{ leave.employee.person.last_name }}
+            <div style="font-size: 0.8rem; color: var(--color-text-secondary); font-weight: normal;">{{ leave.employee.employee_number }}</div>
+          </td>
+          <td style="padding: var(--spacing-md);">{{ leave.leave_type_name }}</td>
           <td style="padding: var(--spacing-md);">
-            <span class="badge {% if leave.status == 'approved' %}badge-success{% else %}badge-warning{% endif %}">
-              {{ leave.status|upper }}
-            </span>
+            <div>{{ leave.start_date }} to {{ leave.end_date }}</div>
+            <div style="font-size: 0.8rem; color: var(--color-text-secondary);">{{ leave.days_requested }} day(s)</div>
+          </td>
+          <td style="padding: var(--spacing-md); color: var(--color-text-secondary); max-width: 200px;">{{ leave.reason|default:"—" }}</td>
+          <td style="padding: var(--spacing-md);">
+            {% if leave.status == 'hr_approved' %}
+              <span style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: var(--font-weight-semibold);">APPROVED</span>
+            {% elif leave.status == 'rejected' %}
+              <span style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: var(--font-weight-semibold);">REJECTED</span>
+            {% else %}
+              <span style="background: rgba(245, 158, 11, 0.1); color: #f59e0b; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: var(--font-weight-semibold);">PENDING</span>
+            {% endif %}
+          </td>
+          <td style="padding: var(--spacing-md) var(--spacing-lg); text-align: right;">
+            {% if leave.status != 'hr_approved' and leave.status != 'rejected' %}
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+              <form method="POST" style="margin: 0;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="approve_leave">
+                <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                <button type="submit" style="background: #10b981; color: white; border: none; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer;">Approve</button>
+              </form>
+              <form method="POST" style="margin: 0;">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="reject_leave">
+                <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                <button type="submit" style="background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer;">Reject</button>
+              </form>
+            </div>
+            {% else %}
+              <span style="color: var(--color-text-secondary); font-size: 0.85rem;">Completed</span>
+            {% endif %}
           </td>
         </tr>
         {% empty %}
         <tr>
-          <td colspan="5" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No time-off requests logged.</td>
+          <td colspan="6" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No time-off requests logged in the system.</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- Modal: Submit Leave Request -->
+<div id="submitLeaveModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000;">
+  <div style="background: var(--color-surface); width: 100%; max-width: 500px; border-radius: var(--radius-lg); padding: var(--spacing-xl); box-shadow: var(--shadow-lg);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
+      <h3 style="margin: 0; font-weight: var(--font-weight-semibold);">Request Time-Off</h3>
+      <button onclick="document.getElementById('submitLeaveModal').style.display='none'" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;">&times;</button>
+    </div>
+    
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="submit_leave">
+      
+      <div style="margin-bottom: var(--spacing-md);">
+        <label style="display: block; font-size: 0.85rem; font-weight: var(--font-weight-medium); margin-bottom: 4px;">Employee</label>
+        <select name="employee_id" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+          {% for emp in employees %}
+          <option value="{{ emp.id }}">{{ emp.employee_number }} - {{ emp.person.first_name }} {{ emp.person.last_name }} ({{ emp.job_title }})</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div style="margin-bottom: var(--spacing-md);">
+        <label style="display: block; font-size: 0.85rem; font-weight: var(--font-weight-medium); margin-bottom: 4px;">Leave Type</label>
+        <select name="leave_type_id" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+          {% for lt in leave_types %}
+          <option value="{{ lt.id }}">{{ lt.name }} ({{ lt.default_days_per_year }} days/year)</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-bottom: var(--spacing-md);">
+        <div style="flex: 1;">
+          <label style="display: block; font-size: 0.85rem; font-weight: var(--font-weight-medium); margin-bottom: 4px;">Start Date</label>
+          <input type="date" name="start_date" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+        </div>
+        <div style="flex: 1;">
+          <label style="display: block; font-size: 0.85rem; font-weight: var(--font-weight-medium); margin-bottom: 4px;">End Date</label>
+          <input type="date" name="end_date" required style="width: 100%; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+        </div>
+      </div>
+
+      <div style="margin-bottom: var(--spacing-lg);">
+        <label style="display: block; font-size: 0.85rem; font-weight: var(--font-weight-medium); margin-bottom: 4px;">Reason</label>
+        <textarea name="reason" rows="3" placeholder="State reason for leave request..." style="width: 100%; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md);"></textarea>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button type="button" onclick="document.getElementById('submitLeaveModal').style.display='none'" style="background: var(--color-background); border: 1px solid var(--color-border); padding: 8px 16px; border-radius: var(--radius-md); cursor: pointer;">Cancel</button>
+        <button type="submit" style="background: var(--color-primary); color: white; border: none; padding: 8px 16px; border-radius: var(--radius-md); font-weight: var(--font-weight-semibold); cursor: pointer;">Submit Request</button>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}

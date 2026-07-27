@@ -1,0 +1,63 @@
+{% extends 'base/_document.html' %}
+{% block title %}Examinations & Assessment — EduOrbit{% endblock %}
+{% block content %}
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Examinations & Assessment</h1>
+      <p class="text-slate-500 dark:text-slate-400 mt-1">Manage CBT exams, question banks, and result analytics.</p>
+    </div>
+    <a href="/eae/dashboard/" class="inline-flex items-center gap-2 px-4 py-2 bg-orange-600 text-white text-sm font-medium rounded-xl hover:bg-orange-700 transition-colors">
+      📝 CBT Console
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    {% include 'components/stat_card.html' with title="Scheduled Exams" value="8" icon="clipboard-check" trend="This Term" trend_color="text-blue-500" %}
+    {% include 'components/stat_card.html' with title="Question Bank" value="2,450" icon="collection" trend="+120 new" trend_color="text-green-500" %}
+    {% include 'components/stat_card.html' with title="Avg Score" value="72%" icon="chart-bar" trend="+4% vs last term" trend_color="text-green-500" %}
+    {% include 'components/stat_card.html' with title="Pending Results" value="3" icon="clock" trend="Needs publish" trend_color="text-amber-500" %}
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <h3 class="font-semibold text-slate-900 dark:text-white">Upcoming Exams</h3>
+      </div>
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 dark:bg-slate-700/50">
+          <tr>
+            <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Subject</th>
+            <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Class</th>
+            <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Date</th>
+            <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+          <tr><td class="px-6 py-3 font-medium text-slate-900 dark:text-white">Mathematics</td><td class="px-6 py-3 text-slate-500">JSS 3</td><td class="px-6 py-3 text-slate-500">Aug 2</td><td class="px-6 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-blue-100 text-blue-700">Scheduled</span></td></tr>
+          <tr><td class="px-6 py-3 font-medium text-slate-900 dark:text-white">English</td><td class="px-6 py-3 text-slate-500">SS 2</td><td class="px-6 py-3 text-slate-500">Aug 4</td><td class="px-6 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-green-100 text-green-700">Ready</span></td></tr>
+          <tr><td class="px-6 py-3 font-medium text-slate-900 dark:text-white">Physics</td><td class="px-6 py-3 text-slate-500">SS 3</td><td class="px-6 py-3 text-slate-500">Aug 6</td><td class="px-6 py-3"><span class="px-2 py-1 text-xs font-semibold rounded bg-amber-100 text-amber-700">Draft</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+      <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Quick Actions</h3>
+      <div class="space-y-2">
+        <a href="/eae/dashboard/" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+          <span class="w-9 h-9 rounded-lg bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center">📝</span>
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">CBT Exam Console</span>
+        </a>
+        <a href="/eae/dashboard/" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+          <span class="w-9 h-9 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">❓</span>
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Question Bank</span>
+        </a>
+        <a href="/emrp/dashboard/" class="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+          <span class="w-9 h-9 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">📊</span>
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Publish Results</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

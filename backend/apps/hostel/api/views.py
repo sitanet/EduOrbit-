@@ -1,58 +1,63 @@
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
-from backend.apps.hostel.models import BedAllocation, HostelRollCall, HostelVisitor
-from backend.apps.hostel.api.serializers import (
-    AllocationSerializer, RollCallSerializer, VisitorSerializer
-)
-from backend.apps.core.events import event_bus, DomainEvent
+from backend.apps.people.models import Person
+from backend.apps.tenants.models import School
+from backend.apps.hostel.models import Hostel, HostelBed, HostelApplication
+from backend.apps.hostel.services.allocation import HostelApplicationService, RoomAllocationService, OccupancyService
 
-class BedAllocationAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class HostelListAPIView(APIView):
     def get(self, request):
-        allocations = BedAllocation.objects.filter(tenant=request.tenant)
-        serializer = AllocationSerializer(allocations, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        hostels = Hostel.objects.all()
+        data = [
+            {
+                "id": str(h.id),
+                "name": h.name,
+                "gender": h.gender,
+                "blocks_count": h.blocks.count()
+            }
+            for h in hostels
+        ]
+        return Response({"status": "success", "count": len(data), "data": data})
 
+
+class HostelApplicationAPIView(APIView):
     def post(self, request):
-        serializer = AllocationSerializer(data=request.data)
-        if serializer.is_valid():
-            alloc = serializer.save(tenant=request.tenant)
-            event_bus.publish(DomainEvent("bed.allocated", tenant_id=str(request.tenant.id), data={"id": str(alloc.id)}))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        student_id = request.data.get('student_id')
+        hostel_id = request.data.get('hostel_id')
+
+        try:
+            student = Person.objects.get(id=student_id)
+            hostel = Hostel.objects.get(id=hostel_id)
+            res = HostelApplicationService.submit_application(student=student, hostel=hostel)
+            return Response({"status": "success", "data": res}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class HostelRollCallAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class RoomAllocateAPIView(APIView):
+    def post(self, request):
+        school_id = request.data.get('school_id')
+        student_id = request.data.get('student_id')
+        bed_id = request.data.get('bed_id')
+        term_fee = request.data.get('term_fee', 800.00)
 
+        try:
+            school = School.objects.get(id=school_id)
+            student = Person.objects.get(id=student_id)
+            bed = HostelBed.objects.get(id=bed_id)
+            res = RoomAllocationService.allocate_bed(school=school, student=student, bed=bed, term_fee=term_fee)
+            return Response({"status": "success" if res["status"] == "success" else "error", "data": res}, status=status.HTTP_200_OK if res["status"] == "success" else status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class HostelOccupancyAPIView(APIView):
     def get(self, request):
-        rollcalls = HostelRollCall.objects.filter(tenant=request.tenant)
-        serializer = RollCallSerializer(rollcalls, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = RollCallSerializer(data=request.data)
-        if serializer.is_valid():
-            rc = serializer.save(tenant=request.tenant)
-            event_bus.publish(DomainEvent("hostel.rollcall_logged", tenant_id=str(request.tenant.id), data={"id": str(rc.id)}))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class HostelVisitorAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        visitors = HostelVisitor.objects.filter(tenant=request.tenant)
-        serializer = VisitorSerializer(visitors, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = VisitorSerializer(data=request.data)
-        if serializer.is_valid():
-            vis = serializer.save(tenant=request.tenant)
-            event_bus.publish(DomainEvent("hostel.visitor_logged", tenant_id=str(request.tenant.id), data={"id": str(vis.id)}))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        hostel_id = request.query_params.get('hostel_id')
+        try:
+            hostel = Hostel.objects.get(id=hostel_id)
+            res = OccupancyService.get_hostel_occupancy(hostel=hostel)
+            return Response({"status": "success", "data": res}, status=status.HTTP_200_OK)
+        except Hostel.DoesNotExist:
+            return Response({"status": "error", "message": "Hostel not found."}, status=status.HTTP_404_NOT_FOUND)

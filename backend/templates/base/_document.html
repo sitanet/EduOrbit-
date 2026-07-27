@@ -106,7 +106,18 @@
 </head>
 <body class="flex h-screen antialiased bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 overflow-hidden">
     
-    {% include 'base/_sidebar.html' %}
+    {# ── Role-Isolated Sidebar ────────────────────────────────────────────── #}
+    {# sidebar_template is injected by DashboardFactory.get_context() or      #}
+    {# the permission_context_processor. Only one sidebar loads per request.  #}
+    {% if request.user.is_authenticated %}
+      {% if sidebar_template %}
+        {% include sidebar_template %}
+      {% elif request.user.is_superuser %}
+        {% include 'base/sidebars/_sidebar_super_admin.html' %}
+      {% else %}
+        {% include 'base/sidebars/_sidebar_school_admin.html' %}
+      {% endif %}
+    {% endif %}
     
     <div class="flex flex-col flex-1 w-full overflow-hidden">
         {% include 'base/_topbar.html' %}

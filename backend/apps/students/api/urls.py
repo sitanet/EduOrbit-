@@ -1,12 +1,14 @@
 from django.urls import path
 from backend.apps.students.api.views import (
-    PlacementAPIView, PromotionAPIView, TimelineAPIView
+    StudentListAPIView, StudentEnrollmentAPIView, PromoteStudentAPIView, WithdrawStudentAPIView, StudentRecordAPIView
 )
 
 app_name = 'students_api'
 
 urlpatterns = [
-    path('students/placements/', PlacementAPIView.as_view(), name='placements'),
-    path('students/promotions/', PromotionAPIView.as_view(), name='promotions'),
-    path('students/<uuid:student_id>/timeline/', TimelineAPIView.as_view(), name='timeline'),
+    path('students/', StudentListAPIView.as_view(), name='student_list'),
+    path('enroll/', StudentEnrollmentAPIView.as_view(), name='student_enroll'),
+    path('promote/', PromoteStudentAPIView.as_view(), name='student_promote'),
+    path('withdraw/', WithdrawStudentAPIView.as_view(), name='student_withdraw'),
+    path('student-record/', StudentRecordAPIView.as_view(), name='student_record'),
 ]

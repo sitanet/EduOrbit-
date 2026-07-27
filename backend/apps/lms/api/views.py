@@ -1,67 +1,83 @@
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, permissions
-from django.shortcuts import get_object_or_404
-from backend.apps.lms.models import LearningModule, LearningUnit, StudentProgress
-from backend.apps.lms.api.serializers import (
-    ModuleSerializer, UnitSerializer, ProgressSerializer
-)
-from backend.apps.core.events import event_bus, DomainEvent
+from backend.apps.people.models import StudentProfile
+from backend.apps.lms.models import LearningModule, LearningActivity, Course, CourseLesson, Quiz
+from backend.apps.lms.services.learning import AssignmentSubmissionService, QuizService
 
-class ModuleAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class CourseListAPIView(APIView):
     def get(self, request):
-        school_id = request.query_params.get('school_id')
-        modules = LearningModule.objects.filter(school_id=school_id, tenant=request.tenant)
-        serializer = ModuleSerializer(modules, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        courses = Course.objects.all()
+        data = [
+            {
+                "id": str(c.id),
+                "title": c.title,
+                "description": c.description,
+                "subject_name": c.subject.name,
+                "lessons_count": c.lessons.count()
+            }
+            for c in courses
+        ]
+        return Response({"status": "success", "count": len(data), "data": data})
 
-    def post(self, request):
-        school_id = request.data.get('school_id')
-        serializer = ModuleSerializer(data=request.data)
-        if serializer.is_valid():
-            module = serializer.save(school_id=school_id, tenant=request.tenant)
-            event_bus.publish(DomainEvent("module.created", tenant_id=str(request.tenant.id), data={"id": str(module.id)}))
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class UnitAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class LessonListAPIView(APIView):
     def get(self, request):
-        module_id = request.query_params.get('module_id')
-        units = LearningUnit.objects.filter(module_id=module_id, tenant=request.tenant)
-        serializer = UnitSerializer(units, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        lessons = CourseLesson.objects.all()
+        data = [
+            {
+                "id": str(l.id),
+                "title": l.title,
+                "course_title": l.course.title,
+                "video_url": l.video_url,
+                "order": l.order
+            }
+            for l in lessons
+        ]
+        return Response({"status": "success", "count": len(data), "data": data})
 
-    def post(self, request):
-        module_id = request.data.get('module_id')
-        serializer = UnitSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(module_id=module_id, tenant=request.tenant)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class ProgressAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+class QuizListAPIView(APIView):
     def get(self, request):
-        student_id = request.query_params.get('student_id')
-        progress = StudentProgress.objects.filter(student_id=student_id, tenant=request.tenant)
-        serializer = ProgressSerializer(progress, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        quizzes = Quiz.objects.all()
+        data = [
+            {
+                "id": str(q.id),
+                "title": q.title,
+                "course_title": q.course.title,
+                "total_marks": q.total_marks,
+                "pass_marks": q.pass_marks
+            }
+            for q in quizzes
+        ]
+        return Response({"status": "success", "count": len(data), "data": data})
 
+
+class QuizSubmitAPIView(APIView):
     def post(self, request):
-        serializer = ProgressSerializer(data=request.data)
-        if serializer.is_valid():
-            progress = serializer.save(tenant=request.tenant)
-            
-            # Fire completion events
-            if progress.status == 'completed':
-                event_bus.publish(DomainEvent("learning.completed", tenant_id=str(request.tenant.id), data={"id": str(progress.id)}))
-                
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        quiz_id = request.data.get('quiz_id')
+        student_id = request.data.get('student_id')
+        score_achieved = request.data.get('score_achieved', 0.0)
+
+        try:
+            quiz = Quiz.objects.get(id=quiz_id)
+            student = StudentProfile.objects.get(id=student_id)
+            res = QuizService.submit_quiz(quiz=quiz, student=student, score_achieved=score_achieved)
+            return Response({"status": "success", "data": res}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AssignmentSubmitAPIView(APIView):
+    def post(self, request):
+        student_id = request.data.get('student_id')
+        activity_id = request.data.get('activity_id')
+        content_body = request.data.get('content_body', '')
+
+        try:
+            student = StudentProfile.objects.get(id=student_id)
+            activity = LearningActivity.objects.get(id=activity_id)
+            res = AssignmentSubmissionService.submit_assignment(student=student, activity=activity, content_body=content_body)
+            return Response({"status": "success", "data": res}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)

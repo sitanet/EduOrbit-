@@ -1,0 +1,46 @@
+{# ─── Exam Officer Sidebar ────────────────────────────────────────────────── #}
+{# Roles: exam_officer, cbt_officer                                             #}
+<aside id="sidebar-exam"
+       class="hidden lg:flex flex-col w-64 min-h-screen bg-slate-900 text-white shadow-xl"
+       aria-label="Examinations Navigation">
+
+  <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+    <span class="w-9 h-9 rounded-xl bg-orange-600 flex items-center justify-center text-white font-bold text-lg">E</span>
+    <div>
+      <div class="text-sm font-bold text-white leading-tight">EduOrbit</div>
+      <div class="text-xs text-orange-400 font-medium">Examinations</div>
+    </div>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+
+    <a href="/dashboard/exam/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors font-medium text-sm">🏠 Dashboard</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Examinations</div>
+    <a href="/eae/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📝 Exam & Assessment</a>
+    <a href="/eae/schedule/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📅 Exam Schedule</a>
+    <a href="/eae/questions/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">❓ Question Bank</a>
+    <a href="/eae/cbt/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">💻 CBT Console</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Results</div>
+    <a href="/emrp/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📊 Results Management</a>
+    <a href="/emrp/reports/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📋 Result Reports</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Self-Service</div>
+    <a href="/hr/ess/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">💼 ESS Portal</a>
+
+  </nav>
+
+  <div class="px-4 py-4 border-t border-slate-700/60">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-orange-600 flex items-center justify-center text-white text-sm font-bold">
+        {{ request.user.username|first|upper }}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</p>
+        <p class="text-xs text-slate-400 truncate">Exam Officer</p>
+      </div>
+      <a href="/?next=logout" class="text-slate-400 hover:text-white text-xs">↩</a>
+    </div>
+  </div>
+</aside>

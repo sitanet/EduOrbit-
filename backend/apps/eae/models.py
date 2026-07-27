@@ -77,8 +77,10 @@ class AssessmentBlueprint(TenantBaseModel):
 class Assessment(TenantBaseModel):
     """
     The actual assessment header (quizzes, final exams).
+    Reuses and integrates with LMS Quiz models.
     """
     school = models.ForeignKey('tenants.School', on_delete=models.CASCADE)
+    lms_quiz = models.ForeignKey('lms.Quiz', on_delete=models.SET_NULL, null=True, blank=True, related_name='cbt_exams')
     blueprint = models.ForeignKey(AssessmentBlueprint, on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=150)
     duration_minutes = models.IntegerField(default=60)

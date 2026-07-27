@@ -84,3 +84,18 @@ class PortalPreference(TenantBaseModel):
 
     def __str__(self):
         return f"{self.key} = {self.value}"
+
+
+# ==============================================================
+# PARENT & GUARDIAN RELATIONSHIPS
+# ==============================================================
+
+class ParentStudentRelationship(TenantBaseModel):
+    parent = models.ForeignKey('people.Person', on_delete=models.CASCADE, related_name='children_relationships')
+    student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE, related_name='parent_relationships')
+    relationship_type = models.CharField(max_length=50, default='father')  # father, mother, guardian
+    is_emergency_contact = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.parent.last_name} ({self.relationship_type}) -> {self.student.student_number}"
+

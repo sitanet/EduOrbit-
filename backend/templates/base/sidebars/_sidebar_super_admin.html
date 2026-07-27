@@ -1,0 +1,58 @@
+{# ─── Super Admin Sidebar ─────────────────────────────────────────────────── #}
+{# Role: super_admin (is_superuser only)                                       #}
+<aside id="sidebar-super-admin"
+       class="hidden lg:flex flex-col w-64 min-h-screen bg-slate-900 text-white shadow-xl"
+       aria-label="Super Admin Navigation">
+
+  {# Logo #}
+  <div class="flex items-center gap-3 px-6 py-5 border-b border-slate-700/60">
+    <span class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold text-lg">E</span>
+    <div>
+      <div class="text-sm font-bold text-white leading-tight">EduOrbit</div>
+      <div class="text-xs text-indigo-400 font-medium">Platform Control</div>
+    </div>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+
+    <a href="/dashboard/super-admin/"
+       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors font-medium text-sm">
+      🏠 <span>Control Center</span>
+    </a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Platform</div>
+
+    <a href="/administration/dashboard/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🏢 Administration</a>
+    <a href="/tenants/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🏫 Tenants</a>
+    <a href="/integration/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🔗 Integrations</a>
+    <a href="/analytics/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📊 Analytics</a>
+    <a href="/ai/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🤖 AI Console</a>
+    <a href="/workflow/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">⚙️ Workflow</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Identity</div>
+
+    <a href="/identity/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🔐 Users & Roles</a>
+    <a href="/identity/sessions/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🔑 Sessions</a>
+    <a href="/identity/role-matrix/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">🔒 Role Matrix</a>
+
+    <div class="pt-4 pb-1 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">System</div>
+
+    <a href="/health/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">💚 Health Check</a>
+    <a href="/docs/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm">📖 Documentation</a>
+
+  </nav>
+
+  {# User #}
+  <div class="px-4 py-4 border-t border-slate-700/60">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm font-bold">
+        {{ request.user.username|first|upper }}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-white truncate">{{ request.user.get_full_name|default:request.user.username }}</p>
+        <p class="text-xs text-slate-400 truncate">Super Admin</p>
+      </div>
+      <a href="/?next=logout" class="text-slate-400 hover:text-white text-xs">↩</a>
+    </div>
+  </div>
+</aside>
