@@ -7,15 +7,7 @@ Tests every dashboard view for:
   3. Login router sends to correct URL
   4. DashboardFactory resolves correctly
 """
-import os
-import sys
-import django
-
-sys.path.insert(0, r'c:\Users\user\Desktop\Development\SMS')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.config.settings.local')
-django.setup()
-
-from django.test import TestCase, Client
+from django.test import TestCase, TransactionTestCase, Client
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 
@@ -119,7 +111,7 @@ class DashboardFactoryTests(TestCase):
             self.assertTrue(DashboardFactory.has_dashboard_access(user, role))
 
 
-class DashboardViewIsolationTests(TestCase):
+class DashboardViewIsolationTests(TransactionTestCase):
     """
     HTTP-level test: verify each role gets 200 on their own dashboard
     and 302/403 when they try to access another role's dashboard.

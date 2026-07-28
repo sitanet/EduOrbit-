@@ -34,6 +34,16 @@ class Person(TenantBaseModel):
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.person_number})"
 
+    def get_full_name(self) -> str:
+        """Return preferred_name or 'first_name last_name'. Safe for templates."""
+        if self.preferred_name:
+            return self.preferred_name
+        return f"{self.first_name} {self.last_name}".strip()
+
+    def get_short_name(self) -> str:
+        """Return first name only."""
+        return self.preferred_name or self.first_name
+
 
 class PersonPreference(TenantBaseModel):
     """

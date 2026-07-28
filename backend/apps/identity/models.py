@@ -75,6 +75,31 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.username
 
+    def get_full_name(self) -> str:
+        """
+        Return full name from linked Person profile, or username as fallback.
+        Compatible with Django's standard auth template patterns.
+        """
+        try:
+            person = getattr(self, 'person_profile', None)
+            if person:
+                name = person.get_full_name()
+                if name:
+                    return name
+        except Exception:
+            pass
+        return self.username
+
+    def get_short_name(self) -> str:
+        """Return first name from Person profile, or username."""
+        try:
+            person = getattr(self, 'person_profile', None)
+            if person:
+                return person.get_short_name() or self.username
+        except Exception:
+            pass
+        return self.username
+
 
 # ==============================================================
 # PASSWORD & MFA MODELS

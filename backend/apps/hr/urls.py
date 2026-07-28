@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.views.generic import RedirectView
 from backend.apps.hr.views_web import (
     HRDashboardWebView, LeaveCalendarWebView, RecruitmentDashboardWebView, CandidateReviewWebView, PayrollWebView,
     AttendanceDashboardWebView, AttendanceGenerateWebView, AttendanceAdjustmentActionWebView, AttendanceReportWebView,
@@ -9,6 +10,8 @@ from backend.apps.hr.views_web import (
 )
 
 urlpatterns = [
+    # Root redirect to dashboard
+    path('', RedirectView.as_view(url='dashboard/', permanent=False)),
     # Portals & Core Web Views
     path('dashboard/', HRDashboardWebView.as_view(), name='hr_dashboard_web'),
     path('ess/', ESSDashboardWebView.as_view(), name='hr_ess_dashboard'),

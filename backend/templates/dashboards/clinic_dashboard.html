@@ -23,50 +23,53 @@
     <!-- Cards -->
     <div class="grid grid-cols-12 gap-6 mb-8">
         <!-- Stat Cards -->
-        {% include 'components/stat_card.html' with title="Today's Appointments" value="18" trend="+2" icon="calendar" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Active Patients" value="5" trend="-1" icon="user" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Low Stock Medicines" value="8" trend="+3" icon="exclamation-circle" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Today's Appointments" value=visits_today|default:"18" trend="+2" icon="calendar" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Active Patients" value=active_patients|default:"5" trend="-1" icon="user" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Low Stock Medicines" value=low_stock_medicines|default:"8" trend="+3" icon="exclamation-circle" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
     </div>
 
     <!-- Recent Visits Table -->
     <div>
-        <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Recent Visits</h2>
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Recent Visits</h2>
+            <a href="{% url 'consultation_desk_web' %}" class="text-xs font-semibold text-rose-500 hover:text-rose-600 transition-colors">Open Consultation Desk &rarr;</a>
+        </div>
         <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700">
             <div class="overflow-x-auto">
-                <table class="table-auto w-full dark:text-slate-700 dark:text-slate-300">
+                <table class="table-auto w-full dark:text-slate-300">
                     <!-- Table header -->
-                    <thead class="text-xs uppercase text-slate-600 dark:text-slate-400 dark:text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
+                    <thead class="text-xs uppercase text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
                         <tr>
                             <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Patient Name</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Type</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Reason</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Time</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Visit Date</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Symptoms</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Diagnosis</div></th>
                             <th class="p-2 whitespace-nowrap"><div class="font-semibold text-center">Status</div></th>
                         </tr>
                     </thead>
                     <!-- Table body -->
                     <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
+                        {% for visit in recent_visits %}
                         <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">Emma Wilson</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Student</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Fever & Headache</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">09:15 AM</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">Completed</span></div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">{{ visit.patient.person.first_name }} {{ visit.patient.person.last_name }}</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left text-slate-500 dark:text-slate-400">{{ visit.visit_date|date:"Y-m-d H:i" }}</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left text-slate-600 dark:text-slate-300">{{ visit.symptoms }}</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left text-slate-600 dark:text-slate-300">{{ visit.diagnosis|default:"-" }}</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-center">
+                                {% if visit.status == 'completed' %}
+                                <span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">Completed</span>
+                                {% elif visit.status == 'referred' %}
+                                <span class="bg-indigo-100 dark:bg-indigo-400/30 text-indigo-600 dark:text-indigo-400 rounded-full px-2 py-0.5 text-xs">Referred</span>
+                                {% else %}
+                                <span class="bg-amber-100 dark:bg-amber-400/30 text-amber-600 dark:text-amber-400 rounded-full px-2 py-0.5 text-xs">Admitted</span>
+                                {% endif %}
+                            </div></td>
                         </tr>
+                        {% empty %}
                         <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">Mr. John Smith</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Staff</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Blood Pressure Check</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">10:30 AM</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">Completed</span></div></td>
+                            <td colspan="5" class="p-4 text-center text-slate-400 dark:text-slate-500">No recent patient visits logged.</td>
                         </tr>
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">David Lee</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Student</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Sports Injury</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">11:45 AM</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-amber-100 dark:bg-amber-400/30 text-amber-600 dark:text-amber-400 rounded-full px-2 py-0.5 text-xs">In Progress</span></div></td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

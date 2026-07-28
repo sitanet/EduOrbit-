@@ -253,5 +253,8 @@ class DashboardFactory:
             'dashboard_url':    spec.dashboard_url,
             'sidebar_template': spec.sidebar_template,
             'accent_color':     spec.accent_color,
-            'user_full_name':   user.get_full_name() or user.username,
+            # User.get_full_name() now delegates to person_profile or falls back to username
+            'user_full_name':   user.get_full_name(),
         }
+
+

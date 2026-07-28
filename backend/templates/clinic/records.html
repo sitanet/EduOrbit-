@@ -1,0 +1,49 @@
+{% extends "base/_document.html" %}
+{% block title %}Medical Records - EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Medical Records Directory</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-1">HIPAA-compliant index of student clinical registries, blood groups, allergies, and vaccination states.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for record in records %}
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition-shadow">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-900/30 flex items-center justify-center text-rose-600 dark:text-rose-400 font-bold">
+          {{ record.person.first_name|slice:":1" }}{{ record.person.last_name|slice:":1" }}
+        </div>
+        <div>
+          <h3 class="font-semibold text-slate-900 dark:text-white">{{ record.person.first_name }} {{ record.person.last_name }}</h3>
+          <p class="text-xs text-slate-400">ID: {{ record.person.person_number }}</p>
+        </div>
+      </div>
+      
+      <div class="space-y-3 text-sm border-t border-slate-100 dark:border-slate-700/60 pt-4">
+        <div class="flex justify-between">
+          <span class="text-slate-400">Blood Group</span>
+          <span class="font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/30 px-2 py-0.5 rounded text-xs">{{ record.blood_group|default:"Not Tested" }}</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block mb-1">Allergies</span>
+          <span class="text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700/50 px-2.5 py-1 rounded-lg block text-xs min-h-[30px]">{{ record.allergies|default:"None Reported" }}</span>
+        </div>
+        <div>
+          <span class="text-slate-400 block mb-1">Chronic Conditions</span>
+          <span class="text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-700/50 px-2.5 py-1 rounded-lg block text-xs min-h-[30px]">{{ record.chronic_conditions|default:"None Reported" }}</span>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-span-full bg-white dark:bg-slate-800 rounded-2xl p-12 text-center border border-slate-200 dark:border-slate-700">
+      <div class="flex flex-col items-center justify-center">
+        <span class="text-4xl mb-2">📁</span>
+        <p class="font-medium text-slate-600 dark:text-slate-300">No Patient Records Available</p>
+        <p class="text-xs text-slate-400 mt-1">Please create patient profile records in the student portal first.</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

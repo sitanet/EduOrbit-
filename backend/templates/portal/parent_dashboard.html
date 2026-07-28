@@ -7,7 +7,7 @@
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">
       Parent Portal 👨‍👩‍👧
     </h1>
-    <p class="text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 mt-1">Welcome, {{ request.user.get_full_name|default:request.user.username }}. Stay informed about your child's progress.</p>
+    <p class="text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 mt-1">Welcome, {{ user_full_name|default:request.user.username }}. Stay informed about your child's progress.</p>
   </div>
 
   <!-- Child Summary Cards -->

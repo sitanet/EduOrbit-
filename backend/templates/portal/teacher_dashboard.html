@@ -7,7 +7,7 @@
     <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-900 dark:text-white">
       Teacher Workspace 📚
     </h1>
-    <p class="text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 mt-1">Good morning, {{ request.user.get_full_name|default:request.user.username }}. Here are your classes and tasks for today.</p>
+    <p class="text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 mt-1">Good morning, {{ user_full_name|default:request.user.username }}. Here are your classes and tasks for today.</p>
   </div>
 
   <!-- Stats Row -->

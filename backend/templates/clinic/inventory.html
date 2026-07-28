@@ -1,0 +1,74 @@
+{% extends "base/_document.html" %}
+{% block title %}Medicines Inventory - EduOrbit{% endblock %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="mb-8">
+    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Drug & Medicine Inventory</h1>
+    <p class="text-slate-500 dark:text-slate-400 mt-1">Dispensed drug audits, active medicine stock levels, batch tracking, and expiry logs.</p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Drug Stock List -->
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <h3 class="font-semibold text-slate-900 dark:text-white">Active Stock Levels</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-slate-50 dark:bg-slate-700/50">
+            <tr>
+              <th class="px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Medicine Name</th>
+              <th class="px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Available Qty</th>
+              <th class="px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+            {% for drug in drugs %}
+            <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+              <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ drug.name }}</td>
+              <td class="px-6 py-4 text-slate-600 dark:text-slate-300 font-mono">{{ drug.stock_qty }} units</td>
+              <td class="px-6 py-4">
+                {% if drug.stock_qty <= 5 %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 dark:bg-rose-400/30 text-rose-800 dark:text-rose-400">Critical Stock</span>
+                {% elif drug.stock_qty <= 15 %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-400/30 text-amber-800 dark:text-amber-400">Low Stock</span>
+                {% else %}
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-400/30 text-emerald-800 dark:text-emerald-400">Optimal</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="3" class="px-6 py-8 text-center text-slate-500 dark:text-slate-400">No drugs currently in inventory.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Active Batches -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <h3 class="font-semibold text-slate-900 dark:text-white">Expiry & Batch Tracking</h3>
+      </div>
+      <div class="divide-y divide-slate-100 dark:divide-slate-700 max-h-[500px] overflow-y-auto">
+        {% for batch in batches %}
+        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+          <div class="flex justify-between items-start mb-1">
+            <span class="font-semibold text-sm text-slate-900 dark:text-white">{{ batch.drug.name }}</span>
+            <span class="text-xs font-mono bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 px-2 py-0.5 rounded">#{{ batch.batch_number }}</span>
+          </div>
+          <div class="flex justify-between text-xs mt-2">
+            <span class="text-slate-400">Expires</span>
+            <span class="text-slate-600 dark:text-slate-300 font-semibold">{{ batch.expiry_date|date:"Y-m-d" }}</span>
+          </div>
+        </div>
+        {% empty %}
+        <div class="p-8 text-center text-slate-500 dark:text-slate-400">No active batches tracked.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
