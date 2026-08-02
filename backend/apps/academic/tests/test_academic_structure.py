@@ -1,7 +1,7 @@
 from django.test import TestCase
 from backend.apps.tenants.models import Tenant, School
 from backend.apps.academic.models import AcademicYear, AcademicPeriod
-from backend.apps.academic.services.structure import AcademicStructureService
+from backend.apps.academic.services import AcademicStructureService
 
 class AcademicStructureTestCase(TestCase):
     def setUp(self):

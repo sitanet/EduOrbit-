@@ -1,40 +1,245 @@
 {% extends "base/_document.html" %}
-
-{% block title %}Rooms Directory - EduOrbit{% endblock %}
+{% block title %}Rooms & Beds Directory — EduOrbit School Hostel{% endblock %}
 
 {% block content %}
-<div style="max-width: 1000px; margin: 0 auto;">
-  <div style="margin-bottom: var(--spacing-lg);">
-    <h2 style="font-weight: var(--font-weight-semibold);">Rooms & Beds Directory</h2>
-    <p style="color: var(--color-text-secondary);">Browse room configurations, check bed layout occupancies, and schedule hygiene inspections.</p>
+<div class="space-y-6">
+
+  <!-- ── Hero Header Banner ────────────────────────────────────────────── -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-500/30 shadow-xl">
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">🚪 Hostel Rooms & Beds Directory</h1>
+      <p class="text-xs text-slate-300">Browse residential rooms, track bed occupancies, floor layouts, and manage dorm capacity.</p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      <button onclick="document.getElementById('addRoomModal').classList.remove('hidden')"
+              class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-md">
+        ➕ Add Room
+      </button>
+      <a href="/dashboard/hostel/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+        🏠 Hostel Dashboard
+      </a>
+    </div>
   </div>
 
-  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
-    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Residential Rooms</h3>
-    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-      <thead>
-        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Room No.</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Hostel / Block</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Floor</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Capacity</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for room in rooms %}
-        <tr style="border-bottom: 1px solid var(--color-border);">
-          <td style="padding: var(--spacing-md);"><strong>Room {{ room.room_number }}</strong></td>
-          <td style="padding: var(--spacing-md);">{{ room.block.hostel.name }} - {{ room.block.name }}</td>
-          <td style="padding: var(--spacing-md);">{{ room.floor|default:"-" }}</td>
-          <td style="padding: var(--spacing-md);">{{ room.capacity }} Beds</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="4" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No rooms registered in directory.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <!-- ── KPI Stats Row ────────────────────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Rooms</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_rooms|default:0 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Configured Rooms</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">🚪</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Capacity</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_beds|default:0 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Bed Count</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">🛌</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Occupied Beds</span>
+        <div class="text-2xl font-black text-amber-500 mt-1">{{ occupied_beds|default:0 }}</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">Assigned Students</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">👤</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Available Beds</span>
+        <div class="text-2xl font-black text-indigo-500 mt-1">{{ available_beds|default:0 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Open for Allocation</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">✅</div>
+    </div>
+  </div>
+
+  <!-- ── Search & Filter Bar ──────────────────────────────────────────── -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+    <input type="text" id="roomSearch" onkeyup="filterRooms()" placeholder="Search by room number, block, or floor…"
+           class="w-full sm:w-80 px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+    <div class="ml-auto text-xs text-slate-400 font-mono">
+      Showing <span id="roomCount">{{ rooms|length }}</span> room(s)
+    </div>
+  </div>
+
+  <!-- ── Rooms Directory Table ────────────────────────────────────────── -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-sm font-bold text-slate-900 dark:text-white">🚪 Residential Rooms Directory</h2>
+      <button onclick="document.getElementById('addRoomModal').classList.remove('hidden')"
+              class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg transition">
+        + New Room
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs" id="roomsTable">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Room Number</th>
+            <th class="px-6 py-3">Hostel & Block</th>
+            <th class="px-6 py-3">Floor Level</th>
+            <th class="px-6 py-3">Bed Capacity</th>
+            <th class="px-6 py-3">Occupancy Status</th>
+            <th class="px-6 py-3 text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50" id="roomsTableBody">
+          {% for room in rooms %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition room-row">
+            <td class="px-6 py-4">
+              <div class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-black">🚪</span>
+                Room {{ room.room_number }}
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="font-semibold text-slate-900 dark:text-white">
+                {{ room.block.hostel.name|default:"Main Hostel" }}
+              </div>
+              <div class="text-[10px] text-slate-400 font-mono">
+                {{ room.block.name|default:"Block A" }}
+              </div>
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">
+              {{ room.floor|default:"1st Floor" }}
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-700 dark:text-slate-300 font-bold">
+              {{ room.capacity }} beds
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">
+                ACTIVE
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <button onclick="openBedsModal('{{ room.room_number }}', '{{ room.capacity }}')"
+                      class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold transition">
+                View Beds &rarr;
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="px-6 py-14 text-center">
+              <div class="text-4xl mb-3">🚪</div>
+              <div class="text-sm font-semibold text-slate-500 dark:text-slate-400">No rooms registered in directory</div>
+              <div class="text-xs text-slate-400 mt-1">Click "Add Room" to create your first hostel room.</div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Modal: Add Room ──────────────────────────────────────────────── -->
+<div id="addRoomModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">🚪 Add Hostel Room</h3>
+      <button onclick="document.getElementById('addRoomModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <form method="POST" action="/hostel/rooms/" class="p-6 space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_room">
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Room Number / Identifier</label>
+        <input type="text" name="room_number" placeholder="e.g. Room 101, Dorm A-3" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+
+      {% if blocks %}
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Hostel Block</label>
+        <select name="block_id"
+                class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          {% for block in blocks %}
+          <option value="{{ block.id }}">{{ block.hostel.name }} — {{ block.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Floor Level</label>
+          <input type="text" name="floor" placeholder="e.g. Ground Floor"
+                 class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Bed Capacity</label>
+          <input type="number" name="capacity" value="4" min="1" max="20" required
+                 class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" onclick="document.getElementById('addRoomModal').classList.add('hidden')"
+                class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">
+          Cancel
+        </button>
+        <button type="submit"
+                class="px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-md">
+          ✅ Create Room & Auto-Beds
+        </button>
+      </div>
+    </form>
   </div>
 </div>
+
+<!-- ── Modal: View Room Beds ────────────────────────────────────────── -->
+<div id="bedsModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">🛌 Room Beds Overview</h3>
+      <button onclick="document.getElementById('bedsModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <div class="p-6 space-y-4">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Room Number</span>
+        <p class="text-sm font-bold text-slate-900 dark:text-white mt-0.5" id="modalRoomNum">—</p>
+      </div>
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Total Capacity</span>
+        <p class="text-sm font-bold text-indigo-500 mt-0.5" id="modalRoomCap">—</p>
+      </div>
+      <div class="pt-2">
+        <a href="/dashboard/hostel/" class="block w-full text-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition">
+          🛌 Assign Student to Bed in Hostel Dashboard &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function filterRooms() {
+  const q = document.getElementById('roomSearch').value.toLowerCase();
+  const rows = document.querySelectorAll('.room-row');
+  let visible = 0;
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    if (!q || text.includes(q)) { row.style.display = ''; visible++; }
+    else { row.style.display = 'none'; }
+  });
+  document.getElementById('roomCount').textContent = visible;
+}
+
+function openBedsModal(roomNum, capacity) {
+  document.getElementById('modalRoomNum').textContent = 'Room ' + roomNum;
+  document.getElementById('modalRoomCap').textContent = capacity + ' Bed(s)';
+  document.getElementById('bedsModal').classList.remove('hidden');
+}
+</script>
 {% endblock %}

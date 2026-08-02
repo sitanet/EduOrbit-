@@ -3,7 +3,7 @@ from rest_framework.test import APIClient
 from rest_framework import status
 from backend.apps.tenants.models import Tenant, School
 from backend.apps.people.models import Person, StudentProfile
-from backend.apps.academic.services.grading import GradeCalculationService
+from backend.apps.academic.services import GradeCalculationService
 
 class AssessmentPhase4TestCase(TestCase):
     def setUp(self):

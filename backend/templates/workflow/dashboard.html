@@ -1,98 +1,273 @@
 {% extends "base/_document.html" %}
-{% block title %}Workflow &amp; Approvals — EduOrbit{% endblock %}
+{% block title %}Workflow & Approvals — EduOrbit ERP{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="md:flex md:items-center md:justify-between mb-8">
-    <div class="min-w-0 flex-1">
-      <p class="text-xs font-semibold tracking-widest text-violet-400 uppercase mb-1">EduOrbit · Admin</p>
-      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Workflow &amp; Approvals</h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Approve document requisitions, expenses vouchers, and enrollment approvals.</p>
+<div class="space-y-6">
+    <!-- Header Banner -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-500/30 shadow-xl relative overflow-hidden">
+        <div class="space-y-1 relative z-10">
+            <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">
+                <span>⚙️ Workflow & Approvals Platform</span>
+            </h1>
+            <p class="text-xs text-slate-300">Approve document requisitions, expense vouchers, and enrollment applications for {{ tenant.name|default:"EduOrbit ERP" }}.</p>
+        </div>
+        <div class="flex items-center gap-3 relative z-10">
+            <a href="/workflow/inbox/" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md">
+                <span>📥</span> Approval Inbox
+            </a>
+        </div>
     </div>
-    <div class="mt-4 flex md:ml-4 md:mt-0">
-      <a href="/workflow/inbox/" class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
-        Approval Inbox
-      </a>
-    </div>
-  </div>
 
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Pending Requests</p>
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ pending_tasks|length|default:"5" }}</p>
-      <p class="text-xs text-amber-400 mt-2">Awaiting your signature</p>
+    <!-- Notification Toast Container -->
+    <div id="toastNotification" class="hidden fixed top-5 right-5 z-50 p-4 rounded-xl shadow-2xl bg-slate-900 text-white border border-indigo-500/40 max-w-sm transition-all duration-300">
+        <div class="flex items-start gap-3">
+            <span id="toastIcon" class="text-lg">✅</span>
+            <div>
+                <h4 id="toastTitle" class="text-xs font-bold">Action Success</h4>
+                <p id="toastMessage" class="text-[11px] text-slate-300 mt-0.5">Operation executed successfully.</p>
+            </div>
+        </div>
     </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Approved This Week</p>
-      <p class="text-3xl font-bold text-emerald-400">18</p>
-      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Completed workflows</p>
-    </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Rejections Raised</p>
-      <p class="text-3xl font-bold text-rose-500">2</p>
-      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Returned for adjustments</p>
-    </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Document Vault</p>
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ documents|length|default:"32" }}</p>
-      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Signed PDF records</p>
-    </div>
-  </div>
 
-  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
-    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
-      <h3 class="font-semibold text-slate-900 dark:text-white">Workflows Awaiting Approval</h3>
+    <!-- Analytics Stats Grid -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Pending Requests</span>
+            <div id="metricPendingCount" class="text-3xl font-black text-slate-900 dark:text-white mt-1">{{ pending_tasks|length|default:5 }}</div>
+            <span class="text-[10px] text-amber-500 font-semibold mt-1 inline-block">Awaiting Signature</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Approved This Week</span>
+            <div class="text-3xl font-black text-emerald-500 mt-1">18</div>
+            <span class="text-[10px] text-emerald-500 font-semibold mt-1 inline-block">Completed Workflows</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Rejections Raised</span>
+            <div class="text-3xl font-black text-rose-500 mt-1">2</div>
+            <span class="text-[10px] text-rose-400 font-semibold mt-1 inline-block">Returned Requests</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Document Vault</span>
+            <div class="text-3xl font-black text-indigo-400 mt-1">{{ documents|length|default:32 }}</div>
+            <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Signed PDF Records</span>
+        </div>
     </div>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
-          <tr>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Request Details</th>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Initiator</th>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Category</th>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Date Raised</th>
-            <th class="text-right px-6 py-3 font-semibold uppercase">Action</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
-          {% for task in pending_tasks %}
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ task.instance.version.workflow.name }}</td>
-            <td class="px-6 py-4">{{ task.instance.initiator.get_full_name|default:"Teacher" }}</td>
-            <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-indigo-900/40 text-indigo-400">{{ task.step.name }}</span></td>
-            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">{{ task.created_at|date:"M d, Y" }}</td>
-            <td class="px-6 py-4 text-right">
-              <a href="/workflow/inbox/" class="text-xs text-indigo-400 hover:underline">Review &amp; Sign</a>
-            </td>
-          </tr>
-          {% empty %}
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">Purchase of Physics Lab Materials</td>
-            <td class="px-6 py-4">Adeyemi Tunde</td>
-            <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-indigo-900/40 text-indigo-400">Expense Approval</span></td>
-            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">July 21, 2026</td>
-            <td class="px-6 py-4 text-right">
-              <div class="flex gap-2 justify-end">
-                <button class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white rounded-lg text-xs">Approve</button>
-                <button class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white rounded-lg text-xs">Reject</button>
-              </div>
-            </td>
-          </tr>
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">JSS1 English Lesson Plan Review</td>
-            <td class="px-6 py-4">Okafor Amara</td>
-            <td class="px-6 py-4"><span class="px-2 py-1 text-xs font-semibold rounded-lg bg-purple-900/40 text-purple-400">Lesson Review</span></td>
-            <td class="px-6 py-4 text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400">July 22, 2026</td>
-            <td class="px-6 py-4 text-right">
-              <div class="flex gap-2 justify-end">
-                <button class="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white rounded-lg text-xs">Approve</button>
-                <button class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white rounded-lg text-xs">Reject</button>
-              </div>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+
+    <!-- Pending Workflows Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>📋 Workflows Awaiting Action</span>
+            </h2>
+            <span class="text-xs text-amber-500 font-mono font-bold">Action Required</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+                        <th class="px-6 py-3">Request Details</th>
+                        <th class="px-6 py-3">Initiator</th>
+                        <th class="px-6 py-3">Category</th>
+                        <th class="px-6 py-3">Date Raised</th>
+                        <th class="px-6 py-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                    {% for task in pending_tasks %}
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+                            {{ task.instance.version.workflow.name }}
+                        </td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+                            {{ task.instance.initiator.get_full_name|default:"Teacher" }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 uppercase font-mono">
+                                {{ task.step.name }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-slate-400">
+                            {{ task.created_at|date:"M d, Y" }}
+                        </td>
+                        <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                            <button type="button" onclick="openApproveModal('{{ task.instance.version.workflow.name|escapejs }}')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ✅ Approve
+                            </button>
+                            <button type="button" onclick="openRejectModal('{{ task.instance.version.workflow.name|escapejs }}')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ❌ Reject
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <!-- Pre-seeded Pending Tasks -->
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+                            Purchase of Physics Lab Materials & Sensors
+                        </td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+                            Adeyemi Tunde
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 uppercase font-mono">
+                                Expense Approval
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-slate-400">July 21, 2026</td>
+                        <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                            <button type="button" onclick="openApproveModal('Purchase of Physics Lab Materials')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ✅ Approve
+                            </button>
+                            <button type="button" onclick="openRejectModal('Purchase of Physics Lab Materials')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ❌ Reject
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+                            JSS1 English Term 1 Lesson Plan Review
+                        </td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+                            Okafor Amara
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 uppercase font-mono">
+                                Lesson Review
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-slate-400">July 22, 2026</td>
+                        <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                            <button type="button" onclick="openApproveModal('JSS1 English Lesson Plan Review')" class="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ✅ Approve
+                            </button>
+                            <button type="button" onclick="openRejectModal('JSS1 English Lesson Plan Review')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ❌ Reject
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
+
+<!-- Modal 1: Approve Task Modal -->
+<div id="approveModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-2">
+                <span>✅ Confirm & Sign Approval</span>
+            </h3>
+            <button type="button" onclick="closeApproveModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="executeApproveAction(event)">
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Target Workflow Request</label>
+                    <input type="text" id="approveRequestTitle" readonly class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-bold">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Approval Signature Note (Optional)</label>
+                    <textarea id="approveNoteInput" rows="2" placeholder="e.g. Approved in accordance with departmental budget allocations." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <button type="button" onclick="closeApproveModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md cursor-pointer">Sign & Approve Request</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal 2: Reject Task Modal -->
+<div id="rejectModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-rose-600 dark:text-rose-400 flex items-center gap-2">
+                <span>❌ Return / Reject Workflow Request</span>
+            </h3>
+            <button type="button" onclick="closeRejectModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="executeRejectAction(event)">
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Target Workflow Request</label>
+                    <input type="text" id="rejectRequestTitle" readonly class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-bold">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Reason for Rejection / Return *</label>
+                    <textarea id="rejectReasonInput" rows="2" required placeholder="e.g. Budget exceeded. Please attach updated vendor quotation." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <button type="button" onclick="closeRejectModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-md cursor-pointer">Confirm Rejection</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function showToast(title, message, icon = '✅') {
+    const toast = document.getElementById('toastNotification');
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastMessage').textContent = message;
+    document.getElementById('toastIcon').textContent = icon;
+    
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3500);
+}
+
+function openApproveModal(title) {
+    document.getElementById('approveRequestTitle').value = title;
+    document.getElementById('approveModal').classList.remove('hidden');
+}
+
+function closeApproveModal() {
+    document.getElementById('approveModal').classList.add('hidden');
+}
+
+function executeApproveAction(event) {
+    event.preventDefault();
+    const title = document.getElementById('approveRequestTitle').value;
+    closeApproveModal();
+
+    const countEl = document.getElementById('metricPendingCount');
+    if (countEl) {
+        let cnt = parseInt(countEl.textContent || 0);
+        if (cnt > 0) countEl.textContent = cnt - 1;
+    }
+
+    showToast('Request Approved', `Workflow "${title}" signed and approved.`, '✅');
+}
+
+function openRejectModal(title) {
+    document.getElementById('rejectRequestTitle').value = title;
+    document.getElementById('rejectModal').classList.remove('hidden');
+}
+
+function closeRejectModal() {
+    document.getElementById('rejectModal').classList.add('hidden');
+}
+
+function executeRejectAction(event) {
+    event.preventDefault();
+    const title = document.getElementById('rejectRequestTitle').value;
+    closeRejectModal();
+
+    const countEl = document.getElementById('metricPendingCount');
+    if (countEl) {
+        let cnt = parseInt(countEl.textContent || 0);
+        if (cnt > 0) countEl.textContent = cnt - 1;
+    }
+
+    showToast('Request Returned', `Workflow "${title}" returned for adjustments.`, '❌');
+}
+</script>
 {% endblock %}

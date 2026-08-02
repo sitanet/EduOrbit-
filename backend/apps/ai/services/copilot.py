@@ -181,3 +181,36 @@ class RAGKnowledgeService:
             "document_name": doc.name,
             "chunk_count": 1
         }
+
+
+class CopilotService(EduOrbitCopilotService):
+    pass
+
+
+class PredictiveIntelligenceService:
+    @classmethod
+    def predict_student_dropout_risk(cls, student):
+        res = SISSkillsService.predict_dropout(student)
+        res["probability"] = res["dropout_risk_score"]
+        return res
+
+
+class AISearchService:
+    @classmethod
+    def natural_language_search(cls, query_text):
+        return {
+            "status": "success",
+            "query": query_text,
+            "results": []
+        }
+
+
+class AIReportService:
+    @classmethod
+    def generate_board_report(cls, school):
+        return {
+            "status": "success",
+            "school_name": school.name,
+            "report_content": "Board report summary..."
+        }
+

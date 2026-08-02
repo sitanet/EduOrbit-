@@ -1,79 +1,189 @@
-{% extends 'base/_document.html' %}
+{% extends "base/_document.html" %}
+{% block title %}School Clinic & Health Centre Dashboard — EduOrbit ERP{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+<div class="space-y-6">
 
-    <!-- Dashboard Actions -->
-    <div class="sm:flex sm:justify-between sm:items-center mb-8">
-        <!-- Left: Title -->
-        <div class="mb-4 sm:mb-0">
-            <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Clinic Dashboard ✨</h1>
-        </div>
-        <!-- Right: Actions -->
-        <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-slate-900 dark:text-white">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">New Record</span>
-            </button>
-        </div>
+  <!-- Page Header Banner -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white p-6 rounded-2xl border border-rose-500/30 shadow-xl relative overflow-hidden">
+    <div class="space-y-1 relative z-10">
+      <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">
+        🏥 School Clinic & Health Centre
+      </h1>
+      <p class="text-xs text-slate-300">Monitor patient visits, sick-bay admissions, medicine stock levels, and clinic operations in real time.</p>
+    </div>
+    <div class="flex items-center gap-3 relative z-10 shrink-0">
+      <a href="{% url 'consultation_desk_web' %}" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-md">
+        🩺 Consultation Desk
+      </a>
+      <a href="/clinic/sickbay/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+        🛏️ Sick Bay
+      </a>
+      <a href="/clinic/pharmacy/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+        💊 Pharmacy
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI Stats Row -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Visits Today -->
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Today's Visits</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ visits_today|default:18 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Consultations Logged</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">📋</div>
     </div>
 
-    <!-- Cards -->
-    <div class="grid grid-cols-12 gap-6 mb-8">
-        <!-- Stat Cards -->
-        {% include 'components/stat_card.html' with title="Today's Appointments" value=visits_today|default:"18" trend="+2" icon="calendar" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Active Patients" value=active_patients|default:"5" trend="-1" icon="user" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Low Stock Medicines" value=low_stock_medicines|default:"8" trend="+3" icon="exclamation-circle" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+    <!-- Active Sick Bay Patients -->
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Sick Bay Patients</span>
+        <div class="text-2xl font-black text-amber-500 mt-1">{{ active_patients|default:5 }}</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">Currently Admitted</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">🛏️</div>
     </div>
 
-    <!-- Recent Visits Table -->
+    <!-- Low Stock Medicines -->
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Low Stock Drugs</span>
+        <div class="text-2xl font-black {% if low_stock_medicines|default:0 > 0 %}text-rose-500{% else %}text-emerald-500{% endif %} mt-1">
+          {{ low_stock_medicines|default:8 }}
+        </div>
+        <span class="text-[10px] {% if low_stock_medicines|default:0 > 0 %}text-rose-400{% else %}text-emerald-400{% endif %} font-semibold mt-1 inline-block">
+          {% if low_stock_medicines|default:0 > 0 %}⚠️ Reorder Required{% else %}✅ Stock Adequate{% endif %}
+        </span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-900/30 text-rose-500 flex items-center justify-center text-xl">💊</div>
+    </div>
+
+    <!-- Health Alerts -->
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Health Alerts</span>
+        <div class="text-2xl font-black text-emerald-500 mt-1">0</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">✅ No Emergencies</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">🚨</div>
+    </div>
+  </div>
+
+  <!-- Quick Access Modules -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <a href="{% url 'consultation_desk_web' %}" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition space-y-2 block">
+      <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-600 flex items-center justify-center text-lg">🩺</div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Consultation Desk</h3>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400">Record patient complaints, vital signs, diagnoses, and prescriptions.</p>
+    </a>
+
+    <a href="/clinic/sickbay/" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition space-y-2 block">
+      <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center text-lg">🛏️</div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Sick Bay Management</h3>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400">Admit, monitor, and discharge sick-bay patients with bed tracking.</p>
+    </a>
+
+    <a href="/clinic/pharmacy/" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition space-y-2 block">
+      <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center text-lg">💊</div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Pharmacy & Drug Stock</h3>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400">Dispense medications, update drug inventory, and flag low stock.</p>
+    </a>
+
+    <a href="/clinic/reports/" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition space-y-2 block">
+      <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-lg">📊</div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Health Analytics & Reports</h3>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400">View morbidity reports, visit trends, and school health summaries.</p>
+    </a>
+  </div>
+
+  <!-- Recent Patient Visits Table -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+        📋 Recent Patient Visits
+      </h2>
+      <a href="{% url 'consultation_desk_web' %}" class="text-xs font-semibold text-rose-500 hover:underline">
+        Open Consultation Desk &rarr;
+      </a>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Patient</th>
+            <th class="px-6 py-3">Visit Date & Time</th>
+            <th class="px-6 py-3">Presenting Complaint</th>
+            <th class="px-6 py-3">Diagnosis</th>
+            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3 text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+          {% for visit in recent_visits %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4">
+              <div class="font-bold text-slate-900 dark:text-white">
+                {{ visit.patient.person.first_name }} {{ visit.patient.person.last_name }}
+              </div>
+              <div class="text-slate-400 font-mono text-[10px] mt-0.5">Patient</div>
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">
+              {{ visit.visit_date|date:"d M Y, H:i" }}
+            </td>
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300 max-w-[180px] truncate">
+              {{ visit.symptoms|default:"—" }}
+            </td>
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300 max-w-[160px] truncate">
+              {{ visit.diagnosis|default:"Pending" }}
+            </td>
+            <td class="px-6 py-4">
+              {% if visit.status == 'completed' %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">COMPLETED</span>
+              {% elif visit.status == 'referred' %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-mono">REFERRED</span>
+              {% elif visit.status == 'admitted' %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">ADMITTED</span>
+              {% else %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-500/20 text-slate-500 font-mono">{{ visit.status|title }}</span>
+              {% endif %}
+            </td>
+            <td class="px-6 py-4 text-right">
+              <a href="{% url 'consultation_desk_web' %}" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold transition">
+                View &rarr;
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="px-6 py-14 text-center">
+              <div class="text-4xl mb-3">🏥</div>
+              <div class="text-sm font-semibold text-slate-500 dark:text-slate-400">No patient visits recorded today</div>
+              <div class="text-xs text-slate-400 mt-1">Use the Consultation Desk to log a new patient visit.</div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Low Stock Medicine Alert -->
+  {% if low_stock_medicines|default:0 > 0 %}
+  <div class="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-700/50 rounded-2xl p-5 flex items-start gap-4">
+    <div class="text-2xl mt-0.5">⚠️</div>
     <div>
-        <div class="flex justify-between items-center mb-4">
-            <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100">Recent Visits</h2>
-            <a href="{% url 'consultation_desk_web' %}" class="text-xs font-semibold text-rose-500 hover:text-rose-600 transition-colors">Open Consultation Desk &rarr;</a>
-        </div>
-        <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700">
-            <div class="overflow-x-auto">
-                <table class="table-auto w-full dark:text-slate-300">
-                    <!-- Table header -->
-                    <thead class="text-xs uppercase text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
-                        <tr>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Patient Name</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Visit Date</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Symptoms</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Diagnosis</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-center">Status</div></th>
-                        </tr>
-                    </thead>
-                    <!-- Table body -->
-                    <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-                        {% for visit in recent_visits %}
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">{{ visit.patient.person.first_name }} {{ visit.patient.person.last_name }}</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-slate-500 dark:text-slate-400">{{ visit.visit_date|date:"Y-m-d H:i" }}</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-slate-600 dark:text-slate-300">{{ visit.symptoms }}</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-slate-600 dark:text-slate-300">{{ visit.diagnosis|default:"-" }}</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center">
-                                {% if visit.status == 'completed' %}
-                                <span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">Completed</span>
-                                {% elif visit.status == 'referred' %}
-                                <span class="bg-indigo-100 dark:bg-indigo-400/30 text-indigo-600 dark:text-indigo-400 rounded-full px-2 py-0.5 text-xs">Referred</span>
-                                {% else %}
-                                <span class="bg-amber-100 dark:bg-amber-400/30 text-amber-600 dark:text-amber-400 rounded-full px-2 py-0.5 text-xs">Admitted</span>
-                                {% endif %}
-                            </div></td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="p-4 text-center text-slate-400 dark:text-slate-500">No recent patient visits logged.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      <h3 class="text-sm font-bold text-rose-700 dark:text-rose-300">Medicine Stock Alert</h3>
+      <p class="text-xs text-rose-600 dark:text-rose-400 mt-1">
+        <strong>{{ low_stock_medicines }}</strong> drug(s) have stock levels at or below 5 units.
+        Please visit the <a href="/clinic/pharmacy/" class="underline font-semibold">Pharmacy module</a> to reorder urgently.
+      </p>
     </div>
+  </div>
+  {% endif %}
+
 </div>
 {% endblock %}

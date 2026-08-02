@@ -1,0 +1,349 @@
+{
+  "payroll_unique_run": {
+    "file": "apps/hr/models.py",
+    "matches": [
+      [
+        247,
+        "class PayrollPeriod(TenantBaseModel):"
+      ],
+      [
+        270,
+        "class PayrollRun(TenantBaseModel):"
+      ],
+      [
+        272,
+        "period = models.ForeignKey(PayrollPeriod, on_delete=models.CASCADE)"
+      ]
+    ]
+  },
+  "attendance_unique_date": {
+    "file": "apps/attendance/models.py",
+    "matches": [
+      [
+        43,
+        "last_sync = models.DateTimeField(null=True, blank=True)"
+      ],
+      [
+        84,
+        "date = models.DateField(default=timezone.now)"
+      ],
+      [
+        88,
+        "return f\"Session: {self.lesson_instance} ({self.date})\""
+      ],
+      [
+        89,
+        "return f\"Daily roll call ({self.date})\""
+      ],
+      [
+        92,
+        "class AttendanceRecord(TenantBaseModel):"
+      ],
+      [
+        103,
+        "time_marked = models.DateTimeField(default=timezone.now)"
+      ],
+      [
+        117,
+        "record = models.ForeignKey(AttendanceRecord, on_delete=models.CASCADE, related_name='corrections')"
+      ],
+      [
+        133,
+        "pickup_time = models.DateTimeField(default=timezone.now)"
+      ],
+      [
+        148,
+        "local_timestamp = models.DateTimeField()"
+      ],
+      [
+        149,
+        "server_timestamp = models.DateTimeField(null=True, blank=True)"
+      ],
+      [
+        162,
+        "calculation_date = models.DateField(default=timezone.now)"
+      ],
+      [
+        165,
+        "return f\"Rate: {self.attendance_rate}% on {self.calculation_date}\""
+      ]
+    ]
+  },
+  "hostel_bed_allocation": {
+    "file": "apps/hostel/models.py",
+    "matches": [
+      [
+        40,
+        "class HostelBed(TenantBaseModel):"
+      ],
+      [
+        81,
+        "bed = models.ForeignKey(HostelBed, on_delete=models.CASCADE, related_name='allocations')"
+      ],
+      [
+        88,
+        "return f\"{self.student.person_number} allocated to Bed {self.bed.bed_number}\""
+      ]
+    ]
+  },
+  "inventory_negative_stock": {
+    "file": "apps/inventory/models.py",
+    "matches": [
+      [
+        64,
+        "current_quantity = models.IntegerField(default=0)"
+      ]
+    ]
+  },
+  "invoice_delete_protection": {
+    "file": "apps/efbm/models.py",
+    "matches": [
+      [
+        14,
+        "school = models.ForeignKey('tenants.School', on_delete=models.CASCADE)"
+      ],
+      [
+        15,
+        "academic_year = models.ForeignKey('academic.AcademicYear', on_delete=models.CASCADE)"
+      ],
+      [
+        28,
+        "fee_structure = models.ForeignKey(FeeStructure, on_delete=models.CASCADE, related_name='rules')"
+      ],
+      [
+        29,
+        "academic_level = models.ForeignKey('academic.AcademicLevel', on_delete=models.SET_NULL, null=True, blank=True)"
+      ],
+      [
+        36,
+        "class Invoice(TenantBaseModel):"
+      ],
+      [
+        47,
+        "student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE)"
+      ],
+      [
+        48,
+        "invoice_number = models.CharField(max_length=100, unique=True)"
+      ],
+      [
+        54,
+        "return self.invoice_number"
+      ],
+      [
+        57,
+        "class InvoiceItem(TenantBaseModel):"
+      ],
+      [
+        58,
+        "invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='items')"
+      ],
+      [
+        59,
+        "fee_structure = models.ForeignKey(FeeStructure, on_delete=models.CASCADE)"
+      ],
+      [
+        74,
+        "invoice = models.ForeignKey(Invoice, on_delete=models.SET_NULL, null=True, blank=True)"
+      ],
+      [
+        86,
+        "Distributes one payment across multiple outstanding invoice items."
+      ],
+      [
+        88,
+        "payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='allocations')"
+      ],
+      [
+        89,
+        "invoice_item = models.ForeignKey(InvoiceItem, on_delete=models.CASCADE)"
+      ],
+      [
+        93,
+        "return f\"Allocated {self.amount} to {self.invoice_item}\""
+      ],
+      [
+        100,
+        "parent = models.ForeignKey('people.Person', on_delete=models.CASCADE, related_name='wallets', null=True, blank=True)"
+      ],
+      [
+        101,
+        "student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE, related_name='wallets', null=True, blank=True)"
+      ],
+      [
+        109,
+        "wallet = models.ForeignKey(StudentWallet, on_delete=models.CASCADE, related_name='transactions')"
+      ],
+      [
+        128,
+        "student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE)"
+      ],
+      [
+        149,
+        "event = models.ForeignKey(JournalEvent, on_delete=models.CASCADE, related_name='entries')"
+      ],
+      [
+        159,
+        "entry = models.ForeignKey(JournalEntry, on_delete=models.CASCADE)"
+      ],
+      [
+        171,
+        "invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)"
+      ],
+      [
+        181,
+        "cashier = models.ForeignKey('people.Person', on_delete=models.CASCADE)"
+      ],
+      [
+        190,
+        "invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)"
+      ],
+      [
+        194,
+        "return f\"Plan for {self.invoice.invoice_number}\""
+      ],
+      [
+        198,
+        "plan = models.ForeignKey(InstallmentPlan, on_delete=models.CASCADE, related_name='schedules')"
+      ],
+      [
+        211,
+        "student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE)"
+      ],
+      [
+        219,
+        "class TenantSubscriptionInvoice(TenantBaseModel):"
+      ],
+      [
+        223,
+        "tenant_subscription = models.ForeignKey('tenants.TenantSubscription', on_delete=models.CASCADE)"
+      ],
+      [
+        235,
+        "payment = models.ForeignKey(Payment, on_delete=models.CASCADE)"
+      ],
+      [
+        253,
+        "school = models.ForeignKey('tenants.School', on_delete=models.CASCADE)"
+      ],
+      [
+        254,
+        "academic_year = models.ForeignKey('academic.AcademicYear', on_delete=models.CASCADE)"
+      ],
+      [
+        266,
+        "budget = models.ForeignKey(Budget, on_delete=models.CASCADE, related_name='items')"
+      ]
+    ]
+  },
+  "discharged_student_book_issue": {
+    "file": "apps/library/models.py",
+    "matches": [
+      [
+        58,
+        "STATUS_CHOICES = ["
+      ],
+      [
+        67,
+        "status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='available')"
+      ],
+      [
+        91,
+        "class BookIssue(TenantBaseModel):"
+      ],
+      [
+        95,
+        "STATUS_CHOICES = ["
+      ],
+      [
+        106,
+        "status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='issued')"
+      ],
+      [
+        116,
+        "STATUS_CHOICES = ["
+      ],
+      [
+        124,
+        "status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='pending')"
+      ]
+    ]
+  },
+  "inactive_staff_clockin": {
+    "file": "apps/hr/models.py",
+    "matches": [
+      [
+        10,
+        "class EmployeeProfile(TenantBaseModel):"
+      ],
+      [
+        79,
+        "from backend.apps.hr.models import EmployeeProfile, OnboardingTask, LeaveBalance, OrgAssignmentHistory"
+      ],
+      [
+        83,
+        "emp_exists = EmployeeProfile.objects.filter(tenant=self.tenant, person__user__email=self.email).exists()"
+      ],
+      [
+        145,
+        "employee = EmployeeProfile.objects.create("
+      ],
+      [
+        194,
+        "'is_active': True"
+      ],
+      [
+        222,
+        "employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='leave_requests')"
+      ],
+      [
+        234,
+        "employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='leave_balances')"
+      ],
+      [
+        271,
+        "employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='payroll_runs')"
+      ],
+      [
+        287,
+        "employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='appraisals')"
+      ],
+      [
+        288,
+        "reviewer = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='appraisals_conducted')"
+      ],
+      [
+        313,
+        "is_active = models.BooleanField(default=True)"
+      ],
+      [
+        320,
+        "employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='onboarding_tasks')"
+      ],
+      [
+        326,
+        "verified_by = models.ForeignKey(EmployeeProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks_verified')"
+      ],
+      [
+        337,
+        "employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='assigned_assets')"
+      ],
+      [
+        354,
+        "employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='assignment_history')"
+      ],
+      [
+        359,
+        "manager = models.ForeignKey(EmployeeProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='subordinates_history')"
+      ],
+      [
+        362,
+        "is_active = models.BooleanField(default=True)"
+      ],
+      [
+        373,
+        "employee = models.ForeignKey(EmployeeProfile, on_delete=models.CASCADE, related_name='objectives')"
+      ]
+    ]
+  }
+}

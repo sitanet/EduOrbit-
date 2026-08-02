@@ -1,0 +1,552 @@
+[
+  {
+    "severity": "HIGH",
+    "file": "templates\\landing.html",
+    "template": "landing.html",
+    "line": 82,
+    "evidence": "<a href=\"#\" class=\"flex items-center gap-2 hover:scale-105 transition-transform duration-300\">",
+    "link": "#",
+    "root_cause": "Dead link pointing to dummy anchor hash '#'",
+    "recommended_fix": "Replace href='#' with actual registered Django URL endpoint."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\academic\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 93,
+    "evidence": "<a href=\"/academic/classes/\" class=\"text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors\">View all \u2192</a>",
+    "link": "/academic/classes/",
+    "root_cause": "URL path '/academic/classes/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/academic/classes/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\academic\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 128,
+    "evidence": "<a href=\"/academic/classes/{{ class.id }}/\" class=\"text-xs text-indigo-400 hover:underline\">Manage</a>",
+    "link": "/academic/classes/{{ class.id }}/",
+    "root_cause": "URL path '/academic/classes/{{ class.id }}/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/academic/classes/{{ class.id }}/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\academic\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 204,
+    "evidence": "<a href=\"/academic/promotions/\" class=\"flex items-center gap-3 p-3 rounded-xl bg-amber-600/10 hover:bg-amber-600/20 border border-amber-700/20 hover:border-amber-600/40 transition-all group\">",
+    "link": "/academic/promotions/",
+    "root_cause": "URL path '/academic/promotions/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/academic/promotions/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\admissions\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 22,
+    "evidence": "<a href=\"/admissions/reports/\"",
+    "link": "/admissions/reports/",
+    "root_cause": "URL path '/admissions/reports/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/admissions/reports/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\admissions\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 141,
+    "evidence": "<a href=\"/admissions/{{ app.id }}/review/\" class=\"text-xs text-emerald-400 hover:underline\">Review</a>",
+    "link": "/admissions/{{ app.id }}/review/",
+    "root_cause": "URL path '/admissions/{{ app.id }}/review/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/admissions/{{ app.id }}/review/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\admissions\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 243,
+    "evidence": "<a href=\"/admissions/bulk-import/\" class=\"flex items-center gap-3 p-3 rounded-xl bg-sky-600/10 hover:bg-sky-600/20 border border-sky-700/20 transition-all\">",
+    "link": "/admissions/bulk-import/",
+    "root_cause": "URL path '/admissions/bulk-import/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/admissions/bulk-import/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\admissions\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 249,
+    "evidence": "<a href=\"/admissions/pending/\" class=\"flex items-center gap-3 p-3 rounded-xl bg-amber-600/10 hover:bg-amber-600/20 border border-amber-700/20 transition-all\">",
+    "link": "/admissions/pending/",
+    "root_cause": "URL path '/admissions/pending/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/admissions/pending/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\admissions\\review.html",
+    "template": "review.html",
+    "line": 114,
+    "evidence": "<a href=\"/media/{{ doc.document_file }}\" target=\"_blank\" class=\"text-xs text-primary hover:underline font-semibold\">View File &rarr;</a>",
+    "link": "/media/{{ doc.document_file }}",
+    "root_cause": "URL path '/media/{{ doc.document_file }}' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/media/{{ doc.document_file }}' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\_topbar.html",
+    "template": "_topbar.html",
+    "line": 100,
+    "evidence": "<a href=\"/people/profile/\" class=\"block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-600 transition-colors\" role=\"menuitem\" tabindex=\"-1\">Your Profile</a>",
+    "link": "/people/profile/",
+    "root_cause": "URL path '/people/profile/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/people/profile/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\_topbar.html",
+    "template": "_topbar.html",
+    "line": 102,
+    "evidence": "<a href=\"/auth/logout/\" class=\"block px-4 py-2 text-sm text-red-600 hover:bg-slate-100 dark:text-red-400 dark:hover:bg-slate-600 transition-colors\" role=\"menuitem\" tabindex=\"-1\">Sign out</a>",
+    "link": "/auth/logout/",
+    "root_cause": "URL path '/auth/logout/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/auth/logout/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_exam.html",
+    "template": "_sidebar_exam.html",
+    "line": 21,
+    "evidence": "<a href=\"/eae/schedule/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcc5 Exam Schedule</a>",
+    "link": "/eae/schedule/",
+    "root_cause": "URL path '/eae/schedule/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/eae/schedule/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_exam.html",
+    "template": "_sidebar_exam.html",
+    "line": 22,
+    "evidence": "<a href=\"/eae/questions/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\u2753 Question Bank</a>",
+    "link": "/eae/questions/",
+    "root_cause": "URL path '/eae/questions/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/eae/questions/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_exam.html",
+    "template": "_sidebar_exam.html",
+    "line": 23,
+    "evidence": "<a href=\"/eae/cbt/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcbb CBT Console</a>",
+    "link": "/eae/cbt/",
+    "root_cause": "URL path '/eae/cbt/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/eae/cbt/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_exam.html",
+    "template": "_sidebar_exam.html",
+    "line": 26,
+    "evidence": "<a href=\"/emrp/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcca Results Management</a>",
+    "link": "/emrp/",
+    "root_cause": "URL path '/emrp/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/emrp/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_exam.html",
+    "template": "_sidebar_exam.html",
+    "line": 27,
+    "evidence": "<a href=\"/emrp/reports/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udccb Result Reports</a>",
+    "link": "/emrp/reports/",
+    "root_cause": "URL path '/emrp/reports/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/emrp/reports/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_finance.html",
+    "template": "_sidebar_finance.html",
+    "line": 21,
+    "evidence": "<a href=\"/efbm/invoices/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83e\uddfe Invoices</a>",
+    "link": "/efbm/invoices/",
+    "root_cause": "URL path '/efbm/invoices/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/efbm/invoices/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_finance.html",
+    "template": "_sidebar_finance.html",
+    "line": 22,
+    "evidence": "<a href=\"/efbm/payments/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcb3 Payments</a>",
+    "link": "/efbm/payments/",
+    "root_cause": "URL path '/efbm/payments/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/efbm/payments/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_finance.html",
+    "template": "_sidebar_finance.html",
+    "line": 23,
+    "evidence": "<a href=\"/efbm/reports/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcca Finance Reports</a>",
+    "link": "/efbm/reports/",
+    "root_cause": "URL path '/efbm/reports/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/efbm/reports/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_hostel.html",
+    "template": "_sidebar_hostel.html",
+    "line": 22,
+    "evidence": "<a href=\"/hostel/boarders/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udc68\u200d\ud83d\udc67 Boarders</a>",
+    "link": "/hostel/boarders/",
+    "root_cause": "URL path '/hostel/boarders/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/hostel/boarders/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_hostel.html",
+    "template": "_sidebar_hostel.html",
+    "line": 23,
+    "evidence": "<a href=\"/hostel/incidents/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\u26a0\ufe0f Incidents</a>",
+    "link": "/hostel/incidents/",
+    "root_cause": "URL path '/hostel/incidents/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/hostel/incidents/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_hostel.html",
+    "template": "_sidebar_hostel.html",
+    "line": 24,
+    "evidence": "<a href=\"/hostel/maintenance/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udd27 Maintenance</a>",
+    "link": "/hostel/maintenance/",
+    "root_cause": "URL path '/hostel/maintenance/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/hostel/maintenance/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_hostel.html",
+    "template": "_sidebar_hostel.html",
+    "line": 25,
+    "evidence": "<a href=\"/hostel/reports/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcca Reports</a>",
+    "link": "/hostel/reports/",
+    "root_cause": "URL path '/hostel/reports/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/hostel/reports/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_hr.html",
+    "template": "_sidebar_hr.html",
+    "line": 23,
+    "evidence": "<a href=\"/hr/leave/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83c\udfd6\ufe0f Leave Management</a>",
+    "link": "/hr/leave/",
+    "root_cause": "URL path '/hr/leave/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/hr/leave/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_library.html",
+    "template": "_sidebar_library.html",
+    "line": 21,
+    "evidence": "<a href=\"/library/books/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcda Books</a>",
+    "link": "/library/books/",
+    "root_cause": "URL path '/library/books/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/library/books/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_library.html",
+    "template": "_sidebar_library.html",
+    "line": 22,
+    "evidence": "<a href=\"/library/issues/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udce4 Issued Books</a>",
+    "link": "/library/issues/",
+    "root_cause": "URL path '/library/issues/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/library/issues/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_library.html",
+    "template": "_sidebar_library.html",
+    "line": 23,
+    "evidence": "<a href=\"/library/returns/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udce5 Returns</a>",
+    "link": "/library/returns/",
+    "root_cause": "URL path '/library/returns/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/library/returns/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_library.html",
+    "template": "_sidebar_library.html",
+    "line": 24,
+    "evidence": "<a href=\"/library/overdue/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\u23f0 Overdue</a>",
+    "link": "/library/overdue/",
+    "root_cause": "URL path '/library/overdue/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/library/overdue/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_library.html",
+    "template": "_sidebar_library.html",
+    "line": 25,
+    "evidence": "<a href=\"/library/members/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udc65 Members</a>",
+    "link": "/library/members/",
+    "root_cause": "URL path '/library/members/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/library/members/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_library.html",
+    "template": "_sidebar_library.html",
+    "line": 26,
+    "evidence": "<a href=\"/library/reports/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcca Reports</a>",
+    "link": "/library/reports/",
+    "root_cause": "URL path '/library/reports/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/library/reports/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_parent.html",
+    "template": "_sidebar_parent.html",
+    "line": 22,
+    "evidence": "<a href=\"/emrp/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcca Academic Results</a>",
+    "link": "/emrp/",
+    "root_cause": "URL path '/emrp/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/emrp/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_student.html",
+    "template": "_sidebar_student.html",
+    "line": 23,
+    "evidence": "<a href=\"/emrp/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcca My Results</a>",
+    "link": "/emrp/",
+    "root_cause": "URL path '/emrp/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/emrp/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_super_admin.html",
+    "template": "_sidebar_super_admin.html",
+    "line": 26,
+    "evidence": "<a href=\"/tenants/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83c\udfeb Tenants</a>",
+    "link": "/tenants/",
+    "root_cause": "URL path '/tenants/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/tenants/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_super_admin.html",
+    "template": "_sidebar_super_admin.html",
+    "line": 27,
+    "evidence": "<a href=\"/integration/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udd17 Integrations</a>",
+    "link": "/integration/",
+    "root_cause": "URL path '/integration/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/integration/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_super_admin.html",
+    "template": "_sidebar_super_admin.html",
+    "line": 29,
+    "evidence": "<a href=\"/ai/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83e\udd16 AI Console</a>",
+    "link": "/ai/",
+    "root_cause": "URL path '/ai/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/ai/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_super_admin.html",
+    "template": "_sidebar_super_admin.html",
+    "line": 30,
+    "evidence": "<a href=\"/workflow/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\u2699\ufe0f Workflow</a>",
+    "link": "/workflow/",
+    "root_cause": "URL path '/workflow/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/workflow/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_super_admin.html",
+    "template": "_sidebar_super_admin.html",
+    "line": 34,
+    "evidence": "<a href=\"/identity/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udd10 Users & Roles</a>",
+    "link": "/identity/",
+    "root_cause": "URL path '/identity/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/identity/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_super_admin.html",
+    "template": "_sidebar_super_admin.html",
+    "line": 35,
+    "evidence": "<a href=\"/identity/sessions/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udd11 Sessions</a>",
+    "link": "/identity/sessions/",
+    "root_cause": "URL path '/identity/sessions/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/identity/sessions/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_super_admin.html",
+    "template": "_sidebar_super_admin.html",
+    "line": 36,
+    "evidence": "<a href=\"/identity/role-matrix/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udd12 Role Matrix</a>",
+    "link": "/identity/role-matrix/",
+    "root_cause": "URL path '/identity/role-matrix/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/identity/role-matrix/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_teacher.html",
+    "template": "_sidebar_teacher.html",
+    "line": 24,
+    "evidence": "<a href=\"/emrp/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcca Student Results</a>",
+    "link": "/emrp/",
+    "root_cause": "URL path '/emrp/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/emrp/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_transport.html",
+    "template": "_sidebar_transport.html",
+    "line": 21,
+    "evidence": "<a href=\"/transport/vehicles/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\ude97 Vehicles</a>",
+    "link": "/transport/vehicles/",
+    "root_cause": "URL path '/transport/vehicles/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/transport/vehicles/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_transport.html",
+    "template": "_sidebar_transport.html",
+    "line": 23,
+    "evidence": "<a href=\"/transport/drivers/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83e\uddd1\u200d\u2708\ufe0f Drivers</a>",
+    "link": "/transport/drivers/",
+    "root_cause": "URL path '/transport/drivers/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/transport/drivers/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_transport.html",
+    "template": "_sidebar_transport.html",
+    "line": 24,
+    "evidence": "<a href=\"/transport/passengers/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udc65 Passengers</a>",
+    "link": "/transport/passengers/",
+    "root_cause": "URL path '/transport/passengers/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/transport/passengers/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_transport.html",
+    "template": "_sidebar_transport.html",
+    "line": 25,
+    "evidence": "<a href=\"/transport/maintenance/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udd27 Maintenance</a>",
+    "link": "/transport/maintenance/",
+    "root_cause": "URL path '/transport/maintenance/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/transport/maintenance/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\base\\sidebars\\_sidebar_transport.html",
+    "template": "_sidebar_transport.html",
+    "line": 26,
+    "evidence": "<a href=\"/transport/reports/\" class=\"flex items-center gap-3 px-3 py-2.5 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-sm\">\ud83d\udcca Reports</a>",
+    "link": "/transport/reports/",
+    "root_cause": "URL path '/transport/reports/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/transport/reports/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\emrp\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 57,
+    "evidence": "<a href=\"/emrp/exams/{{ exam.id }}/broadsheet-view/\" class=\"text-xs text-indigo-400 hover:underline\">View Broadsheet</a>",
+    "link": "/emrp/exams/{{ exam.id }}/broadsheet-view/",
+    "root_cause": "URL path '/emrp/exams/{{ exam.id }}/broadsheet-view/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/emrp/exams/{{ exam.id }}/broadsheet-view/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\emrp\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 73,
+    "evidence": "<a href=\"/emrp/exams/1/broadsheet-view/\" class=\"text-xs text-indigo-400 hover:underline\">View Broadsheet</a>",
+    "link": "/emrp/exams/1/broadsheet-view/",
+    "root_cause": "URL path '/emrp/exams/1/broadsheet-view/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/emrp/exams/1/broadsheet-view/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "HIGH",
+    "file": "templates\\hr\\candidate_review.html",
+    "template": "candidate_review.html",
+    "line": 63,
+    "evidence": "<a href=\"#\" class=\"text-xs font-bold text-indigo-500 hover:underline\">Download File</a>",
+    "link": "#",
+    "root_cause": "Dead link pointing to dummy anchor hash '#'",
+    "recommended_fix": "Replace href='#' with actual registered Django URL endpoint."
+  },
+  {
+    "severity": "HIGH",
+    "file": "templates\\hr\\ess\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 159,
+    "evidence": "<a href=\"#\" class=\"px-3 py-1 bg-indigo-500/10 text-indigo-600 hover:bg-indigo-500/20 rounded-lg text-xs font-semibold\">Download PDF</a>",
+    "link": "#",
+    "root_cause": "Dead link pointing to dummy anchor hash '#'",
+    "recommended_fix": "Replace href='#' with actual registered Django URL endpoint."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\hr\\settings\\index.html",
+    "template": "index.html",
+    "line": 48,
+    "evidence": "<a href=\"/workflow/\" class=\"inline-block text-xs font-semibold text-indigo-500 hover:underline\">Open Workflow Builder \u2192</a>",
+    "link": "/workflow/",
+    "root_cause": "URL path '/workflow/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/workflow/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\lms\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 21,
+    "evidence": "<a href=\"/lms/courses/\"",
+    "link": "/lms/courses/",
+    "root_cause": "URL path '/lms/courses/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/lms/courses/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\lms\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 91,
+    "evidence": "<a href=\"/lms/courses/\" class=\"text-xs text-purple-400 hover:text-purple-300 font-medium transition-colors\">View all \u2192</a>",
+    "link": "/lms/courses/",
+    "root_cause": "URL path '/lms/courses/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/lms/courses/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\lms\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 130,
+    "evidence": "<a href=\"/lms/courses/{{ course.id }}/\" class=\"text-xs text-purple-400 hover:underline\">View</a>",
+    "link": "/lms/courses/{{ course.id }}/",
+    "root_cause": "URL path '/lms/courses/{{ course.id }}/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/lms/courses/{{ course.id }}/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\lms\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 233,
+    "evidence": "<a href=\"/lms/assignments/\" class=\"flex items-center gap-3 p-3 rounded-xl bg-teal-600/10 hover:bg-teal-600/20 border border-teal-700/20 transition-all\">",
+    "link": "/lms/assignments/",
+    "root_cause": "URL path '/lms/assignments/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/lms/assignments/' in appropriate urls.py module or update template link to valid route."
+  },
+  {
+    "severity": "CRITICAL",
+    "file": "templates\\lms\\dashboard.html",
+    "template": "dashboard.html",
+    "line": 239,
+    "evidence": "<a href=\"/lms/analytics/\" class=\"flex items-center gap-3 p-3 rounded-xl bg-sky-600/10 hover:bg-sky-600/20 border border-sky-700/20 transition-all\">",
+    "link": "/lms/analytics/",
+    "root_cause": "URL path '/lms/analytics/' is not registered in Django URLconf (404)",
+    "recommended_fix": "Register route '/lms/analytics/' in appropriate urls.py module or update template link to valid route."
+  }
+]

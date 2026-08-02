@@ -7,6 +7,7 @@ After=network.target
 User=eduorbit
 Group=eduorbit
 WorkingDirectory=/var/www/eduorbit/backend
+EnvironmentFile=/var/www/eduorbit/.env.production
 ExecStart=/var/www/eduorbit/venv/bin/gunicorn -c /var/www/eduorbit/deployment/gunicorn/gunicorn.conf.py backend.asgi:application
 
 [Install]

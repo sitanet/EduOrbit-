@@ -1,0 +1,92 @@
+{% extends "base/_document.html" %}
+{% block title %}Bank & Treasury Dashboard — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Bank & Treasury Workspace</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Bank Accounts, Cash Vaults, Statements, and Auto-Reconciliation.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Treasury Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+        <a href="{% url 'bank_dashboard_web' %}" class="px-4 py-2 bg-indigo-600 text-white font-semibold text-xs rounded-xl">Treasury Overview</a>
+        <a href="{% url 'bank_reconciliation_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Bank Reconciliation</a>
+        <a href="{% url 'cashbook_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Cashbook Statement</a>
+        <a href="{% url 'cheque_register_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Cheque Register</a>
+    </div>
+
+    <!-- Metric Widgets Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Total Bank Liquidity</span>
+            <div class="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-400">${{ metrics.total_bank_balance }}</div>
+            <span class="text-xs font-semibold text-slate-400 block">Bank Accounts Aggregate</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Cash Till / Vault Balance</span>
+            <div class="text-2xl font-black font-mono text-indigo-600 dark:text-indigo-400">${{ metrics.total_cash_balance }}</div>
+            <span class="text-xs font-semibold text-slate-400 block">Physical Cash In-Hand</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Un-reconciled Statement Items</span>
+            <div class="text-2xl font-black font-mono text-amber-600 dark:text-amber-400">{{ metrics.unreconciled_count }}</div>
+            <span class="text-xs font-semibold text-amber-500 block">Matching Required</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Pending Issued Cheques</span>
+            <div class="text-2xl font-black font-mono text-slate-900 dark:text-white">{{ metrics.pending_cheques_count }}</div>
+            <span class="text-xs font-semibold text-slate-400 block">Awaiting Clearing</span>
+        </div>
+    </div>
+
+    <!-- Active Bank Accounts Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base">Treasury & Bank Accounts</h3>
+            <a href="{% url 'bank_reconciliation_web' %}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Reconcile Accounts ➔</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Account Name</th>
+                        <th class="px-6 py-4">Bank Name</th>
+                        <th class="px-6 py-4">Account #</th>
+                        <th class="px-6 py-4">Type</th>
+                        <th class="px-6 py-4 text-right">Current Balance ($)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for acc in metrics.accounts %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ acc.account_name }}</td>
+                        <td class="px-6 py-4 text-xs font-semibold">{{ acc.bank_name }}</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500">{{ acc.account_number }}</td>
+                        <td class="px-6 py-4 text-xs uppercase font-bold text-indigo-600 dark:text-indigo-400">{{ acc.account_type }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">${{ acc.current_balance }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-slate-500">No bank accounts registered.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

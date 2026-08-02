@@ -1,86 +1,208 @@
 {% extends "base/_document.html" %}
-{% block title %}Communication Hub — EduOrbit{% endblock %}
+{% block title %}Communication & Engagement Hub — EduOrbit ERP{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="md:flex md:items-center md:justify-between mb-8">
-    <div class="min-w-0 flex-1">
-      <p class="text-xs font-semibold tracking-widest text-indigo-400 uppercase mb-1">EduOrbit · CEH</p>
-      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Announcements &amp; News Center</h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Publish news, events, newsletters, and view real-time delivery logs.</p>
+<div class="space-y-6">
+
+  <!-- Page Header Banner -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-500/30 shadow-xl">
+    <div class="space-y-1">
+      <p class="text-[10px] font-bold tracking-widest text-indigo-400 uppercase">EduOrbit · CEH Module</p>
+      <h1 class="text-2xl font-bold tracking-tight">📢 Announcements & Communication Hub</h1>
+      <p class="text-xs text-slate-300">Publish school news, broadcast events, send newsletters, and monitor real-time delivery logs.</p>
     </div>
-    <div class="mt-4 flex md:ml-4 md:mt-0 gap-3">
-      <a href="/communication/chat-room/" class="inline-flex items-center rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:bg-slate-600 border border-gray-700 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white transition">
+    <div class="flex items-center gap-3 shrink-0">
+      <a href="/communication/chat-room/" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-md">
         💬 Chat Workspace
       </a>
-      <button class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white transition">
-        Create Announcement
+      <button onclick="document.getElementById('composeModal').classList.remove('hidden')"
+              class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+        ✏️ New Announcement
       </button>
     </div>
   </div>
 
+  <!-- KPI Stats -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Announcements</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ announcements|length|default:0 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Published</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">📢</div>
+    </div>
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">High Priority</span>
+        <div class="text-2xl font-black text-rose-500 mt-1">{{ high_priority_count|default:1 }}</div>
+        <span class="text-[10px] text-rose-400 font-semibold mt-1 inline-block">Urgent Notices</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-900/30 text-rose-500 flex items-center justify-center text-xl">🚨</div>
+    </div>
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">SMS Sent Today</span>
+        <div class="text-2xl font-black text-emerald-500 mt-1">{{ sms_sent|default:0 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">via Termii</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">💬</div>
+    </div>
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Emails Sent Today</span>
+        <div class="text-2xl font-black text-amber-500 mt-1">{{ emails_sent|default:0 }}</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">via Hostinger SMTP</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">✉️</div>
+    </div>
+  </div>
+
+  <!-- Main Content: Announcements + Quick Compose -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <div class="lg:col-span-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
-      <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Published School Announcements</h3>
-      <div class="space-y-4">
+
+    <!-- Announcements Feed -->
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+        <h2 class="text-sm font-bold text-slate-900 dark:text-white">📋 Published School Announcements</h2>
+        <button onclick="document.getElementById('composeModal').classList.remove('hidden')"
+                class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg transition">
+          + New
+        </button>
+      </div>
+      <div class="divide-y divide-slate-100 dark:divide-slate-700/50 max-h-[540px] overflow-y-auto">
         {% for ann in announcements %}
-        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80 hover:border-gray-700/60 transition">
-          <div class="flex justify-between items-center mb-2">
-            <h4 class="font-semibold text-slate-900 dark:text-white">{{ ann.title }}</h4>
-            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-900/50 text-indigo-400">{{ ann.priority|upper|default:"NORMAL" }}</span>
+        <div class="p-5 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+          <div class="flex items-start justify-between gap-3 mb-2">
+            <h3 class="font-bold text-slate-900 dark:text-white text-sm">{{ ann.title }}</h3>
+            {% if ann.priority == 'emergency' %}
+              <span class="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-600 dark:text-rose-400 font-mono">EMERGENCY</span>
+            {% elif ann.priority == 'academic' %}
+              <span class="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 font-mono">ACADEMIC</span>
+            {% elif ann.priority == 'finance' %}
+              <span class="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">FINANCE</span>
+            {% else %}
+              <span class="shrink-0 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">GENERAL</span>
+            {% endif %}
           </div>
-          <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">{{ ann.content|default:ann.body }}</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{{ ann.content }}</p>
         </div>
         {% empty %}
-        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80">
-          <div class="flex justify-between items-center mb-2">
-            <h4 class="font-semibold text-slate-900 dark:text-white">Inter-House Sports Heat Commences</h4>
-            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900/50 text-red-400">HIGH</span>
-          </div>
-          <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Heats for the annual inter-house sports games starts tomorrow by 2:00 PM at the main sports complex. All students are expected to dress in sportswear.</p>
-        </div>
-        <div class="p-4 bg-slate-100 dark:bg-slate-800/40 rounded-xl border border-slate-200 dark:border-slate-700/80">
-          <div class="flex justify-between items-center mb-2">
-            <h4 class="font-semibold text-slate-900 dark:text-white">First Term Tuition Payment Deadline</h4>
-            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900/50 text-amber-400">MEDIUM</span>
-          </div>
-          <p class="text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Parents and guardians are reminded that the first term tuition payment window closes in five working days. Invoices can be paid directly from the Parent Wallet.</p>
+        <div class="p-14 text-center">
+          <div class="text-5xl mb-4">📢</div>
+          <h3 class="font-bold text-slate-700 dark:text-slate-200 text-base">No announcements published yet</h3>
+          <p class="text-xs text-slate-400 mt-2 max-w-sm mx-auto">Use the Quick Compose panel or click <strong>New Announcement</strong> to publish your first school-wide notice.</p>
+          <button onclick="document.getElementById('composeModal').classList.remove('hidden')"
+                  class="mt-5 inline-block px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition">
+            ✏️ Create First Announcement
+          </button>
         </div>
         {% endfor %}
       </div>
     </div>
 
-    <!-- Quick Compose -->
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6">
-      <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Quick Compose</h3>
-      <form class="space-y-4">
+    <!-- Quick Compose Sidebar -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700">
+        <h2 class="text-sm font-bold text-slate-900 dark:text-white">✏️ Quick Compose</h2>
+        <p class="text-[11px] text-slate-400 mt-0.5">Draft and publish a new announcement instantly.</p>
+      </div>
+      <form method="POST" action="/communication/dashboard/" class="p-6 space-y-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="publish_announcement">
         <div>
-          <label class="block text-xs font-medium text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-1">Announcement Title</label>
-          <input type="text" placeholder="e.g. Mid-term break notification" class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white">
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Title</label>
+          <input type="text" name="title" placeholder="e.g. Mid-term break notification" required
+                 class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
         <div>
-          <label class="block text-xs font-medium text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-1">Target Audience</label>
-          <select class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-3 py-2 text-sm text-slate-700 dark:text-slate-700 dark:text-slate-300">
-            <option>All Staff, Students &amp; Parents</option>
-            <option>Teachers Only</option>
-            <option>Parents Only</option>
-            <option>Students Only</option>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Target Audience</label>
+          <select name="audience"
+                  class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="all">All Staff, Students & Parents</option>
+            <option value="teachers">Teachers Only</option>
+            <option value="parents">Parents Only</option>
+            <option value="students">Students Only</option>
+            <option value="staff">All Staff</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-medium text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-1">Priority</label>
-          <select class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-3 py-2 text-sm text-slate-700 dark:text-slate-700 dark:text-slate-300">
-            <option>Normal</option>
-            <option>Medium</option>
-            <option>High</option>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Priority</label>
+          <select name="priority"
+                  class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="normal">Normal</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-medium text-slate-600 dark:text-slate-600 dark:text-slate-400 mb-1">Message Content</label>
-          <textarea rows="4" placeholder="Enter announcement body text..." class="w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white"></textarea>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Message</label>
+          <textarea name="content" rows="5" placeholder="Enter announcement body text…" required
+                    class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
         </div>
-        <button type="submit" class="w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white rounded-xl text-sm font-semibold transition">Publish Announcement</button>
+        <button type="submit"
+                class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold transition shadow-md">
+          📢 Publish Announcement
+        </button>
+        <a href="/communication/chat-room/"
+           class="block w-full text-center py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-semibold transition">
+          💬 Open Chat Workspace
+        </a>
       </form>
     </div>
+
+  </div>
+
+</div>
+
+<!-- ── Full Compose Modal ─────────────────────────────────────────── -->
+<div id="composeModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">📢 Compose Announcement</h3>
+      <button onclick="document.getElementById('composeModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <form method="POST" action="/communication/dashboard/" class="p-6 space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="publish_announcement">
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Announcement Title</label>
+        <input type="text" name="title" placeholder="e.g. School closure — harmattan break" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Audience</label>
+          <select name="audience"
+                  class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="all">All</option>
+            <option value="teachers">Teachers</option>
+            <option value="parents">Parents</option>
+            <option value="students">Students</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Priority</label>
+          <select name="priority"
+                  class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="normal">Normal</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Message Body</label>
+        <textarea name="content" rows="5" placeholder="Enter full announcement text…" required
+                  class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+      </div>
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" onclick="document.getElementById('composeModal').classList.add('hidden')"
+                class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">Cancel</button>
+        <button type="submit"
+                class="px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-md">📢 Publish</button>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}

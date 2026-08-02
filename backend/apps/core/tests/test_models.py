@@ -7,7 +7,7 @@ class BaseModelTests(TestCase):
         # Create a test tenant
         self.tenant = Tenant.objects.create(
             name="Test School",
-            subdomain="testschool"
+            branding_config={"subdomain": "testschool"}
         )
         
     def test_tenant_creation(self):

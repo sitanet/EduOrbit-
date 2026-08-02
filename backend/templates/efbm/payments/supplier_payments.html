@@ -1,0 +1,170 @@
+{% extends "base/_document.html" %}
+{% load static %}
+{% block title %}Supplier Payments — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Supplier Payments</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Enterprise Payment Processing & Vendor Disbursements.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'supplier_payment_create' %}" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                ➕ Create Payment
+            </a>
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <a href="{% url 'payables_dashboard_web' %}" class="hover:text-indigo-600">Payables Dashboard</a>
+        <span>›</span>
+        <span class="font-semibold">Payments</span>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label for="status" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Status Filter</label>
+                <select name="status" id="status" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                    <option value="">All Statuses</option>
+                    {% for value, label in status_choices %}
+                        <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="search" class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Search</label>
+                <input type="text" name="search" id="search" placeholder="Payment number, reference..." 
+                    class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400">
+            </div>
+            <div class="flex items-end">
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-lg transition-all">
+                    🔍 Filter
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Payments Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full">
+                <thead class="bg-slate-50 dark:bg-slate-750 border-b border-slate-200 dark:border-slate-600">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Payment #</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Bill Reference</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">WHT</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Net Amount</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Payment Date</th>
+                        <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                    {% for payment in payments %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ payment.payment_number }}</div>
+                            <div class="text-xs text-slate-400">{{ payment.reference }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-slate-600 dark:text-slate-300">{{ payment.bill.bill_number }}</div>
+                            <div class="text-xs text-slate-400">{{ payment.bill.supplier_name }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm font-mono font-bold text-slate-900 dark:text-white">NGN {{ payment.amount|floatformat:2 }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm font-mono text-red-600 dark:text-red-400">NGN {{ payment.withholding_tax_amount|floatformat:2 }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm font-mono font-bold text-emerald-600 dark:text-emerald-400">NGN {{ payment.net_amount|floatformat:2 }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if payment.status == 'draft' %}
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Draft</span>
+                            {% elif payment.status == 'pending' %}
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Pending</span>
+                            {% elif payment.status == 'approved' %}
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                            {% elif payment.status == 'processed' %}
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-emerald-100 text-emerald-800">Processed</span>
+                            {% elif payment.status == 'cancelled' %}
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Cancelled</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-slate-600 dark:text-slate-300">{{ payment.payment_date|date:"M j, Y" }}</div>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="{% url 'supplier_payment_detail' payment_id=payment.id %}" 
+                                   class="px-3 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 font-semibold text-xs rounded-lg transition-all">
+                                    👁️ View
+                                </a>
+                                {% if payment.status == 'draft' %}
+                                <a href="{% url 'supplier_payment_update' payment_id=payment.id %}" 
+                                   class="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-700 font-semibold text-xs rounded-lg transition-all">
+                                    ✏️ Edit
+                                </a>
+                                {% endif %}
+                                {% if payment.voucher %}
+                                <a href="{% url 'payment_voucher_detail' voucher_id=payment.voucher.id %}" 
+                                   class="px-3 py-1 bg-purple-100 hover:bg-purple-200 text-purple-700 font-semibold text-xs rounded-lg transition-all">
+                                    📄 Voucher
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="px-6 py-8 text-center">
+                            <div class="text-slate-400">
+                                <div class="text-4xl mb-2">💰</div>
+                                <div class="text-sm font-semibold">No payments found</div>
+                                <div class="text-xs">Create a new payment to get started.</div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Total Payments</span>
+            <div class="text-2xl font-black font-mono text-slate-900 dark:text-white">{{ payments|length }}</div>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Processed Amount</span>
+            <div class="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-400">NGN 0.00</div>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Pending Approval</span>
+            <div class="text-2xl font-black font-mono text-amber-600 dark:text-amber-400">0</div>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Draft Payments</span>
+            <div class="text-2xl font-black font-mono text-slate-600 dark:text-slate-400">0</div>
+        </div>
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">WHT Withheld</span>
+            <div class="text-2xl font-black font-mono text-red-600 dark:text-red-400">NGN 0.00</div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

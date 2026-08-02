@@ -1,0 +1,96 @@
+{% extends "base/_document.html" %}
+{% block title %}Income Statement (Profit & Loss) — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Income Statement (P&L)</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Official Revenue, Expense, and Net Profit performance statement.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print / Export PDF
+            </button>
+            <a href="?export=excel" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📊 Export Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Statement Document -->
+    <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl space-y-6 text-sm text-slate-900 dark:text-white" id="printableIncomeStatement">
+
+        <!-- Statement Title Block -->
+        <div class="border-b-2 border-indigo-600 pb-4 flex justify-between items-center">
+            <div>
+                <h2 class="text-xl font-bold uppercase tracking-tight text-indigo-950 dark:text-indigo-400">Statement of Profit & Loss</h2>
+                <p class="text-xs text-slate-500">For the period ending {{ today_date|default:"Current Fiscal Period" }}</p>
+            </div>
+            <div class="text-right">
+                <span class="text-xs font-semibold text-slate-400 block">NET FINANCIAL RESULT</span>
+                <span class="text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400">${{ pnl.net_profit }}</span>
+            </div>
+        </div>
+
+        <!-- Income Statement Financial Lines -->
+        <div class="space-y-4">
+
+            <!-- Revenue Section -->
+            <div class="space-y-2">
+                <div class="flex justify-between py-2 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <span class="uppercase text-xs tracking-wider text-slate-500">Educational Revenue & Inflows</span>
+                    <span class="font-mono text-base">${{ pnl.revenue }}</span>
+                </div>
+                {% if pnl.other_income > 0 %}
+                <div class="flex justify-between py-1 text-slate-600 dark:text-slate-400 text-xs pl-4">
+                    <span>Other Educational Income</span>
+                    <span class="font-mono">${{ pnl.other_income }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Cost of Educational Services -->
+            <div class="space-y-2">
+                <div class="flex justify-between py-2 text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800">
+                    <span>Less: Cost of Educational Services</span>
+                    <span class="font-mono">(${{ pnl.cost_of_sales }})</span>
+                </div>
+            </div>
+
+            <!-- Gross Profit Summary -->
+            <div class="flex justify-between py-3 font-bold bg-indigo-50/50 dark:bg-indigo-950/30 px-4 rounded-xl text-indigo-950 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/30">
+                <span>GROSS PROFIT</span>
+                <span class="font-mono text-base">${{ pnl.gross_profit }}</span>
+            </div>
+
+            <!-- Operating Expenses Section -->
+            <div class="space-y-2 pt-2">
+                <div class="flex justify-between py-2 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <span class="uppercase text-xs tracking-wider text-slate-500">Operating Expenses</span>
+                    <span class="font-mono">(${{ pnl.operating_expenses }})</span>
+                </div>
+            </div>
+
+            <!-- Operating Profit Summary -->
+            <div class="flex justify-between py-2 text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800">
+                <span>Operating Profit</span>
+                <span class="font-mono font-semibold">${{ pnl.operating_profit }}</span>
+            </div>
+
+            <!-- Final Net Profit / Loss Highlight Box -->
+            <div class="pt-4">
+                <div class="flex justify-between py-4 px-6 font-black text-lg bg-emerald-500/10 border-2 border-emerald-500/30 rounded-2xl text-emerald-700 dark:text-emerald-300">
+                    <span class="uppercase tracking-wide">NET PROFIT FOR THE PERIOD</span>
+                    <span class="font-mono text-xl">${{ pnl.net_profit }}</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

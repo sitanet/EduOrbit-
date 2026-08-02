@@ -1,0 +1,2634 @@
+{
+  "total_routes": 446,
+  "parameterized_routes": 131,
+  "static_routes": 315,
+  "public_routes_count": 65,
+  "protected_routes_count": 66,
+  "status_500_count": 0,
+  "status_404_count": 0,
+  "protected_routes": [
+    {
+      "url": "/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/dashboard/super-admin/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/school-admin/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/teacher/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 200,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/student/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 200,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/parent/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 200,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/finance/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 200,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/hr/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 200,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/library/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 200,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/hostel/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 200,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/transport/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 200,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/clinic/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 200,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/dashboard/exam/",
+      "view_name": "view",
+      "view_module": "backend.apps.dashboard.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/login/",
+      "view_name": "view",
+      "view_module": "backend.apps.identity.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/tenants/switch-school/",
+      "view_name": "view",
+      "view_module": "backend.apps.tenants.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/tenants/saas-analytics/",
+      "view_name": "view",
+      "view_module": "backend.apps.tenants.views_admin",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/academic/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/academic/wizard/",
+      "view_name": "view",
+      "view_module": "backend.apps.academic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/academic/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.academic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/academic/subjects/",
+      "view_name": "view",
+      "view_module": "backend.apps.academic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/admissions/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/admissions/wizard/",
+      "view_name": "view",
+      "view_module": "backend.apps.admissions.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/admissions/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.admissions.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/students/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/students/portfolio/",
+      "view_name": "view",
+      "view_module": "backend.apps.students.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/students/timeline/",
+      "view_name": "view",
+      "view_module": "backend.apps.students.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/timetable/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/timetable/builder/",
+      "view_name": "view",
+      "view_module": "backend.apps.timetable.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/timetable/bookings/",
+      "view_name": "view",
+      "view_module": "backend.apps.timetable.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/teachers/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/teachers/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.teachers.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 200,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/teachers/planner/",
+      "view_name": "view",
+      "view_module": "backend.apps.teachers.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 200,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 403,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/attendance/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/lms/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/eae/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/eae/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.eae.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/efbm/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/communication/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/hr/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/hr/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/hr/admin/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/hr/payroll/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 200,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/hr/payroll/generate/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 403,
+        "Teacher": 403,
+        "Student": 403,
+        "Parent": 403,
+        "Finance Officer": 403,
+        "HR Admin": 200,
+        "Librarian": 403,
+        "Hostel Warden": 403,
+        "Transport Officer": 403,
+        "Clinic Nurse": 403,
+        "Exam Officer": 403
+      }
+    },
+    {
+      "url": "/library/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/library/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.library.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 200,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/transport/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/transport/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.transport.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 200,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/transport/routes/",
+      "view_name": "view",
+      "view_module": "backend.apps.transport.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 200,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/hostel/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/hostel/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.hostel.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 200,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/hostel/rooms/",
+      "view_name": "view",
+      "view_module": "backend.apps.hostel.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 200,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/clinic/",
+      "view_name": "view",
+      "view_module": "backend.apps.clinic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 200,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/clinic/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.clinic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 200,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/clinic/consultation/",
+      "view_name": "view",
+      "view_module": "backend.apps.clinic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 200,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/clinic/visits/",
+      "view_name": "view",
+      "view_module": "backend.apps.clinic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 200,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/clinic/records/",
+      "view_name": "view",
+      "view_module": "backend.apps.clinic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 200,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/clinic/inventory/",
+      "view_name": "view",
+      "view_module": "backend.apps.clinic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 200,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/clinic/reports/",
+      "view_name": "view",
+      "view_module": "backend.apps.clinic.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 200,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/inventory/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/facilities/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/analytics/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 302,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/portal/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.portal.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/portal/parent/",
+      "view_name": "view",
+      "view_module": "backend.apps.portal.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 200,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/portal/student/",
+      "view_name": "view",
+      "view_module": "backend.apps.portal.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 200,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/portal/teacher/",
+      "view_name": "view",
+      "view_module": "backend.apps.portal.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 302,
+        "Teacher": 200,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    },
+    {
+      "url": "/administration/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.administration.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 302,
+        "Teacher": 302,
+        "Student": 302,
+        "Parent": 302,
+        "Finance Officer": 302,
+        "HR Admin": 302,
+        "Librarian": 302,
+        "Hostel Warden": 302,
+        "Transport Officer": 302,
+        "Clinic Nurse": 302,
+        "Exam Officer": 302
+      }
+    }
+  ],
+  "public_routes": [
+    {
+      "url": "/",
+      "view_name": "view",
+      "view_module": "django.views.generic.base",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/demo-credentials/",
+      "view_name": "view",
+      "view_module": "backend.apps.identity.views_demo",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/request-demo/",
+      "view_name": "view",
+      "view_module": "backend.apps.communication.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/request-demo/submit/",
+      "view_name": "view",
+      "view_module": "backend.apps.communication.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/docs/",
+      "view_name": "view",
+      "view_module": "backend.apps.communication.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/sessions/",
+      "view_name": "view",
+      "view_module": "backend.apps.identity.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/roles/",
+      "view_name": "view",
+      "view_module": "backend.apps.identity.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/demo-portal/",
+      "view_name": "view",
+      "view_module": "backend.apps.identity.views_demo",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/tenants/onboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.tenants.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/tenants/tenant-dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.tenants.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/people/directory/",
+      "view_name": "view",
+      "view_module": "backend.apps.people.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/people/relationships/",
+      "view_name": "view",
+      "view_module": "backend.apps.people.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/admissions/application/new/",
+      "view_name": "view",
+      "view_module": "backend.apps.admissions.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/attendance/register/",
+      "view_name": "view",
+      "view_module": "backend.apps.attendance.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/attendance/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.attendance.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/lms/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.lms.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/lms/builder/",
+      "view_name": "view",
+      "view_module": "backend.apps.lms.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/emrp/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.emrp.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/efbm/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.efbm.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/efbm/wallet-portal/",
+      "view_name": "view",
+      "view_module": "backend.apps.efbm.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/communication/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.communication.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/communication/chat-room/",
+      "view_name": "view",
+      "view_module": "backend.apps.communication.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/ess/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/manager/team/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/admin/directory/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/admin/org-chart/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/admin/onboarding/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/admin/onboarding/wizard/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/recruitment/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/leave-calendar/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/attendance/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/attendance/report/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/finance/postings/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/performance/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/training/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/disciplinary/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/rewards/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/analytics/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/notifications/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/audit/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/settings/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/import/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/bulk/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/search/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/reports/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/manual/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/user-manual/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/hr/admin/manual/",
+      "view_name": "view",
+      "view_module": "backend.apps.hr.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/library/catalog/",
+      "view_name": "view",
+      "view_module": "backend.apps.library.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/inventory/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.inventory.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/inventory/items/",
+      "view_name": "view",
+      "view_module": "backend.apps.inventory.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/workflow/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.workflow.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/workflow/inbox/",
+      "view_name": "view",
+      "view_module": "backend.apps.workflow.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/facilities/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.facilities.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/facilities/board/",
+      "view_name": "view",
+      "view_module": "backend.apps.facilities.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/analytics/dashboard/",
+      "view_name": "view",
+      "view_module": "backend.apps.analytics.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/analytics/builder/",
+      "view_name": "view",
+      "view_module": "backend.apps.analytics.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/administration/settings/",
+      "view_name": "view",
+      "view_module": "backend.apps.administration.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/ai/workspace/",
+      "view_name": "view",
+      "view_module": "backend.apps.ai.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/ai/prompts/",
+      "view_name": "view",
+      "view_module": "backend.apps.ai.views_web",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/health/",
+      "view_name": "health_overall",
+      "view_module": "backend.apps.core.health",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/health/database/",
+      "view_name": "health_database",
+      "view_module": "backend.apps.core.health",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/health/cache/",
+      "view_name": "health_cache",
+      "view_module": "backend.apps.core.health",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/health/storage/",
+      "view_name": "health_storage",
+      "view_module": "backend.apps.core.health",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    },
+    {
+      "url": "/health/ai/",
+      "view_name": "health_ai",
+      "view_module": "backend.apps.core.health",
+      "is_parameterized": false,
+      "responses": {
+        "Super Admin": 200,
+        "School Admin": 200,
+        "Teacher": 200,
+        "Student": 200,
+        "Parent": 200,
+        "Finance Officer": 200,
+        "HR Admin": 200,
+        "Librarian": 200,
+        "Hostel Warden": 200,
+        "Transport Officer": 200,
+        "Clinic Nurse": 200,
+        "Exam Officer": 200
+      }
+    }
+  ],
+  "status_500_routes": []
+}

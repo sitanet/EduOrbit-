@@ -7,17 +7,52 @@ class CEHDashboardWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-            
-        schools = School.objects.filter(tenant=getattr(request, 'tenant', None))
+
+        tenant = getattr(request, 'tenant', None)
+        schools = School.objects.filter(tenant=tenant)
         active_school = schools.first()
-        
-        announcements = Announcement.objects.filter(school=active_school, tenant=getattr(request, 'tenant', None))
+
+        announcements = Announcement.objects.filter(
+            tenant=tenant
+        ).order_by('-publish_at')
+
         context = {
             'schools': schools,
             'active_school': active_school,
-            'announcements': announcements
+            'announcements': announcements,
+            'high_priority_count': announcements.filter(priority='emergency').count(),
         }
         return render(request, 'communication/dashboard.html', context)
+
+    def post(self, request):
+        """Handle Quick Compose announcement form submission."""
+        if not request.user.is_authenticated:
+            return redirect('login_web')
+
+        tenant = getattr(request, 'tenant', None)
+        action = request.POST.get('action')
+
+        if action == 'publish_announcement':
+            title = request.POST.get('title', '').strip()
+            content = request.POST.get('content', '').strip()
+            priority = request.POST.get('priority', 'general')
+            audience = request.POST.get('audience', 'all')
+
+            schools = School.objects.filter(tenant=tenant)
+            active_school = schools.first()
+
+            if title and content and active_school:
+                Announcement.objects.create(
+                    tenant=tenant,
+                    school=active_school,
+                    title=title,
+                    content=content,
+                    priority=priority,
+                    visibility=audience,
+                )
+
+        # PRG pattern — redirect back to avoid double-submit on refresh
+        return redirect('ceh_dashboard_web')
 
 
 from django.shortcuts import render, redirect, get_object_or_404

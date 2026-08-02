@@ -110,6 +110,8 @@ class Asset(TenantBaseModel):
     purchase_cost = models.DecimalField(max_digits=12, decimal_places=2)
     current_value = models.DecimalField(max_digits=12, decimal_places=2)
     useful_life_years = models.IntegerField(default=5)
+    location = models.CharField(max_length=150, default='Main Campus')
+    status = models.CharField(max_length=30, default='active')  # active, transferred, disposed, under_maintenance
 
     def __str__(self):
         return f"{self.asset_number}: {self.name}"

@@ -11,11 +11,11 @@
         </div>
         <!-- Right: Actions -->
         <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-slate-900 dark:text-white">
+            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-sm font-semibold inline-flex items-center gap-2">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
-                <span class="hidden xs:block ml-2">Generate Report</span>
+                <span>Generate Report</span>
             </button>
         </div>
     </div>
@@ -23,17 +23,15 @@
     <!-- Cards -->
     <div class="grid grid-cols-12 gap-6 mb-8">
         <!-- Stat Cards -->
-        {% include 'components/stat_card.html' with title="Total Revenue" value="$420,500" trend="+5%" icon="currency-dollar" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Outstanding Receivables" value="$12,400" trend="-2%" icon="receipt-refund" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Expected This Month" value="$45,000" trend="+1%" icon="calendar" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Total Revenue" value=total_revenue|stringformat:".2f"|add:"$" trend="up" trend_value="+5%" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Outstanding Receivables" value=outstanding_receivables|stringformat:".2f"|add:"$" trend="down" trend_value="-2%" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+        {% include 'components/stat_card.html' with title="Expected This Month" value=expected_this_month|stringformat:".2f"|add:"$" trend="up" trend_value="+1%" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
     </div>
 
     <!-- Revenue Chart -->
-    <div class="mb-8">
+    <div class="mb-8 bg-white dark:bg-slate-700 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-6">
         <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Revenue Overview</h2>
-        <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700 p-5 h-80 flex items-center justify-center">
-            <div class="text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 italic">Revenue Chart Placeholder</div>
-        </div>
+        <div id="finance-revenue-chart" class="w-full h-80 bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 rounded"></div>
     </div>
 
     <!-- Recent Transactions Table -->
@@ -41,44 +39,70 @@
         <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Recent Transactions</h2>
         <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700">
             <div class="overflow-x-auto">
-                <table class="table-auto w-full dark:text-slate-700 dark:text-slate-300">
+                <table class="table-auto w-full dark:text-slate-750 dark:text-slate-300">
                     <!-- Table header -->
                     <thead class="text-xs uppercase text-slate-600 dark:text-slate-400 dark:text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
                         <tr>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Transaction ID</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Transaction Ref</div></th>
                             <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Date</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Description</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Student</div></th>
                             <th class="p-2 whitespace-nowrap"><div class="font-semibold text-right">Amount</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-center">Status</div></th>
+                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-center">Method</div></th>
                         </tr>
                     </thead>
                     <!-- Table body -->
                     <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
+                        {% for tx in recent_transactions %}
                         <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-indigo-500">#TXN-1001</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Oct 24, 2026</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Tuition Fee - John Doe</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-right text-emerald-500">+$1,500.00</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">Completed</span></div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left text-indigo-500 font-mono text-xs">{{ tx.reference }}</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left text-xs">{{ tx.payment_date|date:"M d, Y" }}</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-left font-semibold">{{ tx.invoice.student.person.get_full_name|default:"General Payment" }}</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-right text-emerald-500">+${{ tx.amount }}</div></td>
+                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-indigo-100 dark:bg-indigo-400/30 text-indigo-600 dark:text-indigo-400 rounded-full px-2.5 py-0.5 text-xs font-semibold">{{ tx.payment_method|upper }}</span></div></td>
                         </tr>
+                        {% empty %}
                         <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-indigo-500">#TXN-1002</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Oct 24, 2026</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Library Fine - Jane Smith</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-right text-emerald-500">+$25.00</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">Completed</span></div></td>
+                            <td colspan="5" class="p-4 text-center text-slate-500 dark:text-slate-400">
+                                <div class="text-xs">No recent transactions found.</div>
+                            </td>
                         </tr>
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-indigo-500">#TXN-1003</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Oct 23, 2026</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Stationery Supplies</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-right text-rose-500">-$350.00</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-amber-100 dark:bg-amber-400/30 text-amber-600 dark:text-amber-400 rounded-full px-2 py-0.5 text-xs">Pending</span></div></td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var options = {
+            series: [{
+                name: 'Revenue ($)',
+                data: {{ chart_data|safe|default:"[]" }}
+            }],
+            chart: {
+                height: 320,
+                type: 'bar',
+                toolbar: {
+                    show: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            colors: ['#10b981'],
+            xaxis: {
+                categories: {{ chart_labels|safe|default:"[]" }}
+            },
+            grid: {
+                borderColor: '#e2e8f0',
+                strokeDashArray: 4
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#finance-revenue-chart"), options);
+        chart.render();
+    });
+</script>
 {% endblock %}

@@ -1,0 +1,166 @@
+{% extends "base/_document.html" %}
+{% block title %}Sick Bay Management — EduOrbit School Clinic{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <!-- Page Header Banner -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-amber-950 to-slate-900 text-white p-6 rounded-2xl border border-amber-500/30 shadow-xl">
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">🛏️ Sick Bay Management</h1>
+      <p class="text-xs text-slate-300">Monitor active in-patient admissions, track ward beds, and manage discharges in real time.</p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      <a href="/clinic/consultation/" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-md">
+        🩺 Consultation Desk
+      </a>
+      <a href="/clinic/pharmacy/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">💊 Pharmacy</a>
+      <a href="/clinic/records/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">📂 Records</a>
+    </div>
+  </div>
+
+  <!-- KPI Stats -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Active Patients</span>
+        <div class="text-2xl font-black text-amber-500 mt-1">{{ active_count|default:0 }}</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">Currently Admitted</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">🛏️</div>
+    </div>
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Discharged Today</span>
+        <div class="text-2xl font-black text-emerald-500 mt-1">{{ discharged_today|default:0 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Released Today</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">✅</div>
+    </div>
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Bed Utilisation</span>
+        <div class="text-2xl font-black text-indigo-500 mt-1">
+          {% if active_count %}{{ active_count }}{% else %}0{% endif %} beds
+        </div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Occupied Now</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">📊</div>
+    </div>
+  </div>
+
+  <!-- Active Admissions Table -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-base font-bold text-slate-900 dark:text-white">🛏️ Active Sick Bay Admissions</h2>
+      <span class="text-xs text-slate-400 font-mono">{{ active_count|default:0 }} patient(s) admitted</span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Patient</th>
+            <th class="px-6 py-3">Ward</th>
+            <th class="px-6 py-3">Bed No.</th>
+            <th class="px-6 py-3">Admitted</th>
+            <th class="px-6 py-3">Duration</th>
+            <th class="px-6 py-3 text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+          {% for admission in active_admissions %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-black shrink-0">
+                  {{ admission.patient.person.first_name|first|upper }}{{ admission.patient.person.last_name|first|upper }}
+                </div>
+                <div>
+                  <div class="font-bold text-slate-900 dark:text-white">
+                    {{ admission.patient.person.first_name }} {{ admission.patient.person.last_name }}
+                  </div>
+                  <div class="text-[10px] text-slate-400 font-mono mt-0.5">In-patient</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300 font-semibold">
+              {{ admission.ward.name|default:"General Ward" }}
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2.5 py-0.5 rounded-lg text-[10px] font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono">
+                Bed {{ admission.bed_number }}
+              </span>
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400 whitespace-nowrap">
+              {{ admission.admitted_at|date:"d M Y, H:i" }}
+            </td>
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">ACTIVE</span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <button onclick="openDischargeModal('{{ admission.patient.person.first_name }} {{ admission.patient.person.last_name }}', '{{ admission.id }}')"
+                      class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition">
+                Discharge ✅
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="px-6 py-16 text-center">
+              <div class="text-4xl mb-3">🛏️</div>
+              <div class="text-sm font-semibold text-slate-500 dark:text-slate-400">No active sick bay admissions</div>
+              <div class="text-xs text-slate-400 mt-1">All beds are currently available. Admit patients via the Consultation Desk.</div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Discharge Confirmation Modal ──────────────────────────────── -->
+<div id="dischargeModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">✅ Discharge Patient</h3>
+      <button onclick="document.getElementById('dischargeModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <div class="p-6 space-y-4">
+      <p class="text-sm text-slate-600 dark:text-slate-300">
+        You are about to discharge <strong id="dischargePatientName" class="text-slate-900 dark:text-white">—</strong> from the sick bay.
+      </p>
+      <form method="POST" action="/clinic/sickbay/">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="discharge">
+        <input type="hidden" name="admission_id" id="dischargeAdmissionId" value="">
+        <div class="mb-4">
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Discharge Notes</label>
+          <textarea name="discharge_notes" rows="3" placeholder="Final clinical notes before discharge…"
+                    class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+        </div>
+        <div class="flex items-center justify-end gap-3">
+          <button type="button" onclick="document.getElementById('dischargeModal').classList.add('hidden')"
+                  class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">
+            Cancel
+          </button>
+          <button type="submit"
+                  class="px-5 py-2.5 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-md">
+            ✅ Confirm Discharge
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openDischargeModal(name, admissionId) {
+  document.getElementById('dischargePatientName').textContent = name;
+  document.getElementById('dischargeAdmissionId').value = admissionId;
+  document.getElementById('dischargeModal').classList.remove('hidden');
+}
+</script>
+{% endblock %}

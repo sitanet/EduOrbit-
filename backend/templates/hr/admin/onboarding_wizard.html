@@ -2,115 +2,184 @@
 {% load hr_permissions %}
 {% block title %}Enterprise Employee Onboarding Wizard — EduOrbit{% endblock %}
 
-{% block content %}
+{{% block content %}
+<style>
+  input[type="date"] {
+    color-scheme: light;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: none;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 4px;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  /* Crisp White Theme Form Controls */
+  #onboardingWizardApp input[type="text"],
+  #onboardingWizardApp input[type="email"],
+  #onboardingWizardApp input[type="number"],
+  #onboardingWizardApp input[type="date"],
+  #onboardingWizardApp select,
+  #onboardingWizardApp textarea {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 0.75rem !important;
+    color: #0f172a !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  #onboardingWizardApp input[type="text"]:hover,
+  #onboardingWizardApp input[type="email"]:hover,
+  #onboardingWizardApp input[type="number"]:hover,
+  #onboardingWizardApp input[type="date"]:hover,
+  #onboardingWizardApp select:hover,
+  #onboardingWizardApp textarea:hover {
+    border-color: #818cf8 !important;
+  }
+  #onboardingWizardApp input[type="text"]:focus,
+  #onboardingWizardApp input[type="email"]:focus,
+  #onboardingWizardApp input[type="number"]:focus,
+  #onboardingWizardApp input[type="date"]:focus,
+  #onboardingWizardApp select:focus,
+  #onboardingWizardApp textarea:focus {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15) !important;
+    background-color: #ffffff !important;
+    outline: none !important;
+  }
+  #onboardingWizardApp label {
+    color: #475569 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    font-size: 0.65rem !important;
+  }
+</style>
 <div class="max-w-7xl mx-auto space-y-6" id="onboardingWizardApp">
 
     <!-- Header & Auto-Save Banner -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-slate-900/90 text-white p-6 rounded-2xl border border-slate-800 shadow-xl">
-        <div>
-            <div class="flex items-center gap-2 mb-1">
-                <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-mono font-bold">WIZARD V1.1.0</span>
-                <span class="text-xs text-slate-400 font-mono" id="autoSaveIndicator">⚡ Auto-saving draft every 5s...</span>
+    <div class="relative bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-2xl border border-indigo-500/30 shadow-xl overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(99,102,241,0.15),_transparent_70%)] pointer-events-none"></div>
+        <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-5">
+            <div class="space-y-1.5">
+                <div class="flex items-center gap-2.5 mb-1">
+                    <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] font-mono font-bold tracking-wider">WIZARD V1.1.0</span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono font-semibold" id="autoSaveIndicator">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Auto-saving draft...
+                    </span>
+                </div>
+                <h1 class="text-2xl font-extrabold tracking-tight flex items-center gap-2.5 text-white">
+                    👥 Enterprise Employee Onboarding Wizard
+                </h1>
+                <p class="text-xs text-slate-300 max-w-2xl">
+                    Multi-step employee creation workflow with Dojah KYC, NUBAN resolution, and automatic payroll provisioning.
+                </p>
             </div>
-            <h1 class="text-2xl font-bold tracking-tight">Enterprise Employee Onboarding Wizard</h1>
-            <p class="text-xs text-slate-400 mt-1">Multi-step employee creation workflow with Dojah KYC, NUBAN resolution, and automatic payroll provisioning.</p>
-        </div>
-        <div class="flex items-center gap-3">
-            <button onclick="saveDraftManual()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-colors">
-                💾 Save Draft
-            </button>
-            <a href="{% url 'hr_admin_directory' %}" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl transition-colors">
-                &larr; Exit to Directory
-            </a>
+            <div class="flex items-center gap-3 shrink-0">
+                <button onclick="saveDraftManual()" class="px-4 py-2.5 bg-indigo-600/90 hover:bg-indigo-600 text-white text-xs font-bold rounded-xl transition shadow-lg shadow-indigo-600/20 border border-indigo-500/40 flex items-center gap-1.5 cursor-pointer">
+                    💾 Save Draft
+                </button>
+                <a href="{% url 'hr_admin_directory' %}" class="px-4 py-2.5 bg-slate-800/90 hover:bg-slate-800 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition flex items-center gap-1.5">
+                    &larr; Exit to Directory
+                </a>
+            </div>
         </div>
     </div>
 
     <!-- 8-Step Progress Bar -->
-    <div class="bg-slate-900 rounded-2xl p-4 border border-slate-800 overflow-x-auto">
-        <div class="flex items-center justify-between min-w-[700px] text-xs">
-            <div class="step-nav active flex items-center gap-2 cursor-pointer" onclick="goToStep(1)">
-                <span class="w-7 h-7 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow-md">1</span>
-                <span class="font-semibold text-indigo-300">Identity & Personal</span>
+    <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm overflow-x-auto">
+        <div class="flex items-center justify-between min-w-[750px] text-xs">
+            <div class="step-nav active flex items-center gap-2.5 cursor-pointer transition-all hover:opacity-90" onclick="goToStep(1)">
+                <span class="w-8 h-8 rounded-xl bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow-md ring-2 ring-indigo-500/30 ring-offset-2 ring-offset-white border border-indigo-600">1</span>
+                <span class="font-bold text-indigo-600">Identity & Personal</span>
             </div>
-            <div class="h-0.5 w-8 bg-slate-800"></div>
-            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(2)">
-                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">2</span>
-                <span class="text-slate-400">Employment</span>
+            <div class="h-0.5 w-6 bg-slate-200 rounded-full"></div>
+            <div class="step-nav flex items-center gap-2.5 cursor-pointer transition-all hover:opacity-90" onclick="goToStep(2)">
+                <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs border border-slate-200">2</span>
+                <span class="text-slate-500 font-medium">Employment</span>
             </div>
-            <div class="h-0.5 w-8 bg-slate-800"></div>
-            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(3)">
-                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">3</span>
-                <span class="text-slate-400">Bank & Tax</span>
+            <div class="h-0.5 w-6 bg-slate-200 rounded-full"></div>
+            <div class="step-nav flex items-center gap-2.5 cursor-pointer transition-all hover:opacity-90" onclick="goToStep(3)">
+                <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs border border-slate-200">3</span>
+                <span class="text-slate-500 font-medium">Bank & Tax</span>
             </div>
-            <div class="h-0.5 w-8 bg-slate-800"></div>
-            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(4)">
-                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">4</span>
-                <span class="text-slate-400">Compensation</span>
+            <div class="h-0.5 w-6 bg-slate-200 rounded-full"></div>
+            <div class="step-nav flex items-center gap-2.5 cursor-pointer transition-all hover:opacity-90" onclick="goToStep(4)">
+                <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs border border-slate-200">4</span>
+                <span class="text-slate-500 font-medium">Compensation</span>
             </div>
-            <div class="h-0.5 w-8 bg-slate-800"></div>
-            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(5)">
-                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">5</span>
-                <span class="text-slate-400">Emergency</span>
+            <div class="h-0.5 w-6 bg-slate-200 rounded-full"></div>
+            <div class="step-nav flex items-center gap-2.5 cursor-pointer transition-all hover:opacity-90" onclick="goToStep(5)">
+                <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs border border-slate-200">5</span>
+                <span class="text-slate-500 font-medium">Emergency</span>
             </div>
-            <div class="h-0.5 w-8 bg-slate-800"></div>
-            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(6)">
-                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">6</span>
-                <span class="text-slate-400">Documents</span>
+            <div class="h-0.5 w-6 bg-slate-200 rounded-full"></div>
+            <div class="step-nav flex items-center gap-2.5 cursor-pointer transition-all hover:opacity-90" onclick="goToStep(6)">
+                <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs border border-slate-200">6</span>
+                <span class="text-slate-500 font-medium">Documents</span>
             </div>
-            <div class="h-0.5 w-8 bg-slate-800"></div>
-            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(7)">
-                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">7</span>
-                <span class="text-slate-400">System Access</span>
+            <div class="h-0.5 w-6 bg-slate-200 rounded-full"></div>
+            <div class="step-nav flex items-center gap-2.5 cursor-pointer transition-all hover:opacity-90" onclick="goToStep(7)">
+                <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs border border-slate-200">7</span>
+                <span class="text-slate-500 font-medium">Access</span>
             </div>
-            <div class="h-0.5 w-8 bg-slate-800"></div>
-            <div class="step-nav flex items-center gap-2 cursor-pointer" onclick="goToStep(8)">
-                <span class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">8</span>
-                <span class="text-slate-400">Review</span>
+            <div class="h-0.5 w-6 bg-slate-200 rounded-full"></div>
+            <div class="step-nav flex items-center gap-2.5 cursor-pointer transition-all hover:opacity-90" onclick="goToStep(8)">
+                <span class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs border border-slate-200">8</span>
+                <span class="text-slate-500 font-medium">Review</span>
             </div>
         </div>
     </div>
 
     <!-- Step Forms Container -->
-    <div class="bg-slate-900 rounded-2xl p-6 border border-slate-800 text-slate-100 shadow-2xl">
+    <div class="bg-white rounded-3xl p-8 border border-slate-200 text-slate-900 shadow-xl relative overflow-hidden">
         
         <!-- STEP 1: Personal & Dojah Identity -->
         <div id="step-1" class="wizard-step space-y-6">
-            <div class="border-b border-slate-800 pb-3 flex justify-between items-center">
+            <div class="border-b border-slate-200 pb-3 flex justify-between items-center">
                 <div>
-                    <h3 class="text-lg font-bold text-white">Step 1: Personal Information & Dojah Identity Verification</h3>
-                    <p class="text-xs text-slate-400">Collect demographics and perform real-time NIN and BVN identity checks.</p>
+                    <h3 class="text-lg font-bold text-slate-900">Step 1: Personal Information & Dojah Identity Verification</h3>
+                    <p class="text-xs text-slate-500">Collect demographics and perform real-time NIN and BVN identity checks.</p>
                 </div>
-                <span class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 text-xs font-mono">Dojah API Ready</span>
+                <span class="px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 text-xs font-mono font-bold border border-indigo-200">Dojah API Ready</span>
             </div>
 
             <!-- Demographics Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                 <div>
-                    <label class="block font-semibold text-slate-300 mb-1">First Name *</label>
-                    <input type="text" id="firstNameInput" value="Natasha" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                    <label class="block font-semibold text-slate-600 mb-1">First Name *</label>
+                    <input type="text" id="firstNameInput" placeholder="e.g. John" required class="w-full px-3.5 py-2.5">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Middle Name</label>
-                    <input type="text" id="middleNameInput" value="Alianovna" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                    <label class="block font-semibold text-slate-600 mb-1">Middle Name</label>
+                    <input type="text" id="middleNameInput" placeholder="e.g. Chinedu" class="w-full px-3.5 py-2.5">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Last Name *</label>
-                    <input type="text" id="lastNameInput" value="Romanoff" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                    <label class="block font-semibold text-slate-600 mb-1">Last Name *</label>
+                    <input type="text" id="lastNameInput" placeholder="e.g. Okonkwo" required class="w-full px-3.5 py-2.5">
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Date of Birth *</label>
-                    <input type="date" id="dobInput" value="1992-06-15" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                    <label class="block font-semibold text-slate-600 mb-1">Date of Birth *</label>
+                    <div class="relative flex items-center">
+                        <input type="date" id="dobInput" onclick="this.showPicker && this.showPicker()" class="w-full px-3.5 py-2.5 pr-10 cursor-pointer">
+                        <button type="button" onclick="document.getElementById('dobInput').showPicker && document.getElementById('dobInput').showPicker()" class="absolute right-2.5 text-slate-400 hover:text-slate-700 transition cursor-pointer" title="Open Calendar Date Picker">
+                            📅
+                        </button>
+                    </div>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Gender *</label>
-                    <select id="genderInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
-                        <option value="female" selected>Female</option>
+                    <label class="block font-semibold text-slate-600 mb-1">Gender *</label>
+                    <select id="genderInput" class="w-full px-3.5 py-2.5">
+                        <option value="">-- Select Gender --</option>
                         <option value="male">Male</option>
+                        <option value="female">Female</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-300 mb-1">Marital Status</label>
-                    <select id="maritalStatusInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                    <label class="block font-semibold text-slate-600 mb-1">Marital Status</label>
+                    <select id="maritalStatusInput" class="w-full px-3.5 py-2.5">
                         <option value="single">Single</option>
                         <option value="married">Married</option>
                     </select>
@@ -121,106 +190,855 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                 
                 <!-- NIN Verification Card -->
-                <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 shadow-sm">
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-xs text-white">National Identity Number (NIN)</span>
-                        <span id="ninBadge" class="px-2 py-0.5 text-[10px] rounded bg-amber-500/20 text-amber-300 font-mono">Pending Verification</span>
+                        <span class="font-bold text-xs text-slate-900">National Identity Number (NIN)</span>
+                        <span id="ninBadge" class="px-2.5 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-800 font-mono font-bold border border-amber-200">Pending Verification</span>
                     </div>
                     <div class="flex gap-2">
-                        <input type="text" id="ninInput" value="12345678901" maxlength="11" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-indigo-300">
-                        <button onclick="triggerNINVerify()" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shrink-0 cursor-pointer">
+                        <input type="text" id="ninInput" placeholder="Enter 11-digit NIN" maxlength="11" class="w-full px-3.5 py-2.5 text-xs font-mono text-indigo-700">
+                        <button onclick="triggerNINVerify()" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shrink-0 cursor-pointer shadow-sm">
                             ⚡ Verify NIN
                         </button>
                     </div>
-                    <div id="ninResultCard" class="hidden p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs text-slate-200 space-y-1">
-                        <div class="font-bold text-emerald-400 flex items-center gap-1">✅ Identity Verified (Dojah API)</div>
-                        <div class="text-[11px] text-slate-300">Match Name: Natasha Romanoff | DOB: 1992-06-15</div>
-                        <div class="text-[10px] text-slate-400 font-mono">Verified At: 2026-07-27 14:15:00</div>
+                    <div id="ninResultCard" class="hidden p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-slate-800 space-y-1">
+                        <div class="font-bold text-emerald-700 flex items-center gap-1">✅ Identity Verified (Dojah API)</div>
+                        <div class="text-[11px] text-slate-700">Match Name: <span id="ninMatchName"></span> | DOB: <span id="ninMatchDOB"></span></div>
+                        <div class="text-[10px] text-slate-500 font-mono">Verified At: <span id="ninVerifiedAt"></span></div>
                     </div>
                 </div>
 
                 <!-- BVN Verification Card -->
-                <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 shadow-sm">
                     <div class="flex justify-between items-center">
-                        <span class="font-bold text-xs text-white">Bank Verification Number (BVN)</span>
-                        <span id="bvnBadge" class="px-2 py-0.5 text-[10px] rounded bg-amber-500/20 text-amber-300 font-mono">Pending Verification</span>
+                        <span class="font-bold text-xs text-slate-900">Bank Verification Number (BVN)</span>
+                        <span id="bvnBadge" class="px-2.5 py-0.5 text-[10px] rounded-full bg-amber-100 text-amber-800 font-mono font-bold border border-amber-200">Pending Verification</span>
                     </div>
                     <div class="flex gap-2">
-                        <input type="text" id="bvnInput" value="22345678901" maxlength="11" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-indigo-300">
-                        <button onclick="triggerBVNVerify()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shrink-0 cursor-pointer">
+                        <input type="text" id="bvnInput" placeholder="Enter 11-digit BVN" maxlength="11" class="w-full px-3.5 py-2.5 text-xs font-mono text-indigo-700">
+                        <button onclick="triggerBVNVerify()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs shrink-0 cursor-pointer shadow-sm">
                             ⚡ Verify BVN
                         </button>
                     </div>
-                    <div id="bvnResultCard" class="hidden p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs text-slate-200 space-y-1">
-                        <div class="font-bold text-emerald-400 flex items-center gap-1">✅ BVN Verified (Dojah API)</div>
-                        <div class="text-[11px] text-slate-300">Match Name: Natasha Romanoff</div>
+                    <div id="bvnResultCard" class="hidden p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-slate-800 space-y-1">
+                        <div class="font-bold text-emerald-700 flex items-center gap-1">✅ BVN Verified (Dojah API)</div>
+                        <div class="text-[11px] text-slate-700">Match Name: <span id="bvnMatchName"></span></div>
+                        <div class="text-[10px] text-slate-500 font-mono">Verified At: <span id="bvnVerifiedAt"></span></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Official Employee Passport Photograph Container (Phase 12.4.4A MVP) -->
+            <div id="employeePhotoContainer" class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 mt-4 shadow-sm">
+                <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                    <span class="font-bold text-xs text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                        📷 Official Employee Photograph
+                    </span>
+                    <span id="photoBadge" class="px-2.5 py-0.5 text-[10px] rounded-full bg-slate-200 text-slate-700 font-mono font-semibold">No Photo Captured</span>
+                </div>
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <div class="w-28 h-32 rounded-xl bg-white border-2 border-dashed border-slate-300 flex flex-col items-center justify-center overflow-hidden shrink-0 relative group">
+                        <img id="employeePhotoPreview" class="w-full h-full object-cover hidden" alt="Passport Photo">
+                        <div id="photoPlaceholder" class="text-center p-2">
+                            <span class="text-2xl">👤</span>
+                            <p class="text-[10px] text-slate-500 mt-1">Passport Photo</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 flex-1 text-xs">
+                        <div class="text-slate-700">
+                            <strong>Source:</strong> <span id="photoSourceText" class="font-mono text-indigo-700">Pending Verification / Upload</span>
+                        </div>
+                        <div class="text-slate-500 text-[11px]">
+                            <strong>Verified At:</strong> <span id="photoVerifiedAtText">N/A</span>
+                        </div>
+                        <div class="text-slate-500 text-[11px]">
+                            <strong>Reference ID:</strong> <span id="photoRefText" class="font-mono">N/A</span>
+                        </div>
+                        <div class="pt-1 flex items-center gap-2">
+                            <input type="file" id="replacePhotoInput" accept="image/jpeg,image/png,image/jpg" class="hidden" onchange="handleWizardPhotoSelect(event)">
+                            <button type="button" onclick="document.getElementById('replacePhotoInput').click()" class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition cursor-pointer flex items-center gap-1 shadow-sm">
+                                🔄 Replace Photo
+                            </button>
+                            <span class="text-[10px] text-slate-500">Max size: 2 MB (JPG, PNG)</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- STEP 2: Employment Details -->
+        <div id="step-2" class="wizard-step space-y-6" style="display: none;">
+            <div class="border-b border-slate-200 pb-3 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Step 2: Employment Details</h3>
+                    <p class="text-xs text-slate-500">Define job position, organizational assignment, and employment terms.</p>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 text-xs font-mono font-bold border border-indigo-200">Auto-Generated Fields</span>
+            </div>
+
+            <!-- Auto-Generated Identifiers -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Employee Number *</label>
+                    <input type="text" id="employeeNumberInput" readonly class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-emerald-300 font-mono cursor-not-allowed" placeholder="Auto-generated on submit">
+                    <p class="text-[10px] text-slate-500 mt-0.5">System will auto-generate on submission</p>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Staff ID</label>
+                    <input type="text" id="staffIdInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" placeholder="Optional custom ID">
+                    <p class="text-[10px] text-slate-500 mt-0.5">Optional: Custom identifier</p>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Date Employed *</label>
+                    <div class="relative flex items-center">
+                        <input type="date" id="dateEmployedInput" required onclick="this.showPicker && this.showPicker()" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white pr-10 cursor-pointer">
+                        <button type="button" onclick="document.getElementById('dateEmployedInput').showPicker && document.getElementById('dateEmployedInput').showPicker()" class="absolute right-2.5 text-slate-400 hover:text-white transition cursor-pointer" title="Open Calendar Date Picker">
+                            📅
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job & Organization -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Job Title *</label>
+                    <input type="text" id="jobTitleInput" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" placeholder="e.g. Senior Teacher">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Department *</label>
+                    <select id="departmentInput" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                        <option value="">Select Department</option>
+                        <option value="Academics">Academics</option>
+                        <option value="Administration">Administration</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="ICT">ICT</option>
+                        <option value="Operations">Operations</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Student Affairs">Student Affairs</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Position *</label>
+                    <select id="positionInput" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                        <option value="">Select Position</option>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Senior Teacher">Senior Teacher</option>
+                        <option value="Head of Department">Head of Department</option>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Accountant">Accountant</option>
+                        <option value="HR Officer">HR Officer</option>
+                        <option value="IT Support">IT Support</option>
+                        <option value="Manager">Manager</option>
+                        <option value="Director">Director</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Employment Terms -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Employment Type *</label>
+                    <select id="employmentTypeInput" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                        <option value="full_time">Full-Time</option>
+                        <option value="part_time">Part-Time</option>
+                        <option value="contract">Contract</option>
+                        <option value="temporary">Temporary</option>
+                        <option value="intern">Intern</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Employment Status *</label>
+                    <select id="employmentStatusInput" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                        <option value="active">Active</option>
+                        <option value="probation">Probation</option>
+                        <option value="suspended">Suspended</option>
+                        <option value="terminated">Terminated</option>
+                        <option value="resigned">Resigned</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Confirmation Status *</label>
+                    <select id="confirmationStatusInput" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                        <option value="probation" selected>Probation</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="extended_probation">Extended Probation</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Probation & Confirmation -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Probation Start Date</label>
+                    <div class="relative flex items-center">
+                        <input type="date" id="probationStartInput" onclick="this.showPicker && this.showPicker()" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white pr-10 cursor-pointer">
+                        <button type="button" onclick="document.getElementById('probationStartInput').showPicker && document.getElementById('probationStartInput').showPicker()" class="absolute right-2.5 text-slate-400 hover:text-white transition cursor-pointer" title="Open Calendar Date Picker">
+                            📅
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Probation End Date</label>
+                    <div class="relative flex items-center">
+                        <input type="date" id="probationEndInput" onclick="this.showPicker && this.showPicker()" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white pr-10 cursor-pointer">
+                        <button type="button" onclick="document.getElementById('probationEndInput').showPicker && document.getElementById('probationEndInput').showPicker()" class="absolute right-2.5 text-slate-400 hover:text-white transition cursor-pointer" title="Open Calendar Date Picker">
+                            📅
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Confirmation Date</label>
+                    <div class="relative flex items-center">
+                        <input type="date" id="confirmationDateInput" onclick="this.showPicker && this.showPicker()" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white pr-10 cursor-pointer">
+                        <button type="button" onclick="document.getElementById('confirmationDateInput').showPicker && document.getElementById('confirmationDateInput').showPicker()" class="absolute right-2.5 text-slate-400 hover:text-white transition cursor-pointer" title="Open Calendar Date Picker">
+                            📅
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch & Location -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Branch / Campus *</label>
+                    <select id="campusInput" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white">
+                        <option value="Main Campus" selected>Main Campus</option>
+                        <option value="Secondary Branch">Secondary Branch</option>
+                        <option value="Nursery Branch">Nursery Branch</option>
+                        <option value="Head Office">Head Office</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Work Location *</label>
+                    <input type="text" id="workLocationInput" required class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" placeholder="e.g. Building A, Room 201">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Reporting Manager</label>
+                    <input type="text" id="reportingManagerInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" placeholder="Manager Name (optional)">
+                    <p class="text-[10px] text-slate-500 mt-0.5">Optional: Direct supervisor</p>
+                </div>
+            </div>
+
+            <!-- Cost Centre & Org Structure -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Cost Centre</label>
+                    <input type="text" id="costCentreInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white font-mono" placeholder="e.g. CC-101-ACADEMICS">
+                    <p class="text-[10px] text-slate-500 mt-0.5">Accounting cost allocation code</p>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Division</label>
+                    <input type="text" id="divisionInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" placeholder="Optional: Division name">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-300 mb-1">Unit</label>
+                    <input type="text" id="unitInput" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-lg text-white" placeholder="Optional: Unit/Team name">
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: Bank & Statutory Information -->
+        <div id="step-3" class="wizard-step space-y-6" style="display: none;">
+            <div class="border-b border-slate-200 pb-3 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Step 3: Bank & Statutory Information</h3>
+                    <p class="text-xs text-slate-500">Banking details, Tax ID, Pension, and Nigerian statutory compliance information.</p>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-indigo-50 text-indigo-700 text-xs font-mono font-bold border border-indigo-200">Nigerian Compliance</span>
+            </div>
+
+            <!-- Banking Information -->
+            <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3 shadow-sm">
+                <h4 class="text-sm font-bold text-slate-900 mb-3">Banking Information</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Bank Name *</label>
+                        <select id="bankNameInput" required class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white">
+                            <option value="">Select Bank</option>
+                            <option value="Access Bank">Access Bank</option>
+                            <option value="Citibank Nigeria">Citibank Nigeria</option>
+                            <option value="Ecobank Nigeria">Ecobank Nigeria</option>
+                            <option value="Fidelity Bank">Fidelity Bank</option>
+                            <option value="First Bank of Nigeria">First Bank of Nigeria</option>
+                            <option value="First City Monument Bank">First City Monument Bank (FCMB)</option>
+                            <option value="Guaranty Trust Bank">Guaranty Trust Bank (GTBank)</option>
+                            <option value="Heritage Bank">Heritage Bank</option>
+                            <option value="Keystone Bank">Keystone Bank</option>
+                            <option value="Polaris Bank">Polaris Bank</option>
+                            <option value="Providus Bank">Providus Bank</option>
+                            <option value="Stanbic IBTC Bank">Stanbic IBTC Bank</option>
+                            <option value="Standard Chartered Bank">Standard Chartered Bank</option>
+                            <option value="Sterling Bank">Sterling Bank</option>
+                            <option value="Union Bank of Nigeria">Union Bank of Nigeria</option>
+                            <option value="United Bank for Africa">United Bank for Africa (UBA)</option>
+                            <option value="Unity Bank">Unity Bank</option>
+                            <option value="Wema Bank">Wema Bank</option>
+                            <option value="Zenith Bank">Zenith Bank</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Account Number *</label>
+                        <input type="text" id="accountNumberInput" required maxlength="10" pattern="[0-9]{10}" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white font-mono" placeholder="10 digits">
+                        <p class="text-[10px] text-slate-500 mt-0.5">NUBAN: 10-digit account number</p>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Account Name *</label>
+                        <input type="text" id="accountNameInput" required class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white" placeholder="As registered with bank">
+                        <p class="text-[10px] text-slate-500 mt-0.5">Must match bank records</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statutory & Tax Information -->
+            <div class="bg-slate-950 rounded-xl p-4 border border-slate-800">
+                <h4 class="text-sm font-bold text-white mb-3">Tax & National Identification</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Bank Verification Number (BVN) *</label>
+                        <input type="text" id="bvnStep3Input" readonly class="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-emerald-300 font-mono cursor-not-allowed" placeholder="Auto-filled from Step 1">
+                        <p class="text-[10px] text-slate-500 mt-0.5">Pre-filled from Step 1 verification</p>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Tax Identification Number (TIN) *</label>
+                        <input type="text" id="taxIdInput" required maxlength="14" pattern="[0-9]{10,14}" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white font-mono" placeholder="10-14 digits">
+                        <p class="text-[10px] text-slate-500 mt-0.5">FIRS Tax ID (10-14 digits)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pension & Retirement -->
+            <div class="bg-slate-950 rounded-xl p-4 border border-slate-800">
+                <h4 class="text-sm font-bold text-white mb-3">Pension & Retirement</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Pension Fund Administrator (PFA) *</label>
+                        <select id="pfaNameInput" required class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white">
+                            <option value="">Select PFA</option>
+                            <option value="ARM Pension Managers">ARM Pension Managers (PFA) Limited</option>
+                            <option value="Crusader Sterling Pensions">Crusader Sterling Pensions Limited</option>
+                            <option value="FCMB Pensions">FCMB Pensions Limited</option>
+                            <option value="Fidelity Pension Managers">Fidelity Pension Managers</option>
+                            <option value="First Guarantee Pension">First Guarantee Pension Limited</option>
+                            <option value="IEI-Anchor Pension">IEI-Anchor Pension Managers Limited</option>
+                            <option value="Investment One Pension">Investment One Pension Managers Limited</option>
+                            <option value="Leadway Pensure">Leadway Pensure PFA Limited</option>
+                            <option value="NLPC Pension">NLPC Pension Fund Administrators Limited</option>
+                            <option value="NPF Pensions">NPF Pensions Limited</option>
+                            <option value="OAK Pensions">OAK Pensions Limited</option>
+                            <option value="Pensions Alliance">Pensions Alliance Limited</option>
+                            <option value="Premium Pension">Premium Pension Limited</option>
+                            <option value="Radix Pension Managers">Radix Pension Managers Limited</option>
+                            <option value="Sigma Pensions">Sigma Pensions Limited</option>
+                            <option value="Stanbic IBTC Pension">Stanbic IBTC Pension Managers Limited</option>
+                            <option value="Trustfund Pensions">Trustfund Pensions Limited</option>
+                            <option value="Veritas Glanvills Pensions">Veritas Glanvills Pensions Limited</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Pension PIN (RSA PIN) *</label>
+                        <input type="text" id="pensionNumberInput" required maxlength="20" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white font-mono" placeholder="PEN/xxxxx/xxxx">
+                        <p class="text-[10px] text-slate-500 mt-0.5">Retirement Savings Account PIN</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nigerian Statutory Contributions -->
+            <div class="bg-slate-950 rounded-xl p-4 border border-slate-800">
+                <h4 class="text-sm font-bold text-white mb-3">Nigerian Statutory Contributions</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">National Housing Fund (NHF) Number</label>
+                        <input type="text" id="nhfNumberInput" maxlength="20" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white font-mono" placeholder="Optional">
+                        <p class="text-[10px] text-slate-500 mt-0.5">FMBN Housing contribution ID</p>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">NHIS Number</label>
+                        <input type="text" id="nhisNumberInput" maxlength="20" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white font-mono" placeholder="Optional">
+                        <p class="text-[10px] text-slate-500 mt-0.5">National Health Insurance ID</p>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">NSITF Number</label>
+                        <input type="text" id="nsitfNumberInput" maxlength="20" class="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-white font-mono" placeholder="Optional">
+                        <p class="text-[10px] text-slate-500 mt-0.5">Employee Compensation Scheme ID</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 8: Review & Submit -->
+        <div id="step-8" class="wizard-step space-y-6" style="display: none;">
+            <div class="border-b border-slate-200 pb-3 flex justify-between items-center">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Step 8: Review & Submit Employee Onboarding</h3>
+                    <p class="text-xs text-slate-500">Review all captured data and submit to create the employee record.</p>
+                </div>
+                <span class="px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 text-xs font-mono font-bold border border-emerald-300">Final Submission</span>
+            </div>
+
+            <!-- Success Message (Hidden by default) -->
+            <div id="submissionSuccess" class="hidden p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+                <div class="flex items-center gap-2 text-emerald-400 font-bold">
+                    <span class="text-xl">✅</span>
+                    <span>Employee Onboarding Completed Successfully!</span>
+                </div>
+                <div id="successDetails" class="text-xs text-slate-300 space-y-1 pl-7"></div>
+                <div class="flex gap-3 pt-2 pl-7">
+                    <a href="/hr/admin/directory/" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg">
+                        View Employee Directory
+                    </a>
+                    <button onclick="location.reload()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-xs font-semibold rounded-lg">
+                        Create Another Employee
+                    </button>
+                </div>
+            </div>
+
+            <!-- Error Message (Hidden by default) -->
+            <div id="submissionError" class="hidden p-4 rounded-xl bg-red-500/10 border border-red-500/30 space-y-2">
+                <div class="flex items-center gap-2 text-red-400 font-bold">
+                    <span class="text-xl">❌</span>
+                    <span>Submission Failed</span>
+                </div>
+                <div id="errorDetails" class="text-xs text-slate-300 pl-7"></div>
+            </div>
+
+            <!-- Review Summary -->
+            <div class="space-y-4">
+                <!-- Personal Information Summary -->
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800">
+                    <h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center font-bold">1</span>
+                        Personal Information & Identity
+                    </h4>
+                    <div id="reviewPersonal" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-300"></div>
+                </div>
+
+                <!-- Employment Details Summary -->
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800">
+                    <h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center font-bold">2</span>
+                        Employment Details
+                    </h4>
+                    <div id="reviewEmployment" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-300"></div>
+                </div>
+
+                <!-- Banking & Statutory Summary -->
+                <div class="bg-slate-950 rounded-xl p-4 border border-slate-800">
+                    <h4 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-[10px] flex items-center justify-center font-bold">3</span>
+                        Banking & Statutory Information
+                    </h4>
+                    <div id="reviewBanking" class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-slate-300"></div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-center pt-6">
+                <button onclick="submitOnboarding()" id="submitOnboardingBtn" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl shadow-lg cursor-pointer flex items-center gap-2">
+                    <span>🚀</span>
+                    <span>Submit & Create Employee</span>
+                </button>
+            </div>
+
+            <!-- Submission Progress Indicator -->
+            <div id="submissionProgress" class="hidden flex flex-col items-center gap-3 py-6">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-500"></div>
+                <p class="text-xs text-slate-400 font-mono">Creating employee record...</p>
+            </div>
+        </div>
+
         <!-- Navigation Buttons -->
-        <div class="flex justify-between items-center pt-6 border-t border-slate-800">
-            <button onclick="prevStep()" id="prevStepBtn" disabled class="px-4 py-2 bg-slate-800 text-slate-400 text-xs font-semibold rounded-xl disabled:opacity-50 cursor-pointer">
+        <div class="flex justify-between items-center pt-6 border-t border-slate-200">
+            <button onclick="prevStep()" id="prevStepBtn" disabled class="px-5 py-2.5 bg-slate-100 border border-slate-300 text-slate-700 text-xs font-bold rounded-xl disabled:opacity-40 cursor-pointer shadow-sm">
                 &larr; Previous Step
             </button>
-            <button onclick="nextStep()" id="nextStepBtn" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg cursor-pointer">
+            <button onclick="nextStep()" id="nextStepBtn" class="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md cursor-pointer">
                 Next Step &rarr;
             </button>
         </div>
+
     </div>
 </div>
 
 <script>
+    // ===================================================================
+    // EDUORBIT HR ONBOARDING WIZARD - NAVIGATION FRAMEWORK V1.1.0
+    // Phase 12.4.1: Complete Navigation System
+    // ===================================================================
+    
+    // State Management
     let currentStep = 1;
     let draftId = null;
+    let globalDraftId = null; // Sync alias for compatibility
+    let totalSteps = 8;
+    let stepValidationState = {}; // Track validation status per step
+    
+    // Field-level error helpers
+    function clearFieldErrors(stepContainer) {
+        if (!stepContainer) return;
+        stepContainer.querySelectorAll('.border-red-500').forEach(el => {
+            el.classList.remove('border-red-500');
+            el.classList.add('border-slate-800');
+        });
+        stepContainer.querySelectorAll('.field-error-msg').forEach(el => el.remove());
+    }
 
-    function triggerNINVerify() {
-        const nin = document.getElementById('ninInput').value;
-        fetch('/hr/api/v1/kyc/verify-nin/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({nin: nin})
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.is_verified) {
-                document.getElementById('ninBadge').className = 'px-2 py-0.5 text-[10px] rounded bg-emerald-500/20 text-emerald-300 font-mono';
-                document.getElementById('ninBadge').innerText = '✅ Verified';
-                document.getElementById('ninResultCard').classList.remove('hidden');
+    function showFieldError(elementId, message) {
+        const inputEl = document.getElementById(elementId);
+        if (!inputEl) return;
+        inputEl.classList.remove('border-slate-800', 'border-slate-700');
+        inputEl.classList.add('border-red-500');
+        
+        let msgEl = inputEl.parentNode.querySelector('.field-error-msg');
+        if (!msgEl) {
+            msgEl = document.createElement('p');
+            msgEl.className = 'field-error-msg text-[10px] text-red-400 font-semibold mt-1';
+            inputEl.parentNode.appendChild(msgEl);
+        }
+        msgEl.innerText = message;
+    }
+
+    // ===================================================================
+    // 1. CORE NAVIGATION: showStep(stepNumber)
+    // ===================================================================
+    function showStep(stepNumber) {
+        // Hide all wizard steps
+        const allSteps = document.querySelectorAll('.wizard-step');
+        allSteps.forEach(step => {
+            step.style.display = 'none';
+        });
+        
+        // Show target step
+        const targetStep = document.getElementById(`step-${stepNumber}`);
+        if (targetStep) {
+            targetStep.style.display = 'block';
+            
+            // Step 3 specific: Auto-fill BVN from Step 1
+            if (stepNumber === 3) {
+                populateStep3BVN();
+            }
+            
+            // Smooth scroll to top of step container
+            const container = document.getElementById('onboardingWizardApp');
+            if (container) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // Focus first input in the step for accessibility
+            setTimeout(() => {
+                const firstInput = targetStep.querySelector('input:not([type="hidden"]):not([readonly]), select, textarea');
+                if (firstInput && !firstInput.disabled) {
+                    firstInput.focus();
+                }
+            }, 300);
+        }
+        
+        // Update current step tracker
+        currentStep = stepNumber;
+        
+        // Update progress bar
+        updateProgress();
+        
+        // Update navigation buttons
+        updateNavigationButtons();
+    }
+    
+    // ===================================================================
+    // 2. PROGRESS BAR: updateProgress()
+    // ===================================================================
+    function updateProgress() {
+        const stepNavs = document.querySelectorAll('.step-nav');
+        
+        stepNavs.forEach((nav, index) => {
+            const stepNum = index + 1;
+            const circle = nav.querySelector('span:first-child');
+            const label = nav.querySelector('span:last-child');
+            
+            if (stepNum < currentStep) {
+                // Completed steps
+                nav.classList.remove('active');
+                circle.className = 'w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 font-bold flex items-center justify-center text-xs shadow-sm border border-emerald-300';
+                circle.innerHTML = '✓';
+                label.className = 'font-bold text-emerald-700';
+            } else if (stepNum === currentStep) {
+                // Current active step
+                nav.classList.add('active');
+                circle.className = 'w-8 h-8 rounded-xl bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow-md ring-2 ring-indigo-500/30 ring-offset-2 ring-offset-white border border-indigo-600';
+                circle.innerHTML = stepNum;
+                label.className = 'font-bold text-indigo-600';
+            } else {
+                // Future steps
+                nav.classList.remove('active');
+                circle.className = 'w-8 h-8 rounded-xl bg-slate-100 text-slate-500 font-bold flex items-center justify-center text-xs border border-slate-200';
+                circle.innerHTML = stepNum;
+                label.className = 'text-slate-500 font-medium';
             }
         });
     }
-
-    function triggerBVNVerify() {
-        const bvn = document.getElementById('bvnInput').value;
-        fetch('/hr/api/v1/kyc/verify-bvn/', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({bvn: bvn})
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.is_verified) {
-                document.getElementById('bvnBadge').className = 'px-2 py-0.5 text-[10px] rounded bg-emerald-500/20 text-emerald-300 font-mono';
-                document.getElementById('bvnBadge').innerText = '✅ Verified';
-                document.getElementById('bvnResultCard').classList.remove('hidden');
+    
+    // ===================================================================
+    // 3. NAVIGATION BUTTONS: updateNavigationButtons()
+    // ===================================================================
+    function updateNavigationButtons() {
+        const prevBtn = document.getElementById('prevStepBtn');
+        const nextBtn = document.getElementById('nextStepBtn');
+        
+        // Previous button: disable on step 1
+        if (prevBtn) {
+            if (currentStep === 1) {
+                prevBtn.disabled = true;
+                prevBtn.className = 'px-4 py-2 bg-slate-800 text-slate-400 text-xs font-semibold rounded-xl opacity-50 cursor-not-allowed';
+            } else {
+                prevBtn.disabled = false;
+                prevBtn.className = 'px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition-colors cursor-pointer';
             }
-        });
+        }
+        
+        // Next button: change text based on step, hide on Step 8
+        if (nextBtn) {
+            if (currentStep === 8) {
+                // Hide next button on Step 8 (Review & Submit has its own button)
+                nextBtn.style.display = 'none';
+            } else if (currentStep === 3) {
+                // Change to "Skip to Review" from Step 3
+                nextBtn.innerHTML = 'Proceed to Review & Submit &rarr;';
+                nextBtn.className = 'px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-lg cursor-pointer';
+                nextBtn.style.display = 'block';
+            } else {
+                nextBtn.innerHTML = 'Next Step &rarr;';
+                nextBtn.className = 'px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-lg cursor-pointer';
+                nextBtn.style.display = 'block';
+            }
+        }
     }
+    
+    // ===================================================================
+    // 4. STEP VALIDATION: validateStep(stepNumber)
+    // ===================================================================
+    function validateStep(stepNumber) {
+        const stepContainer = document.getElementById(`step-${stepNumber}`);
+        clearFieldErrors(stepContainer);
+        let isValid = true;
+        let firstErrorInput = null;
 
+        // Validate Step 1: Personal Information
+        if (stepNumber === 1) {
+            const firstName = document.getElementById('firstNameInput');
+            const lastName = document.getElementById('lastNameInput');
+            const dob = document.getElementById('dobInput');
+            const gender = document.getElementById('genderInput');
+
+            if (!firstName?.value.trim()) { showFieldError('firstNameInput', 'First Name is required'); isValid = false; if (!firstErrorInput) firstErrorInput = firstName; }
+            if (!lastName?.value.trim()) { showFieldError('lastNameInput', 'Last Name is required'); isValid = false; if (!firstErrorInput) firstErrorInput = lastName; }
+            if (!dob?.value) { showFieldError('dobInput', 'Date of Birth is required'); isValid = false; if (!firstErrorInput) firstErrorInput = dob; }
+            if (!gender?.value) { showFieldError('genderInput', 'Gender selection is required'); isValid = false; if (!firstErrorInput) firstErrorInput = gender; }
+
+            if (!isValid) {
+                if (firstErrorInput) firstErrorInput.focus();
+                return false;
+            }
+            stepValidationState[stepNumber] = true;
+            return true;
+        }
+        
+        // Validate Step 2: Employment Details
+        if (stepNumber === 2) {
+            const dateEmployed = document.getElementById('dateEmployedInput');
+            const jobTitle = document.getElementById('jobTitleInput');
+            const department = document.getElementById('departmentInput');
+            const position = document.getElementById('positionInput');
+            const employmentType = document.getElementById('employmentTypeInput');
+            const employmentStatus = document.getElementById('employmentStatusInput');
+            const confirmationStatus = document.getElementById('confirmationStatusInput');
+            const campus = document.getElementById('campusInput');
+            const workLocation = document.getElementById('workLocationInput');
+
+            if (!dateEmployed?.value) { showFieldError('dateEmployedInput', 'Date Employed is required'); isValid = false; if (!firstErrorInput) firstErrorInput = dateEmployed; }
+            if (!jobTitle?.value.trim()) { showFieldError('jobTitleInput', 'Job Title is required'); isValid = false; if (!firstErrorInput) firstErrorInput = jobTitle; }
+            if (!department?.value) { showFieldError('departmentInput', 'Department selection is required'); isValid = false; if (!firstErrorInput) firstErrorInput = department; }
+            if (!position?.value) { showFieldError('positionInput', 'Position selection is required'); isValid = false; if (!firstErrorInput) firstErrorInput = position; }
+            if (!employmentType?.value) { showFieldError('employmentTypeInput', 'Employment Type is required'); isValid = false; if (!firstErrorInput) firstErrorInput = employmentType; }
+            if (!employmentStatus?.value) { showFieldError('employmentStatusInput', 'Employment Status is required'); isValid = false; if (!firstErrorInput) firstErrorInput = employmentStatus; }
+            if (!confirmationStatus?.value) { showFieldError('confirmationStatusInput', 'Confirmation Status is required'); isValid = false; if (!firstErrorInput) firstErrorInput = confirmationStatus; }
+            if (!campus?.value) { showFieldError('campusInput', 'Campus is required'); isValid = false; if (!firstErrorInput) firstErrorInput = campus; }
+            if (!workLocation?.value.trim()) { showFieldError('workLocationInput', 'Work Location is required'); isValid = false; if (!firstErrorInput) firstErrorInput = workLocation; }
+
+            if (!isValid) {
+                if (firstErrorInput) firstErrorInput.focus();
+                return false;
+            }
+            stepValidationState[stepNumber] = true;
+            return true;
+        }
+        
+        // Validate Step 3: Bank & Statutory Information
+        if (stepNumber === 3) {
+            const bankName = document.getElementById('bankNameInput');
+            const accountNumber = document.getElementById('accountNumberInput');
+            const accountName = document.getElementById('accountNameInput');
+            const taxId = document.getElementById('taxIdInput');
+            const pfaName = document.getElementById('pfaNameInput');
+            const pensionNumber = document.getElementById('pensionNumberInput');
+
+            if (!bankName?.value) { showFieldError('bankNameInput', 'Bank selection is required'); isValid = false; if (!firstErrorInput) firstErrorInput = bankName; }
+            
+            const accVal = accountNumber?.value.trim() || '';
+            if (!accVal) {
+                showFieldError('accountNumberInput', 'Account Number is required'); isValid = false; if (!firstErrorInput) firstErrorInput = accountNumber;
+            } else if (!/^\d{10}$/.test(accVal)) {
+                showFieldError('accountNumberInput', 'Account Number must be exactly 10 digits'); isValid = false; if (!firstErrorInput) firstErrorInput = accountNumber;
+            }
+
+            if (!accountName?.value.trim()) { showFieldError('accountNameInput', 'Account Name is required'); isValid = false; if (!firstErrorInput) firstErrorInput = accountName; }
+            
+            const taxVal = taxId?.value.trim() || '';
+            if (!taxVal) {
+                showFieldError('taxIdInput', 'Tax ID is required'); isValid = false; if (!firstErrorInput) firstErrorInput = taxId;
+            } else if (!/^\d{10,14}$/.test(taxVal)) {
+                showFieldError('taxIdInput', 'Tax ID must be 10-14 digits'); isValid = false; if (!firstErrorInput) firstErrorInput = taxId;
+            }
+
+            if (!pfaName?.value) { showFieldError('pfaNameInput', 'Pension Administrator is required'); isValid = false; if (!firstErrorInput) firstErrorInput = pfaName; }
+            if (!pensionNumber?.value.trim()) { showFieldError('pensionNumberInput', 'Pension PIN is required'); isValid = false; if (!firstErrorInput) firstErrorInput = pensionNumber; }
+
+            if (!isValid) {
+                if (firstErrorInput) firstErrorInput.focus();
+                return false;
+            }
+            stepValidationState[stepNumber] = true;
+            return true;
+        }
+        
+        return true;
+    }
+    
+    // ===================================================================
+    // 5. NAVIGATION: goToStep(stepNumber)
+    // ===================================================================
+    function goToStep(stepNumber) {
+        if (stepNumber < 1 || stepNumber > totalSteps) {
+            console.warn(`Invalid step number: ${stepNumber}`);
+            return;
+        }
+        
+        // Target steps 4-7 default to Step 8
+        if (stepNumber > 3 && stepNumber < 8) {
+            stepNumber = 8;
+        }
+        
+        // Backward navigation: allow without validation
+        if (stepNumber < currentStep) {
+            if (currentStep === 8 && stepNumber > 3) {
+                stepNumber = 3;
+            }
+            showStep(stepNumber);
+            saveDraftAuto();
+            return;
+        }
+        
+        // Forward navigation: validate current step first
+        if (stepNumber > currentStep) {
+            if (!validateStep(currentStep)) {
+                return; // Validation failed, stay on current step
+            }
+        }
+        
+        if (stepNumber === 8) {
+            populateReviewStep();
+        }
+        
+        showStep(stepNumber);
+        saveDraftAuto();
+    }
+    
+    // ===================================================================
+    // 6. NAVIGATION: nextStep()
+    // ===================================================================
+    function nextStep() {
+        if (!validateStep(currentStep)) {
+            return;
+        }
+        
+        if (currentStep === 3) {
+            goToStep(8);
+            return;
+        }
+        
+        if (currentStep < 3) {
+            goToStep(currentStep + 1);
+        } else if (currentStep === 8) {
+            // Already on review step
+            alert('Please review your details and click Submit & Create Employee below.');
+        }
+    }
+    
+    // ===================================================================
+    // 7. NAVIGATION: prevStep()
+    // ===================================================================
+    function prevStep() {
+        if (currentStep === 8) {
+            goToStep(3);
+        } else if (currentStep > 1) {
+            goToStep(currentStep - 1);
+        }
+    }
+    
+    // ===================================================================
+    // 8. DRAFT MANAGEMENT: saveDraft(), loadDraft(), clearDraft()
+    // ===================================================================
     function saveDraftAuto() {
+        // Collect data from Steps 1-3 (expand in future phases)
         const draftData = {
-            first_name: document.getElementById('firstNameInput').value,
-            last_name: document.getElementById('lastNameInput').value,
-            nin: document.getElementById('ninInput').value,
-            bvn: document.getElementById('bvnInput').value
+            // Step 1: Personal Information
+            first_name: document.getElementById('firstNameInput')?.value || '',
+            middle_name: document.getElementById('middleNameInput')?.value || '',
+            last_name: document.getElementById('lastNameInput')?.value || '',
+            dob: document.getElementById('dobInput')?.value || '',
+            gender: document.getElementById('genderInput')?.value || '',
+            marital_status: document.getElementById('maritalStatusInput')?.value || '',
+            nin: document.getElementById('ninInput')?.value || '',
+            bvn: document.getElementById('bvnInput')?.value || '',
+            
+            // Step 2: Employment Details
+            staff_id: document.getElementById('staffIdInput')?.value || '',
+            date_employed: document.getElementById('dateEmployedInput')?.value || '',
+            job_title: document.getElementById('jobTitleInput')?.value || '',
+            department: document.getElementById('departmentInput')?.value || '',
+            position: document.getElementById('positionInput')?.value || '',
+            employment_type: document.getElementById('employmentTypeInput')?.value || '',
+            employment_status: document.getElementById('employmentStatusInput')?.value || '',
+            confirmation_status: document.getElementById('confirmationStatusInput')?.value || '',
+            probation_start: document.getElementById('probationStartInput')?.value || '',
+            probation_end: document.getElementById('probationEndInput')?.value || '',
+            confirmation_date: document.getElementById('confirmationDateInput')?.value || '',
+            campus: document.getElementById('campusInput')?.value || '',
+            work_location: document.getElementById('workLocationInput')?.value || '',
+            reporting_manager: document.getElementById('reportingManagerInput')?.value || '',
+            cost_centre: document.getElementById('costCentreInput')?.value || '',
+            division: document.getElementById('divisionInput')?.value || '',
+            unit: document.getElementById('unitInput')?.value || '',
+            
+            // Step 3: Bank & Statutory Information
+            bank_name: document.getElementById('bankNameInput')?.value || '',
+            account_number: document.getElementById('accountNumberInput')?.value || '',
+            account_name: document.getElementById('accountNameInput')?.value || '',
+            tax_id: document.getElementById('taxIdInput')?.value || '',
+            pfa_name: document.getElementById('pfaNameInput')?.value || '',
+            pension_number: document.getElementById('pensionNumberInput')?.value || '',
+            nhf_number: document.getElementById('nhfNumberInput')?.value || '',
+            nhis_number: document.getElementById('nhisNumberInput')?.value || '',
+            nsitf_number: document.getElementById('nsitfNumberInput')?.value || ''
         };
+        
+        const payloadDraftId = (draftId || globalDraftId || localStorage.getItem('eduorbit_onboarding_draft_id')) || null;
+        
         fetch('/hr/api/v1/onboarding/draft/auto-save/', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                draft_id: draftId,
+                draft_id: payloadDraftId,
                 current_step: currentStep,
                 draft_data: draftData
             })
@@ -229,15 +1047,471 @@
         .then(data => {
             if (data.draft_id) {
                 draftId = data.draft_id;
-                document.getElementById('autoSaveIndicator').innerText = `⚡ Saved at ${data.auto_saved_at}`;
+                globalDraftId = data.draft_id;
+                // Store in localStorage for recovery after refresh
+                localStorage.setItem('eduorbit_onboarding_draft_id', data.draft_id);
+                localStorage.setItem('eduorbit_onboarding_current_step', currentStep);
+                
+                // Update indicator
+                const ind = document.getElementById('autoSaveIndicator');
+                if (ind && !ind.classList.contains('text-emerald-400')) {
+                    ind.innerText = `⚡ Saved at ${data.auto_saved_at}`;
+                }
             }
+        })
+        .catch(err => {
+            console.error('Auto-save failed:', err);
+        });
+    }
+    
+    function saveDraftManual() {
+        saveDraftAuto();
+        const ind = document.getElementById('autoSaveIndicator');
+        if (ind) {
+            const originalText = ind.innerText;
+            ind.innerHTML = '✓ Draft Saved!';
+            ind.className = 'text-xs text-emerald-400 font-mono font-bold';
+            setTimeout(() => {
+                ind.innerText = originalText;
+                ind.className = 'text-xs text-slate-400 font-mono';
+            }, 2000);
+        }
+    }
+    
+    function loadDraft() {
+        // Check localStorage for draft recovery
+        const savedDraftId = localStorage.getItem('eduorbit_onboarding_draft_id');
+        const savedStep = localStorage.getItem('eduorbit_onboarding_current_step');
+        
+        if (savedDraftId && savedDraftId !== 'undefined' && savedDraftId !== 'null') {
+            draftId = savedDraftId;
+            globalDraftId = savedDraftId;
+            
+            fetch(`/hr/api/v1/onboarding/draft/get/?draft_id=${savedDraftId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success' && data.draft_data) {
+                        const d = data.draft_data;
+                        if (d.first_name) document.getElementById('firstNameInput').value = d.first_name;
+                        if (d.middle_name) document.getElementById('middleNameInput').value = d.middle_name;
+                        if (d.last_name) document.getElementById('lastNameInput').value = d.last_name;
+                        if (d.dob) document.getElementById('dobInput').value = d.dob;
+                        if (d.gender) document.getElementById('genderInput').value = d.gender;
+                        if (d.marital_status) document.getElementById('maritalStatusInput').value = d.marital_status;
+                        if (d.nin) document.getElementById('ninInput').value = d.nin;
+                        if (d.bvn) document.getElementById('bvnInput').value = d.bvn;
+                        
+                        if (d.staff_id) document.getElementById('staffIdInput').value = d.staff_id;
+                        if (d.date_employed) document.getElementById('dateEmployedInput').value = d.date_employed;
+                        if (d.job_title) document.getElementById('jobTitleInput').value = d.job_title;
+                        if (d.department) document.getElementById('departmentInput').value = d.department;
+                        if (d.position) document.getElementById('positionInput').value = d.position;
+                        if (d.employment_type) document.getElementById('employmentTypeInput').value = d.employment_type;
+                        if (d.employment_status) document.getElementById('employmentStatusInput').value = d.employment_status;
+                        if (d.confirmation_status) document.getElementById('confirmationStatusInput').value = d.confirmation_status;
+                        if (d.probation_start) document.getElementById('probationStartInput').value = d.probation_start;
+                        if (d.probation_end) document.getElementById('probationEndInput').value = d.probation_end;
+                        if (d.confirmation_date) document.getElementById('confirmationDateInput').value = d.confirmation_date;
+                        if (d.campus) document.getElementById('campusInput').value = d.campus;
+                        if (d.work_location) document.getElementById('workLocationInput').value = d.work_location;
+                        if (d.reporting_manager) document.getElementById('reportingManagerInput').value = d.reporting_manager;
+                        if (d.cost_centre) document.getElementById('costCentreInput').value = d.cost_centre;
+                        if (d.division) document.getElementById('divisionInput').value = d.division;
+                        if (d.unit) document.getElementById('unitInput').value = d.unit;
+
+                        if (d.bank_name) document.getElementById('bankNameInput').value = d.bank_name;
+                        if (d.account_number) document.getElementById('accountNumberInput').value = d.account_number;
+                        if (d.account_name) document.getElementById('accountNameInput').value = d.account_name;
+                        if (d.tax_id) document.getElementById('taxIdInput').value = d.tax_id;
+                        if (d.pfa_name) document.getElementById('pfaNameInput').value = d.pfa_name;
+                        if (d.pension_number) document.getElementById('pensionNumberInput').value = d.pension_number;
+                        if (d.nhf_number) document.getElementById('nhfNumberInput').value = d.nhf_number;
+                        if (d.nhis_number) document.getElementById('nhisNumberInput').value = d.nhis_number;
+                        if (d.nsitf_number) document.getElementById('nsitfNumberInput').value = d.nsitf_number;
+
+                        if (d.photo_url) {
+                            const imgEl = document.getElementById('employeePhotoPreview');
+                            if (imgEl) {
+                                imgEl.src = d.photo_url;
+                                imgEl.classList.remove('hidden');
+                                document.getElementById('photoPlaceholder')?.classList.add('hidden');
+                                document.getElementById('photoSourceText').innerText = d.photo_source || 'Restored from Draft';
+                            }
+                        }
+
+                        if (savedStep) {
+                            const stepNum = parseInt(savedStep);
+                            if (stepNum >= 1 && stepNum <= 8) {
+                                currentStep = stepNum === 8 ? 8 : (stepNum > 3 ? 3 : stepNum);
+                            }
+                        }
+                    }
+                })
+                .catch(err => console.warn('Could not fetch draft from API:', err));
+        } else {
+            draftId = null;
+            globalDraftId = null;
+        }
+    }
+
+    
+    function clearDraft() {
+        localStorage.removeItem('eduorbit_onboarding_draft_id');
+        localStorage.removeItem('eduorbit_onboarding_current_step');
+        draftId = null;
+        globalDraftId = null;
+    }
+    
+    // Helper to collect draft data cleanly
+    function collectDraftData() {
+        return {
+            step1: {
+                first_name: document.getElementById('firstNameInput')?.value.trim() || '',
+                middle_name: document.getElementById('middleNameInput')?.value.trim() || '',
+                last_name: document.getElementById('lastNameInput')?.value.trim() || '',
+                dob: document.getElementById('dobInput')?.value || '',
+                gender: document.getElementById('genderInput')?.value || '',
+                marital_status: document.getElementById('maritalStatusInput')?.value || '',
+                nin: document.getElementById('ninInput')?.value || '',
+                bvn: document.getElementById('bvnInput')?.value || '',
+                nin_verified: document.getElementById('ninBadge')?.innerText.includes('Verified') || false,
+                bvn_verified: document.getElementById('bvnBadge')?.innerText.includes('Verified') || false
+            },
+            step2: {
+                staff_id: document.getElementById('staffIdInput')?.value || '',
+                date_employed: document.getElementById('dateEmployedInput')?.value || '',
+                job_title: document.getElementById('jobTitleInput')?.value || '',
+                department: document.getElementById('departmentInput')?.value || '',
+                position: document.getElementById('positionInput')?.value || '',
+                employment_type: document.getElementById('employmentTypeInput')?.value || '',
+                employment_status: document.getElementById('employmentStatusInput')?.value || '',
+                confirmation_status: document.getElementById('confirmationStatusInput')?.value || '',
+                campus: document.getElementById('campusInput')?.value || '',
+                work_location: document.getElementById('workLocationInput')?.value || '',
+                cost_centre: document.getElementById('costCentreInput')?.value || ''
+            },
+            step3: {
+                bank_name: document.getElementById('bankNameInput')?.value || '',
+                account_number: document.getElementById('accountNumberInput')?.value || '',
+                account_name: document.getElementById('accountNameInput')?.value || '',
+                tax_id: document.getElementById('taxIdInput')?.value || '',
+                pfa_name: document.getElementById('pfaNameInput')?.value || '',
+                pension_number: document.getElementById('pensionNumberInput')?.value || ''
+            }
+        };
+    }
+    
+    // ===================================================================
+    // 9. STEP 3 SPECIFIC: Auto-fill BVN from Step 1
+    // ===================================================================
+    function populateStep3BVN() {
+        const bvnFromStep1 = document.getElementById('bvnInput')?.value || '';
+        const bvnStep3Field = document.getElementById('bvnStep3Input');
+        if (bvnStep3Field && bvnFromStep1) {
+            bvnStep3Field.value = bvnFromStep1;
+        }
+    }
+    
+    // ===================================================================
+    // 10. DOJAH KYC INTEGRATION (Existing - Preserved)
+    // ===================================================================
+    function triggerNINVerify() {
+        const nin = document.getElementById('ninInput').value;
+        
+        // Validate before calling API
+        if (!nin || nin.length !== 11) {
+            alert('Please enter a valid 11-digit NIN');
+            return;
+        }
+        
+        // Show loading state
+        const ninBadge = document.getElementById('ninBadge');
+        ninBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-blue-500/20 text-blue-300 font-mono';
+        ninBadge.innerText = '⏳ Verifying...';
+        
+        fetch('/hr/api/v1/kyc/verify-nin/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({nin: nin})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.is_verified && data.data) {
+                // Populate from REAL API response
+                document.getElementById('ninMatchName').innerText = data.data.full_name || 'Unknown';
+                document.getElementById('ninMatchDOB').innerText = data.data.dob || 'Unknown';
+                document.getElementById('ninVerifiedAt').innerText = data.data.timestamp || new Date().toLocaleString();
+                
+                ninBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-emerald-500/20 text-emerald-300 font-mono';
+                ninBadge.innerText = '✅ Verified';
+                document.getElementById('ninResultCard').classList.remove('hidden');
+
+                // Update Photo Container if photo returned
+                if (data.data.photo_url) {
+                    const imgEl = document.getElementById('employeePhotoPreview');
+                    imgEl.src = data.data.photo_url;
+                    imgEl.classList.remove('hidden');
+                    document.getElementById('photoPlaceholder').classList.add('hidden');
+                    document.getElementById('photoSourceText').innerText = 'Verified via Dojah (NIN)';
+                    document.getElementById('photoVerifiedAtText').innerText = data.data.timestamp || new Date().toLocaleString();
+                    document.getElementById('photoRefText').innerText = nin;
+                    const photoBadge = document.getElementById('photoBadge');
+                    photoBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-emerald-500/20 text-emerald-300 font-mono';
+                    photoBadge.innerText = 'Verified via Dojah';
+                }
+                saveDraftAuto();
+            } else {
+                alert('Verification failed: ' + (data.message || 'Invalid NIN'));
+                ninBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-red-500/20 text-red-300 font-mono';
+                ninBadge.innerText = '❌ Failed';
+            }
+        })
+        .catch(err => {
+            alert('Verification error: Unable to connect to verification service');
+            console.error('Dojah API error:', err);
+            ninBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-red-500/20 text-red-300 font-mono';
+            ninBadge.innerText = '❌ Error';
         });
     }
 
-    setInterval(saveDraftAuto, 5000);
+    function handleWizardPhotoSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-    function nextStep() {
-        alert('Step 1 Validated! Navigating to Step 2 Employment Details.');
+        if (file.size > 2 * 1024 * 1024) {
+            alert('File size exceeds maximum allowed limit of 2 MB.');
+            event.target.value = '';
+            return;
+        }
+
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!['jpg', 'jpeg', 'png'].includes(ext)) {
+            alert('Invalid file type. Please upload a JPG, JPEG, or PNG image.');
+            event.target.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const dataUrl = e.target.result;
+            const imgEl = document.getElementById('employeePhotoPreview');
+            imgEl.src = dataUrl;
+            imgEl.classList.remove('hidden');
+            document.getElementById('photoPlaceholder').classList.add('hidden');
+            
+            document.getElementById('photoSourceText').innerText = 'HR Admin Upload';
+            document.getElementById('photoVerifiedAtText').innerText = new Date().toLocaleString();
+            document.getElementById('photoRefText').innerText = 'HR_MANUAL_UPLOAD';
+            
+            const photoBadge = document.getElementById('photoBadge');
+            photoBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-indigo-500/20 text-indigo-300 font-mono';
+            photoBadge.innerText = 'HR Upload';
+            saveDraftAuto();
+        };
+        reader.readAsDataURL(file);
     }
+
+    function triggerBVNVerify() {
+        const bvn = document.getElementById('bvnInput').value;
+        if (!bvn || bvn.length !== 11) {
+            alert('Please enter a valid 11-digit BVN');
+            return;
+        }
+        
+        const bvnBadge = document.getElementById('bvnBadge');
+        bvnBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-blue-500/20 text-blue-300 font-mono';
+        bvnBadge.innerText = '⏳ Verifying...';
+        
+        fetch('/hr/api/v1/kyc/verify-bvn/', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({bvn: bvn})
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.is_verified && data.data) {
+                document.getElementById('bvnMatchName').innerText = data.data.full_name || 'Unknown';
+                document.getElementById('bvnVerifiedAt').innerText = data.data.timestamp || new Date().toLocaleString();
+                
+                bvnBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-emerald-500/20 text-emerald-300 font-mono';
+                bvnBadge.innerText = '✅ Verified';
+                document.getElementById('bvnResultCard').classList.remove('hidden');
+                saveDraftAuto();
+            } else {
+                alert('Verification failed: ' + (data.message || 'Invalid BVN'));
+                bvnBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-red-500/20 text-red-300 font-mono';
+                bvnBadge.innerText = '❌ Failed';
+            }
+        })
+        .catch(err => {
+            alert('Verification error: Unable to connect to verification service');
+            console.error('Dojah API error:', err);
+            bvnBadge.className = 'px-2 py-0.5 text-[10px] rounded bg-red-500/20 text-red-300 font-mono';
+            bvnBadge.innerText = '❌ Error';
+        });
+    }
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (confirm('Exit wizard? Your progress will be saved.')) {
+                saveDraftManual();
+                window.location.href = '{% url "hr_admin_directory" %}';
+            }
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            saveDraftManual();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextStep();
+        }
+        if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevStep();
+        }
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        loadDraft();
+        showStep(currentStep);
+        setInterval(saveDraftAuto, 5000);
+        console.log('✓ EduOrbit HR Onboarding Wizard initialized (Phase 12.4.5 - Complete)');
+    });
+    
+    window.addEventListener('beforeunload', function(e) {
+        saveDraftAuto();
+    });
+
+    function populateReviewStep() {
+        const draft = collectDraftData();
+        
+        const reviewPersonal = document.getElementById('reviewPersonal');
+        if (reviewPersonal) {
+            reviewPersonal.innerHTML = `
+                <div><span class="text-slate-500">Name:</span> <span class="font-semibold text-white">${draft.step1.first_name} ${draft.step1.middle_name} ${draft.step1.last_name}</span></div>
+                <div><span class="text-slate-500">Date of Birth:</span> <span class="font-semibold text-white">${draft.step1.dob || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Gender:</span> <span class="font-semibold text-white">${draft.step1.gender || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Marital Status:</span> <span class="font-semibold text-white">${draft.step1.marital_status || 'N/A'}</span></div>
+                <div><span class="text-slate-500">NIN:</span> <span class="font-mono text-indigo-300">${draft.step1.nin || 'N/A'}</span> ${draft.step1.nin_verified ? '<span class="text-emerald-400 font-bold">✅ Verified</span>' : ''}</div>
+                <div><span class="text-slate-500">BVN:</span> <span class="font-mono text-indigo-300">${draft.step1.bvn || 'N/A'}</span> ${draft.step1.bvn_verified ? '<span class="text-emerald-400 font-bold">✅ Verified</span>' : ''}</div>
+            `;
+        }
+        
+        const reviewEmployment = document.getElementById('reviewEmployment');
+        if (reviewEmployment) {
+            reviewEmployment.innerHTML = `
+                <div><span class="text-slate-500">Job Title:</span> <span class="font-semibold text-white">${draft.step2.job_title || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Department:</span> <span class="font-semibold text-white">${draft.step2.department || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Employment Type:</span> <span class="font-semibold text-white">${draft.step2.employment_type || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Employment Status:</span> <span class="font-semibold text-white">${draft.step2.employment_status || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Date Employed:</span> <span class="font-semibold text-white">${draft.step2.date_employed || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Campus:</span> <span class="font-semibold text-white">${draft.step2.campus || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Work Location:</span> <span class="font-semibold text-white">${draft.step2.work_location || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Cost Centre:</span> <span class="font-mono text-indigo-300">${draft.step2.cost_centre || 'N/A'}</span></div>
+            `;
+        }
+        
+        const reviewBanking = document.getElementById('reviewBanking');
+        if (reviewBanking) {
+            reviewBanking.innerHTML = `
+                <div><span class="text-slate-500">Bank:</span> <span class="font-semibold text-white">${draft.step3.bank_name || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Account Number:</span> <span class="font-mono text-indigo-300">${draft.step3.account_number || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Account Name:</span> <span class="font-semibold text-white">${draft.step3.account_name || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Tax ID:</span> <span class="font-mono text-indigo-300">${draft.step3.tax_id || 'N/A'}</span></div>
+                <div><span class="text-slate-500">PFA:</span> <span class="font-semibold text-white">${draft.step3.pfa_name || 'N/A'}</span></div>
+                <div><span class="text-slate-500">Pension PIN:</span> <span class="font-mono text-indigo-300">${draft.step3.pension_number || 'N/A'}</span></div>
+            `;
+        }
+    }
+    
+    async function submitOnboarding() {
+        const submitBtn = document.getElementById('submitOnboardingBtn');
+        const progressDiv = document.getElementById('submissionProgress');
+        const successDiv = document.getElementById('submissionSuccess');
+        const errorDiv = document.getElementById('submissionError');
+        const errorDetails = document.getElementById('errorDetails');
+        const successDetails = document.getElementById('successDetails');
+        
+        const targetDraftId = draftId || globalDraftId || localStorage.getItem('eduorbit_onboarding_draft_id');
+        
+        if (!targetDraftId) {
+            alert('No active onboarding draft found. Please complete the wizard steps.');
+            return;
+        }
+        
+        if (submitBtn) submitBtn.disabled = true;
+        if (progressDiv) progressDiv.classList.remove('hidden');
+        if (successDiv) successDiv.classList.add('hidden');
+        if (errorDiv) errorDiv.classList.add('hidden');
+        
+        try {
+            const response = await fetch('/hr/api/v1/onboarding/submit/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    draft_id: targetDraftId
+                })
+            });
+            
+            const data = await response.json();
+            if (progressDiv) progressDiv.classList.add('hidden');
+            
+            if (response.ok && data.status === 'success') {
+                if (successDetails) {
+                    successDetails.innerHTML = `
+                        <div><span class="text-slate-500">Employee Number:</span> <span class="font-mono font-bold text-emerald-400">${data.employee_number}</span></div>
+                        <div><span class="text-slate-500">Person Number:</span> <span class="font-mono">${data.person_number}</span></div>
+                        <div><span class="text-slate-500">Username:</span> <span class="font-mono text-indigo-300">${data.username}</span></div>
+                        <div><span class="text-slate-500">Email:</span> <span class="font-mono">${data.email || 'N/A'}</span></div>
+                        <div><span class="text-slate-500">Job Title:</span> <span class="font-semibold">${data.job_title}</span></div>
+                        <div><span class="text-slate-500">Department:</span> <span class="font-semibold">${data.department}</span></div>
+                    `;
+                }
+                if (successDiv) successDiv.classList.remove('hidden');
+                if (submitBtn) submitBtn.style.display = 'none';
+                clearDraft();
+            } else {
+                let errorMessage = data.message || data.detail || data.details || 'Unable to complete submission.';
+                const validationErrors = data.validation_errors || [];
+                let errorHtml = `<p class="font-semibold text-red-400">${errorMessage}</p>`;
+                if (validationErrors.length > 0) {
+                    errorHtml += '<ul class="list-disc list-inside mt-2 space-y-1 text-slate-300">';
+                    validationErrors.forEach(err => { errorHtml += `<li>${err}</li>`; });
+                    errorHtml += '</ul>';
+                }
+                if (errorDetails) errorDetails.innerHTML = errorHtml;
+                if (errorDiv) errorDiv.classList.remove('hidden');
+                if (submitBtn) submitBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            if (progressDiv) progressDiv.classList.add('hidden');
+            if (errorDetails) {
+                errorDetails.innerHTML = `<p class="font-semibold text-red-400">Network error or unexpected server failure: ${error.message}</p>`;
+            }
+            if (errorDiv) errorDiv.classList.remove('hidden');
+            if (submitBtn) submitBtn.disabled = false;
+        }
+    }
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
 </script>
 {% endblock %}

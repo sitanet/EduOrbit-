@@ -1,0 +1,99 @@
+{% extends "base/_document.html" %}
+{% load hr_permissions %}
+{% block title %}Onboarding Tracker — EduOrbit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Onboarding Tracker</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Track and manage onboarding steps, document uploads, and task completion for new employees.</p>
+        </div>
+        <div class="flex gap-3">
+            <a href="{% url 'hr_admin_onboarding_wizard' %}" class="px-4 py-2 bg-indigo-650 hover:bg-indigo-600 text-slate-900 dark:text-white font-semibold text-sm rounded-xl transition-all shadow-sm cursor-pointer inline-flex items-center gap-1">
+                + Launch Onboarding Wizard
+            </a>
+        </div>
+    </div>
+
+    <!-- Active Tracker Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Stat Card 1 -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Pending Tasks</span>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">{{ pending_count|default:"0" }}</h3>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-lg">⏳</div>
+        </div>
+        <!-- Stat Card 2 -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Completed Tasks</span>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">{{ completed_count|default:"0" }}</h3>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-lg">✅</div>
+        </div>
+        <!-- Stat Card 3 -->
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-sm text-slate-500 dark:text-slate-400 font-medium">Onboarding Employees</span>
+                <h3 class="text-2xl font-bold text-slate-900 dark:text-white mt-1">{{ onboarding_employees_count|default:"0" }}</h3>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-bold text-lg">👤</div>
+        </div>
+    </div>
+
+    <!-- Onboarding Tasks Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+            <h3 class="font-bold text-slate-900 dark:text-white">Active Onboarding Tasks</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-slate-50 dark:bg-slate-750/30">
+                    <tr>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Employee</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Task Title</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Due Date</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700 text-slate-800 dark:text-slate-200">
+                    {% for task in tasks %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/30 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-700 dark:text-indigo-300 text-xs font-bold">{{ task.employee.person.first_name|slice:":1" }}{{ task.employee.person.last_name|slice:":1" }}</div>
+                                <span class="font-semibold text-slate-900 dark:text-white">{{ task.employee.person.first_name }} {{ task.employee.person.last_name }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-slate-650 dark:text-slate-350 font-medium">{{ task.task_name }}</td>
+                        <td class="px-6 py-4 text-slate-500 dark:text-slate-400">{{ task.due_date }}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider 
+                                {% if task.is_completed %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/20
+                                {% else %}bg-amber-500/10 text-amber-400 border border-amber-500/20{% endif %}">
+                                {% if task.is_completed %}Completed{% else %}Pending{% endif %}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                            <div class="flex flex-col items-center justify-center space-y-2">
+                                <span class="text-2xl">📦</span>
+                                <p class="text-base font-semibold">No active onboarding tasks found.</p>
+                                <p class="text-xs text-slate-500">Launch the onboarding wizard to add staff members and assign onboarding tasks.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base/_document.html" %}
+{% block title %}Trial Balance — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Trial Balance Statement</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Live General Ledger debit & credit balance verification statement.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print / Export PDF
+            </button>
+            <a href="?export=excel" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📊 Export Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end text-xs">
+            <div>
+                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Start Date</label>
+                <input type="date" name="start_date" value="{{ request.GET.start_date }}" onchange="this.form.submit()" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-medium">
+            </div>
+            <div>
+                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">End Date</label>
+                <input type="date" name="end_date" value="{{ request.GET.end_date }}" onchange="this.form.submit()" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-medium">
+            </div>
+            <div>
+                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Quick Navigation</label>
+                <div class="flex items-center gap-2">
+                    <a href="{% url 'balance_sheet_web' %}" class="w-full px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-center rounded-lg">Balance Sheet</a>
+                    <a href="{% url 'income_statement_web' %}" class="w-full px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-center rounded-lg">Profit & Loss</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Statement Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" id="printableTrialBalance">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+            <div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">Chart of Accounts — Trial Balance Summary</h3>
+                <p class="text-xs text-slate-500">Live debit/credit equality check</p>
+            </div>
+            <span class="px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold font-mono text-xs rounded-lg">
+                {% if tb.is_balanced %}BALANCED ✅{% else %}UNBALANCED ⚠️{% endif %}
+            </span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Account Name</th>
+                        <th class="px-6 py-4">Category</th>
+                        <th class="px-6 py-4 text-right">Debit Balance ($)</th>
+                        <th class="px-6 py-4 text-right">Credit Balance ($)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for row in tb.rows %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ row.account_name }}</td>
+                        <td class="px-6 py-4 text-xs font-mono text-slate-400">{{ row.category }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">
+                            {% if row.debit > 0 %}{{ row.debit }}{% else %}-{% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">
+                            {% if row.credit > 0 %}{{ row.credit }}{% else %}-{% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-12 text-center text-slate-500">
+                            No journal transactions recorded for the selected filter period.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-slate-100 dark:bg-slate-900/80 font-bold text-slate-900 dark:text-white border-t border-slate-200 dark:border-slate-700 text-sm">
+                    <tr>
+                        <td colspan="2" class="px-6 py-4 text-left uppercase">Total Ledger Balances</td>
+                        <td class="px-6 py-4 text-right font-mono text-emerald-600 dark:text-emerald-400 text-base">${{ tb.total_debit }}</td>
+                        <td class="px-6 py-4 text-right font-mono text-emerald-600 dark:text-emerald-400 text-base">${{ tb.total_credit }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

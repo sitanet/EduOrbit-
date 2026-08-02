@@ -3,11 +3,13 @@ from django.views import View
 from django.http import HttpResponse
 from backend.apps.tenants.models import School
 from backend.apps.timetable.models import Resource, Schedule, ConflictReport
+from backend.apps.dashboard.views_web import RoleRequiredMixin
+from backend.apps.dashboard.services import ROLE_TEACHER, ROLE_SCHOOL_ADMIN
 
-class TimetableMatrixWebView(View):
+class TimetableMatrixWebView(RoleRequiredMixin, View):
+    required_roles = [ROLE_TEACHER, ROLE_SCHOOL_ADMIN]
+
     def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect('login_web')
             
         tenant = getattr(request, 'tenant', None)
         schools = School.objects.filter(tenant=tenant)
@@ -124,10 +126,9 @@ class TimetableMatrixWebView(View):
         return redirect('/timetable/builder/')
 
 
-class ResourceBookingWebView(View):
+class ResourceBookingWebView(RoleRequiredMixin, View):
+    required_roles = [ROLE_TEACHER, ROLE_SCHOOL_ADMIN]
+
     def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect('login_web')
-            
         resources = Resource.objects.filter(tenant=getattr(request, 'tenant', None))
         return render(request, 'timetable/bookings.html', {'resources': resources})

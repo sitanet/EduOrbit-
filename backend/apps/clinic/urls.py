@@ -6,6 +6,8 @@ from backend.apps.clinic.views_web import (
     ClinicRecordsWebView,
     ClinicInventoryWebView,
     ClinicReportsWebView,
+    SickBayWebView,
+    PatientSearchJsonView,
 )
 
 urlpatterns = [
@@ -17,7 +19,12 @@ urlpatterns = [
     path('records/', ClinicRecordsWebView.as_view(), name='clinic_records_web'),
     path('inventory/', ClinicInventoryWebView.as_view(), name='clinic_inventory_web'),
     path('reports/', ClinicReportsWebView.as_view(), name='clinic_reports_web'),
-    
+
+    # ── New routes ──────────────────────────────────────────────────────────
+    path('sickbay/', SickBayWebView.as_view(), name='clinic_sickbay_web'),
+    path('pharmacy/', ClinicInventoryWebView.as_view(), name='clinic_pharmacy_web'),  # alias
+    path('patients/search/', PatientSearchJsonView.as_view(), name='patient_search_json'),
+
     # API endpoints versions
     path('api/v1/', include('backend.apps.clinic.api.urls')),
 ]

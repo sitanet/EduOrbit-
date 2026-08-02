@@ -74,3 +74,47 @@ class AdmissionConversionService:
             "placement_id": str(placement.id),
             "status_history_id": str(status_history.id)
         }
+
+
+class EnrollmentService:
+    @classmethod
+    @transaction.atomic
+    def enroll_applicant(cls, application_id, class_id):
+        from backend.apps.admissions.models import AdmissionApplication
+        from backend.apps.academic.models import AcademicClass
+        from backend.apps.people.models import StudentProfile, PersonRole
+        
+        application = AdmissionApplication.objects.get(id=application_id)
+        ac_class = AcademicClass.objects.get(id=class_id)
+        tenant = application.tenant
+        school = application.intake.campaign.school
+        
+        # 1. Update application status
+        application.status = 'enrolled'
+        application.save()
+        
+        # 2. Get or create StudentProfile
+        student_profile, created = StudentProfile.objects.get_or_create(
+            person=application.applicant.person,
+            tenant=tenant,
+            defaults={
+                'student_number': f"STU-{application.applicant.person.person_number.split('-')[-1]}",
+                'admission_number': f"ADM-{application.applicant.person.person_number.split('-')[-1]}",
+                'current_school': school,
+                'enrollment_status': 'enrolled'
+            }
+        )
+        if student_profile.enrollment_status != 'enrolled':
+            student_profile.enrollment_status = 'enrolled'
+            student_profile.save()
+            
+        # 3. Assign PersonRole with role='student', school is required (non-nullable FK)
+        PersonRole.objects.get_or_create(
+            tenant=tenant,
+            person=application.applicant.person,
+            role='student',
+            school=school
+        )
+        
+        return student_profile
+

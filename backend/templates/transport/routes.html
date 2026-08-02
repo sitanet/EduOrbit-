@@ -1,40 +1,247 @@
 {% extends "base/_document.html" %}
-
-{% block title %}Routes Planner - EduOrbit{% endblock %}
+{% block title %}Routes & Fleet Transit Planner — EduOrbit Transport{% endblock %}
 
 {% block content %}
-<div style="max-width: 1000px; margin: 0 auto;">
-  <div style="margin-bottom: var(--spacing-lg);">
-    <h2 style="font-weight: var(--font-weight-semibold);">Routes Planner</h2>
-    <p style="color: var(--color-text-secondary);">Manage pickup stops list, estimated distance, and passenger routing boundaries.</p>
+<div class="space-y-6">
+
+  <!-- ── Hero Header Banner ────────────────────────────────────────────── -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-amber-950 to-slate-900 text-white p-6 rounded-2xl border border-amber-500/30 shadow-xl">
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">🚌 Transport Routes & Fleet Planner</h1>
+      <p class="text-xs text-slate-300">Configure school bus transit paths, pickup/drop-off stops, route distances, and fleet schedules.</p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      <button onclick="document.getElementById('addRouteModal').classList.remove('hidden')"
+              class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-md">
+        ➕ Add New Route
+      </button>
+      <a href="/dashboard/transport/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+        🚌 Fleet Dashboard
+      </a>
+    </div>
   </div>
 
-  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
-    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Configured Transit Paths</h3>
-    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-      <thead>
-        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Route Name</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Start Point</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">End Point</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Distance</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for route in routes %}
-        <tr style="border-bottom: 1px solid var(--color-border);">
-          <td style="padding: var(--spacing-md);"><strong>{{ route.name }}</strong></td>
-          <td style="padding: var(--spacing-md);">{{ route.start_point }}</td>
-          <td style="padding: var(--spacing-md);">{{ route.end_point }}</td>
-          <td style="padding: var(--spacing-md);">{{ route.total_distance_km }} km</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="4" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No routes registered in routes planner.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <!-- ── KPI Stats Row ────────────────────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Routes</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_routes|default:0 }}</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">Active Paths</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">🚌</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Configured Stops</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_stops|default:0 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Pickup Points</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">📍</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Distance</span>
+        <div class="text-2xl font-black text-amber-500 mt-1">{{ total_distance|default:"0.0" }} <span class="text-sm">km</span></div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">Network Mileage</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">🗺️</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Active Trips</span>
+        <div class="text-2xl font-black text-indigo-500 mt-1">{{ active_trips|default:0 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Buses In-Transit</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">🚦</div>
+    </div>
+  </div>
+
+  <!-- ── Search & Filter Bar ──────────────────────────────────────────── -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+    <input type="text" id="routeSearch" onkeyup="filterRoutes()" placeholder="Search route by name, start point, or destination…"
+           class="w-full sm:w-80 px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+    <div class="ml-auto text-xs text-slate-400 font-mono">
+      Showing <span id="routeCount">{{ routes|length }}</span> route(s)
+    </div>
+  </div>
+
+  <!-- ── Routes Inventory Table ────────────────────────────────────────── -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-sm font-bold text-slate-900 dark:text-white">🗺️ Configured Transit Paths</h2>
+      <button onclick="document.getElementById('addRouteModal').classList.remove('hidden')"
+              class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition">
+        + New Route
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs" id="routesTable">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Route Name</th>
+            <th class="px-6 py-3">Start Point (Origin)</th>
+            <th class="px-6 py-3">End Point (Destination)</th>
+            <th class="px-6 py-3">Distance</th>
+            <th class="px-6 py-3">Stops</th>
+            <th class="px-6 py-3 text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50" id="routesTableBody">
+          {% for route in routes %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition route-row">
+            <td class="px-6 py-4">
+              <div class="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span class="w-6 h-6 rounded-lg bg-amber-50 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-black">🚌</span>
+                {{ route.name }}
+              </div>
+            </td>
+            <td class="px-6 py-4 text-slate-700 dark:text-slate-300">
+              <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-1.5"></span>
+              {{ route.start_point }}
+            </td>
+            <td class="px-6 py-4 text-slate-700 dark:text-slate-300">
+              <span class="inline-block w-2 h-2 rounded-full bg-rose-500 mr-1.5"></span>
+              {{ route.end_point }}
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-700 dark:text-slate-300 font-bold">
+              {{ route.total_distance_km }} km
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">
+                {{ route.stops.count|default:2 }} stops
+              </span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <button onclick="openRouteDetails('{{ route.name|escapejs }}', '{{ route.start_point|escapejs }}', '{{ route.end_point|escapejs }}', '{{ route.total_distance_km }}')"
+                      class="px-3 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold transition">
+                View Route &rarr;
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="px-6 py-14 text-center">
+              <div class="text-4xl mb-3">🚌</div>
+              <div class="text-sm font-semibold text-slate-500 dark:text-slate-400">No transport routes configured</div>
+              <div class="text-xs text-slate-400 mt-1">Click "Add New Route" to set up your first school bus route.</div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Modal: Add Route ─────────────────────────────────────────────── -->
+<div id="addRouteModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-amber-600 to-amber-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">🚌 Add Transport Route</h3>
+      <button onclick="document.getElementById('addRouteModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <form method="POST" action="/transport/routes/" class="p-6 space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_route">
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Route Name</label>
+        <input type="text" name="name" placeholder="e.g. Ikeja Mainland Express, Route A Morning" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Start Point (Origin)</label>
+        <input type="text" name="start_point" placeholder="e.g. Allen Avenue Bus Stop, Ikeja" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">End Point (Destination)</label>
+        <input type="text" name="end_point" placeholder="e.g. EduOrbit Main Campus Gate 2" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Total Distance (KM)</label>
+        <input type="number" name="total_distance_km" step="0.1" value="12.5" min="0.1" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" onclick="document.getElementById('addRouteModal').classList.add('hidden')"
+                class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">
+          Cancel
+        </button>
+        <button type="submit"
+                class="px-5 py-2.5 text-sm font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl transition shadow-md">
+          ✅ Create Route & Initial Stops
+        </button>
+      </div>
+    </form>
   </div>
 </div>
+
+<!-- ── Modal: Route Details ─────────────────────────────────────────── -->
+<div id="routeDetailModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-amber-600 to-amber-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">🗺️ Route Configuration</h3>
+      <button onclick="document.getElementById('routeDetailModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <div class="p-6 space-y-4">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Route Name</span>
+        <p class="text-sm font-bold text-slate-900 dark:text-white mt-0.5" id="detailRouteName">—</p>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Origin</span>
+          <p class="text-xs text-slate-700 dark:text-slate-300 mt-0.5" id="detailStartPoint">—</p>
+        </div>
+        <div>
+          <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Destination</span>
+          <p class="text-xs text-slate-700 dark:text-slate-300 mt-0.5" id="detailEndPoint">—</p>
+        </div>
+      </div>
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Distance</span>
+        <p class="text-sm font-bold text-amber-500 mt-0.5" id="detailDistance">—</p>
+      </div>
+      <div class="pt-2">
+        <a href="/dashboard/transport/" class="block w-full text-center px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition">
+          🚌 Assign Bus & Schedule Trips in Transport Dashboard &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function filterRoutes() {
+  const q = document.getElementById('routeSearch').value.toLowerCase();
+  const rows = document.querySelectorAll('.route-row');
+  let visible = 0;
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    if (!q || text.includes(q)) { row.style.display = ''; visible++; }
+    else { row.style.display = 'none'; }
+  });
+  document.getElementById('routeCount').textContent = visible;
+}
+
+function openRouteDetails(name, start, end, dist) {
+  document.getElementById('detailRouteName').textContent = name;
+  document.getElementById('detailStartPoint').textContent = start;
+  document.getElementById('detailEndPoint').textContent = end;
+  document.getElementById('detailDistance').textContent = dist + ' KM';
+  document.getElementById('routeDetailModal').classList.remove('hidden');
+}
+</script>
 {% endblock %}

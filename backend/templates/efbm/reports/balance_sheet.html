@@ -1,0 +1,145 @@
+{% extends "base/_document.html" %}
+{% block title %}Balance Sheet — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Balance Sheet Statement</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Assets = Liabilities + Equity financial position report.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print / Export PDF
+            </button>
+            <a href="?export=excel" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📊 Export Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation & Verification Bar -->
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <a href="{% url 'trial_balance_web' %}" class="px-3 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-900 dark:text-white font-semibold text-xs rounded-lg">Trial Balance</a>
+            <a href="{% url 'income_statement_web' %}" class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-lg">Profit & Loss</a>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-slate-500">ACCOUNTING EQUATION:</span>
+            <span class="px-3 py-1 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold font-mono text-xs rounded-lg">
+                {% if bs.is_balanced %}ASSETS = LIABILITIES + EQUITY ✅{% else %}EQUATION DISCREPANCY ⚠️{% endif %}
+            </span>
+        </div>
+    </div>
+
+    <!-- Balance Sheet Printable Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="printableBalanceSheet">
+
+        <!-- ASSETS SECTION -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-6">
+            <div class="border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">ASSETS</h3>
+            </div>
+
+            <!-- Current Assets -->
+            <div class="space-y-3">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Current Assets</h4>
+                <div class="space-y-2 text-sm">
+                    {% for item in bs.current_assets %}
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-700 dark:text-slate-300">{{ item.name }}</span>
+                        <span class="font-mono font-semibold text-slate-900 dark:text-white">${{ item.amount }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-xs text-slate-400">No active current asset accounts.</p>
+                    {% endfor %}
+                    <div class="flex justify-between pt-2 font-bold text-slate-900 dark:text-white">
+                        <span>Total Current Assets</span>
+                        <span class="font-mono text-indigo-600 dark:text-indigo-400">${{ bs.total_current_assets }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fixed Assets -->
+            <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Fixed Assets</h4>
+                <div class="space-y-2 text-sm">
+                    {% for item in bs.fixed_assets %}
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-700 dark:text-slate-300">{{ item.name }}</span>
+                        <span class="font-mono font-semibold text-slate-900 dark:text-white">${{ item.amount }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-xs text-slate-400">No active fixed asset accounts.</p>
+                    {% endfor %}
+                    <div class="flex justify-between pt-2 font-bold text-slate-900 dark:text-white">
+                        <span>Total Fixed Assets</span>
+                        <span class="font-mono text-indigo-600 dark:text-indigo-400">${{ bs.total_fixed_assets }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Assets Footer -->
+            <div class="pt-4 border-t-2 border-indigo-600 flex justify-between font-bold text-base text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl">
+                <span>TOTAL ASSETS</span>
+                <span class="font-mono text-emerald-600 dark:text-emerald-400">${{ bs.total_assets }}</span>
+            </div>
+        </div>
+
+        <!-- LIABILITIES & EQUITY SECTION -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6 space-y-6">
+            <div class="border-b border-slate-200 dark:border-slate-700 pb-3">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">LIABILITIES & EQUITY</h3>
+            </div>
+
+            <!-- Current Liabilities -->
+            <div class="space-y-3">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Current Liabilities</h4>
+                <div class="space-y-2 text-sm">
+                    {% for item in bs.current_liabilities %}
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-700 dark:text-slate-300">{{ item.name }}</span>
+                        <span class="font-mono font-semibold text-slate-900 dark:text-white">${{ item.amount }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-xs text-slate-400">No active current liability accounts.</p>
+                    {% endfor %}
+                    <div class="flex justify-between pt-2 font-bold text-slate-900 dark:text-white">
+                        <span>Total Current Liabilities</span>
+                        <span class="font-mono text-indigo-600 dark:text-indigo-400">${{ bs.total_current_liabilities }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equity -->
+            <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Capital & Equity</h4>
+                <div class="space-y-2 text-sm">
+                    {% for item in bs.equity_items %}
+                    <div class="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                        <span class="text-slate-700 dark:text-slate-300">{{ item.name }}</span>
+                        <span class="font-mono font-semibold text-slate-900 dark:text-white">${{ item.amount }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-xs text-slate-400">No active equity accounts.</p>
+                    {% endfor %}
+                    <div class="flex justify-between pt-2 font-bold text-slate-900 dark:text-white">
+                        <span>Total Equity</span>
+                        <span class="font-mono text-indigo-600 dark:text-indigo-400">${{ bs.total_equity }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Liabilities & Equity Footer -->
+            <div class="pt-4 border-t-2 border-indigo-600 flex justify-between font-bold text-base text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl">
+                <span>TOTAL LIABILITIES & EQUITY</span>
+                <span class="font-mono text-emerald-600 dark:text-emerald-400">${{ bs.total_liabilities_equity }}</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -3,6 +3,7 @@ from backend.apps.ai.views_web import AIWorkspaceWebView, PromptLibraryWebView
 
 urlpatterns = [
     # Web views
+    path('', AIWorkspaceWebView.as_view(), name='ai_console_web'),
     path('workspace/', AIWorkspaceWebView.as_view(), name='ai_workspace_web'),
     path('prompts/', PromptLibraryWebView.as_view(), name='prompt_library_web'),
     

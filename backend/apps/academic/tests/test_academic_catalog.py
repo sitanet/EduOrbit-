@@ -3,7 +3,7 @@ from backend.apps.tenants.models import Tenant, School
 from backend.apps.academic.models import (
     AcademicYear, EducationLevel, AcademicLevel, AcademicClass, Curriculum, Subject
 )
-from backend.apps.academic.services.catalog import AcademicCatalogService
+from backend.apps.academic.services import AcademicCatalogService
 
 class AcademicCatalogTestCase(TestCase):
     def setUp(self):

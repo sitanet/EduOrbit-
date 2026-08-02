@@ -50,7 +50,8 @@ class Slice5EnterpriseReadinessTests(TestCase):
         self.user_finance = self._create_user_with_role("finance.officer", "finance_officer", self.role_finance)
 
     def _create_user_with_role(self, username, code_prefix, role):
-        user = User.objects.create_user(username=username, email=f"{username}@eduorbit.com", password="Demo@2026")
+        is_staff = (username == "hr.admin")
+        user = User.objects.create_user(username=username, email=f"{username}@eduorbit.com", password="Demo@2026", is_staff=is_staff)
         TenantMembership.objects.create(user=user, tenant=self.tenant_a, role=role, status="active")
         person = Person.objects.create(tenant=self.tenant_a, user=user, person_number=f"PER-{code_prefix}", first_name=username.split('.')[0].title(), last_name="User", date_of_birth=date(1990, 1, 1), gender="other")
         EmployeeProfile.objects.create(tenant=self.tenant_a, person=person, employee_number=f"EMP-{code_prefix}", job_title="Staff", salary_grade="grade_1")

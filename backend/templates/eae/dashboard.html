@@ -1,83 +1,217 @@
 {% extends "base/_document.html" %}
-{% block title %}Exams &amp; Assessments — EduOrbit{% endblock %}
+{% block title %}Exams & Assessment Engine (EAE) — EduOrbit ERP{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="md:flex md:items-center md:justify-between mb-8">
-    <div class="min-w-0 flex-1">
-      <p class="text-xs font-semibold tracking-widest text-indigo-400 uppercase mb-1">EduOrbit · Academics</p>
-      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Exams &amp; Assessments (EAE)</h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Configure online CBT tests, manage class grading formulas, and review attempt logs.</p>
+<div class="space-y-6">
+
+  <!-- ── Hero Banner ──────────────────────────────────────────────────── -->
+  <div class="relative bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-2xl border border-indigo-500/30 shadow-xl overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(99,102,241,0.15),_transparent_70%)] pointer-events-none"></div>
+    <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-5">
+      <div class="space-y-1.5">
+        <p class="text-[10px] font-bold tracking-widest text-indigo-400 uppercase">EduOrbit · Examination Hub</p>
+        <h1 class="text-2xl font-extrabold tracking-tight flex items-center gap-2.5">📝 Exams & Assessment Engine (EAE)</h1>
+        <p class="text-xs text-slate-300 max-w-xl">
+          Manage Computer Based Testing (CBT), question bank repositories, subject grading rubrics, and student test attempt logs.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+        <button onclick="document.getElementById('createExamModal').classList.remove('hidden')"
+                class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition shadow-md flex items-center gap-1.5">
+          ➕ Schedule CBT Exam
+        </button>
+        <a href="/emrp/dashboard/"
+           class="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold rounded-xl transition">
+          📊 Report Card Engine
+        </a>
+      </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Active Assessments</p>
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ assessments|length|default:"6" }}</p>
-      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Active this term</p>
+  <!-- ── KPI Stat Row ──────────────────────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Active Assessments</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ active_assessments|default:total_assessments|default:6 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Scheduled this term</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">📝</div>
     </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Questions Bank</p>
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">412</p>
-      <p class="text-xs text-emerald-400 mt-2">Across 18 subjects</p>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Question Bank</span>
+        <div class="text-2xl font-black text-emerald-500 mt-1">{{ question_count|default:412 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Across all subjects</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">❓</div>
     </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Completed Attempts</p>
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ recent_attempts|length|default:"194" }}</p>
-      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">CBT tests processed</p>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Completed Attempts</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ completed_attempts|default:194 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Student Submissions</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-500 flex items-center justify-center text-xl">✅</div>
     </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Average Score</p>
-      <p class="text-3xl font-bold text-amber-500">76.4%</p>
-      <p class="text-xs text-emerald-400 mt-2">↑ 1.2% this term</p>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Average Score</span>
+        <div class="text-2xl font-black text-amber-500 mt-1">76.4<span class="text-sm">%</span></div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">↑ 1.2% this term</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">📊</div>
     </div>
+
   </div>
 
-  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
-    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
-      <h3 class="font-semibold text-slate-900 dark:text-white">Active Online CBT Assessments</h3>
+  <!-- ── Module Shortcuts ──────────────────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <button onclick="document.getElementById('createExamModal').classList.remove('hidden')"
+       class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-indigo-500/50 hover:shadow-md transition text-left group">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">📝</div>
+        <span class="text-xs text-indigo-500 font-bold">+ Schedule</span>
+      </div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Schedule CBT Exam</h3>
+      <p class="text-xs text-slate-400 mt-1">Create timed online assessments & quizzes.</p>
+    </button>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-emerald-500/50 hover:shadow-md transition text-left group cursor-pointer">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">❓</div>
+        <span class="text-xs text-emerald-500 font-bold">{{ question_count|default:412 }} Items</span>
+      </div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Question Bank</h3>
+      <p class="text-xs text-slate-400 mt-1">MCQ, True/False, and Essay items.</p>
     </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-purple-500/50 hover:shadow-md transition text-left group cursor-pointer">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">⏱️</div>
+        <span class="text-xs text-purple-500 font-bold">Proctored</span>
+      </div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">CBT Test Console</h3>
+      <p class="text-xs text-slate-400 mt-1">Live student exam execution monitor.</p>
+    </div>
+
+    <a href="/emrp/dashboard/" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-amber-500/50 hover:shadow-md transition text-left group">
+      <div class="flex items-center justify-between mb-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">📊</div>
+        <span class="text-xs text-amber-500 font-bold">EMRP Engine &rarr;</span>
+      </div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Result Analytics</h3>
+      <p class="text-xs text-slate-400 mt-1">Grade distribution and terminal reports.</p>
+    </a>
+  </div>
+
+  <!-- ── Active CBT Assessments Table ─────────────────────────────────── -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+        📝 Active Online CBT Assessments
+      </h2>
+      <button onclick="document.getElementById('createExamModal').classList.remove('hidden')" class="text-xs font-bold text-indigo-500 hover:underline">+ New Exam</button>
+    </div>
+
     <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
-          <tr>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Assessment Name</th>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Class &amp; Subject</th>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Test Type</th>
-            <th class="text-right px-6 py-3 font-semibold uppercase">Status</th>
+      <table class="w-full text-left text-xs">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Assessment Title</th>
+            <th class="px-6 py-3">Duration</th>
+            <th class="px-6 py-3">Format</th>
+            <th class="px-6 py-3 text-right">Status</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
           {% for assessment in assessments %}
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ assessment.title }}</td>
-            <td class="px-6 py-4">{{ assessment.school_class.name }} · {{ assessment.subject.name }}</td>
-            <td class="px-6 py-4">CBT Test Session</td>
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+              {{ assessment.title }}
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">
+              ⏱️ {{ assessment.duration_minutes }} minutes
+            </td>
+            <td class="px-6 py-4">
+              <span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-mono text-[10px] font-bold">
+                CBT ONLINE
+              </span>
+            </td>
             <td class="px-6 py-4 text-right">
-              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">ACTIVE</span>
+              {% if assessment.is_active %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">ACTIVE</span>
+              {% else %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-500/20 text-slate-600 dark:text-slate-400 font-mono">DRAFT</span>
+              {% endif %}
             </td>
           </tr>
           {% empty %}
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">JSS1 Mathematics Mid-Term Exam</td>
-            <td class="px-6 py-4">JSS 1 · Mathematics</td>
-            <td class="px-6 py-4"><span class="px-2 py-0.5 bg-indigo-900/40 text-indigo-400 text-xs font-medium rounded-lg">CBT</span></td>
-            <td class="px-6 py-4 text-right">
-              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">ACTIVE</span>
-            </td>
+          <!-- Demo Rows when no DB records exist -->
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">JSS1 Mathematics Mid-Term Assessment</td>
+            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">⏱️ 60 minutes</td>
+            <td class="px-6 py-4"><span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-mono text-[10px] font-bold">CBT ONLINE</span></td>
+            <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">ACTIVE</span></td>
           </tr>
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">SS2 Physics Term Assessment Test</td>
-            <td class="px-6 py-4">SS 2 · Physics</td>
-            <td class="px-6 py-4"><span class="px-2 py-0.5 bg-indigo-900/40 text-indigo-400 text-xs font-medium rounded-lg">CBT</span></td>
-            <td class="px-6 py-4 text-right">
-              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">ACTIVE</span>
-            </td>
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">SS2 Physics Term Assessment Test</td>
+            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">⏱️ 45 minutes</td>
+            <td class="px-6 py-4"><span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-mono text-[10px] font-bold">CBT ONLINE</span></td>
+            <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">ACTIVE</span></td>
+          </tr>
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">JS3 Basic Science CBT Quiz</td>
+            <td class="px-6 py-4 font-mono text-slate-600 dark:text-slate-300">⏱️ 30 minutes</td>
+            <td class="px-6 py-4"><span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-mono text-[10px] font-bold">CBT ONLINE</span></td>
+            <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">ACTIVE</span></td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+  </div>
+
+</div>
+
+<!-- ── Modal: Schedule CBT Exam ─────────────────────────────────────── -->
+<div id="createExamModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">📝 Schedule CBT Assessment</h3>
+      <button onclick="document.getElementById('createExamModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <form method="POST" action="{{ request.path }}" class="p-6 space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_assessment">
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Assessment Title</label>
+        <input type="text" name="title" placeholder="e.g. JSS2 Mathematics Term Exam" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Duration (Minutes)</label>
+        <input type="number" name="duration_minutes" value="60" min="5" max="300" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" onclick="document.getElementById('createExamModal').classList.add('hidden')"
+                class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">
+          Cancel
+        </button>
+        <button type="submit"
+                class="px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-md">
+          ✅ Schedule Assessment
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}

@@ -1,8 +1,12 @@
 from django.urls import path, include
+from django.views.generic import RedirectView
 from backend.apps.tenants.views_web import OnboardWizardWebView, TenantDashboardWebView, SwitchSchoolView
 from backend.apps.tenants.views_admin import PlatformSaaSAnalyticsView
 
 urlpatterns = [
+    # Redirect base /tenants/ to tenant dashboard
+    path('', RedirectView.as_view(pattern_name='tenant_dashboard_web', permanent=False), name='tenants_index'),
+    
     # Web views
     path('onboard/', OnboardWizardWebView.as_view(), name='onboard_wizard'),
     path('tenant-dashboard/', TenantDashboardWebView.as_view(), name='tenant_dashboard_web'),

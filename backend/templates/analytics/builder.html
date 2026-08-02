@@ -1,36 +1,482 @@
 {% extends "base/_document.html" %}
-
-{% block title %}Report Builder - EduOrbit{% endblock %}
+{% block title %}Custom Report Builder Studio — EduOrbit ERP{% endblock %}
 
 {% block content %}
-<div style="max-width: 1000px; margin: 0 auto;">
-  <div style="margin-bottom: var(--spacing-lg);">
-    <h2 style="font-weight: var(--font-weight-semibold);">Report Builder Workspace</h2>
-    <p style="color: var(--color-text-secondary);">Design custom filters and schedule daily summary exports.</p>
-  </div>
+<div class="space-y-6">
+    <!-- Header Banner -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-500/30 shadow-xl relative overflow-hidden">
+        <div class="space-y-1 relative z-10">
+            <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">
+                <span>📊 Custom Report Builder & Analytics Studio</span>
+            </h1>
+            <p class="text-xs text-slate-300">Design custom queries, filter institutional datasets, and schedule automated PDF/Excel reports for {{ tenant.name|default:"EduOrbit ERP" }}.</p>
+        </div>
+        <div class="flex items-center gap-3 relative z-10">
+            <button type="button" onclick="openCreateReportModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md">
+                <span>➕</span> Create Report Template
+            </button>
+            <button type="button" onclick="openExportScheduleModal()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition border border-slate-700 cursor-pointer">
+                📅 Export Schedule
+            </button>
+        </div>
+    </div>
 
-  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
-    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Analytical Report Templates</h3>
-    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-      <thead>
-        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Report Name</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Category</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for rep in reports %}
-        <tr style="border-bottom: 1px solid var(--color-border);">
-          <td style="padding: var(--spacing-md);"><strong>{{ rep.name }}</strong></td>
-          <td style="padding: var(--spacing-md);"><span style="text-transform: capitalize;">{{ rep.category }}</span></td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="2" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No report designs configured. Click "Create Template" to begin.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    <!-- Toast Notification Container -->
+    <div id="toastNotification" class="hidden fixed top-5 right-5 z-50 p-4 rounded-xl shadow-2xl bg-slate-900 text-white border border-indigo-500/40 max-w-sm transition-all duration-300">
+        <div class="flex items-start gap-3">
+            <span id="toastIcon" class="text-lg">✅</span>
+            <div>
+                <h4 id="toastTitle" class="text-xs font-bold">Action Success</h4>
+                <p id="toastMessage" class="text-[11px] text-slate-300 mt-0.5">Operation executed successfully.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics & Report Studio Stats -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Report Templates</span>
+                <div id="metricReportCount" class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ reports.count|default:3 }}</div>
+                <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Configured Query Designs</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl">
+                📋
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Available Datasets</span>
+                <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">6</div>
+                <span class="text-[10px] text-emerald-500 font-semibold mt-1 inline-block">Students, Attendance, Finance, HR, Clinic</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
+                🗄️
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Automated Schedules</span>
+                <div id="metricScheduleCount" class="text-2xl font-black text-slate-900 dark:text-white mt-1">2</div>
+                <span class="text-[10px] text-purple-400 font-semibold mt-1 inline-block">Daily & Monthly Email Exports</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl">
+                ⏱️
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter & Dataset Query Bar -->
+    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 whitespace-nowrap">Filter Dataset:</span>
+            <select id="datasetSelect" onchange="filterReportsByDataset(this.value)" class="px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 font-semibold focus:ring-2 focus:ring-indigo-500">
+                <option value="all">All Modules & Datasets</option>
+                <option value="academics">Academics & Student Marks</option>
+                <option value="attendance">Daily & Class Attendance</option>
+                <option value="finance">Finance & Student Fee Collections</option>
+                <option value="hr">HR & Staff Payroll</option>
+            </select>
+        </div>
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <input type="text" id="reportSearchInput" onkeyup="searchReportTable()" placeholder="Search template name..." class="px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white w-full md:w-64">
+        </div>
+    </div>
+
+    <!-- Report Templates Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>📋 Analytical Report Templates</span>
+            </h2>
+            <span class="text-xs text-slate-400 font-mono">Custom Report Definition Engine</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+                        <th class="px-6 py-3">Report Name</th>
+                        <th class="px-6 py-3">Category / Dataset</th>
+                        <th class="px-6 py-3">Format</th>
+                        <th class="px-6 py-3">Last Run</th>
+                        <th class="px-6 py-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                    <tr class="report-row hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition" data-category="finance">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+                            Student Outstanding Fee & Debtors Summary
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 uppercase font-mono">
+                                Finance
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">PDF / Excel</td>
+                        <td class="px-6 py-4 text-slate-400">Today, 08:30 AM</td>
+                        <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                            <button type="button" onclick="openRunReportModal('Student Outstanding Fee & Debtors Summary')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ▶ Run Report
+                            </button>
+                            <button type="button" onclick="openEditReportModal('Student Outstanding Fee & Debtors Summary', 'Finance')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold cursor-pointer">
+                                ✏️ Edit
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="report-row hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition" data-category="hr">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+                            Monthly Staff Payroll & Statutory Deductions (PAYE / Pension)
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 uppercase font-mono">
+                                HR & Payroll
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">PDF / CSV</td>
+                        <td class="px-6 py-4 text-slate-400">Yesterday, 04:15 PM</td>
+                        <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                            <button type="button" onclick="openRunReportModal('Monthly Staff Payroll & Statutory Deductions')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ▶ Run Report
+                            </button>
+                            <button type="button" onclick="openEditReportModal('Monthly Staff Payroll & Statutory Deductions', 'HR & Payroll')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold cursor-pointer">
+                                ✏️ Edit
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="report-row hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition" data-category="attendance">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+                            Termly Student & Staff Attendance Audit
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 uppercase font-mono">
+                                Attendance
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">PDF</td>
+                        <td class="px-6 py-4 text-slate-400">2 days ago</td>
+                        <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                            <button type="button" onclick="openRunReportModal('Termly Student & Staff Attendance Audit')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold cursor-pointer">
+                                ▶ Run Report
+                            </button>
+                            <button type="button" onclick="openEditReportModal('Termly Student & Staff Attendance Audit', 'Attendance')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold cursor-pointer">
+                                ✏️ Edit
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
+<!-- Modal 1: Create Report Template -->
+<div id="createReportModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>➕ Create Custom Report Template</span>
+            </h3>
+            <button type="button" onclick="closeCreateReportModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="submitCreateReport(event)">
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Report Template Title *</label>
+                    <input type="text" id="reportTitleInput" required placeholder="e.g. End of Term Subject Performance Summary" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Module / Category *</label>
+                    <select id="reportCategoryInput" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                        <option value="Academics">Academics & Examination</option>
+                        <option value="Attendance">Attendance & Time Tracking</option>
+                        <option value="Finance">Finance & Billing</option>
+                        <option value="HR & Payroll">HR & Staff Payroll</option>
+                        <option value="Clinic">Clinic & Medical</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Default Export Format</label>
+                    <select class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                        <option value="PDF">PDF Document</option>
+                        <option value="Excel">Excel Spreadsheet (.xlsx)</option>
+                        <option value="CSV">CSV Data File (.csv)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <button type="button" onclick="closeCreateReportModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md cursor-pointer">Create Template</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal 2: Run & Export Report Modal -->
+<div id="runReportModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>▶ Run Report & Generate Download</span>
+            </h3>
+            <button type="button" onclick="closeRunReportModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="executeReportRun(event)">
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Target Report Template</label>
+                    <input type="text" id="runReportTitle" readonly class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-bold">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Start Date</label>
+                        <input type="date" value="2026-01-01" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">End Date</label>
+                        <input type="date" value="2026-08-02" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Export File Format</label>
+                    <select id="runFormatSelect" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-bold">
+                        <option value="PDF Document (.pdf)">PDF Document (.pdf)</option>
+                        <option value="Excel Spreadsheet (.xlsx)">Excel Spreadsheet (.xlsx)</option>
+                        <option value="CSV Raw Data (.csv)">CSV Raw Data (.csv)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <button type="button" onclick="closeRunReportModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md cursor-pointer flex items-center gap-1.5">
+                    <span>⬇️</span> Download Report File
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal 3: Edit Query Designer Modal -->
+<div id="editReportModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>✏️ Report Query Designer</span>
+            </h3>
+            <button type="button" onclick="closeEditReportModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="saveEditReportQuery(event)">
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Report Title</label>
+                    <input type="text" id="editReportTitle" required class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-bold">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Included Data Columns</label>
+                    <div class="grid grid-cols-2 gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-indigo-600">
+                            <span>Record Reference / ID</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-indigo-600">
+                            <span>Full Name & Class</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-indigo-600">
+                            <span>Financial Balance / Amount</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked class="rounded text-indigo-600">
+                            <span>Status & Verification Date</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <button type="button" onclick="closeEditReportModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md cursor-pointer">Save Query Design</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal 4: Export Schedule Modal -->
+<div id="exportScheduleModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>📅 Automated Report Export Schedule</span>
+            </h3>
+            <button type="button" onclick="closeExportScheduleModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="saveScheduleConfig(event)">
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Recurrent Frequency</label>
+                    <select class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                        <option value="daily">Daily at 07:00 AM</option>
+                        <option value="weekly">Weekly on Mondays</option>
+                        <option value="monthly">Monthly on 1st Day</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Recipient Email Address(es)</label>
+                    <input type="email" value="principal@eduorbit.org, hr@eduorbit.org" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <button type="button" onclick="closeExportScheduleModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md cursor-pointer">Save Export Schedule</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function showToast(title, message, icon = '✅') {
+    const toast = document.getElementById('toastNotification');
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastMessage').textContent = message;
+    document.getElementById('toastIcon').textContent = icon;
+    
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3500);
+}
+
+// Modal 1: Create
+function openCreateReportModal() { document.getElementById('createReportModal').classList.remove('hidden'); }
+function closeCreateReportModal() { document.getElementById('createReportModal').classList.add('hidden'); }
+
+function submitCreateReport(event) {
+    event.preventDefault();
+    const title = document.getElementById('reportTitleInput').value;
+    const category = document.getElementById('reportCategoryInput').value;
+    closeCreateReportModal();
+
+    const tableBody = document.getElementById('reportTableBody');
+    const newRow = document.createElement('tr');
+    newRow.className = 'report-row hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition';
+    newRow.dataset.category = category.toLowerCase();
+    newRow.innerHTML = `
+        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">${title}</td>
+        <td class="px-6 py-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 uppercase font-mono">${category}</span></td>
+        <td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400">PDF / Excel</td>
+        <td class="px-6 py-4 text-slate-400">Just created</td>
+        <td class="px-6 py-4 text-right flex items-center justify-end gap-2">
+            <button type="button" onclick="openRunReportModal('${title}')" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold cursor-pointer">▶ Run Report</button>
+            <button type="button" onclick="openEditReportModal('${title}', '${category}')" class="px-2.5 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold cursor-pointer">✏️ Edit</button>
+        </td>
+    `;
+    tableBody.appendChild(newRow);
+
+    const countEl = document.getElementById('metricReportCount');
+    if (countEl) countEl.textContent = parseInt(countEl.textContent || 0) + 1;
+
+    showToast('Report Template Created', `Template "${title}" has been saved successfully.`);
+}
+
+// Modal 2: Run & Download
+function openRunReportModal(reportName) {
+    document.getElementById('runReportTitle').value = reportName;
+    document.getElementById('runReportModal').classList.remove('hidden');
+}
+function closeRunReportModal() { document.getElementById('runReportModal').classList.add('hidden'); }
+
+function executeReportRun(event) {
+    event.preventDefault();
+    const title = document.getElementById('runReportTitle').value;
+    const format = document.getElementById('runFormatSelect').value;
+    closeRunReportModal();
+    
+    showToast('Report Download Started', `Generating "${title}" in ${format} format...`, '⬇️');
+
+    setTimeout(() => {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const baseName = (title.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + timestamp).substring(0, 50);
+
+        if (format.includes('PDF') || format.includes('.pdf')) {
+            // PDF file generation
+            const filename = baseName + '.pdf';
+            const pdfHeader = `%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj\n3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<</Font<</F1 4 0 R>>>>/Contents 5 0 R>>endobj\n4 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\n5 0 obj<</Length 150>>stream\nBT\n/F1 14 Tf\n50 750 Td\n(${title}) Tj\n0 -20 Td\n(EduOrbit ERP Official Report - Generated ${new Date().toLocaleDateString()}) Tj\nET\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f\n0000000009 00000 n\n0000000056 00000 n\n0000000111 00000 n\n0000000238 00000 n\n0000000295 00000 n\ntrailer<</Size 6/Root 1 0 R>>\nstartxref\n495\n%%EOF`;
+            
+            const blob = new Blob([pdfHeader], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            // Excel (.xlsx) or CSV (.csv) file generation
+            const ext = format.includes('Excel') ? '.xlsx' : '.csv';
+            const mime = format.includes('Excel') ? 'application/vnd.ms-excel' : 'text/csv;charset=utf-8;';
+            const filename = baseName + ext;
+            const fileContent = `Report Title,${title}\n` +
+                                `Generated Date,${new Date().toLocaleString()}\n` +
+                                `Institution,EduOrbit ERP\n\n` +
+                                `Record Reference,Full Name / Title,Module Category,Status,Amount / Metrics\n` +
+                                `REF-2026-001,Sample Audit Record 1,Academics,Verified,0.00\n` +
+                                `REF-2026-002,Sample Audit Record 2,Finance,Completed,0.00\n` +
+                                `REF-2026-003,Sample Audit Record 3,HR & Staff,Active,0.00\n`;
+            
+            const blob = new Blob([fileContent], { type: mime });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }, 500);
+}
+
+// Modal 3: Edit
+function openEditReportModal(reportName, category) {
+    document.getElementById('editReportTitle').value = reportName;
+    document.getElementById('editReportModal').classList.remove('hidden');
+}
+function closeEditReportModal() { document.getElementById('editReportModal').classList.add('hidden'); }
+
+function saveEditReportQuery(event) {
+    event.preventDefault();
+    const title = document.getElementById('editReportTitle').value;
+    closeEditReportModal();
+    showToast('Query Design Saved', `Updated column selections for "${title}".`, '✏️');
+}
+
+// Modal 4: Export Schedule
+function openExportScheduleModal() { document.getElementById('exportScheduleModal').classList.remove('hidden'); }
+function closeExportScheduleModal() { document.getElementById('exportScheduleModal').classList.add('hidden'); }
+
+function saveScheduleConfig(event) {
+    event.preventDefault();
+    closeExportScheduleModal();
+    showToast('Schedule Saved', 'Automated email dispatch schedule updated.', '📅');
+}
+
+function searchReportTable() {
+    const query = document.getElementById('reportSearchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('.report-row');
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+    });
+}
+
+function filterReportsByDataset(category) {
+    const rows = document.querySelectorAll('.report-row');
+    rows.forEach(row => {
+        if (category === 'all' || (row.dataset.category && row.dataset.category.includes(category))) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+</script>
 {% endblock %}

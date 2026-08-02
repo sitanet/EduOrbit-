@@ -1,0 +1,277 @@
+{% extends "base/_document.html" %}
+{% load static %}
+{% block title %}Payment Voucher {{ voucher.voucher_number }} — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Payment Voucher {{ voucher.voucher_number }}</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Official payment authorization and disbursement documentation.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'payment_vouchers' %}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl border transition-all">
+                ← Back to Vouchers
+            </a>
+            <a href="{% url 'supplier_payment_detail' payment_id=voucher.payment.id %}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                💰 View Payment
+            </a>
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Voucher
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <a href="{% url 'payables_dashboard_web' %}" class="hover:text-indigo-600">Payables Dashboard</a>
+        <span>›</span>
+        <a href="{% url 'payment_vouchers' %}" class="hover:text-indigo-600">Payment Vouchers</a>
+        <span>›</span>
+        <span class="font-semibold">{{ voucher.voucher_number }}</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Main Voucher Details -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Voucher Information -->
+            <div class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Payment Voucher</h2>
+                        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Official disbursement authorization document</p>
+                    </div>
+                    {% if voucher.status == 'draft' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">Draft</span>
+                    {% elif voucher.status == 'submitted' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">Submitted</span>
+                    {% elif voucher.status == 'approved' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                    {% elif voucher.status == 'rejected' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800">Rejected</span>
+                    {% elif voucher.status == 'processed' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-emerald-100 text-emerald-800">Bank Processed</span>
+                    {% elif voucher.status == 'cancelled' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800">Cancelled</span>
+                    {% endif %}
+                </div>
+
+                <!-- Voucher Header Information -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Voucher Number</span>
+                        <div class="text-lg font-bold text-slate-900 dark:text-white">{{ voucher.voucher_number }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Voucher Date</span>
+                        <div class="text-sm text-slate-600 dark:text-slate-300">{{ voucher.created_at|date:"F j, Y" }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Payment Reference</span>
+                        <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ voucher.payment.payment_number }}</div>
+                        <div class="text-xs text-slate-400">{{ voucher.payment.reference }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Amount</span>
+                        <div class="text-lg font-mono font-bold text-emerald-600 dark:text-emerald-400">NGN {{ voucher.amount|floatformat:2 }}</div>
+                    </div>
+                </div>
+
+                <!-- Payee Information -->
+                <div class="border-t border-slate-200 dark:border-slate-700 pt-6 mb-6">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Payee Information</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Supplier Name</span>
+                            <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ voucher.payment.bill.supplier_name }}</div>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Bill Reference</span>
+                            <div class="text-sm text-slate-600 dark:text-slate-300">{{ voucher.payment.bill.bill_number }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Details -->
+                <div class="border-t border-slate-200 dark:border-slate-700 pt-6">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Payment Details</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Payment Method</span>
+                            <div class="text-sm text-slate-600 dark:text-slate-300">{{ voucher.payment.get_payment_method_display }}</div>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Payment Date</span>
+                            <div class="text-sm text-slate-600 dark:text-slate-300">{{ voucher.payment.payment_date|date:"F j, Y" }}</div>
+                        </div>
+                        {% if voucher.payment.bank_account %}
+                        <div class="sm:col-span-2">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Bank Account</span>
+                            <div class="text-sm text-slate-600 dark:text-slate-300">{{ voucher.payment.bank_account.account_name }} ({{ voucher.payment.bank_account.account_number }})</div>
+                            <div class="text-xs text-slate-400">{{ voucher.payment.bank_account.bank_name }}</div>
+                        </div>
+                        {% endif %}
+                        {% if voucher.payment.description %}
+                        <div class="sm:col-span-2">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Description</span>
+                            <div class="text-sm text-slate-600 dark:text-slate-300">{{ voucher.payment.description }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Amount Breakdown -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Amount Breakdown</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-sm text-slate-600 dark:text-slate-300">Gross Payment Amount</span>
+                        <span class="text-sm font-mono text-slate-900 dark:text-white">NGN {{ voucher.payment.amount|floatformat:2 }}</span>
+                    </div>
+                    {% if voucher.payment.withholding_tax_amount > 0 %}
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-sm text-slate-600 dark:text-slate-300">Less: Withholding Tax</span>
+                        <span class="text-sm font-mono text-red-600 dark:text-red-400">(NGN {{ voucher.payment.withholding_tax_amount|floatformat:2 }})</span>
+                    </div>
+                    {% endif %}
+                    <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-base font-semibold text-slate-900 dark:text-white">Net Amount Payable</span>
+                            <span class="text-xl font-mono font-black text-emerald-600 dark:text-emerald-400">NGN {{ voucher.payment.net_amount|floatformat:2 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            
+            <!-- Voucher Status -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Voucher Status</h3>
+                
+                <div class="text-center py-4">
+                    {% if voucher.status == 'processed' %}
+                        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-2xl">✅</span>
+                        </div>
+                        <div class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">BANK PROCESSED</div>
+                        <div class="text-xs text-slate-500 mt-1">Payment has been processed</div>
+                    {% elif voucher.status == 'approved' %}
+                        <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-2xl">✓</span>
+                        </div>
+                        <div class="text-sm font-semibold text-green-600 dark:text-green-400">APPROVED</div>
+                        <div class="text-xs text-slate-500 mt-1">Ready for bank processing</div>
+                    {% elif voucher.status == 'submitted' %}
+                        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-2xl">⏳</span>
+                        </div>
+                        <div class="text-sm font-semibold text-blue-600 dark:text-blue-400">PENDING APPROVAL</div>
+                        <div class="text-xs text-slate-500 mt-1">Awaiting management approval</div>
+                    {% else %}
+                        <div class="w-16 h-16 bg-gray-100 dark:bg-gray-900/30 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-2xl">📝</span>
+                        </div>
+                        <div class="text-sm font-semibold text-gray-600 dark:text-gray-400">{{ voucher.get_status_display|upper }}</div>
+                        <div class="text-xs text-slate-500 mt-1">Voucher in {{ voucher.status }} status</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Approval Timeline -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Approval Timeline</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <div class="text-sm font-semibold text-slate-900 dark:text-white">Voucher Created</div>
+                            <div class="text-xs text-slate-500">{{ voucher.created_at|date:"M j, Y g:i A" }}</div>
+                            {% if voucher.prepared_by %}
+                            <div class="text-xs text-slate-400">by {{ voucher.prepared_by.get_full_name }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if voucher.approved_at %}
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <div class="text-sm font-semibold text-slate-900 dark:text-white">Voucher Approved</div>
+                            <div class="text-xs text-slate-500">{{ voucher.approved_at|date:"M j, Y g:i A" }}</div>
+                            {% if voucher.approved_by %}
+                            <div class="text-xs text-slate-400">by {{ voucher.approved_by.get_full_name }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if voucher.processed_at %}
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <div class="text-sm font-semibold text-slate-900 dark:text-white">Bank Processed</div>
+                            <div class="text-xs text-slate-500">{{ voucher.processed_at|date:"M j, Y g:i A" }}</div>
+                            {% if voucher.processed_by %}
+                            <div class="text-xs text-slate-400">by {{ voucher.processed_by.get_full_name }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Related Documents -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Related Documents</h3>
+                
+                <div class="space-y-3">
+                    <div>
+                        <a href="{% url 'supplier_payment_detail' payment_id=voucher.payment.id %}" class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <span class="text-purple-600">💰</span>
+                                <div>
+                                    <div class="text-sm font-semibold text-slate-900 dark:text-white">Supplier Payment</div>
+                                    <div class="text-xs text-slate-500">{{ voucher.payment.payment_number }}</div>
+                                </div>
+                            </div>
+                            <span class="text-xs text-indigo-600">View →</span>
+                        </a>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-600 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <span class="text-blue-600">📄</span>
+                                <div>
+                                    <div class="text-sm font-semibold text-slate-900 dark:text-white">Supplier Bill</div>
+                                    <div class="text-xs text-slate-500">{{ voucher.payment.bill.bill_number }}</div>
+                                </div>
+                            </div>
+                            <span class="text-xs text-slate-400">Reference</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</div>
+
+<style>
+@media print {
+    .no-print { display: none !important; }
+}
+</style>
+
+{% endblock %}

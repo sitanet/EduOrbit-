@@ -8,53 +8,83 @@
 
     <!-- Stat Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {% include 'components/stat_card.html' with title="Total Schools" value="142" icon="office-building" trend="+12%" trend_color="text-green-500" %}
-        {% include 'components/stat_card.html' with title="Active Users" value="24.5K" icon="users" trend="+5.2%" trend_color="text-green-500" %}
-        {% include 'components/stat_card.html' with title="Monthly MRR" value="$124,500" icon="currency-dollar" trend="+8.4%" trend_color="text-green-500" %}
-        {% include 'components/stat_card.html' with title="Server Uptime" value="99.99%" icon="server" trend="Stable" trend_color="text-blue-500" %}
+        {% include 'components/stat_card.html' with title="Total Schools" value=total_schools icon="office-building" trend="up" trend_value="+12%" %}
+        {% include 'components/stat_card.html' with title="Active Users" value=active_users icon="users" trend="up" trend_value="+5.2%" %}
+        {% include 'components/stat_card.html' with title="Monthly MRR" value=monthly_mrr|stringformat:".2f"|add:"$" icon="currency-dollar" trend="up" trend_value="+8.4%" %}
+        {% include 'components/stat_card.html' with title="Server Uptime" value="99.99%" icon="server" %}
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- ApexChart Placeholder -->
+        <!-- ApexChart Section -->
         <div class="lg:col-span-2 bg-white dark:bg-slate-100 dark:bg-slate-700 rounded-lg shadow p-6">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-slate-900 dark:text-white mb-4">Revenue Growth</h2>
-            <div id="revenue-chart" class="w-full h-80 bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 rounded flex items-center justify-center border border-dashed border-gray-300 dark:border-gray-600">
-                <span class="text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400 font-medium">ApexChart Placeholder</span>
-            </div>
+            <div id="revenue-chart" class="w-full h-80 bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 rounded"></div>
         </div>
 
         <!-- Recent School Signups -->
         <div class="bg-white dark:bg-slate-100 dark:bg-slate-700 rounded-lg shadow p-6">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-slate-900 dark:text-white mb-4">Recent Signups</h2>
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400">
+                <table class="w-full text-sm text-left text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-650 dark:text-slate-650 dark:text-slate-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400">
                         <tr>
                             <th scope="col" class="px-4 py-3">School Name</th>
-                            <th scope="col" class="px-4 py-3">Date</th>
+                            <th scope="col" class="px-4 py-3">Code</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for school in recent_signups %}
                         <tr class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Lincoln High</td>
-                            <td class="px-4 py-3">Today</td>
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">{{ school.name }}</td>
+                            <td class="px-4 py-3 font-mono text-xs">{{ school.code }}</td>
                         </tr>
-                        <tr class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Oakridge Academy</td>
-                            <td class="px-4 py-3">Yesterday</td>
-                        </tr>
-                        <tr class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Springfield Elem</td>
-                            <td class="px-4 py-3">Oct 12</td>
-                        </tr>
+                        {% empty %}
                         <tr>
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Westview Middle</td>
-                            <td class="px-4 py-3">Oct 10</td>
+                            <td colspan="2" class="px-4 py-8 text-center text-slate-500 dark:text-slate-400">
+                                <div class="text-slate-500 text-xs">No recent signups found.</div>
+                            </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var options = {
+            series: [{
+                name: 'MRR ($)',
+                data: {{ chart_data|safe|default:"[]" }}
+            }],
+            chart: {
+                height: 320,
+                type: 'area',
+                toolbar: {
+                    show: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2
+            },
+            colors: ['#0ea5e9'],
+            xaxis: {
+                categories: {{ chart_labels|safe|default:"[]" }}
+            },
+            grid: {
+                borderColor: '#e2e8f0',
+                strokeDashArray: 4
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#revenue-chart"), options);
+        chart.render();
+    });
+</script>
 {% endblock %}

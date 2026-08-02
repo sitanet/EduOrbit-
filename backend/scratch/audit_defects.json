@@ -1,0 +1,2546 @@
+[
+  {
+    "file": "templates\\landing.html",
+    "line": 82,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"flex items-center gap-2 hover:scale-105 transition-transform duration-300\">",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\landing.html",
+    "line": 140,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- High-fidelity Dashboard Mock Preview -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\landing.html",
+    "line": 142,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Floating Glass Panels (Mock HUD) -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\landing.html",
+    "line": 170,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Sidebar mock -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\landing.html",
+    "line": 177,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Main mock -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\academic\\dashboard.html",
+    "line": 160,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"text-xs text-indigo-400 hover:underline\">Manage</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\academic\\setup_wizard.html",
+    "line": 46,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"year_name\" placeholder=\"e.g. 2026/2027 Academic Year\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\academic\\setup_wizard.html",
+    "line": 47,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\academic\\setup_wizard.html",
+    "line": 53,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"year_code\" placeholder=\"e.g. 2026-2027\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\academic\\setup_wizard.html",
+    "line": 54,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\academic\\subjects.html",
+    "line": 130,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"name\" required placeholder=\"e.g. Mathematics\" class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\academic\\subjects.html",
+    "line": 135,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"code\" required placeholder=\"e.g. MATH-101\" class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\academic\\subjects.html",
+    "line": 180,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"name\" required placeholder=\"e.g. Vocational Study\" class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\academic\\subjects.html",
+    "line": 185,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"code\" required placeholder=\"e.g. vocational\" class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\administration\\dashboard.html",
+    "line": 143,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Mock Row for immediate visual feedback if database is unseeded -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\administration\\dashboard.html",
+    "line": 164,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"text-primary hover:text-primary-hover transition-colors font-semibold\">Manage</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\administration\\dashboard.html",
+    "line": 243,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Mock system logs if unseeded -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\administration\\settings.html",
+    "line": 50,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Mock Subscription Rows for visual demo if DB empty -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\admissions\\dashboard.html",
+    "line": 177,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"text-xs text-emerald-400 hover:underline\">Review</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 92,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"first_name\" placeholder=\"First name\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 97,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"middle_name\" placeholder=\"Middle name (optional)\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 102,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"last_name\" placeholder=\"Last name\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 126,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"state_of_origin\" placeholder=\"e.g. Lagos\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 131,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"religion\" placeholder=\"e.g. Christian/Muslim\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 143,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"parent_name\" placeholder=\"Parent name\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 148,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"tel\" name=\"parent_phone\" placeholder=\"e.g. +2348030000000\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 153,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"email\" name=\"parent_email\" placeholder=\"email@address.com\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 165,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"prev_school\" placeholder=\"School name\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 170,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"prev_gpa\" placeholder=\"e.g. 84% or 3.8 GPA\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\new_application.html",
+    "line": 175,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"medical_allergies\" placeholder=\"e.g. Asthma, Peanuts allergy\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\setup_wizard.html",
+    "line": 46,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"campaign_name\" placeholder=\"e.g. 2027/2028 Main Admission Campaign\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\admissions\\setup_wizard.html",
+    "line": 47,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\ai\\dashboard.html",
+    "line": 68,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" placeholder=\"Ask AI anything (e.g. Generate a quiz on Photosynthesis)...\" class=\"flex-1 bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-indigo-500\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\base\\_topbar.html",
+    "line": 24,
+    "type": "Placeholder/Mock",
+    "evidence": "<input id=\"search\" class=\"block w-full bg-slate-100 dark:bg-slate-700/50 py-2 pl-10 pr-3 border border-transparent rounded-lg leading-5 text-slate-900 dark:text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:bg-white dark:focus:bg-slate-700 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition-colors duration-200\" placeholder=\"Search students, classes...\" type=\"search\" name=\"search\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\chat.html",
+    "line": 90,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"text\" required placeholder=\"Type a message here...\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\dashboard.html",
+    "line": 58,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" placeholder=\"e.g. Mid-term break notification\" class=\"w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\dashboard.html",
+    "line": 79,
+    "type": "Placeholder/Mock",
+    "evidence": "<textarea rows=\"4\" placeholder=\"Enter announcement body text...\" class=\"w-full bg-slate-100 dark:bg-slate-700 border border-gray-700 rounded-xl px-4 py-2 text-sm text-slate-900 dark:text-white\"></textarea>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\request_demo.html",
+    "line": 60,
+    "type": "Placeholder/Mock",
+    "evidence": ".input-field::placeholder { color: rgba(255, 255, 255, 0.35); }",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\request_demo.html",
+    "line": 139,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"name\" placeholder=\"John Doe\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\request_demo.html",
+    "line": 145,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"school_name\" placeholder=\"Fimyi College\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\request_demo.html",
+    "line": 151,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"email\" name=\"email\" placeholder=\"john@school.com\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\request_demo.html",
+    "line": 157,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"tel\" name=\"phone\" placeholder=\"+234 80 1234 5678\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\communication\\request_demo.html",
+    "line": 175,
+    "type": "Placeholder/Mock",
+    "evidence": "<textarea name=\"message\" placeholder=\"Tell us about your school needs...\" rows=\"3\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\components\\input.html",
+    "line": 2,
+    "type": "Placeholder/Mock",
+    "evidence": "{# Variables: label, name, type, placeholder, error, value #}",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\components\\input.html",
+    "line": 14,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"bg-white border text-slate-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 transition-shadow shadow-sm dark:bg-slate-800 dark:border-slate-600 dark:placeholder-slate-400 dark:text-slate-900 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\components\\input.html",
+    "line": 16,
+    "type": "Placeholder/Mock",
+    "evidence": "placeholder=\"{{ placeholder|default:'' }}\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\components\\inputs\\text.html",
+    "line": 6,
+    "type": "Placeholder/Mock",
+    "evidence": "- placeholder: Placeholder text",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\components\\inputs\\text.html",
+    "line": 22,
+    "type": "Placeholder/Mock",
+    "evidence": "placeholder=\"{{ placeholder|default:'' }}\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\dashboards\\analytics_dashboard.html",
+    "line": 37,
+    "type": "Placeholder/Mock",
+    "evidence": "<div class=\"text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 italic\">Pie Chart Placeholder (ApexCharts)</div>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\dashboards\\analytics_dashboard.html",
+    "line": 45,
+    "type": "Placeholder/Mock",
+    "evidence": "<div class=\"text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-400 italic\">Bar Chart Placeholder (ApexCharts)</div>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\eae\\attempt_screen.html",
+    "line": 25,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"radio\" name=\"question-{{ ans.question.id }}\" /> Choice option options placeholder",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\attendance_dashboard.html",
+    "line": 161,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"name\" required placeholder=\"e.g. Morning Shift\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\candidate_review.html",
+    "line": 63,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"text-xs font-bold text-indigo-500 hover:underline\">Download File</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\hr\\candidate_review.html",
+    "line": 93,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"number\" name=\"score\" min=\"0\" max=\"100\" required placeholder=\"Score (e.g. 85)\" class=\"w-1/3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\dashboard.html",
+    "line": 51,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"search\" placeholder=\"Search staff...\" class=\"text-sm px-3 py-1.5 bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-650 rounded-lg text-slate-700 dark:text-slate-350 focus:outline-none focus:ring-2 focus:ring-indigo-500\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\leave_calendar.html",
+    "line": 133,
+    "type": "Placeholder/Mock",
+    "evidence": "<textarea name=\"reason\" rows=\"3\" placeholder=\"State reason for leave request...\" style=\"width: 100%; padding: 8px 12px; border: 1px solid var(--color-border); border-radius: var(--radius-md);\"></textarea>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\recruitment_dashboard.html",
+    "line": 40,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"search\" placeholder=\"Search candidates...\" class=\"text-sm px-3 py-1.5 bg-slate-100 dark:bg-slate-700 border border-slate-200 dark:border-slate-650 rounded-lg text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\recruitment_dashboard.html",
+    "line": 82,
+    "type": "Placeholder/Mock",
+    "evidence": "<p class=\"text-xs text-slate-500 mt-1\">Click \"Seed Candidate\" to generate a sample application to test.</p>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'sample'"
+  },
+  {
+    "file": "templates\\hr\\recruitment_dashboard.html",
+    "line": 139,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"title\" required placeholder=\"e.g. Physics Teacher\" class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\recruitment_dashboard.html",
+    "line": 144,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"department\" placeholder=\"e.g. Sciences\" class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\recruitment_dashboard.html",
+    "line": 149,
+    "type": "Placeholder/Mock",
+    "evidence": "<textarea name=\"description\" rows=\"3\" placeholder=\"Job duties and candidate requirements...\" class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition\"></textarea>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 55,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" id=\"searchInput\" oninput=\"filterTopics()\" placeholder=\"Search guides, credentials, URLs...\" class=\"w-full bg-slate-900/90 border border-slate-700/60 rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 303,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Step Visual Mockup Box -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 306,
+    "type": "Placeholder/Mock",
+    "evidence": "<span class=\"font-mono text-indigo-300\" id=\"mockupTitle\">Login Response</span>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 307,
+    "type": "Placeholder/Mock",
+    "evidence": "<span class=\"px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px]\" id=\"mockupBadge\">200 OK Redirect</span>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 309,
+    "type": "Placeholder/Mock",
+    "evidence": "<div class=\"space-y-2 text-xs font-mono\" id=\"mockupLines\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 521,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupTitle: \"Login Credentials & Response\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 522,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupBadge: \"200 OK Redirect\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 523,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupLines: [",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 535,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupTitle: \"RecruitmentService.hire_candidate()\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 536,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupBadge: \"Profile Created\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 537,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupLines: [",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 548,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupTitle: \"AttendanceService.clock_in()\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 549,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupBadge: \"Present\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 550,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupLines: [",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 562,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupTitle: \"LeaveService.approve_leave_request()\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 563,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupBadge: \"Approved\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 564,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupLines: [",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 576,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupTitle: \"PayrollCalculationEngineV1\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 577,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupBadge: \"Calculated\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 578,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupLines: [",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 590,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupTitle: \"Double-Entry Ledger Balancing\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 591,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupBadge: \"Debits == Credits\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 592,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupLines: [",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 604,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupTitle: \"PDF Payslip Generator\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 605,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupBadge: \"PDF Downloaded\",",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 606,
+    "type": "Placeholder/Mock",
+    "evidence": "mockupLines: [",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 632,
+    "type": "Placeholder/Mock",
+    "evidence": "document.getElementById('mockupTitle').innerText = stepData.mockupTitle;",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 633,
+    "type": "Placeholder/Mock",
+    "evidence": "document.getElementById('mockupBadge').innerText = stepData.mockupBadge;",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 636,
+    "type": "Placeholder/Mock",
+    "evidence": "stepData.mockupLines.forEach(l => {",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\user_manual.html",
+    "line": 639,
+    "type": "Placeholder/Mock",
+    "evidence": "document.getElementById('mockupLines').innerHTML = html;",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\hr\\admin\\directory.html",
+    "line": 36,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"first_name\" required placeholder=\"e.g. Natasha\" class=\"w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\admin\\directory.html",
+    "line": 40,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"last_name\" required placeholder=\"e.g. Romanoff\" class=\"w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\admin\\directory.html",
+    "line": 45,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"email\" name=\"email\" required placeholder=\"natasha@eduorbit.com\" class=\"w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\admin\\directory.html",
+    "line": 58,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"job_title\" required placeholder=\"Physics Teacher\" class=\"w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\admin\\directory.html",
+    "line": 81,
+    "type": "Placeholder/Mock",
+    "evidence": "{% include 'hr/components/_search_bar.html' with placeholder=\"Search by name, staff ID, department, email...\" target_id=\"staff-table-body\" %}",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\admin\\onboarding_wizard.html",
+    "line": 240,
+    "type": "JS Debug/Alert",
+    "evidence": "alert('Step 1 Validated! Navigating to Step 2 Employment Details.');",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\hr\\admin\\org_chart.html",
+    "line": 31,
+    "type": "JS Debug/Alert",
+    "evidence": "<form onsubmit=\"event.preventDefault(); alert('New Organizational Position created!'); document.getElementById('positionModal').classList.add('hidden');\" class=\"space-y-3 text-xs\">",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\hr\\admin\\org_chart.html",
+    "line": 34,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" placeholder=\"e.g. Senior Chemistry Teacher\" required class=\"w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\audit\\trail.html",
+    "line": 17,
+    "type": "Placeholder/Mock",
+    "evidence": "{% include 'hr/components/_search_bar.html' with placeholder=\"Search by actor, event type, model, object ID...\" target_id=\"audit-table-body\" %}",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\components\\_search_bar.html",
+    "line": 3,
+    "type": "Placeholder/Mock",
+    "evidence": "Usage: {% include 'hr/components/_search_bar.html' with placeholder=\"Search employees...\" target_id=\"search-results\" search_url=\"/hr/search/\" %}",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\components\\_search_bar.html",
+    "line": 13,
+    "type": "Placeholder/Mock",
+    "evidence": "placeholder=\"{{ placeholder|default:'Search...' }}\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\components\\_search_bar.html",
+    "line": 18,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full pl-9 pr-10 py-2 bg-slate-100 dark:bg-slate-750 border border-slate-200 dark:border-slate-650 rounded-xl text-sm text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\disciplinary\\dashboard.html",
+    "line": 25,
+    "type": "JS Debug/Alert",
+    "evidence": "<form onsubmit=\"event.preventDefault(); alert('Disciplinary Query issued successfully!'); document.getElementById('disciplinaryModal').classList.add('hidden');\" class=\"space-y-3 text-xs\">",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\hr\\disciplinary\\dashboard.html",
+    "line": 40,
+    "type": "Placeholder/Mock",
+    "evidence": "<textarea rows=\"3\" required placeholder=\"Describe the incident details...\" class=\"w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white\"></textarea>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\ess\\dashboard.html",
+    "line": 159,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"px-3 py-1 bg-indigo-500/10 text-indigo-600 hover:bg-indigo-500/20 rounded-lg text-xs font-semibold\">Download PDF</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\hr\\performance\\dashboard.html",
+    "line": 28,
+    "type": "JS Debug/Alert",
+    "evidence": "<form onsubmit=\"event.preventDefault(); alert('Appraisal Cycle Q3-2026 successfully launched!'); document.getElementById('appraisalModal').classList.add('hidden');\" class=\"space-y-3 text-xs\">",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\hr\\rewards\\wall.html",
+    "line": 26,
+    "type": "JS Debug/Alert",
+    "evidence": "<form onsubmit=\"event.preventDefault(); alert('Peer Nomination submitted for review!'); document.getElementById('nominateModal').classList.add('hidden');\" class=\"space-y-3 text-xs\">",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\hr\\rewards\\wall.html",
+    "line": 41,
+    "type": "Placeholder/Mock",
+    "evidence": "<textarea rows=\"3\" required placeholder=\"Describe why this employee deserves recognition...\" class=\"w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white\"></textarea>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\search\\results.html",
+    "line": 15,
+    "type": "Placeholder/Mock",
+    "evidence": "{% include 'hr/components/_search_bar.html' with placeholder=\"Type name, staff ID (e.g. EMP-004), email, department...\" target_id=\"search-results-container\" %}",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\hr\\search\\results.html",
+    "line": 21,
+    "type": "Placeholder/Mock",
+    "evidence": "<h3 class=\"text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4\">Search Results (Sample Data)</h3>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'sample'"
+  },
+  {
+    "file": "templates\\hr\\settings\\index.html",
+    "line": 20,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"inline-block text-xs font-semibold text-indigo-500 hover:underline\">Edit Payroll Setup \u2192</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\hr\\settings\\index.html",
+    "line": 27,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"inline-block text-xs font-semibold text-indigo-500 hover:underline\">Edit Leave Setup \u2192</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\hr\\settings\\index.html",
+    "line": 34,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"inline-block text-xs font-semibold text-indigo-500 hover:underline\">Edit Attendance Setup \u2192</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\hr\\settings\\index.html",
+    "line": 41,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"inline-block text-xs font-semibold text-indigo-500 hover:underline\">Toggle Sub-Modules \u2192</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\hr\\settings\\index.html",
+    "line": 48,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"inline-block text-xs font-semibold text-indigo-500 hover:underline\">Open Workflow Builder \u2192</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\hr\\training\\dashboard.html",
+    "line": 25,
+    "type": "JS Debug/Alert",
+    "evidence": "<form onsubmit=\"event.preventDefault(); alert('Training Program successfully scheduled!'); document.getElementById('trainingModal').classList.add('hidden');\" class=\"space-y-3 text-xs\">",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\identity\\login.html",
+    "line": 141,
+    "type": "Placeholder/Mock",
+    "evidence": "placeholder=\"Enter your username\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\identity\\login.html",
+    "line": 158,
+    "type": "Placeholder/Mock",
+    "evidence": "placeholder=\"Enter your password\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\identity\\role_matrix.html",
+    "line": 55,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Mock Permission Rows for demo visual fallback -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\lms\\dashboard.html",
+    "line": 167,
+    "type": "Dead Link/Nav",
+    "evidence": "<a href=\"#\" class=\"text-xs text-purple-400 hover:underline\">View</a>",
+    "severity": "HIGH",
+    "description": "Found dead link pattern 'href=\"#\"'"
+  },
+  {
+    "file": "templates\\lms\\module_builder.html",
+    "line": 119,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"title\" placeholder=\"e.g. Quadratic Equations\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\lms\\module_builder.html",
+    "line": 120,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\lms\\module_builder.html",
+    "line": 126,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"topic\" placeholder=\"e.g. Graphing and solving binomials\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\lms\\module_builder.html",
+    "line": 127,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\people\\directory.html",
+    "line": 39,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl pl-4 pr-10 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-550 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\people\\directory.html",
+    "line": 40,
+    "type": "Placeholder/Mock",
+    "evidence": "placeholder=\"Search by first name, last name, or person number...\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\people\\directory.html",
+    "line": 132,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"person_number\" placeholder=\"e.g. PER-1234 (Leave blank to auto-generate)\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\people\\directory.html",
+    "line": 133,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-550 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\people\\directory.html",
+    "line": 139,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"first_name\" placeholder=\"First name\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\people\\directory.html",
+    "line": 146,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"last_name\" placeholder=\"Last name\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\people\\directory.html",
+    "line": 153,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"middle_name\" placeholder=\"Middle name\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\students\\portfolio.html",
+    "line": 61,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Mock portfolio achievements for demonstrative visual feedback -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\students\\portfolio.html",
+    "line": 139,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"title\" placeholder=\"e.g. 1st Place Science Olympiad\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\students\\portfolio.html",
+    "line": 140,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\students\\portfolio.html",
+    "line": 153,
+    "type": "Placeholder/Mock",
+    "evidence": "<textarea name=\"description\" placeholder=\"Briefly describe the student's project or award details...\" rows=\"3\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\students\\portfolio.html",
+    "line": 154,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\"></textarea>",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\dashboard.html",
+    "line": 135,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Mock Campus Row for immediately visual feedback -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\tenants\\saas_analytics.html",
+    "line": 82,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Standard placeholder modules if DB empty -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 37,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"org_name\" placeholder=\"e.g. Grace Group of Schools\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 38,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 50,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"admin_username\" placeholder=\"e.g. grace_admin\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 51,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 55,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"email\" name=\"admin_email\" placeholder=\"e.g. admin@graceschools.com\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 56,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 61,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"password\" name=\"admin_password\" placeholder=\"Create strong password\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 62,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 73,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"school_name\" placeholder=\"e.g. Grace College Campus\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\tenants\\wizard.html",
+    "line": 74,
+    "type": "Placeholder/Mock",
+    "evidence": "class=\"w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\timetable\\bookings.html",
+    "line": 61,
+    "type": "JS Debug/Alert",
+    "evidence": "<button class=\"text-indigo-400 hover:text-indigo-300 font-semibold\" @click=\"alert('Edit room details action triggered.')\">Edit</button>",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\timetable\\bookings.html",
+    "line": 70,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Mock Resources Rows for demo visual fallback -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\timetable\\bookings.html",
+    "line": 85,
+    "type": "JS Debug/Alert",
+    "evidence": "<button class=\"text-indigo-400 hover:text-indigo-300 font-semibold\" @click=\"alert('Edit room details action triggered.')\">Edit</button>",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\timetable\\bookings.html",
+    "line": 103,
+    "type": "JS Debug/Alert",
+    "evidence": "<button class=\"text-indigo-400 hover:text-indigo-300 font-semibold\" @click=\"alert('Edit room details action triggered.')\">Edit</button>",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\timetable\\bookings.html",
+    "line": 121,
+    "type": "JS Debug/Alert",
+    "evidence": "<button class=\"text-indigo-400 hover:text-indigo-300 font-semibold\" @click=\"alert('Edit room details action triggered.')\">Edit</button>",
+    "severity": "MEDIUM",
+    "description": "Found JS pattern 'alert\\('"
+  },
+  {
+    "file": "templates\\timetable\\bookings.html",
+    "line": 144,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"name\" placeholder=\"e.g. Biology Laboratory Room\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\timetable\\bookings.html",
+    "line": 160,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"number\" name=\"capacity\" placeholder=\"e.g. 45\" required",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "templates\\timetable\\builder.html",
+    "line": 111,
+    "type": "Placeholder/Mock",
+    "evidence": "<!-- Mock Timetable Rows for demo visual fallback -->",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "templates\\timetable\\builder.html",
+    "line": 239,
+    "type": "Placeholder/Mock",
+    "evidence": "<input type=\"text\" name=\"name\" required placeholder=\"e.g. Room 105\" class=\"w-full bg-slate-100 dark:bg-slate-750 border border-gray-700 rounded-xl px-4 py-3 text-sm text-slate-900 dark:text-white focus:outline-none\">",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "apps\\admissions\\services.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\ai\\interfaces.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\ai\\interfaces.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\ai\\models.py",
+    "line": 71,
+    "type": "Placeholder/Mock",
+    "evidence": "embedding_vector_json = models.TextField(blank=True)  # Mock representation",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\ai\\providers\\base.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\ai\\providers\\base.py",
+    "line": 13,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\ai\\services\\copilot.py",
+    "line": 187,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\analytics\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\analytics\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\analytics\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\analytics\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\analytics\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\attendance\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\attendance\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\attendance\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\attendance\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\attendance\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\attendance\\views_web.py",
+    "line": 25,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\clinic\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\clinic\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\clinic\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\clinic\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\communication\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\communication\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\communication\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\communication\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\communication\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\communication\\ai.py",
+    "line": 54,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\communication\\providers\\termii.py",
+    "line": 35,
+    "type": "Placeholder/Mock",
+    "evidence": "# If in test/mock mode or no live HTTP requests",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\communication\\providers\\termii.py",
+    "line": 36,
+    "type": "Placeholder/Mock",
+    "evidence": "if api_key.startswith('test_') or getattr(settings, 'MOCK_THIRD_PARTY_APIS', True):",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\communication\\providers\\termii.py",
+    "line": 37,
+    "type": "Placeholder/Mock",
+    "evidence": "logger.info(f\"[Termii SMS Mock] Sent to {phone_clean} via sender '{payload['from']}': {message[:40]}...\")",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\communication\\tests\\test_communication.py",
+    "line": 49,
+    "type": "Placeholder/Mock",
+    "evidence": "def test_notification_template_placeholders_substitution(self):",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "apps\\core\\di.py",
+    "line": 11,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\di.py",
+    "line": 15,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\di.py",
+    "line": 19,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\di.py",
+    "line": 25,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\di.py",
+    "line": 29,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\di.py",
+    "line": 33,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\di.py",
+    "line": 39,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\events.py",
+    "line": 65,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\health.py",
+    "line": 37,
+    "type": "Placeholder/Mock",
+    "evidence": "# Just check if we can instantiate and maybe list or access a dummy path",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'dummy'"
+  },
+  {
+    "file": "apps\\core\\interfaces.py",
+    "line": 22,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\middleware.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\middleware.py",
+    "line": 65,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\middleware.py",
+    "line": 74,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\notifications.py",
+    "line": 11,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\notifications.py",
+    "line": 51,
+    "type": "Placeholder/Mock",
+    "evidence": "# PLACEHOLDER CHANNELS FOR TESTING THE INTEGRATION",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "apps\\core\\state_machine.py",
+    "line": 6,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\core\\management\\commands\\seed_platform.py",
+    "line": 15,
+    "type": "Placeholder/Mock",
+    "evidence": "# Platform Settings (mock)",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\eae\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\eae\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\eae\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\eae\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\eae\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\eae\\ai.py",
+    "line": 54,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\efbm\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\efbm\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\efbm\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\efbm\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\efbm\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\efbm\\ai.py",
+    "line": 54,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\emrp\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\emrp\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\emrp\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\emrp\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\emrp\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\emrp\\ai.py",
+    "line": 54,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\emrp\\tests\\test_emrp.py",
+    "line": 74,
+    "type": "Placeholder/Mock",
+    "evidence": "formula_expression=\"raw_score * 0.7 + 30\"  # mock formula",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\facilities\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\facilities\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\facilities\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\facilities\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hostel\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hostel\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hostel\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hostel\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\ai.py",
+    "line": 54,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\models.py",
+    "line": 68,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\api\\serializers.py",
+    "line": 111,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\api\\serializers.py",
+    "line": 114,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\management\\commands\\seed_hr_demo.py",
+    "line": 24,
+    "type": "Placeholder/Mock",
+    "evidence": "help = \"Seeds complete HR demo environment with 5 role-based accounts and full sample data.\"",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'sample'"
+  },
+  {
+    "file": "apps\\hr\\management\\commands\\seed_recruitment.py",
+    "line": 9,
+    "type": "Placeholder/Mock",
+    "evidence": "help = 'Seeds sample recruitment vacancies and candidate applications for testing.'",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'sample'"
+  },
+  {
+    "file": "apps\\hr\\services\\kyc.py",
+    "line": 11,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\services\\kyc.py",
+    "line": 15,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\services\\kyc.py",
+    "line": 19,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\services\\payroll.py",
+    "line": 269,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 5,
+    "type": "Placeholder/Mock",
+    "evidence": "from unittest.mock import patch, MagicMock",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 176,
+    "type": "Placeholder/Mock",
+    "evidence": "def test_employee_created_publishes_after_commit(self, mock_publish):",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 187,
+    "type": "Placeholder/Mock",
+    "evidence": "mock_publish.assert_not_called()",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 190,
+    "type": "Placeholder/Mock",
+    "evidence": "self.assertTrue(mock_publish.called)",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 192,
+    "type": "Placeholder/Mock",
+    "evidence": "args, _ = mock_publish.call_args",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 196,
+    "type": "Placeholder/Mock",
+    "evidence": "def test_leave_requested_publishes_after_commit(self, mock_publish):",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 207,
+    "type": "Placeholder/Mock",
+    "evidence": "mock_publish.assert_not_called()",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 209,
+    "type": "Placeholder/Mock",
+    "evidence": "self.assertTrue(mock_publish.called)",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 210,
+    "type": "Placeholder/Mock",
+    "evidence": "args, _ = mock_publish.call_args",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 214,
+    "type": "Placeholder/Mock",
+    "evidence": "def test_leave_approved_publishes_after_commit(self, mock_publish):",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 224,
+    "type": "Placeholder/Mock",
+    "evidence": "mock_publish.reset_mock()",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 228,
+    "type": "Placeholder/Mock",
+    "evidence": "mock_publish.assert_not_called()",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 230,
+    "type": "Placeholder/Mock",
+    "evidence": "self.assertTrue(mock_publish.called)",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 231,
+    "type": "Placeholder/Mock",
+    "evidence": "args, _ = mock_publish.call_args",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 235,
+    "type": "Placeholder/Mock",
+    "evidence": "def test_redis_unavailable_does_not_rollback(self, mock_delay):",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 237,
+    "type": "Placeholder/Mock",
+    "evidence": "mock_delay.side_effect = ConnectionError(\"Redis connection refused\")",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 398,
+    "type": "Placeholder/Mock",
+    "evidence": "def test_outbox_creation_and_batch_dispatch(self, mock_delay):",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 418,
+    "type": "Placeholder/Mock",
+    "evidence": "self.assertTrue(mock_delay.called)",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 435,
+    "type": "Placeholder/Mock",
+    "evidence": "# Mock accounting service that throws a failure",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 450,
+    "type": "Placeholder/Mock",
+    "evidence": "def test_outbox_retry_and_dead_letter(self, mock_delay):",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\hr\\tests\\test_hr.py",
+    "line": 452,
+    "type": "Placeholder/Mock",
+    "evidence": "mock_delay.side_effect = ConnectionError(\"Broker Down\")",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\identity\\models.py",
+    "line": 90,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\identity\\models.py",
+    "line": 100,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\identity\\providers.py",
+    "line": 13,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\identity\\providers.py",
+    "line": 36,
+    "type": "Placeholder/Mock",
+    "evidence": "Placeholder for OTP verification login.",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'placeholder'"
+  },
+  {
+    "file": "apps\\identity\\services.py",
+    "line": 131,
+    "type": "Code Quality Stub",
+    "evidence": "# Superusers bypass checks",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\identity\\views_demo.py",
+    "line": 20,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\identity\\views_web.py",
+    "line": 37,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\identity\\views_web.py",
+    "line": 68,
+    "type": "Code Quality Stub",
+    "evidence": "pass  # Session tracking non-blocking",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\identity\\api\\views.py",
+    "line": 67,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\inventory\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\inventory\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\inventory\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\inventory\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\library\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\library\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\library\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\library\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\ai.py",
+    "line": 54,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\ai.py",
+    "line": 63,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\services\\learning.py",
+    "line": 136,
+    "type": "Code Quality Stub",
+    "evidence": "is_pass = score >= Decimal(str(quiz.pass_marks))",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\services\\learning.py",
+    "line": 143,
+    "type": "Code Quality Stub",
+    "evidence": "is_passed=is_pass,",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\services\\learning.py",
+    "line": 151,
+    "type": "Code Quality Stub",
+    "evidence": "message=f\"You scored {score}/{quiz.total_marks} on Quiz '{quiz.title}'. Status: {'PASSED' if is_pass else 'FAILED'}.\",",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\lms\\services\\learning.py",
+    "line": 161,
+    "type": "Code Quality Stub",
+    "evidence": "\"is_passed\": is_pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\people\\views_web.py",
+    "line": 155,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\people\\views_web.py",
+    "line": 181,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\teachers\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\teachers\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\teachers\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\teachers\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\teachers\\ai.py",
+    "line": 45,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\teachers\\ai.py",
+    "line": 54,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\tenants\\views_admin.py",
+    "line": 21,
+    "type": "Placeholder/Mock",
+    "evidence": "# Calculate Mock MRR (Monthly Recurring Revenue) & ARR from active subscriptions",
+    "severity": "MEDIUM",
+    "description": "Found placeholder keyword 'mock'"
+  },
+  {
+    "file": "apps\\tenants\\services\\gateways.py",
+    "line": 12,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\tenants\\services\\gateways.py",
+    "line": 16,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\tenants\\services\\gateways.py",
+    "line": 20,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\transport\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\transport\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\transport\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\transport\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\workflow\\ai.py",
+    "line": 9,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\workflow\\ai.py",
+    "line": 18,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\workflow\\ai.py",
+    "line": 27,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  },
+  {
+    "file": "apps\\workflow\\ai.py",
+    "line": 36,
+    "type": "Code Quality Stub",
+    "evidence": "pass",
+    "severity": "LOW",
+    "description": "Found code stub pattern 'pass\\b'"
+  }
+]

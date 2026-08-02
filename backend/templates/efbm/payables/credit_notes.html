@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Supplier Credit Notes | EduOrbit ERP{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6 space-y-6">
+    <!-- Header Banner -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900">Supplier Credit Notes</h1>
+            <p class="text-slate-500 text-sm mt-1">Manage vendor credit adjustments, purchase returns, and Accounts Payable liability reductions.</p>
+        </div>
+        <div class="mt-4 md:mt-0 flex space-x-3">
+            <button onclick="document.getElementById('creditNoteModal').classList.remove('hidden')" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg text-sm transition-colors shadow-sm">
+                + Issue Credit Note
+            </button>
+        </div>
+    </div>
+
+    <!-- Credit Notes Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+            <h2 class="font-semibold text-slate-800 text-base">All Supplier Credit Notes</h2>
+            <span class="text-xs text-slate-500 font-medium">Total Notes: {{ credit_notes|length }}</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-semibold uppercase text-xs">
+                        <th class="py-3 px-4">Note Number</th>
+                        <th class="py-3 px-4">Supplier / Bill</th>
+                        <th class="py-3 px-4">Issue Date</th>
+                        <th class="py-3 px-4">Reason</th>
+                        <th class="py-3 px-4 text-right">Credit Amount</th>
+                        <th class="py-3 px-4 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 text-slate-700">
+                    {% for cn in credit_notes %}
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="py-3 px-4 font-mono font-medium text-indigo-600">{{ cn.note_number }}</td>
+                        <td class="py-3 px-4">
+                            <span class="font-semibold text-slate-800">{{ cn.bill.supplier_name }}</span>
+                            <br>
+                            <span class="text-xs text-slate-400">Bill #{{ cn.bill.bill_number }}</span>
+                        </td>
+                        <td class="py-3 px-4 text-slate-600">{{ cn.issue_date|date:"d M Y, H:i" }}</td>
+                        <td class="py-3 px-4 text-slate-600">{{ cn.reason }}</td>
+                        <td class="py-3 px-4 text-right font-semibold text-emerald-600">${{ cn.amount|floatformat:2 }}</td>
+                        <td class="py-3 px-4 text-center">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                Applied
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="py-8 text-center text-slate-400">
+                            No supplier credit notes issued yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Issue Credit Note -->
+<div id="creditNoteModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl shadow-xl border border-slate-200 max-w-md w-full p-6">
+        <div class="flex justify-between items-center pb-3 border-b border-slate-200">
+            <h3 class="font-bold text-slate-800 text-lg">Issue Supplier Credit Note</h3>
+            <button onclick="document.getElementById('creditNoteModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+        </div>
+        <form method="POST" action="{% url 'supplier_credit_notes_web' %}" class="mt-4 space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Select Supplier Bill ID</label>
+                <input type="text" name="bill_id" required placeholder="Enter Supplier Bill UUID" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Credit Amount ($)</label>
+                <input type="number" step="0.01" min="0.01" name="amount" required placeholder="0.00" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Adjustment Reason</label>
+                <textarea name="reason" required rows="3" placeholder="e.g. Return of damaged goods / Price adjustment credit" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+            </div>
+            <div class="flex justify-end space-x-3 pt-3 border-t border-slate-200">
+                <button type="button" onclick="document.getElementById('creditNoteModal').classList.add('hidden')" class="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium shadow-sm">Save & Post GL Journal</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

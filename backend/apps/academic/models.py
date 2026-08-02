@@ -305,3 +305,90 @@ class AcademicResource(TenantBaseModel):
     def __str__(self):
         return f"{self.name} ({self.resource_type})"
 
+
+# ==============================================================
+# ENTERPRISE GRADEBOOK, REPORT CARDS, & PROMOTION ENGINE
+# ==============================================================
+
+class GradebookEntry(TenantBaseModel):
+    """
+    Class Gradebook score record binding a student to a subject & academic term.
+    """
+    student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE, related_name='gradebook_entries')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='gradebook_entries')
+    academic_class = models.ForeignKey(AcademicClass, on_delete=models.CASCADE, related_name='gradebook_entries')
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
+    period = models.ForeignKey(AcademicPeriod, on_delete=models.CASCADE, null=True, blank=True)
+    
+    ca_score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    exam_score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    total_score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    letter_grade = models.CharField(max_length=10, blank=True)
+    remark = models.CharField(max_length=100, blank=True)
+    
+    is_absent = models.BooleanField(default=False)
+    is_locked = models.BooleanField(default=False)
+    teacher_notes = models.TextField(blank=True)
+
+    class Meta:
+        unique_together = ('student', 'subject', 'academic_class', 'academic_year', 'period')
+        ordering = ['student__person__first_name', 'student__person__last_name']
+
+    def __str__(self):
+        return f"{self.student.student_number} - {self.subject.code}: {self.total_score} ({self.letter_grade})"
+
+
+class StudentReportCard(TenantBaseModel):
+    """
+    Official Term/Semester Report Card summary record for a student.
+    """
+    PROMOTION_STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('promoted', 'Promoted'),
+        ('retained', 'Retained'),
+        ('conditional', 'Conditional Pass')
+    ]
+    student = models.ForeignKey('people.StudentProfile', on_delete=models.CASCADE, related_name='report_cards')
+    academic_class = models.ForeignKey(AcademicClass, on_delete=models.CASCADE)
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
+    period = models.ForeignKey(AcademicPeriod, on_delete=models.CASCADE, null=True, blank=True)
+    
+    total_score = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
+    average_score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    position_in_class = models.IntegerField(default=1)
+    class_size = models.IntegerField(default=1)
+    promotion_status = models.CharField(max_length=30, choices=PROMOTION_STATUS_CHOICES, default='pending')
+    
+    teacher_comments = models.TextField(blank=True)
+    principal_comments = models.TextField(blank=True)
+    affective_domain = models.JSONField(default=dict, blank=True)   # e.g., {"Punctuality": "A", "Neatness": "B"}
+    psychomotor_domain = models.JSONField(default=dict, blank=True) # e.g., {"Sports": "A", "Handwriting": "B"}
+    attendance_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=100.00)
+    
+    qr_verification_code = models.CharField(max_length=64, default=uuid.uuid4, unique=True)
+    is_published = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('student', 'academic_year', 'period')
+        ordering = ['-academic_year__start_date', 'student__person__first_name']
+
+    def __str__(self):
+        return f"Report Card: {self.student.student_number} ({self.academic_class.name})"
+
+
+class BatchPromotionLog(TenantBaseModel):
+    """
+    Audit log tracking end-of-year class cohort promotion executions.
+    """
+    from_class = models.ForeignKey(AcademicClass, on_delete=models.CASCADE, related_name='promotions_from')
+    to_class = models.ForeignKey(AcademicClass, on_delete=models.CASCADE, related_name='promotions_to')
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE)
+    promoted_count = models.IntegerField(default=0)
+    retained_count = models.IntegerField(default=0)
+    executed_by_user_id = models.UUIDField(null=True, blank=True)
+    executed_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Promotion: {self.from_class.name} -> {self.to_class.name} ({self.promoted_count} promoted)"
+
+

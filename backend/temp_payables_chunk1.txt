@@ -1,0 +1,59 @@
+﻿        
+        # Post to GL: Dr: Administrative Expenses, Cr: Accounts Payable
+        AutomaticAccountingIntegrationService.post_purchasing_vendor_bill(
+            tenant=bill.tenant,
+            reference_id=str(bill.id),
+            amount=bill.amount
+        )
+        
+        return bill
+
+    @classmethod
+    @transaction.atomic
+    def reject_supplier_bill(cls, bill_id, reason='', user=None):
+        """Reject a supplier bill with reason."""
+        bill = SupplierBill.objects.select_for_update().get(id=bill_id)
+        
+        if bill.status not in ['pending']:
+            raise ValueError(f"Only pending bills can be rejected")
+        
+        old_status = bill.status
+        bill.status = 'cancelled'
+        bill.save()
+        
+        cls._create_audit_log(
+            bill=bill,
+            action='rejected',
+            user=user,
+            old_values={'status': old_status},
+            new_values={'status': 'cancelled'},
+            notes=reason
+        )
+        
+        return bill
+
+    @classmethod
+    @transaction.atomic
+    def cancel_supplier_bill(cls, bill_id, reason='', user=None):
+        """Cancel an approved (but unpaid) supplier bill."""
+        bill = SupplierBill.objects.select_for_update().get(id=bill_id)
+        
+        if bill.status == 'paid':
+            raise ValueError("Cannot cancel a paid bill")
+        if bill.paid_amount > 0:
+            raise ValueError("Cannot cancel a bill with partial payments")
+        
+        old_status = bill.status
+        bill.status = 'cancelled'
+        bill.save()
+        
+        cls._create_audit_log(
+            bill=bill,
+            action='cancelled',
+            user=user,
+            old_values={'status': old_status},
+            new_values={'status': 'cancelled'},
+            notes=reason
+        )
+        
+        return bill

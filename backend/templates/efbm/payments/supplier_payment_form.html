@@ -1,0 +1,185 @@
+{% extends "base/_document.html" %}
+{% load static %}
+{% block title %}
+    {% if payment %}Edit Payment — EduOrbit Financial Engine{% else %}Create Payment — EduOrbit Financial Engine{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">
+                {% if payment %}Edit Payment{% else %}Create Supplier Payment{% endif %}
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">
+                {% if payment %}Update payment details and withholding tax calculations.{% else %}Process vendor payment with automated WHT calculation.{% endif %}
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'supplier_payments' %}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl border transition-all">
+                ← Back to Payments
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <a href="{% url 'payables_dashboard_web' %}" class="hover:text-indigo-600">Payables Dashboard</a>
+        <span>›</span>
+        <a href="{% url 'supplier_payments' %}" class="hover:text-indigo-600">Payments</a>
+        <span>›</span>
+        <span class="font-semibold">{% if payment %}Edit Payment{% else %}Create Payment{% endif %}</span>
+    </div>
+
+    <!-- Payment Form -->
+    <form method="post" class="bg-white dark:bg-slate-800 p-8 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6">
+        {% csrf_token %}
+        
+        <!-- Bill Selection -->
+        {% if not payment %}
+        <div>
+            <label for="bill_id" class="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                Supplier Bill <span class="text-red-500">*</span>
+            </label>
+            <select name="bill_id" id="bill_id" required 
+                class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                <option value="">Select a supplier bill...</option>
+                {% for bill in bills %}
+                <option value="{{ bill.id }}" {% if selected_bill.id == bill.id %}selected{% endif %}
+                    data-amount="{{ bill.outstanding_amount }}" data-supplier="{{ bill.supplier_name }}">
+                    {{ bill.bill_number }} - {{ bill.supplier_name }} (NGN {{ bill.outstanding_amount|floatformat:2 }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+        <div class="bg-slate-50 dark:bg-slate-750 p-4 rounded-lg">
+            <div class="text-sm font-semibold text-slate-900 dark:text-white">Selected Bill</div>
+            <div class="text-xs text-slate-500 mt-1">{{ payment.bill.bill_number }} - {{ payment.bill.supplier_name }}</div>
+            <div class="text-xs text-slate-500">Outstanding: NGN {{ payment.bill.outstanding_amount|floatformat:2 }}</div>
+        </div>
+        {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Payment Amount -->
+            <div>
+                <label for="amount" class="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                    Payment Amount (NGN) <span class="text-red-500">*</span>
+                </label>
+                <input type="number" name="amount" id="amount" step="0.01" min="0.01" required
+                    value="{% if payment %}{{ payment.amount }}{% endif %}"
+                    class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                    placeholder="0.00" onchange="calculateWHT()">
+            </div>
+
+            <!-- Payment Method -->
+            <div>
+                <label for="payment_method" class="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                    Payment Method <span class="text-red-500">*</span>
+                </label>
+                <select name="payment_method" id="payment_method" required
+                    class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                    <option value="bank_transfer" {% if payment.payment_method == 'bank_transfer' %}selected{% endif %}>Bank Transfer</option>
+                    <option value="wire_transfer" {% if payment.payment_method == 'wire_transfer' %}selected{% endif %}>Wire Transfer</option>
+                    <option value="ach_transfer" {% if payment.payment_method == 'ach_transfer' %}selected{% endif %}>ACH Transfer</option>
+                    <option value="cheque" {% if payment.payment_method == 'cheque' %}selected{% endif %}>Cheque Payment</option>
+                    <option value="cash" {% if payment.payment_method == 'cash' %}selected{% endif %}>Cash Payment</option>
+                    <option value="electronic_payment" {% if payment.payment_method == 'electronic_payment' %}selected{% endif %}>Electronic Payment</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Bank Account -->
+        <div>
+            <label for="bank_account_id" class="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                Bank Account
+            </label>
+            <select name="bank_account_id" id="bank_account_id"
+                class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                <option value="">Select bank account...</option>
+                {% for account in bank_accounts %}
+                <option value="{{ account.id }}" {% if payment.bank_account.id == account.id %}selected{% endif %}>
+                    {{ account.account_name }} ({{ account.account_number }}) - {{ account.bank_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Withholding Tax Rate -->
+            <div>
+                <label for="withholding_tax_rate" class="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                    WHT Rate (%)
+                </label>
+                <input type="number" name="withholding_tax_rate" id="withholding_tax_rate" step="0.01" min="0" max="100"
+                    value="5.00"
+                    class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                    placeholder="5.00" onchange="calculateWHT()">
+            </div>
+
+            <!-- WHT Amount (calculated) -->
+            <div>
+                <label class="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                    WHT Amount (NGN)
+                </label>
+                <div id="wht_amount_display" class="w-full px-4 py-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-sm font-mono text-red-600 dark:text-red-400">
+                    {% if payment %}{{ payment.withholding_tax_amount|floatformat:2 }}{% else %}0.00{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Net Amount (calculated) -->
+        <div>
+            <label class="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                Net Payment Amount (NGN)
+            </label>
+            <div id="net_amount_display" class="w-full px-4 py-3 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg text-lg font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                {% if payment %}{{ payment.net_amount|floatformat:2 }}{% else %}0.00{% endif %}
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+            <label for="description" class="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                Payment Description
+            </label>
+            <textarea name="description" id="description" rows="3"
+                class="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                placeholder="Optional payment description...">{% if payment %}{{ payment.description }}{% endif %}</textarea>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-4 pt-4">
+            <button type="submit" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-all">
+                {% if payment %}💾 Update Payment{% else %}💰 Create Payment{% endif %}
+            </button>
+            <a href="{% url 'supplier_payments' %}" class="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm rounded-xl border transition-all">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+function calculateWHT() {
+    const amount = parseFloat(document.getElementById('amount').value) || 0;
+    const whtRate = parseFloat(document.getElementById('withholding_tax_rate').value) || 0;
+    
+    const whtAmount = (amount * whtRate) / 100;
+    const netAmount = amount - whtAmount;
+    
+    document.getElementById('wht_amount_display').textContent = whtAmount.toFixed(2);
+    document.getElementById('net_amount_display').textContent = netAmount.toFixed(2);
+}
+
+// Calculate WHT on page load if editing
+document.addEventListener('DOMContentLoaded', function() {
+    calculateWHT();
+});
+</script>
+
+{% endblock %}

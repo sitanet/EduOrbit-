@@ -1,0 +1,68 @@
+{% extends "base/_document.html" %}
+{% block title %}Fixed Asset Depreciation Analysis — EduOrbit ERP{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Fixed Asset Depreciation Analysis Report</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Straight Line & Reducing Balance Accumulated Depreciation Tracking.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Depreciation Report
+            </button>
+            <a href="?export=excel" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📊 Export Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" id="printableDepreciationReport">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Asset #</th>
+                        <th class="px-6 py-4">Asset Name</th>
+                        <th class="px-6 py-4">Useful Life</th>
+                        <th class="px-6 py-4 text-right">Capital Cost ($)</th>
+                        <th class="px-6 py-4 text-right">Book Value ($)</th>
+                        <th class="px-6 py-4 text-right">Depreciation Total ($)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for asset in report.assets %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-mono font-bold text-xs text-indigo-600 dark:text-indigo-400">{{ asset.asset_number }}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ asset.name }}</td>
+                        <td class="px-6 py-4 font-mono text-xs">{{ asset.useful_life_years }} Years</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">${{ asset.purchase_cost }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">${{ asset.current_value }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-rose-600 dark:text-rose-400">
+                            ${{ asset.purchase_cost|add:asset.current_value }}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-500">No asset depreciation logs found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-slate-100 dark:bg-slate-900/80 font-bold text-slate-900 dark:text-white border-t border-slate-200 dark:border-slate-700 text-sm">
+                    <tr>
+                        <td colspan="3" class="px-6 py-4 uppercase">Total Fixed Asset Portfolio</td>
+                        <td class="px-6 py-4 text-right font-mono text-indigo-600 dark:text-indigo-400">${{ report.total_cost }}</td>
+                        <td class="px-6 py-4 text-right font-mono text-emerald-600 dark:text-emerald-400">${{ report.total_current_value }}</td>
+                        <td class="px-6 py-4 text-right font-mono text-rose-600 dark:text-rose-400">${{ report.total_accumulated_depreciation }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

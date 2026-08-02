@@ -1,0 +1,287 @@
+{
+  "Gradebook": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Report Cards": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Student Promotion": {
+    "models": [],
+    "views": [
+      [
+        "apps\\students\\api\\views.py",
+        "promote_student"
+      ]
+    ],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Student ID Card": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Admissions to Ledger Bridge": {
+    "models": [
+      [
+        "apps\\admissions\\models.py",
+        "AdmissionApplication"
+      ]
+    ],
+    "views": [
+      [
+        "apps\\admissions\\views_web.py",
+        "AdmissionApplication"
+      ],
+      [
+        "apps\\admissions\\api\\views.py",
+        "AdmissionApplication"
+      ]
+    ],
+    "services": [
+      [
+        "apps\\admissions\\services.py",
+        "AdmissionApplication"
+      ]
+    ],
+    "templates": [],
+    "urls": [],
+    "api": [
+      [
+        "apps\\admissions\\api\\serializers.py",
+        "AdmissionApplication"
+      ]
+    ]
+  },
+  "Trial Balance Report": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [
+      [
+        "apps\\efbm\\api\\urls.py",
+        "trial_balance"
+      ]
+    ],
+    "api": []
+  },
+  "Balance Sheet Report": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [
+      [
+        "apps\\efbm\\api\\urls.py",
+        "balance_sheet"
+      ]
+    ],
+    "api": []
+  },
+  "Income Statement Report": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Probation & Confirmation": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Offboarding Exit Checklist": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Goods Receipt Note (GRN)": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Inter-Warehouse Transfer": {
+    "models": [],
+    "views": [],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": []
+  },
+  "Library Overdue Fine Bridge": {
+    "models": [
+      [
+        "apps\\library\\models.py",
+        "BookIssue"
+      ],
+      [
+        "apps\\library\\models.py",
+        "fine_amount"
+      ]
+    ],
+    "views": [
+      [
+        "apps\\library\\api\\views.py",
+        "BookIssue"
+      ],
+      [
+        "apps\\library\\api\\views.py",
+        "fine_amount"
+      ],
+      [
+        "apps\\dashboard\\views_web.py",
+        "BookIssue"
+      ],
+      [
+        "apps\\library\\views_web.py",
+        "BookIssue"
+      ]
+    ],
+    "services": [],
+    "templates": [],
+    "urls": [],
+    "api": [
+      [
+        "apps\\library\\api\\serializers.py",
+        "BookIssue"
+      ],
+      [
+        "apps\\library\\api\\serializers.py",
+        "fine_amount"
+      ]
+    ]
+  },
+  "Clinic to Inventory Bridge": {
+    "models": [
+      [
+        "apps\\clinic\\models.py",
+        "Prescription"
+      ],
+      [
+        "apps\\inventory\\models.py",
+        "InventoryItem"
+      ]
+    ],
+    "views": [
+      [
+        "apps\\inventory\\api\\views.py",
+        "InventoryItem"
+      ],
+      [
+        "apps\\inventory\\views_web.py",
+        "InventoryItem"
+      ]
+    ],
+    "services": [],
+    "templates": [
+      [
+        "templates\\clinic\\consultation.html",
+        "Prescription"
+      ],
+      [
+        "templates\\docs\\index.html",
+        "Prescription"
+      ]
+    ],
+    "urls": [],
+    "api": [
+      [
+        "apps\\inventory\\api\\serializers.py",
+        "InventoryItem"
+      ],
+      [
+        "apps\\clinic\\api\\serializers.py",
+        "Prescription"
+      ]
+    ]
+  },
+  "Exam Broadsheet": {
+    "models": [],
+    "views": [
+      [
+        "apps\\emrp\\views_web.py",
+        "Broadsheet"
+      ]
+    ],
+    "services": [],
+    "templates": [
+      [
+        "templates\\emrp\\dashboard.html",
+        "Broadsheet"
+      ],
+      [
+        "templates\\emrp\\broadsheet.html",
+        "Broadsheet"
+      ]
+    ],
+    "urls": [
+      [
+        "apps\\emrp\\api\\urls.py",
+        "Broadsheet"
+      ],
+      [
+        "apps\\emrp\\urls.py",
+        "Broadsheet"
+      ]
+    ],
+    "api": []
+  },
+  "Payroll to GL Bridge": {
+    "models": [
+      [
+        "apps\\hr\\models.py",
+        "PayrollRun"
+      ]
+    ],
+    "views": [
+      [
+        "apps\\hr\\api\\views.py",
+        "PayrollRun"
+      ],
+      [
+        "apps\\hr\\views_web.py",
+        "PayrollRun"
+      ]
+    ],
+    "services": [],
+    "templates": [
+      [
+        "templates\\hr\\audit\\trail.html",
+        "PayrollRun"
+      ]
+    ],
+    "urls": [],
+    "api": [
+      [
+        "apps\\hr\\api\\serializers.py",
+        "PayrollRun"
+      ]
+    ]
+  }
+}

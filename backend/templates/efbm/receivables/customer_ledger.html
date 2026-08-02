@@ -1,0 +1,75 @@
+{% extends "base/_document.html" %}
+{% block title %}Customer & Parent Ledger — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Customer & Parent Sub-Ledger Workspace</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Itemized Accounts Receivable Sub-Ledger Transactions and Running Balances.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Ledger
+            </button>
+            <a href="?export=excel" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📊 Export Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-3 overflow-x-auto">
+        <a href="{% url 'receivables_dashboard_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">AR Dashboard</a>
+        <a href="{% url 'customer_ledger_web' %}" class="px-4 py-2 bg-indigo-600 text-white font-semibold text-xs rounded-xl">Customer Ledger</a>
+        <a href="{% url 'outstanding_invoices_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Outstanding Invoices</a>
+        <a href="{% url 'credit_notes_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Credit Notes</a>
+        <a href="{% url 'debit_notes_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Debit Notes</a>
+        <a href="{% url 'bad_debts_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Bad Debt Write-Offs</a>
+        <a href="{% url 'balance_confirmations_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Balance Confirmations</a>
+    </div>
+
+    <!-- Ledger Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" id="printableCustomerLedger">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Transaction Date</th>
+                        <th class="px-6 py-4">Student / Customer</th>
+                        <th class="px-6 py-4">Reference</th>
+                        <th class="px-6 py-4">Description</th>
+                        <th class="px-6 py-4 text-right">Debit ($)</th>
+                        <th class="px-6 py-4 text-right">Credit ($)</th>
+                        <th class="px-6 py-4 text-right">Running Balance ($)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for row in ledger %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500">{{ row.transaction_date|date:"Y-m-d H:i" }}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ row.student.person.get_full_name|default:"Student Customer" }}</td>
+                        <td class="px-6 py-4 font-mono font-bold text-xs text-indigo-600 dark:text-indigo-400">{{ row.reference }}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ row.description }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-rose-600 dark:text-rose-400">
+                            {% if row.debit_amount > 0 %}{{ row.debit_amount }}{% else %}-{% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                            {% if row.credit_amount > 0 %}{{ row.credit_amount }}{% else %}-{% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right font-mono font-black text-slate-900 dark:text-white">${{ row.balance }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-6 py-12 text-center text-slate-500">No customer sub-ledger transactions recorded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

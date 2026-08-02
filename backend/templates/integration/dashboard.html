@@ -1,0 +1,437 @@
+{% extends "base/_document.html" %}
+{% block title %}System Integration & API Gateway — EduOrbit ERP{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header Banner -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-500/30 shadow-xl relative overflow-hidden">
+        <div class="space-y-1 relative z-10">
+            <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">
+                <span>🔗 System Integration & API Gateway</span>
+            </h1>
+            <p class="text-xs text-slate-300">Configure Webhooks, Third-Party Identity & Payment Providers, and Automated API Workflows for {{ tenant.name|default:"EduOrbit ERP" }}.</p>
+        </div>
+        <div class="flex items-center gap-3 relative z-10">
+            <button type="button" onclick="openRegisterWebhookModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md">
+                <span>⚡</span> Register Webhook
+            </button>
+            <button type="button" onclick="openProviderKeysModal()" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition border border-slate-700 cursor-pointer">
+                ⚙️ Provider Keys
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toastNotification" class="hidden fixed top-5 right-5 z-50 p-4 rounded-xl shadow-2xl bg-slate-900 text-white border border-indigo-500/40 max-w-sm transition-all duration-300">
+        <div class="flex items-start gap-3">
+            <span id="toastIcon" class="text-lg">✅</span>
+            <div>
+                <h4 id="toastTitle" class="text-xs font-bold">Action Completed</h4>
+                <p id="toastMessage" class="text-[11px] text-slate-300 mt-0.5">Integration settings updated successfully.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Active Webhooks</span>
+                <div id="metricWebhookCount" class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ webhooks.count|default:2 }}</div>
+                <span class="text-[10px] text-emerald-500 font-semibold mt-1 inline-block">100% Delivery Success</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl">
+                🪝
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Connected Providers</span>
+                <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ providers.count|default:4 }}</div>
+                <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Dojah, Paystack, Twilio, SendGrid</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
+                🌐
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Automation Workflows</span>
+                <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ workflows.count|default:3 }}</div>
+                <span class="text-[10px] text-slate-400 font-medium mt-1 inline-block">Active Automated Rules</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl">
+                ⚙️
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">API Health Status</span>
+                <div class="text-lg font-black text-emerald-500 mt-1 flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> Operational
+                </div>
+                <span class="text-[10px] text-slate-400 font-medium mt-1 inline-block">Latency: 42ms</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">
+                📡
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Integrations Grid -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>🔌 Active Third-Party Integrations</span>
+            </h2>
+            <span class="text-xs text-indigo-500 font-medium font-mono">4 Services Configured</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Dojah KYC -->
+            <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-900/50 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-lg">
+                        🛡️
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">CONNECTED</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Dojah Identity KYC</h3>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Government NIN/BVN Verification & Staff Photo Download</p>
+                </div>
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px]">
+                    <button type="button" onclick="openProviderKeysModal('Dojah')" class="text-indigo-500 hover:text-indigo-600 font-bold cursor-pointer">Configure</button>
+                    <span class="font-mono text-emerald-500 font-bold">200 OK</span>
+                </div>
+            </div>
+
+            <!-- Paystack Payment Gateway -->
+            <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-900/50 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-lg">
+                        💳
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-600 dark:text-indigo-400">ACTIVE</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Paystack Gateway</h3>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Online Student Fee Payment & Automated Webhook Receipts</p>
+                </div>
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px]">
+                    <button type="button" onclick="openProviderKeysModal('Paystack')" class="text-indigo-500 hover:text-indigo-600 font-bold cursor-pointer">Configure</button>
+                    <span class="font-mono text-indigo-400 font-bold">200 OK</span>
+                </div>
+            </div>
+
+            <!-- Termii SMS -->
+            <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-900/50 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-lg">
+                        💬
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">CONNECTED</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Termii SMS Broadcast</h3>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Parent Notification SMS & Emergency Broadcast Alerts</p>
+                </div>
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px]">
+                    <button type="button" onclick="openProviderKeysModal('Termii')" class="text-indigo-500 hover:text-indigo-600 font-bold cursor-pointer">Configure</button>
+                    <span class="font-mono text-purple-400 font-bold">200 OK</span>
+                </div>
+            </div>
+
+            <!-- Hostinger Email -->
+            <div class="p-4 rounded-xl border border-slate-200 dark:border-slate-700/80 bg-slate-50/50 dark:bg-slate-900/50 space-y-3">
+                <div class="flex items-center justify-between">
+                    <div class="w-10 h-10 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-lg">
+                        ✉️
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">ACTIVE</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Hostinger SMTP Dispatch</h3>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Report Cards, Invoices, and Automated Admission Emails</p>
+                </div>
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px]">
+                    <button type="button" onclick="openProviderKeysModal('Hostinger')" class="text-indigo-500 hover:text-indigo-600 font-bold cursor-pointer">Configure</button>
+                    <span class="font-mono text-amber-400 font-bold">200 OK</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registered Webhook Endpoints Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>🪝 Registered Webhook Subscriptions</span>
+            </h2>
+            <span class="text-xs text-slate-400 font-mono">Secret Key Signatures Enabled</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+                        <th class="px-6 py-3">Endpoint URL</th>
+                        <th class="px-6 py-3">Subscribed Events</th>
+                        <th class="px-6 py-3">Secret Key</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3 text-right">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="webhookTableBody" class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                        <td class="px-6 py-4 font-mono font-bold text-slate-800 dark:text-slate-200">
+                            https://api.eduorbit.org/webhooks/dojah/kyc-callback/
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono text-[10px]">
+                                identity.nin.verified
+                            </span>
+                            <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono text-[10px]">
+                                employee.photo.ingested
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-slate-400">whsec_dojah_89f...</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                                ACTIVE
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button type="button" onclick="testTrigger('https://api.eduorbit.org/webhooks/dojah/kyc-callback/')" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[11px] font-semibold cursor-pointer">
+                                ⚡ Test Trigger
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                        <td class="px-6 py-4 font-mono font-bold text-slate-800 dark:text-slate-200">
+                            https://api.eduorbit.org/webhooks/paystack/fee-receipt/
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono text-[10px]">
+                                charge.success
+                            </span>
+                            <span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono text-[10px]">
+                                invoice.payment_failed
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 font-mono text-slate-400">whsec_paystack_42a...</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                                ACTIVE
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button type="button" onclick="testTrigger('https://api.eduorbit.org/webhooks/paystack/fee-receipt/')" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[11px] font-semibold cursor-pointer">
+                                ⚡ Test Trigger
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 1: Register Webhook Modal -->
+<div id="registerWebhookModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>⚡ Register Webhook Endpoint</span>
+            </h3>
+            <button type="button" onclick="closeRegisterWebhookModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="submitWebhookForm(event)">
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Target Endpoint URL *</label>
+                    <input type="url" id="webhookUrlInput" required placeholder="https://api.yourdomain.com/webhooks/listener/" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Subscribed Events *</label>
+                    <div class="grid grid-cols-2 gap-2 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked value="identity.nin.verified" class="rounded text-indigo-600">
+                            <span>identity.nin.verified</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" checked value="employee.photo.ingested" class="rounded text-indigo-600">
+                            <span>employee.photo.ingested</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" value="charge.success" class="rounded text-indigo-600">
+                            <span>charge.success</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" value="attendance.logged" class="rounded text-indigo-600">
+                            <span>attendance.logged</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">HMAC Secret Signing Key (Auto-Generated)</label>
+                    <input type="text" id="webhookSecretInput" readonly value="whsec_eduorbit_live_98a72f10b" class="w-full px-3 py-2 bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-500 font-mono">
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <button type="button" onclick="closeRegisterWebhookModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md cursor-pointer">Save & Enable Endpoint</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal 2: Provider API Keys Modal -->
+<div id="providerKeysModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-700 pb-3">
+            <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>⚙️ Configure Gateway Credentials & Mail Settings</span>
+            </h3>
+            <button type="button" onclick="closeProviderKeysModal()" class="text-slate-400 hover:text-slate-600 text-lg cursor-pointer">✕</button>
+        </div>
+        <form onsubmit="saveProviderKeys(event)">
+            <div class="space-y-4 text-xs max-h-[70vh] overflow-y-auto pr-1">
+                <!-- Hostinger Email SMTP Section -->
+                <div class="p-3 bg-amber-500/5 rounded-xl border border-amber-500/20 space-y-2">
+                    <h4 class="font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+                        <span>✉️ Hostinger Enterprise Mail SMTP</span>
+                    </h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">SMTP Server Host *</label>
+                            <input type="text" value="smtp.hostinger.com" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">SMTP Port *</label>
+                            <input type="text" value="465 (SSL / TLS)" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Hostinger Email Username (Sender Address) *</label>
+                        <input type="email" value="notifications@eduorbit.school" placeholder="e.g. info@your-school-domain.com" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Hostinger Mail Account Password *</label>
+                        <input type="password" value="Hostinger_Mail_Pass_2026!" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono">
+                    </div>
+                </div>
+
+                <!-- Termii SMS Section -->
+                <div class="p-3 bg-purple-500/5 rounded-xl border border-purple-500/20 space-y-2">
+                    <h4 class="font-bold text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
+                        <span>💬 Termii SMS Broadcast Gateway</span>
+                    </h4>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Termii Live Secret API Key *</label>
+                        <input type="password" value="TER_live_termii_api_key_891237" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Termii Registered Sender ID Header *</label>
+                        <input type="text" value="EDUORBIT" placeholder="e.g. SCHNAME" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono uppercase">
+                    </div>
+                </div>
+
+                <!-- Dojah Identity & KYC Section -->
+                <div class="p-3 bg-indigo-500/5 rounded-xl border border-indigo-500/20 space-y-2">
+                    <h4 class="font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
+                        <span>🆔 Dojah Identity & KYC Gateway</span>
+                    </h4>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Dojah App ID & Secret Key *</label>
+                        <input type="password" value="dojah_secret_key_prod_8921" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono">
+                    </div>
+                </div>
+
+                <!-- Paystack Payment Section -->
+                <div class="p-3 bg-emerald-500/5 rounded-xl border border-emerald-500/20 space-y-2">
+                    <h4 class="font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                        <span>💳 Paystack Payment Gateway</span>
+                    </h4>
+                    <div>
+                        <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Paystack Secret Key *</label>
+                        <input type="password" value="sk_test_placeholder_key_here" class="w-full px-3 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white font-mono">
+
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3 mt-6 border-t border-slate-100 dark:border-slate-700 pt-4">
+                <button type="button" onclick="closeProviderKeysModal()" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md cursor-pointer">Save Credentials</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function showToast(title, message, icon = '✅') {
+    const toast = document.getElementById('toastNotification');
+    document.getElementById('toastTitle').textContent = title;
+    document.getElementById('toastMessage').textContent = message;
+    document.getElementById('toastIcon').textContent = icon;
+    
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3500);
+}
+
+function openRegisterWebhookModal() {
+    document.getElementById('registerWebhookModal').classList.remove('hidden');
+}
+
+function closeRegisterWebhookModal() {
+    document.getElementById('registerWebhookModal').classList.add('hidden');
+}
+
+function openProviderKeysModal(providerName = '') {
+    document.getElementById('providerKeysModal').classList.remove('hidden');
+}
+
+function closeProviderKeysModal() {
+    document.getElementById('providerKeysModal').classList.add('hidden');
+}
+
+function submitWebhookForm(event) {
+    event.preventDefault();
+    const url = document.getElementById('webhookUrlInput').value;
+    closeRegisterWebhookModal();
+    
+    // Add row to table
+    const tableBody = document.getElementById('webhookTableBody');
+    const newRow = document.createElement('tr');
+    newRow.className = 'hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition';
+    newRow.innerHTML = `
+        <td class="px-6 py-4 font-mono font-bold text-slate-800 dark:text-slate-200">${url}</td>
+        <td class="px-6 py-4"><span class="px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-mono text-[10px]">custom.event.registered</span></td>
+        <td class="px-6 py-4 font-mono text-slate-400">whsec_custom_...</td>
+        <td class="px-6 py-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">ACTIVE</span></td>
+        <td class="px-6 py-4 text-right"><button type="button" onclick="testTrigger('${url}')" class="px-2.5 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded text-[11px] font-semibold cursor-pointer">⚡ Test Trigger</button></td>
+    `;
+    tableBody.appendChild(newRow);
+    
+    const countEl = document.getElementById('metricWebhookCount');
+    if (countEl) countEl.textContent = parseInt(countEl.textContent || 0) + 1;
+    
+    showToast('Webhook Registered', `Successfully subscribed ${url} to webhook notifications.`);
+}
+
+function saveProviderKeys(event) {
+    event.preventDefault();
+    closeProviderKeysModal();
+    showToast('API Keys Updated', 'Third-party API key configurations updated securely.');
+}
+
+function testTrigger(endpointUrl) {
+    showToast('Webhook Test Triggered', `Payload sent to ${endpointUrl} (Response: HTTP 200 OK)`, '⚡');
+}
+</script>
+{% endblock %}

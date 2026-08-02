@@ -35,3 +35,36 @@ class StockItemsWebView(View):
         tenant = getattr(request, 'tenant', None)
         items = InventoryItem.objects.filter(tenant=tenant) if tenant else []
         return render(request, 'inventory/items.html', {'items': items})
+
+
+class FixedAssetRegisterWebView(View):
+    """
+    Fixed Asset Register Workspace & Management View.
+    """
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login_web')
+
+        tenant = getattr(request, 'tenant', None)
+        from backend.apps.inventory.services.assets import AssetLifecycleService
+        report = AssetLifecycleService.get_depreciation_report(tenant=tenant)
+
+        context = {'report': report}
+        return render(request, 'inventory/assets/asset_register.html', context)
+
+
+class DepreciationReportWebView(View):
+    """
+    Fixed Asset Depreciation Analysis Report View.
+    """
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login_web')
+
+        tenant = getattr(request, 'tenant', None)
+        from backend.apps.inventory.services.assets import AssetLifecycleService
+        report = AssetLifecycleService.get_depreciation_report(tenant=tenant)
+
+        context = {'report': report}
+        return render(request, 'inventory/assets/depreciation_report.html', context)
+

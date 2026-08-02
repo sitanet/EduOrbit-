@@ -26,5 +26,8 @@ class HRSettings(TenantBaseModel):
     enable_assets = models.BooleanField(default=True)
     enable_ess = models.BooleanField(default=True)
 
+    class Meta:
+        app_label = 'hr'
+
     def __str__(self):
         return f"HR Settings - {self.tenant.name}"

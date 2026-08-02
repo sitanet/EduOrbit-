@@ -1,0 +1,153 @@
+{% extends "base/_document.html" %}
+{% block title %}Vehicles Fleet Inventory — EduOrbit Transport{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <!-- ── Hero Header ──────────────────────────────────────────────────── -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-amber-950 to-slate-900 text-white p-6 rounded-2xl border border-amber-500/30 shadow-xl">
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">🚍 Vehicles & Bus Fleet Inventory</h1>
+      <p class="text-xs text-slate-300">Manage school buses, vans, passenger seating capacities, and vehicle operational statuses.</p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      <button onclick="document.getElementById('addVehicleModal').classList.remove('hidden')"
+              class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition shadow-md flex items-center gap-1.5">
+        ➕ Add Vehicle
+      </button>
+      <a href="/transport/routes/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+        🗺️ Routes Planner
+      </a>
+    </div>
+  </div>
+
+  <!-- ── KPI Stats Row ────────────────────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Vehicles</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_vehicles|default:0 }}</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">Fleet Size</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">🚍</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Active Fleet</span>
+        <div class="text-2xl font-black text-emerald-500 mt-1">{{ active_vehicles|default:0 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Operational</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">✅</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">In Maintenance</span>
+        <div class="text-2xl font-black text-rose-500 mt-1">{{ maintenance_vehicles|default:0 }}</div>
+        <span class="text-[10px] text-rose-400 font-semibold mt-1 inline-block">Servicing Needed</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-900/30 text-rose-500 flex items-center justify-center text-xl">🛠️</div>
+    </div>
+  </div>
+
+  <!-- ── Vehicles Table ────────────────────────────────────────────────── -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-sm font-bold text-slate-900 dark:text-white">🚍 Bus Fleet Assets</h2>
+      <button onclick="document.getElementById('addVehicleModal').classList.remove('hidden')"
+              class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg transition">
+        + New Bus / Van
+      </button>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Registration No.</th>
+            <th class="px-6 py-3">Plate Number</th>
+            <th class="px-6 py-3">Seating Capacity</th>
+            <th class="px-6 py-3 text-right">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+          {% for vehicle in vehicles %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-amber-50 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-black">🚌</span>
+              {{ vehicle.registration_number }}
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-700 dark:text-slate-300">
+              {{ vehicle.plate_number }}
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-700 dark:text-slate-300 font-bold">
+              {{ vehicle.capacity }} seats
+            </td>
+            <td class="px-6 py-4 text-right">
+              {% if vehicle.status == 'active' %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">ACTIVE</span>
+              {% else %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-600 dark:text-rose-400 font-mono">MAINTENANCE</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="px-6 py-14 text-center">
+              <div class="text-4xl mb-3">🚍</div>
+              <div class="text-sm font-semibold text-slate-500 dark:text-slate-400">No vehicles registered in fleet</div>
+              <div class="text-xs text-slate-400 mt-1">Click "Add Vehicle" to register your first school bus.</div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Modal: Add Vehicle ───────────────────────────────────────────── -->
+<div id="addVehicleModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-amber-600 to-amber-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">🚍 Register New Vehicle</h3>
+      <button onclick="document.getElementById('addVehicleModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <form method="POST" action="/transport/vehicles/" class="p-6 space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="add_vehicle">
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Registration Number</label>
+        <input type="text" name="registration_number" placeholder="e.g. BUS-001, VAN-02" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">License Plate Number</label>
+        <input type="text" name="plate_number" placeholder="e.g. LAG-582-XA" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Seating Capacity</label>
+        <input type="number" name="capacity" value="30" min="5" max="100" required
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-amber-500">
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" onclick="document.getElementById('addVehicleModal').classList.add('hidden')"
+                class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">
+          Cancel
+        </button>
+        <button type="submit"
+                class="px-5 py-2.5 text-sm font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl transition shadow-md">
+          ✅ Register Vehicle
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

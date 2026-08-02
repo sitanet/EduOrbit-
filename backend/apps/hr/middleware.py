@@ -44,24 +44,36 @@ class HRContextMiddleware:
                 request.hr_role = 'hr_admin'
                 request.is_supervisor = True
             else:
-                # Check TenantMembership roles
-                memberships = user.memberships.filter(tenant=tenant) if tenant and hasattr(user, 'memberships') else []
-                for m in memberships:
-                    r_name = m.role.name.lower() if (m.role and m.role.name) else ""
-                    r_code = m.role.code.lower() if (m.role and m.role.code) else ""
+                # Fallback: Check username pattern for admin/principal users
+                username_lower = user.username.lower()
+                if any(keyword in username_lower for keyword in ['principal', 'school_admin', 'admin', 'vice_principal']):
+                    request.hr_role = 'school_admin'
+                    request.is_supervisor = True
+                    print(f"DEBUG MIDDLEWARE: Set hr_role='school_admin' for user {user.username} based on username pattern")
+                else:
+                    # Check TenantMembership roles
+                    memberships = user.memberships.filter(tenant=tenant) if tenant and hasattr(user, 'memberships') else []
+                    print(f"DEBUG MIDDLEWARE: Found {len(memberships)} memberships for user {user.username}")
                     
-                    if any(k in r_name or k in r_code for k in ['admin', 'manager', 'director']):
-                        request.hr_role = 'hr_admin'
-                        break
-                    elif any(k in r_name or k in r_code for k in ['payroll', 'accountant']):
-                        request.hr_role = 'payroll_admin'
-                    elif any(k in r_name or k in r_code for k in ['hr', 'officer']) and request.hr_role != 'payroll_admin':
-                        request.hr_role = 'hr_officer'
-                    elif any(k in r_name or k in r_code for k in ['supervisor', 'lead']) and request.hr_role == 'employee':
-                        request.hr_role = 'supervisor'
+                    for m in memberships:
+                        r_name = m.role.name.lower() if (m.role and m.role.name) else ""
+                        r_code = m.role.code.lower() if (m.role and m.role.code) else ""
+                        print(f"DEBUG MIDDLEWARE: Role name='{r_name}', code='{r_code}'")
+                        
+                        # Check for admin-level roles (including school admin, principal, vice principal)
+                        if any(k in r_name or k in r_code for k in ['admin', 'manager', 'director', 'principal', 'school_admin', 'vice_principal']):
+                            request.hr_role = 'school_admin' if any(k in r_name or k in r_code for k in ['school_admin', 'principal', 'vice_principal']) else 'hr_admin'
+                            print(f"DEBUG MIDDLEWARE: Set hr_role to '{request.hr_role}' based on role match")
+                            break
+                        elif any(k in r_name or k in r_code for k in ['payroll', 'accountant']):
+                            request.hr_role = 'payroll_admin'
+                        elif any(k in r_name or k in r_code for k in ['hr', 'officer']) and request.hr_role != 'payroll_admin':
+                            request.hr_role = 'hr_officer'
+                        elif any(k in r_name or k in r_code for k in ['supervisor', 'lead']) and request.hr_role == 'employee':
+                            request.hr_role = 'supervisor'
 
-                if request.is_supervisor and request.hr_role == 'employee':
-                    request.hr_role = 'supervisor'
+                    if request.is_supervisor and request.hr_role == 'employee':
+                        request.hr_role = 'supervisor'
 
             # Gather permissions
             if tenant and hasattr(user, 'memberships'):

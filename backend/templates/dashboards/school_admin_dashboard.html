@@ -8,53 +8,83 @@
 
     <!-- Stat Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {% include 'components/stat_card.html' with title="Total Students" value="1,240" icon="academic-cap" trend="+3%" trend_color="text-green-500" %}
-        {% include 'components/stat_card.html' with title="Total Teachers" value="85" icon="users" trend="0" trend_color="text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500" %}
-        {% include 'components/stat_card.html' with title="Fee Collection Rate" value="92%" icon="cash" trend="-2%" trend_color="text-red-500" %}
-        {% include 'components/stat_card.html' with title="Attendance Rate" value="96.5%" icon="clipboard-check" trend="+0.5%" trend_color="text-green-500" %}
+        {% include 'components/stat_card.html' with title="Total Students" value=total_students icon="academic-cap" trend="up" trend_value="+3%" %}
+        {% include 'components/stat_card.html' with title="Total Teachers" value=total_teachers icon="users" %}
+        {% include 'components/stat_card.html' with title="Fee Collection Rate" value="92%" icon="cash" trend="down" trend_value="-2%" %}
+        {% include 'components/stat_card.html' with title="Attendance Rate" value=attendance_rate|stringformat:"d"|add:"%" icon="clipboard-check" trend="up" trend_value="+0.5%" %}
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- ApexChart Placeholder -->
+        <!-- ApexChart Section -->
         <div class="lg:col-span-2 bg-white dark:bg-slate-100 dark:bg-slate-700 rounded-lg shadow p-6">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-slate-900 dark:text-white mb-4">Enrollment Trends</h2>
-            <div id="enrollment-chart" class="w-full h-80 bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 rounded flex items-center justify-center border border-dashed border-gray-300 dark:border-gray-600">
-                <span class="text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400 font-medium">ApexChart Placeholder</span>
-            </div>
+            <div id="enrollment-chart" class="w-full h-80 bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 rounded"></div>
         </div>
 
         <!-- Recent Admissions -->
         <div class="bg-white dark:bg-slate-100 dark:bg-slate-700 rounded-lg shadow p-6">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-slate-900 dark:text-white mb-4">Recent Admissions</h2>
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400">
+                <table class="w-full text-sm text-left text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-650 dark:text-slate-650 dark:text-slate-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-slate-200 dark:bg-slate-600 dark:text-slate-600 dark:text-slate-600 dark:text-slate-400">
                         <tr>
                             <th scope="col" class="px-4 py-3">Student Name</th>
-                            <th scope="col" class="px-4 py-3">Grade</th>
+                            <th scope="col" class="px-4 py-3">Admission Number</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for student in recent_admissions %}
                         <tr class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Alice Smith</td>
-                            <td class="px-4 py-3">10th</td>
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">{{ student.person.get_full_name }}</td>
+                            <td class="px-4 py-3 font-mono text-xs">{{ student.admission_number|default:"-" }}</td>
                         </tr>
-                        <tr class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Bob Johnson</td>
-                            <td class="px-4 py-3">9th</td>
-                        </tr>
-                        <tr class="border-b dark:border-gray-700">
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Charlie Brown</td>
-                            <td class="px-4 py-3">11th</td>
-                        </tr>
+                        {% empty %}
                         <tr>
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-slate-900 dark:text-white">Diana Prince</td>
-                            <td class="px-4 py-3">12th</td>
+                            <td colspan="2" class="px-4 py-8 text-center text-slate-500 dark:text-slate-400">
+                                <div class="text-slate-500 text-xs">No recent admissions found.</div>
+                            </td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var options = {
+            series: [{
+                name: 'Students Enrolled',
+                data: {{ chart_data|safe|default:"[]" }}
+            }],
+            chart: {
+                height: 320,
+                type: 'area',
+                toolbar: {
+                    show: false
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2
+            },
+            colors: ['#4f46e5'],
+            xaxis: {
+                categories: {{ chart_labels|safe|default:"[]" }}
+            },
+            grid: {
+                borderColor: '#e2e8f0',
+                strokeDashArray: 4
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#enrollment-chart"), options);
+        chart.render();
+    });
+</script>
 {% endblock %}

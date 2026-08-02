@@ -1,76 +1,334 @@
 {% extends 'base/_document.html' %}
+{% block title %}Student Hostel & Boarding Dashboard — EduOrbit ERP{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+<div class="space-y-6">
 
-    <!-- Dashboard Actions -->
-    <div class="sm:flex sm:justify-between sm:items-center mb-8">
-        <!-- Left: Title -->
-        <div class="mb-4 sm:mb-0">
-            <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">Hostel Dashboard ✨</h1>
-        </div>
-        <!-- Right: Actions -->
-        <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-slate-900 dark:text-white">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">Allocate Room</span>
-            </button>
-        </div>
+  <!-- ── Hero Banner ──────────────────────────────────────────────────── -->
+  <div class="relative bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-2xl border border-indigo-500/30 shadow-xl overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(99,102,241,0.15),_transparent_70%)] pointer-events-none"></div>
+    <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-5">
+      <div class="space-y-1.5">
+        <p class="text-[10px] font-bold tracking-widest text-indigo-400 uppercase">EduOrbit · Boarding Module</p>
+        <h1 class="text-2xl font-extrabold tracking-tight flex items-center gap-2">🏠 Student Hostel & Boarding Management</h1>
+        <p class="text-xs text-slate-300 max-w-xl">
+          Track hostel buildings, bed allocations, room capacities, evening attendance roll calls, and student exeat permits.
+        </p>
+      </div>
+        <button onclick="document.getElementById('allocateBedModal').classList.remove('hidden')"
+                class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition shadow-md flex items-center gap-1.5">
+          🛌 Allocate Bed
+        </button>
+        <a href="/hostel/rooms/"
+           class="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold rounded-xl transition">
+          🚪 Room Directory
+        </a>
+    </div>
+  </div>
+
+  <!-- ── KPI Stat Row ──────────────────────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Hostel Buildings</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_hostels|default:4 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Active Blocks</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">🏢</div>
     </div>
 
-    <!-- Cards -->
-    <div class="grid grid-cols-12 gap-6 mb-8">
-        <!-- Stat Cards -->
-        {% include 'components/stat_card.html' with title="Total Rooms" value="150" trend="0" icon="home" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Occupied Beds" value="280" trend="+5" icon="user" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Available Beds" value="20" trend="-5" icon="check-circle" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Rooms</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_rooms|default:150 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Configured Rooms</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">🚪</div>
     </div>
 
-    <!-- Recent Roll Call Table -->
-    <div>
-        <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Recent Roll Call (Last Night)</h2>
-        <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700">
-            <div class="overflow-x-auto">
-                <table class="table-auto w-full dark:text-slate-700 dark:text-slate-300">
-                    <!-- Table header -->
-                    <thead class="text-xs uppercase text-slate-600 dark:text-slate-400 dark:text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
-                        <tr>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Room No</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Block</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Students Present</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Missing</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-center">Status</div></th>
-                        </tr>
-                    </thead>
-                    <!-- Table body -->
-                    <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">101</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Block A</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">2/2</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-slate-600 dark:text-slate-400">-</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">All Present</span></div></td>
-                        </tr>
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">102</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Block A</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">1/2</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-rose-500">1 (On Leave)</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-amber-100 dark:bg-amber-400/30 text-amber-600 dark:text-amber-400 rounded-full px-2 py-0.5 text-xs">Partial</span></div></td>
-                        </tr>
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">103</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Block A</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">2/2</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left text-slate-600 dark:text-slate-400">-</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">All Present</span></div></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Occupied Beds</span>
+        <div class="text-2xl font-black text-amber-500 mt-1">{{ occupied_beds|default:280 }}</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">Active Boarders</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">🛌</div>
     </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Available Beds</span>
+        <div class="text-2xl font-black text-indigo-500 mt-1">{{ available_beds|default:20 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">{{ occupancy_pct|default:93 }}% Occupancy Rate</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">✅</div>
+    </div>
+
+  </div>
+
+  <!-- ── Quick Access Module Cards ───────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <a href="/hostel/rooms/" class="group bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-200 space-y-3 block">
+      <div class="w-11 h-11 rounded-xl bg-indigo-500/10 group-hover:bg-indigo-500/20 text-indigo-600 flex items-center justify-center text-xl transition">🚪</div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Room Directory</h3>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Manage hostel blocks, room capacities, floor levels, and bed assignments.</p>
+      <div class="text-[10px] font-bold text-indigo-500 group-hover:underline">Browse Directory &rarr;</div>
+    </a>
+
+    <a href="/hostel/dashboard/" class="group bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-200 space-y-3 block">
+      <div class="w-11 h-11 rounded-xl bg-emerald-500/10 group-hover:bg-emerald-500/20 text-emerald-600 flex items-center justify-center text-xl transition">🛌</div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Bed Allocations</h3>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Assign students to beds, process room transfers, and track vacate dates.</p>
+      <div class="text-[10px] font-bold text-emerald-500 group-hover:underline">View Allocations &rarr;</div>
+    </a>
+
+    <a href="/hostel/dashboard/" class="group bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:border-amber-300 dark:hover:border-amber-700 transition-all duration-200 space-y-3 block">
+      <div class="w-11 h-11 rounded-xl bg-amber-500/10 group-hover:bg-amber-500/20 text-amber-600 flex items-center justify-center text-xl transition">📋</div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Nightly Roll Call</h3>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Record evening attendance, flag absent boarders, and verify dorm check-ins.</p>
+      <div class="text-[10px] font-bold text-amber-500 group-hover:underline">Start Roll Call &rarr;</div>
+    </a>
+
+    <a href="/hostel/dashboard/" class="group bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-lg hover:border-rose-300 dark:hover:border-rose-700 transition-all duration-200 space-y-3 block">
+      <div class="w-11 h-11 rounded-xl bg-rose-500/10 group-hover:bg-rose-500/20 text-rose-600 flex items-center justify-center text-xl transition">🎟️</div>
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">Exeat & Pass Permits</h3>
+      <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">Issue weekend exeat permits, track return deadlines, and audit gate sign-outs.</p>
+      <div class="text-[10px] font-bold text-rose-500 group-hover:underline">Manage Exeats &rarr;</div>
+    </a>
+  </div>
+
+  <!-- ── Bottom Grid: Rooms Directory + Recent Allocations ─────────────── -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Active Hostel Rooms Table -->
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          🚪 Active Hostel Rooms & Inventory
+        </h2>
+        <a href="/hostel/rooms/" class="text-xs font-semibold text-indigo-500 hover:underline">Full Directory &rarr;</a>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+              <th class="px-6 py-3">Room No.</th>
+              <th class="px-6 py-3">Block / Hostel</th>
+              <th class="px-6 py-3">Bed Capacity</th>
+              <th class="px-6 py-3">Floor</th>
+              <th class="px-6 py-3 text-right">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+            {% for room in recent_rooms %}
+            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+              <td class="px-6 py-4">
+                <div class="font-bold text-slate-900 dark:text-white">Room {{ room.room_number }}</div>
+              </td>
+              <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+                <span class="font-semibold">{{ room.block.name|default:"Main Block" }}</span>
+                <span class="text-slate-400 text-[10px] block">{{ room.block.hostel.name|default:"Student Dormitory" }}</span>
+              </td>
+              <td class="px-6 py-4 font-mono text-slate-700 dark:text-slate-300 font-bold">
+                {{ room.capacity|default:4 }} beds
+              </td>
+              <td class="px-6 py-4 text-slate-500 dark:text-slate-400">
+                {{ room.floor|default:"1st Floor" }}
+              </td>
+              <td class="px-6 py-4 text-right">
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">
+                  ACTIVE
+                </span>
+              </td>
+            </tr>
+            {% empty %}
+            <!-- Demo Rows when no DB records exist -->
+            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+              <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">Room 101</td>
+              <td class="px-6 py-4 text-slate-600 dark:text-slate-300">Block A <span class="text-slate-400 text-[10px] block">Boys Hostel</span></td>
+              <td class="px-6 py-4 font-mono text-indigo-500 font-bold">4 beds</td>
+              <td class="px-6 py-4 text-slate-500 dark:text-slate-400">Ground Floor</td>
+              <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">FULL</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+              <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">Room 102</td>
+              <td class="px-6 py-4 text-slate-600 dark:text-slate-300">Block A <span class="text-slate-400 text-[10px] block">Boys Hostel</span></td>
+              <td class="px-6 py-4 font-mono text-indigo-500 font-bold">4 beds</td>
+              <td class="px-6 py-4 text-slate-500 dark:text-slate-400">Ground Floor</td>
+              <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">3/4 BEDS</span></td>
+            </tr>
+            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+              <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">Room 201</td>
+              <td class="px-6 py-4 text-slate-600 dark:text-slate-300">Block B <span class="text-slate-400 text-[10px] block">Girls Hostel</span></td>
+              <td class="px-6 py-4 font-mono text-indigo-500 font-bold">6 beds</td>
+              <td class="px-6 py-4 text-slate-500 dark:text-slate-400">1st Floor</td>
+              <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">FULL</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Active Bed Allocations Sidebar -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          🛌 Active Allocations
+        </h2>
+        <span class="text-[10px] font-bold text-indigo-500 font-mono">LIVE</span>
+      </div>
+
+      <div class="divide-y divide-slate-100 dark:divide-slate-700/50 max-h-[480px] overflow-y-auto">
+        {% for alloc in active_allocations %}
+        <div class="p-4 hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-black shrink-0">
+            {{ alloc.student.first_name|first|upper }}{{ alloc.student.last_name|first|upper }}
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="font-bold text-slate-900 dark:text-white text-xs truncate">
+              {{ alloc.student.first_name }} {{ alloc.student.last_name }}
+            </p>
+            <p class="text-[10px] text-slate-400 font-mono truncate">
+              {{ alloc.bed.room.block.hostel.name }} · Room {{ alloc.bed.room.room_number }} (Bed {{ alloc.bed.bed_number|default:"1" }})
+            </p>
+          </div>
+        </div>
+        {% empty %}
+        <div class="p-4 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-black shrink-0">AY</div>
+          <div>
+            <p class="font-bold text-slate-900 dark:text-white text-xs">Amina Yusuf</p>
+            <p class="text-[10px] text-slate-400 font-mono">Girls Hostel · Room 201 (Bed 01)</p>
+          </div>
+        </div>
+        <div class="p-4 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-black shrink-0">TA</div>
+          <div>
+            <p class="font-bold text-slate-900 dark:text-white text-xs">Tunde Adeyemi</p>
+            <p class="text-[10px] text-slate-400 font-mono">Boys Hostel · Room 101 (Bed 02)</p>
+          </div>
+        </div>
+        <div class="p-4 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xs font-black shrink-0">CE</div>
+          <div>
+            <p class="font-bold text-slate-900 dark:text-white text-xs">Chisom Eze</p>
+            <p class="text-[10px] text-slate-400 font-mono">Girls Hostel · Room 201 (Bed 03)</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
 </div>
+
+<!-- ── Modal: Allocate Bed ─────────────────────────────────────────── -->
+<div id="allocateBedModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">🛌 Allocate Bed to Student</h3>
+      <button onclick="document.getElementById('allocateBedModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <form method="POST" action="{{ request.path }}" class="p-6 space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="allocate_bed">
+
+      <div class="relative">
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Student Name</label>
+        <input type="hidden" name="student_id" id="modalStudentId" value="">
+        <input type="text" name="student_name" id="modalStudentSearch" placeholder="Type student name to search…" required autocomplete="off"
+               oninput="onStudentSearchInput(this.value)"
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <div id="studentDropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-[1100] max-h-48 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700/50"></div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Available Bed & Room</label>
+        {% if available_beds_list %}
+        <select name="bed_id" required
+                class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          {% for bed in available_beds_list %}
+          <option value="{{ bed.id }}">
+            {{ bed.room.block.hostel.name|default:"Hostel" }} — Room {{ bed.room.room_number }} ({{ bed.bed_number }})
+          </option>
+          {% endfor %}
+        </select>
+        {% else %}
+        <div class="px-4 py-3 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 rounded-xl text-xs">
+          No open beds available. Please add a room or vacate an existing bed first in the Room Manager.
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" onclick="document.getElementById('allocateBedModal').classList.add('hidden')"
+                class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">
+          Cancel
+        </button>
+        <button type="submit"
+                class="px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-md">
+          ✅ Confirm Allocation
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+let studentSearchDebounce = null;
+function onStudentSearchInput(val) {
+  document.getElementById('modalStudentId').value = '';
+  const dropdown = document.getElementById('studentDropdown');
+  clearTimeout(studentSearchDebounce);
+
+  if (!val || val.trim().length < 1) {
+    dropdown.classList.add('hidden');
+    dropdown.innerHTML = '';
+    return;
+  }
+
+  studentSearchDebounce = setTimeout(() => {
+    fetch('/clinic/patients/search/?q=' + encodeURIComponent(val.trim()))
+      .then(res => res.json())
+      .then(data => {
+        dropdown.innerHTML = '';
+        if (data.results && data.results.length > 0) {
+          data.results.forEach(p => {
+            const item = document.createElement('div');
+            item.className = 'px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer flex items-center justify-between transition';
+            item.onclick = function() { selectStudent(p.id, p.name); };
+            item.innerHTML = `<div><span class="font-bold text-xs text-slate-900 dark:text-white">${p.name}</span></div><span class="text-[10px] text-slate-400 font-mono">ID: ${p.person_number || '—'}</span>`;
+            dropdown.appendChild(item);
+          });
+          dropdown.classList.remove('hidden');
+        } else {
+          dropdown.innerHTML = `<div class="px-4 py-3 text-xs text-slate-400 text-center">No student found.<br><span class="text-[10px] text-indigo-400">Continuing will create a new student entry for "${val}".</span></div>`;
+          dropdown.classList.remove('hidden');
+        }
+      })
+      .catch(err => {
+        dropdown.classList.add('hidden');
+      });
+  }, 200);
+}
+
+function selectStudent(id, name) {
+  document.getElementById('modalStudentId').value = id;
+  document.getElementById('modalStudentSearch').value = name;
+  const dropdown = document.getElementById('studentDropdown');
+  dropdown.classList.add('hidden');
+}
+
+document.addEventListener('click', function(e) {
+  const container = document.getElementById('modalStudentSearch');
+  const dropdown = document.getElementById('studentDropdown');
+  if (container && dropdown && !container.contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
+</script>
 {% endblock %}

@@ -1,0 +1,1299 @@
+{
+  "academic": [
+    {
+      "file": "templates\\academic\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\academic\\setup_wizard.html",
+      "filename": "setup_wizard.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\academic\\subjects.html",
+      "filename": "subjects.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "admissions": [
+    {
+      "file": "templates\\admissions\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": true,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons"
+      ]
+    },
+    {
+      "file": "templates\\admissions\\new_application.html",
+      "filename": "new_application.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": true,
+      "has_htmx": true,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button"
+      ]
+    },
+    {
+      "file": "templates\\admissions\\review.html",
+      "filename": "review.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\admissions\\setup_wizard.html",
+      "filename": "setup_wizard.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "students": [
+    {
+      "file": "templates\\students\\portfolio.html",
+      "filename": "portfolio.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\students\\timeline.html",
+      "filename": "timeline.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "teachers": [
+    {
+      "file": "templates\\teachers\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\teachers\\planner.html",
+      "filename": "planner.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "hr": [
+    {
+      "file": "templates\\hr\\attendance_dashboard.html",
+      "filename": "attendance_dashboard.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": true,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\candidate_review.html",
+      "filename": "candidate_review.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\leave_calendar.html",
+      "filename": "leave_calendar.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\payroll_dashboard.html",
+      "filename": "payroll_dashboard.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\recruitment_dashboard.html",
+      "filename": "recruitment_dashboard.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\user_manual.html",
+      "filename": "user_manual.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": true,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": []
+    },
+    {
+      "file": "templates\\hr\\admin\\directory.html",
+      "filename": "directory.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": true,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button"
+      ]
+    },
+    {
+      "file": "templates\\hr\\admin\\onboarding_tracker.html",
+      "filename": "onboarding_tracker.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": true,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button"
+      ]
+    },
+    {
+      "file": "templates\\hr\\admin\\onboarding_wizard.html",
+      "filename": "onboarding_wizard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\admin\\org_chart.html",
+      "filename": "org_chart.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\analytics\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\audit\\trail.html",
+      "filename": "trail.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\bulk\\operations.html",
+      "filename": "operations.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\components\\_badge.html",
+      "filename": "_badge.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\components\\_empty_state.html",
+      "filename": "_empty_state.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\components\\_search_bar.html",
+      "filename": "_search_bar.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\components\\_stat_card.html",
+      "filename": "_stat_card.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\components\\_timeline.html",
+      "filename": "_timeline.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\components\\_toast.html",
+      "filename": "_toast.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\disciplinary\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\ess\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": true,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\finance\\postings.html",
+      "filename": "postings.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\import\\wizard.html",
+      "filename": "wizard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": true,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": []
+    },
+    {
+      "file": "templates\\hr\\manager\\team_dashboard.html",
+      "filename": "team_dashboard.html",
+      "has_forms": true,
+      "has_post_forms": true,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\notifications\\center.html",
+      "filename": "center.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\performance\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\reports\\hub.html",
+      "filename": "hub.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\rewards\\wall.html",
+      "filename": "wall.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\search\\results.html",
+      "filename": "results.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hr\\settings\\index.html",
+      "filename": "index.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": true,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button"
+      ]
+    },
+    {
+      "file": "templates\\hr\\training\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "inventory": [
+    {
+      "file": "templates\\inventory\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\inventory\\items.html",
+      "filename": "items.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "library": [
+    {
+      "file": "templates\\library\\catalog.html",
+      "filename": "catalog.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\library\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "hostel": [
+    {
+      "file": "templates\\hostel\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\hostel\\rooms.html",
+      "filename": "rooms.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "transport": [
+    {
+      "file": "templates\\transport\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\transport\\routes.html",
+      "filename": "routes.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "clinic": [
+    {
+      "file": "templates\\clinic\\consultation.html",
+      "filename": "consultation.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\clinic\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\clinic\\inventory.html",
+      "filename": "inventory.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\clinic\\records.html",
+      "filename": "records.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\clinic\\reports.html",
+      "filename": "reports.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\clinic\\visits.html",
+      "filename": "visits.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "lms": [
+    {
+      "file": "templates\\lms\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\lms\\module_builder.html",
+      "filename": "module_builder.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "communication": [
+    {
+      "file": "templates\\communication\\chat.html",
+      "filename": "chat.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\communication\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\communication\\request_demo.html",
+      "filename": "request_demo.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "workflow": [
+    {
+      "file": "templates\\workflow\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\workflow\\inbox.html",
+      "filename": "inbox.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "administration": [
+    {
+      "file": "templates\\administration\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\administration\\settings.html",
+      "filename": "settings.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "facilities": [
+    {
+      "file": "templates\\facilities\\board.html",
+      "filename": "board.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\facilities\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "analytics": [
+    {
+      "file": "templates\\analytics\\builder.html",
+      "filename": "builder.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\analytics\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "people": [
+    {
+      "file": "templates\\people\\directory.html",
+      "filename": "directory.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\people\\relationship_manager.html",
+      "filename": "relationship_manager.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "tenants": [
+    {
+      "file": "templates\\tenants\\dashboard.html",
+      "filename": "dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\tenants\\saas_analytics.html",
+      "filename": "saas_analytics.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\tenants\\wizard.html",
+      "filename": "wizard.html",
+      "has_forms": true,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": true,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ],
+  "dashboards": [
+    {
+      "file": "templates\\dashboards\\analytics_dashboard.html",
+      "filename": "analytics_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\clinic_dashboard.html",
+      "filename": "clinic_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\exam_dashboard.html",
+      "filename": "exam_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\finance_dashboard.html",
+      "filename": "finance_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\hostel_dashboard.html",
+      "filename": "hostel_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\hr_dashboard.html",
+      "filename": "hr_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\inventory_dashboard.html",
+      "filename": "inventory_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\library_dashboard.html",
+      "filename": "library_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\parent_dashboard.html",
+      "filename": "parent_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\school_admin_dashboard.html",
+      "filename": "school_admin_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\student_dashboard.html",
+      "filename": "student_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": true,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\super_admin_dashboard.html",
+      "filename": "super_admin_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\teacher_dashboard.html",
+      "filename": "teacher_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": false,
+      "missing_actions": [
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    },
+    {
+      "file": "templates\\dashboards\\transport_dashboard.html",
+      "filename": "transport_dashboard.html",
+      "has_forms": false,
+      "has_post_forms": false,
+      "has_export": false,
+      "has_import": false,
+      "has_htmx": false,
+      "has_table": true,
+      "missing_actions": [
+        "Table rendered without inline Edit/Delete/Action buttons",
+        "Missing Export (PDF/Excel/CSV) action button",
+        "Missing Batch Import / File Upload functionality"
+      ]
+    }
+  ]
+}

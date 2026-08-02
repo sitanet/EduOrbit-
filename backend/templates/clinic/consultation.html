@@ -1,40 +1,371 @@
 {% extends "base/_document.html" %}
-
-{% block title %}Consultation Desk - EduOrbit{% endblock %}
+{% block title %}Consultation Desk — EduOrbit School Clinic{% endblock %}
 
 {% block content %}
-<div style="max-width: 1000px; margin: 0 auto;">
-  <div style="margin-bottom: var(--spacing-lg);">
-    <h2 style="font-weight: var(--font-weight-semibold);">Consultation Desk</h2>
-    <p style="color: var(--color-text-secondary);">Manage consultation queues, clinical symptoms triage, and prescription orders.</p>
+<div class="space-y-6">
+
+  <!-- Page Header Banner -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 text-white p-6 rounded-2xl border border-rose-500/30 shadow-xl">
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">🩺 Consultation Desk</h1>
+      <p class="text-xs text-slate-300">Triage and manage the patient consultation queue, record symptoms, diagnoses, and prescriptions.</p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      <button onclick="document.getElementById('newVisitModal').classList.remove('hidden')"
+              class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-md">
+        ➕ Log New Visit
+      </button>
+      <a href="/clinic/sickbay/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">🛏️ Sick Bay</a>
+      <a href="/clinic/pharmacy/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">💊 Pharmacy</a>
+    </div>
   </div>
 
-  <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg);">
-    <h3 style="font-weight: var(--font-weight-semibold); margin-bottom: var(--spacing-md);">Patient Queue</h3>
-    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-      <thead>
-        <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Patient</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Visit Date</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Symptoms</th>
-          <th style="padding: var(--spacing-md); font-weight: var(--font-weight-medium);">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for visit in visits %}
-        <tr style="border-bottom: 1px solid var(--color-border);">
-          <td style="padding: var(--spacing-md);"><strong>{{ visit.patient.person.first_name }} {{ visit.patient.person.last_name }}</strong></td>
-          <td style="padding: var(--spacing-md);">{{ visit.visit_date|date:"Y-m-d H:i" }}</td>
-          <td style="padding: var(--spacing-md);">{{ visit.symptoms }}</td>
-          <td style="padding: var(--spacing-md);">{{ visit.get_status_display }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td colspan="4" style="padding: var(--spacing-xl); text-align: center; color: var(--color-text-secondary);">No patients currently in consultation queue.</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <!-- KPI Stats Row -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Visits</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ visits|length }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">All Records</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">📋</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Completed</span>
+        <div class="text-2xl font-black text-emerald-500 mt-1" id="completedCount">—</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Discharged</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">✅</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Admitted</span>
+        <div class="text-2xl font-black text-amber-500 mt-1" id="admittedCount">—</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">In Sick Bay</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">🛏️</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Referred</span>
+        <div class="text-2xl font-black text-rose-500 mt-1" id="referredCount">—</div>
+        <span class="text-[10px] text-rose-400 font-semibold mt-1 inline-block">External Hospital</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-rose-50 dark:bg-rose-900/30 text-rose-500 flex items-center justify-center text-xl">🚑</div>
+    </div>
+  </div>
+
+  <!-- Filter Bar -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+    <input type="text" id="visitSearch" onkeyup="filterTable()" placeholder="Search by patient name, symptoms, or diagnosis…"
+           class="w-full sm:w-80 px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+    <select id="statusFilter" onchange="filterTable()"
+            class="px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500">
+      <option value="">All Statuses</option>
+      <option value="completed">Completed</option>
+      <option value="admitted">Admitted</option>
+      <option value="referred">Referred</option>
+    </select>
+    <div class="ml-auto text-xs text-slate-400 font-mono">
+      Showing <span id="rowCount">—</span> records
+    </div>
+  </div>
+
+  <!-- Patient Queue Table -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-base font-bold text-slate-900 dark:text-white">🩺 Patient Consultation Queue</h2>
+      <a href="/clinic/records/" class="text-xs font-semibold text-rose-500 hover:underline">Medical Records &rarr;</a>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs" id="visitTable">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Patient</th>
+            <th class="px-6 py-3">Visit Date & Time</th>
+            <th class="px-6 py-3">Presenting Symptoms</th>
+            <th class="px-6 py-3">Diagnosis</th>
+            <th class="px-6 py-3">Status</th>
+            <th class="px-6 py-3 text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50" id="visitTableBody">
+          {% for visit in visits %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition visit-row" data-status="{{ visit.status }}">
+
+            <!-- Patient -->
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs font-black shrink-0">
+                  {{ visit.patient.person.first_name|first|upper }}{{ visit.patient.person.last_name|first|upper }}
+                </div>
+                <div>
+                  <div class="font-bold text-slate-900 dark:text-white">
+                    {{ visit.patient.person.first_name }} {{ visit.patient.person.last_name }}
+                  </div>
+                  <div class="text-slate-400 text-[10px] font-mono mt-0.5">
+                    {{ visit.patient.blood_group|default:"Blood group: —" }}
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <!-- Visit Date -->
+            <td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400 whitespace-nowrap">
+              {{ visit.visit_date|date:"d M Y" }}<br>
+              <span class="text-[10px] text-slate-400">{{ visit.visit_date|date:"H:i" }}</span>
+            </td>
+
+            <!-- Symptoms -->
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300 max-w-[200px]">
+              <div class="truncate" title="{{ visit.symptoms }}">{{ visit.symptoms|default:"—" }}</div>
+            </td>
+
+            <!-- Diagnosis -->
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300 max-w-[180px]">
+              <div class="truncate" title="{{ visit.diagnosis }}">
+                {% if visit.diagnosis %}
+                  {{ visit.diagnosis }}
+                {% else %}
+                  <span class="text-slate-400 italic">Pending</span>
+                {% endif %}
+              </div>
+            </td>
+
+            <!-- Status Badge -->
+            <td class="px-6 py-4">
+              {% if visit.status == 'completed' %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">COMPLETED</span>
+              {% elif visit.status == 'admitted' %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">ADMITTED</span>
+              {% elif visit.status == 'referred' %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-600 dark:text-rose-400 font-mono">REFERRED</span>
+              {% else %}
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-500/20 text-slate-500 font-mono">{{ visit.status|title }}</span>
+              {% endif %}
+            </td>
+
+            <!-- Action -->
+            <td class="px-6 py-4 text-right">
+              <button onclick="openVisitDetail('{{ visit.patient.person.first_name }} {{ visit.patient.person.last_name }}', '{{ visit.symptoms|escapejs }}', '{{ visit.diagnosis|default:"Pending"|escapejs }}', '{{ visit.status }}')"
+                      class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-bold transition">
+                Review &rarr;
+              </button>
+            </td>
+          </tr>
+          {% empty %}
+          <tr id="emptyRow">
+            <td colspan="6" class="px-6 py-16 text-center">
+              <div class="text-4xl mb-3">🩺</div>
+              <div class="text-sm font-semibold text-slate-500 dark:text-slate-400">No patients in queue</div>
+              <div class="text-xs text-slate-400 mt-1">Log a new patient visit using the button above.</div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Modal: Log New Visit ──────────────────────────────────────────── -->
+<div id="newVisitModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-rose-600 to-rose-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">🩺 Log New Patient Visit</h3>
+      <button onclick="document.getElementById('newVisitModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <form method="POST" action="/clinic/consultation/" class="p-6 space-y-4">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="log_visit">
+
+      <div class="relative">
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Patient / Student Name</label>
+        <input type="hidden" name="patient_id" id="modalPatientId" value="">
+        <input type="text" name="patient_name" id="modalPatientSearch" placeholder="Type student name to search…" required autocomplete="off"
+               oninput="onPatientSearchInput(this.value)"
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+        <!-- Autocomplete Dropdown -->
+        <div id="patientDropdown" class="hidden absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl z-[1100] max-h-48 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-700/50">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Presenting Symptoms</label>
+        <textarea name="symptoms" rows="3" placeholder="Describe the patient's presenting complaints and symptoms…" required
+                  class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500 resize-none"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Initial Diagnosis</label>
+        <input type="text" name="diagnosis" placeholder="Provisional diagnosis (optional)…"
+               class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Outcome / Status</label>
+        <select name="status"
+                class="w-full px-4 py-2.5 text-sm border border-slate-200 dark:border-slate-600 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-500">
+          <option value="completed">✅ Completed — Patient Discharged</option>
+          <option value="admitted">🛏️ Admitted to Sick Bay</option>
+          <option value="referred">🚑 Referred to External Hospital</option>
+        </select>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" onclick="document.getElementById('newVisitModal').classList.add('hidden')"
+                class="px-5 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">
+          Cancel
+        </button>
+        <button type="submit"
+                class="px-5 py-2.5 text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl transition shadow-md">
+          ✅ Save Visit Record
+        </button>
+      </div>
+    </form>
   </div>
 </div>
+
+<!-- ── Modal: Visit Detail Review ───────────────────────────────────── -->
+<div id="visitDetailModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000] p-4">
+  <div class="bg-white dark:bg-slate-800 w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 px-6 py-4 flex items-center justify-between">
+      <h3 class="text-base font-bold text-white">📋 Visit Record</h3>
+      <button onclick="document.getElementById('visitDetailModal').classList.add('hidden')" class="text-white/80 hover:text-white text-xl font-bold">&times;</button>
+    </div>
+    <div class="p-6 space-y-4">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Patient</span>
+        <p class="text-sm font-bold text-slate-900 dark:text-white mt-0.5" id="detailPatient">—</p>
+      </div>
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Symptoms</span>
+        <p class="text-sm text-slate-700 dark:text-slate-300 mt-0.5" id="detailSymptoms">—</p>
+      </div>
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Diagnosis</span>
+        <p class="text-sm text-slate-700 dark:text-slate-300 mt-0.5" id="detailDiagnosis">—</p>
+      </div>
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono uppercase tracking-wider">Status</span>
+        <p class="mt-0.5" id="detailStatus">—</p>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <a href="/clinic/pharmacy/" class="flex-1 text-center px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition">💊 Prescribe Medication</a>
+        <button onclick="document.getElementById('visitDetailModal').classList.add('hidden')"
+                class="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Status counter compute
+document.addEventListener('DOMContentLoaded', function () {
+  const rows = document.querySelectorAll('.visit-row');
+  let completed = 0, admitted = 0, referred = 0;
+  rows.forEach(row => {
+    const s = (row.dataset.status || '').toLowerCase();
+    if (s === 'completed') completed++;
+    else if (s === 'admitted') admitted++;
+    else if (s === 'referred') referred++;
+  });
+  document.getElementById('completedCount').textContent = completed;
+  document.getElementById('admittedCount').textContent = admitted;
+  document.getElementById('referredCount').textContent = referred;
+  document.getElementById('rowCount').textContent = rows.length;
+});
+
+function filterTable() {
+  const q = document.getElementById('visitSearch').value.toLowerCase();
+  const status = document.getElementById('statusFilter').value.toLowerCase();
+  const rows = document.querySelectorAll('.visit-row');
+  let visible = 0;
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    const rowStatus = (row.dataset.status || '').toLowerCase();
+    const matchSearch = !q || text.includes(q);
+    const matchStatus = !status || rowStatus === status;
+    if (matchSearch && matchStatus) { row.style.display = ''; visible++; }
+    else { row.style.display = 'none'; }
+  });
+  document.getElementById('rowCount').textContent = visible;
+}
+
+function openVisitDetail(patient, symptoms, diagnosis, status) {
+  document.getElementById('detailPatient').textContent = patient;
+  document.getElementById('detailSymptoms').textContent = symptoms || '—';
+  document.getElementById('detailDiagnosis').textContent = diagnosis || 'Pending';
+
+  const statusMap = {
+    'completed': '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 font-mono">COMPLETED</span>',
+    'admitted':  '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 font-mono">ADMITTED</span>',
+    'referred':  '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-600 font-mono">REFERRED</span>',
+  };
+  document.getElementById('detailStatus').innerHTML = statusMap[status] || status;
+  document.getElementById('visitDetailModal').classList.remove('hidden');
+}
+
+let patientSearchDebounce = null;
+function onPatientSearchInput(val) {
+  document.getElementById('modalPatientId').value = '';
+  const dropdown = document.getElementById('patientDropdown');
+  clearTimeout(patientSearchDebounce);
+
+  if (!val || val.trim().length < 1) {
+    dropdown.classList.add('hidden');
+    dropdown.innerHTML = '';
+    return;
+  }
+
+  patientSearchDebounce = setTimeout(() => {
+    fetch('/clinic/patients/search/?q=' + encodeURIComponent(val.trim()))
+      .then(res => res.json())
+      .then(data => {
+        dropdown.innerHTML = '';
+        if (data.results && data.results.length > 0) {
+          data.results.forEach(p => {
+            const item = document.createElement('div');
+            item.className = 'px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer flex items-center justify-between transition';
+            item.onclick = function() { selectPatient(p.id, p.name); };
+            item.innerHTML = `<div><span class="font-bold text-xs text-slate-900 dark:text-white">${p.name}</span><div class="text-[10px] text-slate-400 font-mono">ID: ${p.person_number || '—'}</div></div><span class="text-[10px] text-slate-400 font-mono">Blood: ${p.blood_group}</span>`;
+            dropdown.appendChild(item);
+          });
+          dropdown.classList.remove('hidden');
+        } else {
+          dropdown.innerHTML = `<div class="px-4 py-3 text-xs text-slate-400 text-center">No existing student/person found.<br><span class="text-[10px] text-rose-500 font-medium">Continuing will create a new patient entry for "${val}".</span></div>`;
+          dropdown.classList.remove('hidden');
+        }
+      })
+      .catch(err => {
+        dropdown.classList.add('hidden');
+      });
+  }, 200);
+}
+
+function selectPatient(id, name) {
+  document.getElementById('modalPatientId').value = id;
+  document.getElementById('modalPatientSearch').value = name;
+  const dropdown = document.getElementById('patientDropdown');
+  dropdown.classList.add('hidden');
+}
+
+// Close dropdown on outside click
+document.addEventListener('click', function(e) {
+  const container = document.getElementById('modalPatientSearch');
+  const dropdown = document.getElementById('patientDropdown');
+  if (container && dropdown && !container.contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.classList.add('hidden');
+  }
+});
+
+</script>
 {% endblock %}

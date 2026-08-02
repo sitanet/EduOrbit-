@@ -123,3 +123,27 @@ class StudentRecordAPIView(APIView):
             })
         except StudentProfile.DoesNotExist:
             return Response({"status": "error", "message": "Student record not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+class StudentTransitionAPIView(APIView):
+    def post(self, request, pk):
+        tenant = getattr(request, 'tenant', None)
+        new_status = request.data.get('new_status')
+        reason = request.data.get('reason', '')
+        
+        try:
+            student = StudentProfile.objects.get(id=pk, tenant=tenant)
+            StudentLifecycleService.transition_student_status(student, new_status, reason=reason)
+            return Response({
+                "status": "success",
+                "message": "Student status transitioned successfully.",
+                "data": {
+                    "student_id": str(student.id),
+                    "new_status": student.enrollment_status
+                }
+            }, status=status.HTTP_200_OK)
+        except StudentProfile.DoesNotExist:
+            return Response({"status": "error", "message": "Student not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+

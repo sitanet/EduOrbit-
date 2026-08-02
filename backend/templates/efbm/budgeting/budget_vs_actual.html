@@ -1,0 +1,95 @@
+{% extends "base/_document.html" %}
+{% block title %}Budget vs. Actual Variance Analysis — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Budget vs. Actual Variance Analysis</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Itemized Variance Analysis (Allocated vs. Spent) and Favorable/Unfavorable Tracking.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Variance Report
+            </button>
+            <a href="?export=excel" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📊 Export Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+        <a href="{% url 'budget_dashboard_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Budget Overview</a>
+        <a href="{% url 'budget_vs_actual_web' %}" class="px-4 py-2 bg-indigo-600 text-white font-semibold text-xs rounded-xl">Budget vs. Actual Variance</a>
+    </div>
+
+    <!-- Variance Analysis Table -->
+    {% if report %}
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" id="printableVariance">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+            <div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">{{ report.budget.name }}</h3>
+                <p class="text-xs text-slate-500 font-mono">Academic Year: {{ report.budget.academic_year.name }}</p>
+            </div>
+            <div class="text-right">
+                <span class="text-xs font-semibold text-slate-400 block">CONSUMPTION RATE</span>
+                <span class="text-base font-bold font-mono text-indigo-600 dark:text-indigo-400">{{ report.consumption_pct }}%</span>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Expenditure Category</th>
+                        <th class="px-6 py-4 text-right">Allocated ($)</th>
+                        <th class="px-6 py-4 text-right">Actual Spent ($)</th>
+                        <th class="px-6 py-4 text-right">Variance ($)</th>
+                        <th class="px-6 py-4 text-center">Variance %</th>
+                        <th class="px-6 py-4 text-center">Variance Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for item in report.items %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ item.category_name }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-indigo-600 dark:text-indigo-400">${{ item.allocated_amount }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">${{ item.spent_amount }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">${{ item.variance_amount }}</td>
+                        <td class="px-6 py-4 text-center font-mono font-bold">{{ item.variance_pct }}%</td>
+                        <td class="px-6 py-4 text-center">
+                            {% if item.status == 'Favorable' %}
+                            <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs rounded-lg uppercase">Favorable</span>
+                            {% else %}
+                            <span class="px-2.5 py-1 bg-rose-500/10 text-rose-600 dark:text-rose-400 font-bold text-xs rounded-lg uppercase">Unfavorable</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-500">No budget line items registered.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot class="bg-slate-100 dark:bg-slate-900/80 font-bold text-slate-900 dark:text-white border-t border-slate-200 dark:border-slate-700 text-sm">
+                    <tr>
+                        <td class="px-6 py-4 uppercase">Total Fiscal Budget Variance</td>
+                        <td class="px-6 py-4 text-right font-mono text-indigo-600 dark:text-indigo-400">${{ report.total_allocated }}</td>
+                        <td class="px-6 py-4 text-right font-mono text-slate-900 dark:text-white">${{ report.total_spent }}</td>
+                        <td class="px-6 py-4 text-right font-mono text-emerald-600 dark:text-emerald-400" colspan="3">${{ report.total_variance }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="bg-white dark:bg-slate-800 p-12 text-center rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-500">
+        No active budget selected for variance analysis.
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

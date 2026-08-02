@@ -7,7 +7,7 @@ from backend.apps.academic.models import (
 from backend.apps.timetable.models import (
     BellSchedule, TimeSlot, Resource, ScheduleType, Lesson, Schedule
 )
-from backend.apps.academic.services.timetable import TimetableGenerationService, ConflictDetectionService
+from backend.apps.academic.services import TimetableGenerationService, ConflictDetectionService
 
 class TimetableSchedulingTestCase(TestCase):
     def setUp(self):

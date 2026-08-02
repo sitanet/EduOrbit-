@@ -1,0 +1,4853 @@
+[
+  {
+    "url": "/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/demo-credentials/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.views_demo",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/request-demo/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/request-demo/submit/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/docs/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/dashboard/super-admin/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/school-admin/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/teacher/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 200,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/student/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 200,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/parent/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 200,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/finance/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 200,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/hr/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 200,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/library/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 200,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/hostel/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 200,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/transport/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 200,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/clinic/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 200,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/dashboard/exam/",
+    "view_name": "view",
+    "view_module": "backend.apps.dashboard.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/login/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/sessions/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/roles/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/demo-portal/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.views_demo",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/api/v1/auth/login/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/auth/logout/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/auth/refresh/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/auth/sessions/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/auth/sessions/<uuid:pk>/",
+    "view_name": "view",
+    "view_module": "backend.apps.identity.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/tenants/onboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/tenants/tenant-dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/tenants/switch-school/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/tenants/saas-analytics/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.views_admin",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/tenants/api/v1/subscription/plans/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/tenants/api/v1/subscription/subscribe/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/tenants/api/v1/subscription/renew/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/tenants/api/v1/subscription/status/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/tenants/api/v1/subscription/webhook/opay/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/tenants/api/v1/subscription/webhook/paystack/",
+    "view_name": "view",
+    "view_module": "backend.apps.tenants.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/academic/wizard/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/academic/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/academic/subjects/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/academic/api/v1/academic/settings/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/academic/years/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/academic/levels/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/academic/subjects/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/academic/timetables/create/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/academic/timetables/schedule/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/academic/timetables/publish/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/attendance/check-in/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/attendance/student/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/assessment/calculate/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/results/student/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/promotion/run/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/graduation/run/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/academic/api/v1/transcript/<uuid:student_uuid>/",
+    "view_name": "view",
+    "view_module": "backend.apps.academic.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/people/directory/",
+    "view_name": "view",
+    "view_module": "backend.apps.people.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/people/relationships/",
+    "view_name": "view",
+    "view_module": "backend.apps.people.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/people/api/v1/people/",
+    "view_name": "view",
+    "view_module": "backend.apps.people.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/people/api/v1/people/search/",
+    "view_name": "view",
+    "view_module": "backend.apps.people.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/people/api/v1/people/roles/",
+    "view_name": "view",
+    "view_module": "backend.apps.people.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/people/api/v1/people/relationships/",
+    "view_name": "view",
+    "view_module": "backend.apps.people.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/admissions/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/admissions/wizard/",
+    "view_name": "view",
+    "view_module": "backend.apps.admissions.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/admissions/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.admissions.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/admissions/application/new/",
+    "view_name": "view",
+    "view_module": "backend.apps.admissions.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/admissions/<uuid:application_id>/review/",
+    "view_name": "view",
+    "view_module": "backend.apps.admissions.views_web",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/admissions/api/v1/applications/",
+    "view_name": "view",
+    "view_module": "backend.apps.admissions.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/admissions/api/v1/applications/convert/",
+    "view_name": "view",
+    "view_module": "backend.apps.admissions.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/students/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/students/portfolio/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/students/timeline/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/students/api/v1/students/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/students/api/v1/enroll/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/students/api/v1/students/enroll/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/students/api/v1/students/<uuid:pk>/transition/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/students/api/v1/promote/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/students/api/v1/withdraw/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/students/api/v1/student-record/",
+    "view_name": "view",
+    "view_module": "backend.apps.students.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/timetable/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/timetable/builder/",
+    "view_name": "view",
+    "view_module": "backend.apps.timetable.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/timetable/bookings/",
+    "view_name": "view",
+    "view_module": "backend.apps.timetable.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/timetable/api/v1/schedules/resources/",
+    "view_name": "view",
+    "view_module": "backend.apps.timetable.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/timetable/api/v1/schedules/resources/<int:pk>/",
+    "view_name": "view",
+    "view_module": "backend.apps.timetable.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/timetable/api/v1/schedules/",
+    "view_name": "view",
+    "view_module": "backend.apps.timetable.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/timetable/api/v1/schedules/<int:pk>/",
+    "view_name": "view",
+    "view_module": "backend.apps.timetable.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/timetable/api/v1/schedules/conflicts/",
+    "view_name": "view",
+    "view_module": "backend.apps.timetable.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/teachers/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/teachers/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.teachers.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 200,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/teachers/planner/",
+    "view_name": "view",
+    "view_module": "backend.apps.teachers.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 200,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 403,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/teachers/api/v1/curricula/",
+    "view_name": "view",
+    "view_module": "backend.apps.teachers.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/teachers/api/v1/lesson-plans/",
+    "view_name": "view",
+    "view_module": "backend.apps.teachers.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/teachers/api/v1/assignments/",
+    "view_name": "view",
+    "view_module": "backend.apps.teachers.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/teachers/api/v1/observations/",
+    "view_name": "view",
+    "view_module": "backend.apps.teachers.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/attendance/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/attendance/register/",
+    "view_name": "view",
+    "view_module": "backend.apps.attendance.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/attendance/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.attendance.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/attendance/api/v1/records/",
+    "view_name": "view",
+    "view_module": "backend.apps.attendance.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/attendance/api/v1/corrections/",
+    "view_name": "view",
+    "view_module": "backend.apps.attendance.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/attendance/api/v1/sync/",
+    "view_name": "view",
+    "view_module": "backend.apps.attendance.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/lms/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/lms/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.lms.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/lms/builder/",
+    "view_name": "view",
+    "view_module": "backend.apps.lms.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/lms/api/v1/courses/",
+    "view_name": "view",
+    "view_module": "backend.apps.lms.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/lms/api/v1/lessons/",
+    "view_name": "view",
+    "view_module": "backend.apps.lms.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/lms/api/v1/quizzes/",
+    "view_name": "view",
+    "view_module": "backend.apps.lms.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/lms/api/v1/quizzes/submit/",
+    "view_name": "view",
+    "view_module": "backend.apps.lms.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/lms/api/v1/submissions/",
+    "view_name": "view",
+    "view_module": "backend.apps.lms.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/eae/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/eae/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.eae.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/eae/attempts/<uuid:attempt_id>/cbt/",
+    "view_name": "view",
+    "view_module": "backend.apps.eae.views_web",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/eae/api/v1/question-banks/",
+    "view_name": "view",
+    "view_module": "backend.apps.eae.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/eae/api/v1/exams/",
+    "view_name": "view",
+    "view_module": "backend.apps.eae.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/eae/api/v1/start/",
+    "view_name": "view",
+    "view_module": "backend.apps.eae.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/eae/api/v1/submit/",
+    "view_name": "view",
+    "view_module": "backend.apps.eae.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/eae/api/v1/results/",
+    "view_name": "view",
+    "view_module": "backend.apps.eae.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/eae/api/v1/results/publish/",
+    "view_name": "view",
+    "view_module": "backend.apps.eae.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/emrp/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.emrp.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/emrp/exams/<uuid:exam_id>/broadsheet-view/",
+    "view_name": "view",
+    "view_module": "backend.apps.emrp.views_web",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/emrp/api/v1/results/",
+    "view_name": "view",
+    "view_module": "backend.apps.emrp.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/emrp/api/v1/exams/<uuid:exam_id>/broadsheet/",
+    "view_name": "view",
+    "view_module": "backend.apps.emrp.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/emrp/api/v1/promotions-preview/",
+    "view_name": "view",
+    "view_module": "backend.apps.emrp.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/efbm/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/efbm/wallet-portal/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/efbm/api/v1/invoices/generate/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/invoices/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/payments/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/wallet/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/wallet/fund/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/journals/post/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/trial-balance/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/profit-loss/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/balance-sheet/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/budgets/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/budgets/approve/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/budget-utilization/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/efbm/api/v1/budget-variance/",
+    "view_name": "view",
+    "view_module": "backend.apps.efbm.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/communication/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/communication/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/communication/chat-room/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/communication/api/v1/messages/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/communication/api/v1/messages/send/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/communication/api/v1/tickets/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/communication/api/v1/tickets/create/",
+    "view_name": "view",
+    "view_module": "backend.apps.communication.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/hr/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/hr/ess/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/manager/team/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/admin/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/hr/admin/directory/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/admin/org-chart/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/admin/onboarding/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/admin/onboarding/wizard/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/recruitment/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/recruitment/candidate/<uuid:candidate_id>/review/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/leave-calendar/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/attendance/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/attendance/generate/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 405,
+      "School Admin": 405,
+      "Teacher": 405,
+      "Student": 405,
+      "Parent": 405,
+      "Finance Officer": 405,
+      "HR Admin": 405,
+      "Librarian": 405,
+      "Hostel Warden": 405,
+      "Transport Officer": 405,
+      "Clinic Nurse": 405,
+      "Exam Officer": 405
+    }
+  },
+  {
+    "url": "/hr/attendance/adjustment/<uuid:adjustment_id>/approve/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/attendance/adjustment/<uuid:adjustment_id>/reject/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/attendance/report/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/payroll/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 200,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/hr/payroll/generate/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 403,
+      "Teacher": 403,
+      "Student": 403,
+      "Parent": 403,
+      "Finance Officer": 403,
+      "HR Admin": 200,
+      "Librarian": 403,
+      "Hostel Warden": 403,
+      "Transport Officer": 403,
+      "Clinic Nurse": 403,
+      "Exam Officer": 403
+    }
+  },
+  {
+    "url": "/hr/payroll/post/<uuid:run_id>/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/finance/postings/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/performance/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/training/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/disciplinary/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/rewards/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/analytics/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/notifications/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/audit/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/settings/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/import/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/bulk/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/search/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/reports/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/manual/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/user-manual/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/admin/manual/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/hr/api/v1/employees/",
+    "view_name": "EmployeeViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/employees.(?P<format>[a-z0-9]+)/?",
+    "view_name": "EmployeeViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/employees/(?P<pk>[/.]+)/",
+    "view_name": "EmployeeViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/employees/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "EmployeeViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/vacancies/",
+    "view_name": "JobVacancyViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/vacancies.(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobVacancyViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/vacancies/(?P<pk>[/.]+)/",
+    "view_name": "JobVacancyViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/vacancies/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobVacancyViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/applications/",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/applications.(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/applications/(?P<pk>[/.]+)/",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/applications/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/applications/(?P<pk>[/.]+)/hire/",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/recruitment/applications/(?P<pk>[/.]+)/hire.(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/onboarding/",
+    "view_name": "OnboardingTaskViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/onboarding.(?P<format>[a-z0-9]+)/?",
+    "view_name": "OnboardingTaskViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/onboarding/(?P<pk>[/.]+)/",
+    "view_name": "OnboardingTaskViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/onboarding/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "OnboardingTaskViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/leave/",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/leave.(?P<format>[a-z0-9]+)/?",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/leave/(?P<pk>[/.]+)/",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/leave/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/leave/(?P<pk>[/.]+)/approve/",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/leave/(?P<pk>[/.]+)/approve.(?P<format>[a-z0-9]+)/?",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/leave/(?P<pk>[/.]+)/reject/",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/leave/(?P<pk>[/.]+)/reject.(?P<format>[a-z0-9]+)/?",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/settings/",
+    "view_name": "HRSettingsViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/settings.(?P<format>[a-z0-9]+)/?",
+    "view_name": "HRSettingsViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/settings/(?P<pk>[/.]+)/",
+    "view_name": "HRSettingsViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/settings/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "HRSettingsViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/periods/",
+    "view_name": "PayrollPeriodViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/periods.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollPeriodViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/periods/(?P<pk>[/.]+)/",
+    "view_name": "PayrollPeriodViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/periods/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollPeriodViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/gl-accounts/",
+    "view_name": "PayrollGLAccountViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/gl-accounts.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollGLAccountViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/gl-accounts/(?P<pk>[/.]+)/",
+    "view_name": "PayrollGLAccountViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/gl-accounts/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollGLAccountViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/salary-structures/",
+    "view_name": "SalaryStructureViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/salary-structures.(?P<format>[a-z0-9]+)/?",
+    "view_name": "SalaryStructureViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/salary-structures/(?P<pk>[/.]+)/",
+    "view_name": "SalaryStructureViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/salary-structures/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "SalaryStructureViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/accounting-configs/",
+    "view_name": "PayrollAccountingConfigurationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/accounting-configs.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollAccountingConfigurationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/accounting-configs/(?P<pk>[/.]+)/",
+    "view_name": "PayrollAccountingConfigurationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/accounting-configs/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollAccountingConfigurationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/runs/",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/runs.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/runs/generate/",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/runs/generate.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/runs/(?P<pk>[/.]+)/",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/runs/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/runs/(?P<pk>[/.]+)/approve_and_post/",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/runs/(?P<pk>[/.]+)/approve_and_post.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/payslips/",
+    "view_name": "PayrollPayslipViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/payslips.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollPayslipViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/payslips/(?P<pk>[/.]+)/",
+    "view_name": "PayrollPayslipViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/payroll/payslips/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollPayslipViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/shifts/",
+    "view_name": "AttendanceShiftViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/shifts.(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceShiftViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/shifts/(?P<pk>[/.]+)/",
+    "view_name": "AttendanceShiftViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/shifts/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceShiftViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/records/",
+    "view_name": "AttendanceRecordViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/records.(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceRecordViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/records/(?P<pk>[/.]+)/",
+    "view_name": "AttendanceRecordViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/records/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceRecordViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/adjustments/",
+    "view_name": "AttendanceAdjustmentViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/adjustments.(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceAdjustmentViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/adjustments/(?P<pk>[/.]+)/",
+    "view_name": "AttendanceAdjustmentViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/adjustments/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceAdjustmentViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/holidays/",
+    "view_name": "PublicHolidayViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/holidays.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PublicHolidayViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/holidays/(?P<pk>[/.]+)/",
+    "view_name": "PublicHolidayViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/holidays/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PublicHolidayViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/dashboard/",
+    "view_name": "AttendanceDashboardViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/attendance/dashboard.(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceDashboardViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/",
+    "view_name": "view",
+    "view_module": "rest_framework.routers",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/<drf_format_suffix:format>",
+    "view_name": "view",
+    "view_module": "rest_framework.routers",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/kyc/verify-nin/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.api.kyc_views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/kyc/verify-bvn/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.api.kyc_views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/kyc/resolve-bank/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.api.kyc_views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hr/api/v1/onboarding/draft/auto-save/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.api.kyc_views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/employees/",
+    "view_name": "EmployeeViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/employees.(?P<format>[a-z0-9]+)/?",
+    "view_name": "EmployeeViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/employees/(?P<pk>[/.]+)/",
+    "view_name": "EmployeeViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/employees/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "EmployeeViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/vacancies/",
+    "view_name": "JobVacancyViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/vacancies.(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobVacancyViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/vacancies/(?P<pk>[/.]+)/",
+    "view_name": "JobVacancyViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/vacancies/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobVacancyViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/applications/",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/applications.(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/applications/(?P<pk>[/.]+)/",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/applications/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/applications/(?P<pk>[/.]+)/hire/",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/recruitment/applications/(?P<pk>[/.]+)/hire.(?P<format>[a-z0-9]+)/?",
+    "view_name": "JobApplicationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/onboarding/",
+    "view_name": "OnboardingTaskViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/onboarding.(?P<format>[a-z0-9]+)/?",
+    "view_name": "OnboardingTaskViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/onboarding/(?P<pk>[/.]+)/",
+    "view_name": "OnboardingTaskViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/onboarding/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "OnboardingTaskViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/leave/",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/leave.(?P<format>[a-z0-9]+)/?",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/leave/(?P<pk>[/.]+)/",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/leave/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/leave/(?P<pk>[/.]+)/approve/",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/leave/(?P<pk>[/.]+)/approve.(?P<format>[a-z0-9]+)/?",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/leave/(?P<pk>[/.]+)/reject/",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/leave/(?P<pk>[/.]+)/reject.(?P<format>[a-z0-9]+)/?",
+    "view_name": "LeaveRequestViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/settings/",
+    "view_name": "HRSettingsViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/settings.(?P<format>[a-z0-9]+)/?",
+    "view_name": "HRSettingsViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/settings/(?P<pk>[/.]+)/",
+    "view_name": "HRSettingsViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/settings/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "HRSettingsViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/periods/",
+    "view_name": "PayrollPeriodViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/periods.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollPeriodViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/periods/(?P<pk>[/.]+)/",
+    "view_name": "PayrollPeriodViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/periods/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollPeriodViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/gl-accounts/",
+    "view_name": "PayrollGLAccountViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/gl-accounts.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollGLAccountViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/gl-accounts/(?P<pk>[/.]+)/",
+    "view_name": "PayrollGLAccountViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/gl-accounts/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollGLAccountViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/salary-structures/",
+    "view_name": "SalaryStructureViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/salary-structures.(?P<format>[a-z0-9]+)/?",
+    "view_name": "SalaryStructureViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/salary-structures/(?P<pk>[/.]+)/",
+    "view_name": "SalaryStructureViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/salary-structures/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "SalaryStructureViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/accounting-configs/",
+    "view_name": "PayrollAccountingConfigurationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/accounting-configs.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollAccountingConfigurationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/accounting-configs/(?P<pk>[/.]+)/",
+    "view_name": "PayrollAccountingConfigurationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/accounting-configs/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollAccountingConfigurationViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/runs/",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/runs.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/runs/generate/",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/runs/generate.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/runs/(?P<pk>[/.]+)/",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/runs/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/runs/(?P<pk>[/.]+)/approve_and_post/",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/runs/(?P<pk>[/.]+)/approve_and_post.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollRunViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/payslips/",
+    "view_name": "PayrollPayslipViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/payslips.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollPayslipViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/payslips/(?P<pk>[/.]+)/",
+    "view_name": "PayrollPayslipViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/payroll/payslips/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PayrollPayslipViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/shifts/",
+    "view_name": "AttendanceShiftViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/shifts.(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceShiftViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/shifts/(?P<pk>[/.]+)/",
+    "view_name": "AttendanceShiftViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/shifts/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceShiftViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/records/",
+    "view_name": "AttendanceRecordViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/records.(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceRecordViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/records/(?P<pk>[/.]+)/",
+    "view_name": "AttendanceRecordViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/records/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceRecordViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/adjustments/",
+    "view_name": "AttendanceAdjustmentViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/adjustments.(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceAdjustmentViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/adjustments/(?P<pk>[/.]+)/",
+    "view_name": "AttendanceAdjustmentViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/adjustments/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceAdjustmentViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/holidays/",
+    "view_name": "PublicHolidayViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/holidays.(?P<format>[a-z0-9]+)/?",
+    "view_name": "PublicHolidayViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/holidays/(?P<pk>[/.]+)/",
+    "view_name": "PublicHolidayViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/holidays/(?P<pk>[/.]+).(?P<format>[a-z0-9]+)/?",
+    "view_name": "PublicHolidayViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/dashboard/",
+    "view_name": "AttendanceDashboardViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/attendance/dashboard.(?P<format>[a-z0-9]+)/?",
+    "view_name": "AttendanceDashboardViewSet",
+    "view_module": "backend.apps.hr.api.views",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/",
+    "view_name": "view",
+    "view_module": "rest_framework.routers",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/<drf_format_suffix:format>",
+    "view_name": "view",
+    "view_module": "rest_framework.routers",
+    "is_parameterized": true,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/kyc/verify-nin/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.api.kyc_views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/kyc/verify-bvn/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.api.kyc_views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/kyc/resolve-bank/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.api.kyc_views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/api/v1/hr/onboarding/draft/auto-save/",
+    "view_name": "view",
+    "view_module": "backend.apps.hr.api.kyc_views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/library/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/library/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.library.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 200,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/library/catalog/",
+    "view_name": "view",
+    "view_module": "backend.apps.library.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/library/api/v1/books/",
+    "view_name": "view",
+    "view_module": "backend.apps.library.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/library/api/v1/books/create/",
+    "view_name": "view",
+    "view_module": "backend.apps.library.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/library/api/v1/issues/",
+    "view_name": "view",
+    "view_module": "backend.apps.library.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/library/api/v1/returns/",
+    "view_name": "view",
+    "view_module": "backend.apps.library.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/library/api/v1/fines/",
+    "view_name": "view",
+    "view_module": "backend.apps.library.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/transport/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/transport/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.transport.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 200,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/transport/routes/",
+    "view_name": "view",
+    "view_module": "backend.apps.transport.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 200,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/transport/api/v1/routes/",
+    "view_name": "view",
+    "view_module": "backend.apps.transport.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/transport/api/v1/vehicles/",
+    "view_name": "view",
+    "view_module": "backend.apps.transport.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/transport/api/v1/check-in/",
+    "view_name": "view",
+    "view_module": "backend.apps.transport.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/transport/api/v1/payments/",
+    "view_name": "view",
+    "view_module": "backend.apps.transport.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hostel/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/hostel/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.hostel.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 200,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/hostel/rooms/",
+    "view_name": "view",
+    "view_module": "backend.apps.hostel.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 200,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/hostel/api/v1/hostels/",
+    "view_name": "view",
+    "view_module": "backend.apps.hostel.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hostel/api/v1/applications/",
+    "view_name": "view",
+    "view_module": "backend.apps.hostel.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hostel/api/v1/allocate/",
+    "view_name": "view",
+    "view_module": "backend.apps.hostel.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/hostel/api/v1/occupancy/",
+    "view_name": "view",
+    "view_module": "backend.apps.hostel.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/clinic/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 200,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/clinic/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 200,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/clinic/consultation/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 200,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/clinic/visits/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 200,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/clinic/records/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 200,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/clinic/inventory/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 200,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/clinic/reports/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 200,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/clinic/api/v1/records/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/clinic/api/v1/visits/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/clinic/api/v1/visits/create/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/clinic/api/v1/medications/administer/",
+    "view_name": "view",
+    "view_module": "backend.apps.clinic.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/inventory/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/inventory/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/inventory/items/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/inventory/api/v1/purchase-order/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/inventory/api/v1/stock/receive/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/inventory/api/v1/stock/issue/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/inventory/api/v1/items/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/inventory/api/v1/assets/register/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/inventory/api/v1/assets/depreciation/run/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/inventory/api/v1/assets/",
+    "view_name": "view",
+    "view_module": "backend.apps.inventory.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/workflow/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.workflow.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/workflow/inbox/",
+    "view_name": "view",
+    "view_module": "backend.apps.workflow.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/workflow/api/v1/instances/",
+    "view_name": "view",
+    "view_module": "backend.apps.workflow.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/workflow/api/v1/tasks/",
+    "view_name": "view",
+    "view_module": "backend.apps.workflow.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/workflow/api/v1/approvals/",
+    "view_name": "view",
+    "view_module": "backend.apps.workflow.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/facilities/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/facilities/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.facilities.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/facilities/board/",
+    "view_name": "view",
+    "view_module": "backend.apps.facilities.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/facilities/api/v1/buildings/",
+    "view_name": "view",
+    "view_module": "backend.apps.facilities.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/facilities/api/v1/rooms/",
+    "view_name": "view",
+    "view_module": "backend.apps.facilities.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/facilities/api/v1/workorders/",
+    "view_name": "view",
+    "view_module": "backend.apps.facilities.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/",
+    "view_name": "view",
+    "view_module": "django.views.generic.base",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 302,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/analytics/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/analytics/builder/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/analytics/api/v1/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/api/v1/dashboard/widgets/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/api/v1/kpis/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/api/v1/trends/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/api/v1/benchmarks/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/api/v1/reports/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/api/v1/reports/export/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/api/v1/reports/schedule/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/analytics/api/v1/executive-summary/",
+    "view_name": "view",
+    "view_module": "backend.apps.analytics.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/portal/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.portal.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/portal/parent/",
+    "view_name": "view",
+    "view_module": "backend.apps.portal.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 200,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/portal/student/",
+    "view_name": "view",
+    "view_module": "backend.apps.portal.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 200,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/portal/teacher/",
+    "view_name": "view",
+    "view_module": "backend.apps.portal.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 302,
+      "Teacher": 200,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/portal/api/v1/parent/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.portal.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/portal/api/v1/student/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.portal.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/portal/api/v1/staff/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.portal.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/portal/api/v1/profile/",
+    "view_name": "view",
+    "view_module": "backend.apps.portal.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/administration/dashboard/",
+    "view_name": "view",
+    "view_module": "backend.apps.administration.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 302,
+      "Teacher": 302,
+      "Student": 302,
+      "Parent": 302,
+      "Finance Officer": 302,
+      "HR Admin": 302,
+      "Librarian": 302,
+      "Hostel Warden": 302,
+      "Transport Officer": 302,
+      "Clinic Nurse": 302,
+      "Exam Officer": 302
+    }
+  },
+  {
+    "url": "/administration/settings/",
+    "view_name": "view",
+    "view_module": "backend.apps.administration.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/administration/api/v1/settings/",
+    "view_name": "view",
+    "view_module": "backend.apps.administration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/administration/api/v1/licenses/",
+    "view_name": "view",
+    "view_module": "backend.apps.administration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/administration/api/v1/apikeys/",
+    "view_name": "view",
+    "view_module": "backend.apps.administration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/ai/workspace/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/ai/prompts/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.views_web",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/ai/api/v1/chat/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/ai/api/v1/generate/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/ai/api/v1/summarize/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/ai/api/v1/knowledge/upload/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/ai/api/v1/providers/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/ai/api/v1/usage/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/ai/api/v1/predict/",
+    "view_name": "view",
+    "view_module": "backend.apps.ai.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/integration/api/v1/providers/",
+    "view_name": "view",
+    "view_module": "backend.apps.integration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/integration/api/v1/webhooks/",
+    "view_name": "view",
+    "view_module": "backend.apps.integration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/integration/api/v1/webhooks/create/",
+    "view_name": "view",
+    "view_module": "backend.apps.integration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/integration/api/v1/workflows/",
+    "view_name": "view",
+    "view_module": "backend.apps.integration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/integration/api/v1/workflows/create/",
+    "view_name": "view",
+    "view_module": "backend.apps.integration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/integration/api/v1/jobs/",
+    "view_name": "view",
+    "view_module": "backend.apps.integration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/integration/api/v1/api-clients/",
+    "view_name": "view",
+    "view_module": "backend.apps.integration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/integration/api/v1/events/",
+    "view_name": "view",
+    "view_module": "backend.apps.integration.api.views",
+    "is_parameterized": false,
+    "responses": {}
+  },
+  {
+    "url": "/health/",
+    "view_name": "health_overall",
+    "view_module": "backend.apps.core.health",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/health/database/",
+    "view_name": "health_database",
+    "view_module": "backend.apps.core.health",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/health/cache/",
+    "view_name": "health_cache",
+    "view_module": "backend.apps.core.health",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/health/storage/",
+    "view_name": "health_storage",
+    "view_module": "backend.apps.core.health",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  },
+  {
+    "url": "/health/queue/",
+    "view_name": "health_queue",
+    "view_module": "backend.apps.core.health",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 503,
+      "School Admin": 503,
+      "Teacher": 503,
+      "Student": 503,
+      "Parent": 503,
+      "Finance Officer": 503,
+      "HR Admin": 503,
+      "Librarian": 503,
+      "Hostel Warden": 503,
+      "Transport Officer": 503,
+      "Clinic Nurse": 503,
+      "Exam Officer": 503
+    }
+  },
+  {
+    "url": "/health/ai/",
+    "view_name": "health_ai",
+    "view_module": "backend.apps.core.health",
+    "is_parameterized": false,
+    "responses": {
+      "Super Admin": 200,
+      "School Admin": 200,
+      "Teacher": 200,
+      "Student": 200,
+      "Parent": 200,
+      "Finance Officer": 200,
+      "HR Admin": 200,
+      "Librarian": 200,
+      "Hostel Warden": 200,
+      "Transport Officer": 200,
+      "Clinic Nurse": 200,
+      "Exam Officer": 200
+    }
+  }
+]

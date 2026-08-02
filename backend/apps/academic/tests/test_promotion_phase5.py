@@ -4,7 +4,7 @@ from rest_framework import status
 from backend.apps.tenants.models import Tenant, School
 from backend.apps.people.models import Person, StudentProfile
 from backend.apps.academic.models import EducationLevel, AcademicLevel, AcademicClass
-from backend.apps.academic.services.progression import PromotionService, GraduationService, TranscriptService
+from backend.apps.academic.services import PromotionService, GraduationService, TranscriptService
 
 class PromotionPhase5TestCase(TestCase):
     def setUp(self):

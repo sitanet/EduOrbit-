@@ -1,0 +1,80 @@
+{% extends "base/_document.html" %}
+{% block title %}Fixed Asset Register — EduOrbit ERP{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Fixed Asset Register</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Capital Asset Register, Depreciation Tracking, and Lifecycle Transfers.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Asset Register
+            </button>
+            <a href="{% url 'depreciation_report_web' %}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📊 Depreciation Analysis Report
+            </a>
+        </div>
+    </div>
+
+    <!-- Metrics Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Total Asset Capital Cost</span>
+            <div class="text-2xl font-black font-mono text-indigo-600 dark:text-indigo-400">${{ report.total_cost }}</div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Accumulated Depreciation</span>
+            <div class="text-2xl font-black font-mono text-rose-600 dark:text-rose-400">${{ report.total_accumulated_depreciation }}</div>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Net Carrying Book Value</span>
+            <div class="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-400">${{ report.total_current_value }}</div>
+        </div>
+    </div>
+
+    <!-- Asset Register Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" id="printableAssetRegister">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Asset #</th>
+                        <th class="px-6 py-4">Asset Name</th>
+                        <th class="px-6 py-4">Category</th>
+                        <th class="px-6 py-4">Location</th>
+                        <th class="px-6 py-4 text-right">Purchase Cost ($)</th>
+                        <th class="px-6 py-4 text-right">Current Value ($)</th>
+                        <th class="px-6 py-4 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for asset in report.assets %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-mono font-bold text-xs text-indigo-600 dark:text-indigo-400">{{ asset.asset_number }}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ asset.name }}</td>
+                        <td class="px-6 py-4 text-xs font-mono text-slate-500">{{ asset.category.name }}</td>
+                        <td class="px-6 py-4 text-xs">{{ asset.location }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">${{ asset.purchase_cost }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">${{ asset.current_value }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold text-xs rounded-lg uppercase">{{ asset.status }}</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="px-6 py-12 text-center text-slate-500">No fixed assets registered.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

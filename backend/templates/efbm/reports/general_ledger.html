@@ -1,0 +1,96 @@
+{% extends "base/_document.html" %}
+{% block title %}General Ledger Report — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">General Ledger Statement</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Itemized transaction drill-down with running balances.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print / Export PDF
+            </button>
+            <a href="?export=excel" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📊 Export Excel
+            </a>
+        </div>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <form method="get" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end text-xs">
+            <div>
+                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Account Filter</label>
+                <input type="text" name="account" value="{{ account_name|default:'' }}" placeholder="e.g. Tuition Revenue..." class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+            </div>
+            <div>
+                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Start Date</label>
+                <input type="date" name="start_date" value="{{ request.GET.start_date }}" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+            </div>
+            <div>
+                <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">End Date</label>
+                <input type="date" name="end_date" value="{{ request.GET.end_date }}" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white">
+            </div>
+            <div>
+                <button type="submit" class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all cursor-pointer">
+                    🔍 Filter Ledger
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- General Ledger Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" id="printableGeneralLedger">
+        <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+            <h3 class="font-bold text-slate-900 dark:text-white text-sm">
+                Ledger Entries — {{ account_name|default:"All Accounts" }}
+            </h3>
+            <span class="text-xs text-slate-500 font-mono">Running Balance Tracker</span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Posting Date</th>
+                        <th class="px-6 py-4">Event Type</th>
+                        <th class="px-6 py-4">Account Name</th>
+                        <th class="px-6 py-4 text-right">Debit ($)</th>
+                        <th class="px-6 py-4 text-right">Credit ($)</th>
+                        <th class="px-6 py-4 text-right">Running Balance ($)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for row in ledger %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500">{{ row.date|date:"Y-m-d H:i" }}</td>
+                        <td class="px-6 py-4 text-xs font-semibold text-indigo-600 dark:text-indigo-400">{{ row.event_type }}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ row.account_name }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">
+                            {% if row.debit > 0 %}{{ row.debit }}{% else %}-{% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">
+                            {% if row.credit > 0 %}{{ row.credit }}{% else %}-{% endif %}
+                        </td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                            {{ row.running_balance }}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-500">
+                            No ledger entries match the selected filters.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

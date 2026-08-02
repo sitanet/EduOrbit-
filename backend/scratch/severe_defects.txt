@@ -1,0 +1,75 @@
+=== DEAD LINKS / NAV ===
+templates\landing.html:82 => <a href="#" class="flex items-center gap-2 hover:scale-105 transition-transform duration-300">
+templates\academic\dashboard.html:160 => <a href="#" class="text-xs text-indigo-400 hover:underline">Manage</a>
+templates\administration\dashboard.html:164 => <a href="#" class="text-primary hover:text-primary-hover transition-colors font-semibold">Manage</a>
+templates\admissions\dashboard.html:177 => <a href="#" class="text-xs text-emerald-400 hover:underline">Review</a>
+templates\hr\candidate_review.html:63 => <a href="#" class="text-xs font-bold text-indigo-500 hover:underline">Download File</a>
+templates\hr\ess\dashboard.html:159 => <a href="#" class="px-3 py-1 bg-indigo-500/10 text-indigo-600 hover:bg-indigo-500/20 rounded-lg text-xs font-semibold">Download PDF</a>
+templates\hr\settings\index.html:20 => <a href="#" class="inline-block text-xs font-semibold text-indigo-500 hover:underline">Edit Payroll Setup →</a>
+templates\hr\settings\index.html:27 => <a href="#" class="inline-block text-xs font-semibold text-indigo-500 hover:underline">Edit Leave Setup →</a>
+templates\hr\settings\index.html:34 => <a href="#" class="inline-block text-xs font-semibold text-indigo-500 hover:underline">Edit Attendance Setup →</a>
+templates\hr\settings\index.html:41 => <a href="#" class="inline-block text-xs font-semibold text-indigo-500 hover:underline">Toggle Sub-Modules →</a>
+templates\hr\settings\index.html:48 => <a href="#" class="inline-block text-xs font-semibold text-indigo-500 hover:underline">Open Workflow Builder →</a>
+templates\lms\dashboard.html:167 => <a href="#" class="text-xs text-purple-400 hover:underline">View</a>
+
+=== JS DEBUG / ALERT ===
+templates\hr\admin\onboarding_wizard.html:240 => alert('Step 1 Validated! Navigating to Step 2 Employment Details.');
+templates\hr\admin\org_chart.html:31 => <form onsubmit="event.preventDefault(); alert('New Organizational Position created!'); document.getElementById('positionModal').classList.add('hidden');" class="space-y-3 text-xs">
+templates\hr\disciplinary\dashboard.html:25 => <form onsubmit="event.preventDefault(); alert('Disciplinary Query issued successfully!'); document.getElementById('disciplinaryModal').classList.add('hidden');" class="space-y-3 text-xs">
+templates\hr\performance\dashboard.html:28 => <form onsubmit="event.preventDefault(); alert('Appraisal Cycle Q3-2026 successfully launched!'); document.getElementById('appraisalModal').classList.add('hidden');" class="space-y-3 text-xs">
+templates\hr\rewards\wall.html:26 => <form onsubmit="event.preventDefault(); alert('Peer Nomination submitted for review!'); document.getElementById('nominateModal').classList.add('hidden');" class="space-y-3 text-xs">
+templates\hr\training\dashboard.html:25 => <form onsubmit="event.preventDefault(); alert('Training Program successfully scheduled!'); document.getElementById('trainingModal').classList.add('hidden');" class="space-y-3 text-xs">
+templates\timetable\bookings.html:61 => <button class="text-indigo-400 hover:text-indigo-300 font-semibold" @click="alert('Edit room details action triggered.')">Edit</button>
+templates\timetable\bookings.html:85 => <button class="text-indigo-400 hover:text-indigo-300 font-semibold" @click="alert('Edit room details action triggered.')">Edit</button>
+templates\timetable\bookings.html:103 => <button class="text-indigo-400 hover:text-indigo-300 font-semibold" @click="alert('Edit room details action triggered.')">Edit</button>
+templates\timetable\bookings.html:121 => <button class="text-indigo-400 hover:text-indigo-300 font-semibold" @click="alert('Edit room details action triggered.')">Edit</button>
+
+=== PLACEHOLDERS / MOCKS ===
+templates\landing.html:140 => <!-- High-fidelity Dashboard Mock Preview -->
+templates\landing.html:142 => <!-- Floating Glass Panels (Mock HUD) -->
+templates\landing.html:170 => <!-- Sidebar mock -->
+templates\landing.html:177 => <!-- Main mock -->
+templates\administration\dashboard.html:143 => <!-- Mock Row for immediate visual feedback if database is unseeded -->
+templates\administration\dashboard.html:243 => <!-- Mock system logs if unseeded -->
+templates\administration\settings.html:50 => <!-- Mock Subscription Rows for visual demo if DB empty -->
+templates\hr\user_manual.html:303 => <!-- Step Visual Mockup Box -->
+templates\hr\user_manual.html:306 => <span class="font-mono text-indigo-300" id="mockupTitle">Login Response</span>
+templates\hr\user_manual.html:307 => <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px]" id="mockupBadge">200 OK Redirect</span>
+templates\hr\user_manual.html:309 => <div class="space-y-2 text-xs font-mono" id="mockupLines">
+templates\hr\user_manual.html:521 => mockupTitle: "Login Credentials & Response",
+templates\hr\user_manual.html:522 => mockupBadge: "200 OK Redirect",
+templates\hr\user_manual.html:523 => mockupLines: [
+templates\hr\user_manual.html:535 => mockupTitle: "RecruitmentService.hire_candidate()",
+templates\hr\user_manual.html:536 => mockupBadge: "Profile Created",
+templates\hr\user_manual.html:537 => mockupLines: [
+templates\hr\user_manual.html:548 => mockupTitle: "AttendanceService.clock_in()",
+templates\hr\user_manual.html:549 => mockupBadge: "Present",
+templates\hr\user_manual.html:550 => mockupLines: [
+templates\hr\user_manual.html:562 => mockupTitle: "LeaveService.approve_leave_request()",
+templates\hr\user_manual.html:563 => mockupBadge: "Approved",
+templates\hr\user_manual.html:564 => mockupLines: [
+templates\hr\user_manual.html:576 => mockupTitle: "PayrollCalculationEngineV1",
+templates\hr\user_manual.html:577 => mockupBadge: "Calculated",
+templates\hr\user_manual.html:578 => mockupLines: [
+templates\hr\user_manual.html:590 => mockupTitle: "Double-Entry Ledger Balancing",
+templates\hr\user_manual.html:591 => mockupBadge: "Debits == Credits",
+templates\hr\user_manual.html:592 => mockupLines: [
+templates\hr\user_manual.html:604 => mockupTitle: "PDF Payslip Generator",
+templates\hr\user_manual.html:605 => mockupBadge: "PDF Downloaded",
+templates\hr\user_manual.html:606 => mockupLines: [
+templates\hr\user_manual.html:632 => document.getElementById('mockupTitle').innerText = stepData.mockupTitle;
+templates\hr\user_manual.html:633 => document.getElementById('mockupBadge').innerText = stepData.mockupBadge;
+templates\hr\user_manual.html:636 => stepData.mockupLines.forEach(l => {
+templates\hr\user_manual.html:639 => document.getElementById('mockupLines').innerHTML = html;
+templates\identity\role_matrix.html:55 => <!-- Mock Permission Rows for demo visual fallback -->
+templates\students\portfolio.html:61 => <!-- Mock portfolio achievements for demonstrative visual feedback -->
+templates\tenants\dashboard.html:135 => <!-- Mock Campus Row for immediately visual feedback -->
+templates\timetable\bookings.html:70 => <!-- Mock Resources Rows for demo visual fallback -->
+templates\timetable\builder.html:111 => <!-- Mock Timetable Rows for demo visual fallback -->
+apps\ai\models.py:71 => embedding_vector_json = models.TextField(blank=True)  # Mock representation
+apps\communication\providers\termii.py:35 => # If in test/mock mode or no live HTTP requests
+apps\communication\providers\termii.py:36 => if api_key.startswith('test_') or getattr(settings, 'MOCK_THIRD_PARTY_APIS', True):
+apps\communication\providers\termii.py:37 => logger.info(f"[Termii SMS Mock] Sent to {phone_clean} via sender '{payload['from']}': {message[:40]}...")
+apps\core\health.py:37 => # Just check if we can instantiate and maybe list or access a dummy path
+apps\core\management\commands\seed_platform.py:15 => # Platform Settings (mock)
+apps\tenants\views_admin.py:21 => # Calculate Mock MRR (Monthly Recurring Revenue) & ARR from active subscriptions

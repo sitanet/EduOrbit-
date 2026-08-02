@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpResponse
-from backend.apps.tenants.services import TenantOnboardingService
-from backend.apps.tenants.models import Tenant, School, TenantSubscription
+from backend.apps.tenants.models import TenantSubscription, School
+from backend.apps.tenants.services import TenantDashboardService
 
 class OnboardWizardWebView(View):
     def get(self, request):
@@ -18,7 +18,8 @@ class OnboardWizardWebView(View):
         school_name = request.POST.get('school_name')
         
         try:
-            tenant, school, admin_user = TenantOnboardingService.onboard_organization(
+            # Direct inline onboarding implementation as workaround
+            tenant, school, admin_user = self._onboard_organization(
                 org_name=org_name,
                 admin_email=admin_email,
                 admin_username=admin_username,
@@ -27,22 +28,85 @@ class OnboardWizardWebView(View):
                 school_name=school_name
             )
         except Exception as e:
-            return HttpResponse(
-                f'<div class="p-4 mb-4 text-sm text-red-800 rounded-xl bg-red-50 dark:bg-slate-900 dark:text-red-400 border border-red-200 dark:border-red-900/30" role="alert">'
-                f'<span class="font-semibold">Failed provisioning organization:</span> {str(e)}'
-                f'</div>'
+            return HttpResponse(f"Failed provisioning organization: {e}", status=500)
+        
+        return HttpResponse(f"Organization '{org_name}' successfully onboarded!", status=201)
+    
+    def _onboard_organization(self, org_name, admin_email, admin_username, admin_password_plain, 
+                             billing_model='school_pays', school_name=None):
+        """Simplified onboarding implementation"""
+        from django.db import transaction
+        from django.utils import timezone
+        from datetime import timedelta
+        from backend.apps.tenants.models import Tenant, School, TenantSubscription
+        from backend.apps.administration.models import SubscriptionPlan
+        from backend.apps.identity.models import User, TenantMembership, Role
+        
+        with transaction.atomic():
+            # 1. Create Tenant
+            slug = org_name.lower().replace(" ", "-").replace(".", "").replace(",", "").strip()
+            config = {'subdomain': slug}
+            
+            tenant = Tenant.objects.create(
+                name=org_name,
+                billing_model=billing_model,
+                branding_config=config
             )
-
-        subdomain = tenant.branding_config.get('subdomain', 'school')
-        return HttpResponse(
-            f'<div class="p-4 mb-4 text-sm text-emerald-800 rounded-xl bg-emerald-50 dark:bg-slate-905 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" role="alert">'
-            f'<h3 class="font-bold text-base mb-1">Provisioning Successful!</h3>'
-            f'<p class="mb-2">Your local school testing URL has been generated: '
-            f'<a href="http://{subdomain}.localhost:8000/" target="_blank" class="text-white bg-slate-800/80 hover:underline px-2 py-1 rounded font-mono">http://{subdomain}.localhost:8000/</a></p>'
-            f'<p>Redirecting to login workspace...</p>'
-            f'</div>'
-            f'<script>setTimeout(() => {{ window.location.href = "/login/"; }}, 4000);</script>'
-        )
+            
+            # 2. Create School
+            s_name = school_name or f"{org_name} First School"
+            school = School.objects.create(
+                tenant=tenant,
+                name=s_name,
+                school_types=['primary']
+            )
+            
+            # 3. Create admin user
+            admin_user = User.objects.create_user(
+                username=admin_username,
+                email=admin_email,
+                password=admin_password_plain
+            )
+            
+            # 4. Create admin role
+            admin_role, _ = Role.objects.get_or_create(
+                code=f"tenant_admin_{tenant.id.hex[:8]}",
+                name="Tenant Admin",
+                tenant=tenant
+            )
+            
+            # 5. Create membership
+            TenantMembership.objects.create(
+                user=admin_user,
+                tenant=tenant,
+                role=admin_role,
+                status='active',
+                primary_membership=True
+            )
+            
+            # 6. Create trial subscription
+            from backend.apps.tenants.models import SubscriptionPlan as TenantSubPlan
+            trial_plan, _ = TenantSubPlan.objects.get_or_create(
+                name="Trial Plan",
+                defaults={
+                    "monthly_price": 0.00,
+                    "is_active": True
+                }
+            )
+            
+            TenantSubscription.objects.create(
+                tenant=tenant,
+                plan=trial_plan,
+                status="TRIAL",
+                start_date=timezone.now(),
+                end_date=timezone.now() + timedelta(days=30),
+                modules_licensed={
+                    "core": {"enabled": True},
+                    "ai_assistant": {"enabled": False}
+                }
+            )
+            
+            return tenant, school, admin_user
 
 
 class TenantDashboardWebView(View):
@@ -50,22 +114,17 @@ class TenantDashboardWebView(View):
         if not request.user.is_authenticated:
             return redirect('login_web')
             
-        if request.user.is_superuser:
-            schools = School.objects.all().select_related('tenant')
-            tenant = None
-            subscription = None
-        else:
-            schools = School.objects.filter(tenant=getattr(request, 'tenant', None))
-            tenant = getattr(request, 'tenant', None)
-            subscription = TenantSubscription.objects.filter(tenant=tenant).first()
+        tenant = getattr(request, 'tenant', None)
         
+        # Use service layer for all data queries
+        dashboard_data = TenantDashboardService.get_dashboard_data(request.user, tenant)
+        
+        # Add session data to context
         context = {
-            'tenant': tenant,
-            'schools': schools,
-            'subscription': subscription,
-            'is_superuser': request.user.is_superuser,
+            **dashboard_data,
             'active_school_id': request.session.get('active_school_id')
         }
+        
         return render(request, 'tenants/dashboard.html', context)
 
 

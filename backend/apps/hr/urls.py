@@ -3,7 +3,7 @@ from django.views.generic import RedirectView
 from backend.apps.hr.views_web import (
     HRDashboardWebView, LeaveCalendarWebView, RecruitmentDashboardWebView, CandidateReviewWebView, PayrollWebView,
     AttendanceDashboardWebView, AttendanceGenerateWebView, AttendanceAdjustmentActionWebView, AttendanceReportWebView,
-    ESSDashboardWebView, ManagerTeamWebView, StaffDirectoryWebView, OrgChartWebView, OnboardingTrackerWebView,
+    ESSDashboardWebView, ManagerTeamWebView, StaffDirectoryWebView, StaffIdCardWebView, OrgChartWebView, OnboardingTrackerWebView,
     PerformanceWebView, TrainingWebView, DisciplinaryWebView, RewardsWebView, FinancePostingsWebView,
     AnalyticsWebView, NotificationsWebView, AuditTrailWebView, HRSettingsWebView, ImportWizardWebView,
     BulkOperationsWebView, EnterpriseSearchWebView, ReportsHubWebView, HRUserManualWebView, OnboardingWizardWebView
@@ -18,14 +18,16 @@ urlpatterns = [
     path('manager/team/', ManagerTeamWebView.as_view(), name='hr_manager_team'),
     path('admin/dashboard/', HRDashboardWebView.as_view(), name='hr_admin_dashboard'),
     path('admin/directory/', StaffDirectoryWebView.as_view(), name='hr_admin_directory'),
+    path('admin/employees/<uuid:employee_id>/id-card/', StaffIdCardWebView.as_view(), name='hr_staff_id_card'),
     path('admin/org-chart/', OrgChartWebView.as_view(), name='hr_admin_org_chart'),
-    path('admin/onboarding/', RecruitmentDashboardWebView.as_view(), name='hr_admin_onboarding'),
+    path('admin/onboarding/', OnboardingTrackerWebView.as_view(), name='hr_admin_onboarding'),
     path('admin/onboarding/wizard/', OnboardingWizardWebView.as_view(), name='hr_admin_onboarding_wizard'),
 
     # Recruitment & Leave
     path('recruitment/', RecruitmentDashboardWebView.as_view(), name='recruitment_dashboard_web'),
     path('recruitment/candidate/<uuid:candidate_id>/review/', CandidateReviewWebView.as_view(), name='candidate_review_web'),
     path('leave-calendar/', LeaveCalendarWebView.as_view(), name='leave_calendar_web'),
+    path('leave/', LeaveCalendarWebView.as_view(), name='leave_calendar_alias'),  # alias for /hr/leave/
 
     # Attendance
     path('attendance/', AttendanceDashboardWebView.as_view(), name='hr_attendance_dashboard'),

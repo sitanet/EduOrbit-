@@ -1,96 +1,188 @@
 {% extends "base/_document.html" %}
-{% block title %}Transport — EduOrbit{% endblock %}
+{% block title %}Transport & Fleet Management Hub — EduOrbit ERP{% endblock %}
+
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="md:flex md:items-center md:justify-between mb-8">
-    <div class="min-w-0 flex-1">
-      <p class="text-xs font-semibold tracking-widest text-amber-400 uppercase mb-1">EduOrbit · Logisitics</p>
-      <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Transport Management</h2>
-      <p class="mt-2 text-sm text-slate-600 dark:text-slate-600 dark:text-slate-400">Coordinate buses, drivers, tracking routes, and school transit rosters.</p>
-    </div>
-    <div class="mt-4 flex md:ml-4 md:mt-0">
-      <a href="/transport/routes/" class="inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 px-4 py-2 text-sm font-semibold text-slate-900 dark:text-white shadow-sm transition duration-150">
-        Routes Planner
-      </a>
+<div class="space-y-6">
+
+  <!-- ── Hero Banner ──────────────────────────────────────────────────── -->
+  <div class="relative bg-gradient-to-r from-slate-900 via-amber-950 to-slate-900 text-white p-7 rounded-2xl border border-amber-500/30 shadow-xl overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(245,158,11,0.15),_transparent_70%)] pointer-events-none"></div>
+    <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-5">
+      <div class="space-y-1.5">
+        <p class="text-[10px] font-bold tracking-widest text-amber-400 uppercase">EduOrbit · Logistics & Fleet</p>
+        <h1 class="text-2xl font-extrabold tracking-tight flex items-center gap-2.5">🚌 Transport & Fleet Command Hub</h1>
+        <p class="text-xs text-slate-300 max-w-xl">
+          Coordinate school bus transit, driver assignments, GPS route monitoring, vehicle maintenance, and student passenger rosters.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2 shrink-0">
+        <a href="/transport/routes/"
+           class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-xl transition shadow-md flex items-center gap-1.5">
+          🗺️ Routes Planner
+        </a>
+        <a href="/transport/vehicles/"
+           class="px-3.5 py-2.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold rounded-xl transition">
+          🚍 Vehicles Fleet
+        </a>
+      </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Total Buses</p>
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">{{ vehicles|length|default:"12" }}</p>
-      <p class="text-xs text-emerald-400 mt-2">10 active · 2 in service</p>
+  <!-- ── KPI Stat Row ──────────────────────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Fleet</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_vehicles|default:12 }}</div>
+        <span class="text-[10px] text-amber-400 font-semibold mt-1 inline-block">{{ in_maintenance|default:0 }} in maintenance</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">🚍</div>
     </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Active Routes</p>
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">8</p>
-      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Covering all metropolitan nodes</p>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Active Routes</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_routes|default:8 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Metro Transit Paths</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">🗺️</div>
     </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Roster Enrolment</p>
-      <p class="text-3xl font-bold text-slate-900 dark:text-white">184</p>
-      <p class="text-xs text-slate-500 dark:text-slate-500 dark:text-slate-500 dark:text-slate-500 mt-2">Students using transit service</p>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Licensed Drivers</span>
+        <div class="text-2xl font-black text-indigo-500 mt-1">{{ total_drivers|default:10 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Active Chauffeurs</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">👨‍✈️</div>
     </div>
-    <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-5">
-      <p class="text-xs text-slate-600 dark:text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">GPS Fleet Tracking</p>
-      <p class="text-3xl font-bold text-emerald-400">ONLINE</p>
-      <p class="text-xs text-emerald-400 mt-2">Realtime transit map sync</p>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Roster Enrolment</span>
+        <div class="text-2xl font-black text-emerald-500 mt-1">{{ total_passengers|default:184 }}</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Subscribed Boarders</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">🎒</div>
     </div>
+
   </div>
 
-  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 rounded-2xl overflow-hidden">
-    <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700/80">
-      <h3 class="font-semibold text-slate-900 dark:text-white">Active Transit Routes &amp; Drivers</h3>
+  <!-- ── Module Shortcut Cards ─────────────────────────────────────────── -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+    <a href="/transport/routes/"
+       class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-amber-500/50 hover:shadow-md transition text-center group">
+      <div class="w-10 h-10 mx-auto rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🗺️</div>
+      <div class="text-xs font-bold text-slate-900 dark:text-white">Routes</div>
+      <div class="text-[10px] text-slate-400">Transit Paths</div>
+    </a>
+
+    <a href="/transport/vehicles/"
+       class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-amber-500/50 hover:shadow-md transition text-center group">
+      <div class="w-10 h-10 mx-auto rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🚍</div>
+      <div class="text-xs font-bold text-slate-900 dark:text-white">Vehicles</div>
+      <div class="text-[10px] text-slate-400">Bus Inventory</div>
+    </a>
+
+    <a href="/transport/drivers/"
+       class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-amber-500/50 hover:shadow-md transition text-center group">
+      <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">👨‍✈️</div>
+      <div class="text-xs font-bold text-slate-900 dark:text-white">Drivers</div>
+      <div class="text-[10px] text-slate-400">Chauffeurs</div>
+    </a>
+
+    <a href="/transport/passengers/"
+       class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-amber-500/50 hover:shadow-md transition text-center group">
+      <div class="w-10 h-10 mx-auto rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🎒</div>
+      <div class="text-xs font-bold text-slate-900 dark:text-white">Passengers</div>
+      <div class="text-[10px] text-slate-400">Roster Manifest</div>
+    </a>
+
+    <a href="/transport/maintenance/"
+       class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-amber-500/50 hover:shadow-md transition text-center group">
+      <div class="w-10 h-10 mx-auto rounded-xl bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">🛠️</div>
+      <div class="text-xs font-bold text-slate-900 dark:text-white">Servicing</div>
+      <div class="text-[10px] text-slate-400">Maintenance</div>
+    </a>
+
+    <a href="/transport/reports/"
+       class="bg-white dark:bg-slate-800 p-4 rounded-2xl border border-slate-200 dark:border-slate-700 hover:border-amber-500/50 hover:shadow-md transition text-center group">
+      <div class="w-10 h-10 mx-auto rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg mb-2 group-hover:scale-110 transition-transform">📊</div>
+      <div class="text-xs font-bold text-slate-900 dark:text-white">Reports</div>
+      <div class="text-[10px] text-slate-400">Fleet Analytics</div>
+    </a>
+  </div>
+
+  <!-- ── Active Transit Runs Table ──────────────────────────────────────── -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+        🚦 Active Transit Runs & Bus Operations
+      </h2>
+      <a href="/transport/routes/" class="text-xs font-semibold text-amber-500 hover:underline">Manage Routes &rarr;</a>
     </div>
+
     <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead class="bg-slate-100 dark:bg-slate-800/50 text-slate-600 dark:text-slate-600 dark:text-slate-400">
-          <tr>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Bus / Route</th>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Driver</th>
-            <th class="text-left px-6 py-3 font-semibold uppercase"> Roster Capacity</th>
-            <th class="text-left px-6 py-3 font-semibold uppercase">Current Transit Status</th>
+      <table class="w-full text-left text-xs">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Bus / Vehicle</th>
+            <th class="px-6 py-3">Assigned Route</th>
+            <th class="px-6 py-3">Driver</th>
+            <th class="px-6 py-3">Capacity</th>
+            <th class="px-6 py-3 text-right">Status</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-200 dark:divide-slate-750 text-slate-700 dark:text-slate-700 dark:text-slate-300">
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
           {% for trip in active_trips %}
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">{{ trip.vehicle.plate_number }} ({{ trip.route.name }})</td>
-            <td class="px-6 py-4">{{ trip.driver.person.get_full_name }}</td>
-            <td class="px-6 py-4">32 students registered</td>
-            <td class="px-6 py-4">
-              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">IN TRANSIT</span>
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+              {{ trip.vehicle.registration_number }} ({{ trip.vehicle.plate_number }})
+            </td>
+            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">
+              {{ trip.route.name }}
+            </td>
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300">
+              {{ trip.driver.person.first_name }} {{ trip.driver.person.last_name }}
+            </td>
+            <td class="px-6 py-4 font-mono text-slate-500 dark:text-slate-400 font-bold">
+              {{ trip.vehicle.capacity }} seats
+            </td>
+            <td class="px-6 py-4 text-right">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">
+                IN TRANSIT
+              </span>
             </td>
           </tr>
           {% empty %}
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">LAG-903-XD (Ikeja Express Route)</td>
-            <td class="px-6 py-4">Babatunde Adeyemi</td>
-            <td class="px-6 py-4">28/32 seats filled</td>
-            <td class="px-6 py-4">
-              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">IN TRANSIT</span>
-            </td>
+          <!-- Demo Rows when no DB records exist -->
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">BUS-001 (LAG-903-XD)</td>
+            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Ikeja Express Route A</td>
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300">Babatunde Adeyemi</td>
+            <td class="px-6 py-4 font-mono text-slate-500 font-bold">32 seats</td>
+            <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">IN TRANSIT</span></td>
           </tr>
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">LAG-114-YY (Lekki Phase 1 Shuttle)</td>
-            <td class="px-6 py-4">Ibrahim Musa</td>
-            <td class="px-6 py-4">19/24 seats filled</td>
-            <td class="px-6 py-4">
-              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-900/50 text-emerald-400 border border-emerald-700/40">IN TRANSIT</span>
-            </td>
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">BUS-002 (LAG-114-YY)</td>
+            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Lekki Phase 1 Shuttle</td>
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300">Ibrahim Musa</td>
+            <td class="px-6 py-4 font-mono text-slate-500 font-bold">24 seats</td>
+            <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">IN TRANSIT</span></td>
           </tr>
-          <tr class="hover:bg-slate-100 dark:bg-slate-800/30">
-            <td class="px-6 py-4 font-medium text-slate-900 dark:text-white">LAG-882-AB (Surulere Roster)</td>
-            <td class="px-6 py-4">Emeka Obi</td>
-            <td class="px-6 py-4">30/30 seats filled</td>
-            <td class="px-6 py-4">
-              <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-600 dark:text-slate-400 border border-gray-700">COMPLETED</span>
-            </td>
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">BUS-003 (LAG-882-AB)</td>
+            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">Surulere Roster Path</td>
+            <td class="px-6 py-4 text-slate-600 dark:text-slate-300">Emeka Obi</td>
+            <td class="px-6 py-4 font-mono text-slate-500 font-bold">30 seats</td>
+            <td class="px-6 py-4 text-right"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-500/20 text-slate-600 dark:text-slate-400 font-mono">COMPLETED</span></td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   </div>
+
 </div>
 {% endblock %}

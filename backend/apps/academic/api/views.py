@@ -143,7 +143,7 @@ class SubjectAPIView(APIView):
 
 from backend.apps.attendance.models import AttendanceSession, AttendanceType
 from backend.apps.people.models import Person
-from backend.apps.academic.services.attendance import AttendanceService
+from backend.apps.academic.services import AttendanceService
 
 class AttendanceCheckInAPIView(APIView):
     def post(self, request):
@@ -188,7 +188,7 @@ class AttendanceSummaryAPIView(APIView):
 
 from backend.apps.people.models import StudentProfile
 from backend.apps.tenants.models import School
-from backend.apps.academic.services.grading import GradeCalculationService
+from backend.apps.academic.services import GradeCalculationService
 
 class AssessmentCalculateAPIView(APIView):
     def post(self, request):
@@ -235,7 +235,7 @@ class StudentResultReportAPIView(APIView):
 # ==============================================================
 
 from backend.apps.academic.models import AcademicClass
-from backend.apps.academic.services.progression import PromotionService, GraduationService, TranscriptService
+from backend.apps.academic.services import PromotionService, GraduationService, TranscriptService
 
 class PromotionRunAPIView(APIView):
     def post(self, request):

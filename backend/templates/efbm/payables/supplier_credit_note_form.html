@@ -1,0 +1,218 @@
+{% extends "base/_document.html" %}
+{% load static %}
+{% block title %}{% if credit_note %}Edit Credit Note{% else %}Create Credit Note{% endif %} — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">
+                {% if credit_note %}Edit Credit Note{% else %}Create Supplier Credit Note{% endif %}
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">
+                {% if credit_note %}Modify credit note details{% else %}Issue a credit note to reduce accounts payable{% endif %}
+            </p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'supplier_credit_notes' %}" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-semibold text-xs rounded-xl transition-all">
+                ← Back to List
+            </a>
+        </div>
+    </div>
+
+    <!-- Navigation Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <a href="{% url 'payables_dashboard_web' %}" class="hover:text-indigo-600">Payables Dashboard</a>
+        <span>›</span>
+        <a href="{% url 'supplier_credit_notes' %}" class="hover:text-indigo-600">Credit Notes</a>
+        <span>›</span>
+        <span class="font-semibold">{% if credit_note %}Edit{% else %}Create{% endif %}</span>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+        <form method="post" class="p-6 space-y-6">
+            {% csrf_token %}
+            
+            <!-- Bill Selection Section -->
+            {% if not credit_note %}
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-600 pb-2">
+                    Select Supplier Bill
+                </h3>
+                
+                <div class="grid grid-cols-1 gap-4">
+                    <div>
+                        <label for="bill_id" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            Supplier Bill <span class="text-red-500">*</span>
+                        </label>
+                        <select name="bill_id" id="bill_id" required 
+                                class="w-full px-3 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                            <option value="">Select a supplier bill...</option>
+                            {% for bill in bills %}
+                                <option value="{{ bill.id }}" 
+                                        data-supplier="{{ bill.supplier_name }}" 
+                                        data-amount="{{ bill.amount }}" 
+                                        data-outstanding="{{ bill.outstanding_amount }}"
+                                        {% if selected_bill and bill.id == selected_bill.id %}selected{% endif %}>
+                                    {{ bill.bill_number }} - {{ bill.supplier_name }} (Outstanding: NGN {{ bill.outstanding_amount|floatformat:2 }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <p class="mt-1 text-xs text-slate-500">Only approved and partially paid bills are available for credit notes.</p>
+                    </div>
+                </div>
+                
+                <!-- Bill Details Display -->
+                <div id="bill-details" class="hidden bg-slate-50 dark:bg-slate-750 p-4 rounded-lg">
+                    <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-2">Selected Bill Details</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div>
+                            <span class="text-slate-500">Supplier:</span>
+                            <div id="bill-supplier" class="font-medium text-slate-900 dark:text-white"></div>
+                        </div>
+                        <div>
+                            <span class="text-slate-500">Bill Amount:</span>
+                            <div id="bill-amount" class="font-medium text-slate-900 dark:text-white"></div>
+                        </div>
+                        <div>
+                            <span class="text-slate-500">Outstanding:</span>
+                            <div id="bill-outstanding" class="font-medium text-emerald-600"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <!-- Edit Mode: Show Bill Info -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-600 pb-2">
+                    Bill Information
+                </h3>
+                <div class="bg-slate-50 dark:bg-slate-750 p-4 rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div>
+                            <span class="text-slate-500">Bill Number:</span>
+                            <div class="font-medium text-slate-900 dark:text-white">{{ credit_note.bill.bill_number }}</div>
+                        </div>
+                        <div>
+                            <span class="text-slate-500">Supplier:</span>
+                            <div class="font-medium text-slate-900 dark:text-white">{{ credit_note.bill.supplier_name }}</div>
+                        </div>
+                        <div>
+                            <span class="text-slate-500">Outstanding:</span>
+                            <div class="font-medium text-emerald-600">NGN {{ credit_note.bill.outstanding_amount|floatformat:2 }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Credit Note Details -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-600 pb-2">
+                    Credit Note Details
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="amount" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            Credit Amount (NGN) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="amount" id="amount" step="0.01" min="0.01" required
+                               value="{% if credit_note %}{{ credit_note.amount }}{% endif %}"
+                               class="w-full px-3 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                               placeholder="0.00">
+                        <p class="mt-1 text-xs text-slate-500">Amount to credit back to the supplier.</p>
+                    </div>
+                    
+                    {% if credit_note %}
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Note Number</label>
+                        <input type="text" value="{{ credit_note.note_number }}" readonly
+                               class="w-full px-3 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-slate-100 dark:bg-slate-600 text-slate-500">
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <label for="reason" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                        Reason for Credit Note <span class="text-red-500">*</span>
+                    </label>
+                    <textarea name="reason" id="reason" rows="4" required
+                              class="w-full px-3 py-3 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                              placeholder="Describe the reason for this credit note (e.g., damaged goods, overcharge, return, dispute resolution)...">{% if credit_note %}{{ credit_note.reason }}{% endif %}</textarea>
+                    <p class="mt-1 text-xs text-slate-500">Provide a detailed explanation for audit and approval purposes.</p>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="flex items-center justify-between pt-6 border-t border-slate-200 dark:border-slate-600">
+                <div class="text-xs text-slate-500">
+                    <span class="text-red-500">*</span> Required fields
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="{% if credit_note %}{% url 'supplier_credit_note_detail' credit_note_id=credit_note.id %}{% else %}{% url 'supplier_credit_notes' %}{% endif %}" 
+                       class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white font-semibold text-sm rounded-lg transition-all">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-lg transition-all">
+                        {% if credit_note %}Update Credit Note{% else %}Create Credit Note{% endif %}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const billSelect = document.getElementById('bill_id');
+    const billDetails = document.getElementById('bill-details');
+    const billSupplier = document.getElementById('bill-supplier');
+    const billAmount = document.getElementById('bill-amount');
+    const billOutstanding = document.getElementById('bill-outstanding');
+    const amountInput = document.getElementById('amount');
+
+    if (billSelect) {
+        billSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.value) {
+                billSupplier.textContent = selectedOption.dataset.supplier;
+                billAmount.textContent = 'NGN ' + parseFloat(selectedOption.dataset.amount).toFixed(2);
+                billOutstanding.textContent = 'NGN ' + parseFloat(selectedOption.dataset.outstanding).toFixed(2);
+                billDetails.classList.remove('hidden');
+                
+                // Set max amount for credit note
+                amountInput.max = selectedOption.dataset.outstanding;
+            } else {
+                billDetails.classList.add('hidden');
+                amountInput.removeAttribute('max');
+            }
+        });
+
+        // Trigger change if there's a pre-selected option
+        if (billSelect.value) {
+            billSelect.dispatchEvent(new Event('change'));
+        }
+    }
+
+    // Amount validation
+    if (amountInput) {
+        amountInput.addEventListener('input', function() {
+            const maxAmount = parseFloat(this.max);
+            const currentAmount = parseFloat(this.value);
+            
+            if (maxAmount && currentAmount > maxAmount) {
+                this.setCustomValidity(`Credit amount cannot exceed outstanding amount of NGN ${maxAmount.toFixed(2)}`);
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+    }
+});
+</script>
+
+{% endblock %}

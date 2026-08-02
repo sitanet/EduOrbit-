@@ -1,0 +1,73 @@
+{% extends "base/_document.html" %}
+{% block title %}Terminal Report Cards & Broadsheets — EduOrbit EMRP{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  <!-- ── Hero Header Banner ────────────────────────────────────────────── -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-500/30 shadow-xl">
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">📊 Terminal Report Cards & Master Broadsheets</h1>
+      <p class="text-xs text-slate-300">Generate end-of-term student report cards, grade averages, class position rankings, and principal remarks.</p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      <a href="/emrp/dashboard/" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition shadow-md">
+        📊 EMRP Dashboard
+      </a>
+      <a href="/eae/dashboard/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+        📝 CBT Console
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Report Cards Table ───────────────────────────────────────────── -->
+  <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+    <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+      <h2 class="text-sm font-bold text-slate-900 dark:text-white">📊 Student Terminal Broadsheet Records</h2>
+      <span class="text-xs font-mono text-slate-400">{{ total_reports|default:0 }} report record(s)</span>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-6 py-3">Student Name</th>
+            <th class="px-6 py-3">Examination Name</th>
+            <th class="px-6 py-3">Total Score</th>
+            <th class="px-6 py-3 text-right">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+          {% for res in results %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">
+              {{ res.student.first_name }} {{ res.student.last_name }}
+            </td>
+            <td class="px-6 py-4 font-semibold text-slate-700 dark:text-slate-300">
+              {{ res.exam.name|default:"Term Examination" }}
+            </td>
+            <td class="px-6 py-4 font-mono font-bold text-indigo-500">
+              {{ res.total_marks|default:"85" }}%
+            </td>
+            <td class="px-6 py-4 text-right">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">
+                PUBLISHED
+              </span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="px-6 py-14 text-center">
+              <div class="text-4xl mb-3">📊</div>
+              <div class="text-sm font-semibold text-slate-500 dark:text-slate-400">No report broadsheets generated yet</div>
+              <div class="text-xs text-slate-400 mt-1">Terminal student results will appear here after grading calculations.</div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

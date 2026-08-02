@@ -13,6 +13,45 @@
     <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">Register demographic details, parent contacts, academic histories, and attach documents.</p>
   </div>
 
+  {% if prerequisites_missing %}
+  <!-- Setup Instructions / Missing Prerequisites Banner -->
+  <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-8 shadow-sm max-w-md mx-auto text-center space-y-4">
+    <div class="w-16 h-16 bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto text-2xl">⚠️</div>
+    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Admissions Prerequisites Missing</h3>
+    <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">Please ensure the following configuration steps are completed before submitting applications:</p>
+    <ul class="text-xs space-y-2 max-w-xs mx-auto text-left bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700">
+      <li class="flex items-center gap-2">
+        <span class="{% if prerequisites.has_school %}text-emerald-500{% else %}text-slate-400{% endif %}">{% if prerequisites.has_school %}✓{% else %}✗{% endif %}</span>
+        <span class="{% if prerequisites.has_school %}text-slate-700 dark:text-slate-300{% else %}text-rose-500 font-bold{% endif %}">Active School configured</span>
+      </li>
+      <li class="flex items-center gap-2">
+        <span class="{% if prerequisites.has_academic_year %}text-emerald-500{% else %}text-slate-400{% endif %}">{% if prerequisites.has_academic_year %}✓{% else %}✗{% endif %}</span>
+        <span class="{% if prerequisites.has_academic_year %}text-slate-700 dark:text-slate-300{% else %}text-rose-500 font-bold{% endif %}">Active Academic Year set up</span>
+      </li>
+      <li class="flex items-center gap-2">
+        <span class="{% if prerequisites.has_campaign %}text-emerald-500{% else %}text-slate-400{% endif %}">{% if prerequisites.has_campaign %}✓{% else %}✗{% endif %}</span>
+        <span class="{% if prerequisites.has_campaign %}text-slate-700 dark:text-slate-300{% else %}text-rose-500 font-bold{% endif %}">Active Admission Campaign created</span>
+      </li>
+      <li class="flex items-center gap-2">
+        <span class="{% if prerequisites.has_intake %}text-emerald-500{% else %}text-slate-400{% endif %}">{% if prerequisites.has_intake %}✓{% else %}✗{% endif %}</span>
+        <span class="{% if prerequisites.has_intake %}text-slate-700 dark:text-slate-300{% else %}text-rose-500 font-bold{% endif %}">Open Admission Intake batch</span>
+      </li>
+      <li class="flex items-center gap-2">
+        <span class="{% if prerequisites.has_levels %}text-emerald-500{% else %}text-slate-400{% endif %}">{% if prerequisites.has_levels %}✓{% else %}✗{% endif %}</span>
+        <span class="{% if prerequisites.has_levels %}text-slate-700 dark:text-slate-300{% else %}text-rose-500 font-bold{% endif %}">Academic Levels/Grades set up</span>
+      </li>
+    </ul>
+    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-2.5">
+      <a href="{% url 'admissions_application_new' %}?auto_setup=1" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow transition-colors flex items-center gap-1.5 cursor-pointer">
+        ⚡ Auto-Initialize Prerequisites
+      </a>
+      <a href="{% url 'admissions_wizard' %}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow transition-colors flex items-center gap-1.5">
+        ⚙️ Setup Wizard
+      </a>
+    </div>
+  </div>
+
+  {% else %}
   <!-- Form Card -->
   <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 sm:p-8 shadow-sm">
     <!-- Notice we do NOT use hx-post directly on form so that native multipart files upload works cleanly. We submit via standard form POST or HTMX AJAX with files -->
@@ -182,5 +221,6 @@
       </div>
     </form>
   </div>
+  {% endif %}
 </div>
 {% endblock %}

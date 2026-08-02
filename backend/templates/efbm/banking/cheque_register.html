@@ -1,0 +1,65 @@
+{% extends "base/_document.html" %}
+{% block title %}Cheque Register — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Cheque Issuance & Clearing Register</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Cheque book management, clearing status, and payee tracking.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Register
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+        <a href="{% url 'bank_dashboard_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Treasury Overview</a>
+        <a href="{% url 'bank_reconciliation_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Bank Reconciliation</a>
+        <a href="{% url 'cashbook_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Cashbook Statement</a>
+        <a href="{% url 'cheque_register_web' %}" class="px-4 py-2 bg-indigo-600 text-white font-semibold text-xs rounded-xl">Cheque Register</a>
+    </div>
+
+    <!-- Cheque Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" id="printableCheques">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Cheque #</th>
+                        <th class="px-6 py-4">Bank Account</th>
+                        <th class="px-6 py-4">Payee Name</th>
+                        <th class="px-6 py-4">Issue Date</th>
+                        <th class="px-6 py-4 text-right">Amount ($)</th>
+                        <th class="px-6 py-4 text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for item in cheques %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-mono font-bold text-xs text-indigo-600 dark:text-indigo-400">{{ item.cheque_number }}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ item.bank_account.bank_name }}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ item.payee_name }}</td>
+                        <td class="px-6 py-4 font-mono text-xs">{{ item.issue_date }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-slate-900 dark:text-white">${{ item.amount }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="px-2.5 py-1 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold text-xs rounded-lg uppercase">{{ item.status }}</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-12 text-center text-slate-500">No cheque logs registered yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

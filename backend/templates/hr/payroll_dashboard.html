@@ -1,166 +1,201 @@
 {% extends "base/_document.html" %}
-
-{% block title %}Payroll Engine & GL Postings - EduOrbit{% endblock %}
+{% block title %}Payroll Engine & GL Ledger Desk — EduOrbit HR{% endblock %}
 
 {% block content %}
-<div style="max-width: 1200px; margin: 0 auto; padding: var(--spacing-lg) 0;">
+<div class="space-y-6">
 
-  <!-- Header Section -->
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-lg);">
-    <div>
-      <h2 style="font-weight: var(--font-weight-bold); margin: 0; font-size: 1.8rem; color: var(--color-text-primary);">Payroll Engine & GL Ledger Desk</h2>
-      <p style="color: var(--color-text-secondary); margin-top: 4px;">Calculate employee salaries, view payslip snapshots, and post automated accounting journal vouchers to EFBM General Ledger.</p>
+  <!-- Page Header Banner -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-500/30 shadow-xl">
+    <div class="space-y-1">
+      <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">
+        💳 Payroll Engine & GL Ledger Desk
+      </h1>
+      <p class="text-xs text-slate-300">Calculate staff salaries, generate payslip snapshots, and post automated journal vouchers to the General Ledger.</p>
+    </div>
+    <div class="flex items-center gap-3 shrink-0">
+      <a href="/hr/finance/postings/" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-md">
+        📒 GL Postings
+      </a>
+      <a href="/hr/attendance/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition">
+        📋 Attendance
+      </a>
     </div>
   </div>
 
-  <!-- Main Grid Layout -->
-  <div style="display: grid; grid-template-columns: 1fr 3fr; gap: var(--spacing-lg);">
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
 
-    <!-- Left Column: Period Selection -->
-    <div>
-      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-md); position: sticky; top: var(--spacing-md);">
-        <h3 style="font-weight: var(--font-weight-semibold); margin: 0 0 var(--spacing-md) 0; font-size: 1.1rem; border-bottom: 1px solid var(--color-border); padding-bottom: 10px;">Select Payroll Period</h3>
-        <ul style="list-style: none; padding: 0; margin: 0;">
+    <!-- ── LEFT SIDEBAR: Period Picker ─────────────────────────────────── -->
+    <div class="lg:col-span-1">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden sticky top-4">
+        <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
+          <h3 class="text-sm font-bold text-slate-900 dark:text-white">📅 Payroll Period</h3>
+          <p class="text-[11px] text-slate-400 mt-0.5">Select a period to review or generate payslips.</p>
+        </div>
+        <ul class="p-3 space-y-1">
           {% for period in periods %}
-          <li style="margin-bottom: var(--spacing-xs);">
-            <a href="?period_id={{ period.id }}" 
-               style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: var(--radius-md); text-decoration: none; font-weight: var(--font-weight-medium); transition: background 0.2s; 
-                      {% if period.id|stringformat:'s' == selected_period_id|stringformat:'s' %}background: var(--color-primary-light, #e0f2fe); color: var(--color-primary); border-left: 4px solid var(--color-primary);{% else %}background: transparent; color: var(--color-text-primary); border-left: 4px solid transparent;{% endif %}">
+          <li>
+            <a href="?period_id={{ period.id }}"
+               class="flex items-center justify-between px-4 py-3 rounded-xl text-xs font-semibold transition
+                      {% if period.id|stringformat:'s' == selected_period_id|stringformat:'s' %}
+                        bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-700
+                      {% else %}
+                        text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50
+                      {% endif %}">
               <span>{{ period.name }}</span>
-              <span style="font-size: 0.75rem; padding: 2px 8px; border-radius: 20px; font-weight: var(--font-weight-bold); 
-                           {% if period.status == 'draft' %}background: #f3f4f6; color: #4b5563;
-                           {% elif period.status == 'calculated' %}background: #e0f2fe; color: #0369a1;
-                           {% elif period.status == 'closed' %}background: #dcfce7; color: #15803d;
-                           {% else %}background: #fee2e2; color: #b91c1c;{% endif %}">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold
+                {% if period.status == 'draft' %}bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300
+                {% elif period.status == 'calculated' %}bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300
+                {% elif period.status == 'closed' %}bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-300
+                {% else %}bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-300{% endif %}">
                 {{ period.status|title }}
               </span>
             </a>
           </li>
           {% empty %}
-          <li style="color: var(--color-text-secondary); text-align: center; padding: var(--spacing-md);">No payroll periods available.</li>
+          <li class="px-4 py-6 text-center text-xs text-slate-400">
+            <div class="text-2xl mb-2">📅</div>
+            No payroll periods configured.
+          </li>
           {% endfor %}
         </ul>
       </div>
     </div>
 
-    <!-- Right Column: Dashboard Details -->
-    <div>
+    <!-- ── RIGHT MAIN PANEL ─────────────────────────────────────────────── -->
+    <div class="lg:col-span-3 space-y-5">
+
       {% if selected_period %}
-        
-        <!-- Period Info & Action Card -->
-        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--spacing-lg); margin-bottom: var(--spacing-lg); display: flex; justify-content: space-between; align-items: center;">
+
+        <!-- Period Summary Card with Action CTA -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h3 style="margin: 0; font-size: 1.3rem; font-weight: var(--font-weight-bold);">{{ selected_period.name }}</h3>
-            <p style="margin: 4px 0 0 0; color: var(--color-text-secondary); font-size: 0.9rem;">
-              Timeline: {{ selected_period.start_date }} to {{ selected_period.end_date }}
+            <h2 class="text-base font-bold text-slate-900 dark:text-white">{{ selected_period.name }}</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-mono">
+              📅 {{ selected_period.start_date }} — {{ selected_period.end_date }}
             </p>
           </div>
-          
           <div>
             {% if not active_run %}
-              <!-- Generate Payroll Form -->
               <form method="POST" action="{% url 'payroll-generate' %}">
                 {% csrf_token %}
                 <input type="hidden" name="period_id" value="{{ selected_period.id }}">
-                <button type="submit" style="background: var(--color-primary); color: white; border: none; padding: 12px 24px; border-radius: var(--radius-md); font-weight: var(--font-weight-bold); cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <button type="submit"
+                        class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition shadow flex items-center gap-2">
                   ⚡ Run Payroll Calculations
                 </button>
               </form>
             {% elif active_run.status == 'calculated' or active_run.status == 'posting_failed' %}
-              <!-- Post/Approve Payroll Form -->
-              <div style="display: flex; gap: 10px; align-items: center;">
+              <div class="flex items-center gap-3">
                 {% if active_run.status == 'posting_failed' %}
-                  <span style="color: var(--color-error, #ef4444); font-size: 0.9rem; font-weight: var(--font-weight-semibold);">⚠️ GL Posting Failed</span>
+                <span class="text-xs text-rose-500 font-semibold">⚠️ GL Posting Failed — retry below</span>
                 {% endif %}
                 <form method="POST" action="{% url 'payroll-post' active_run.id %}">
                   {% csrf_token %}
-                  <button type="submit" style="background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: var(--radius-md); font-weight: var(--font-weight-bold); cursor: pointer; display: flex; align-items: center; gap: 8px;">
-                    ✅ Approve & Post General Ledger Vouchers
+                  <button type="submit"
+                          class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition shadow flex items-center gap-2">
+                    ✅ Approve & Post GL Vouchers
                   </button>
                 </form>
               </div>
             {% else %}
-              <div style="display: flex; align-items: center; gap: 8px; color: #10b981; font-weight: var(--font-weight-bold);">
-                <span style="background: #dcfce7; padding: 10px 20px; border-radius: var(--radius-md);">Posted & Closed</span>
-              </div>
+              <span class="px-4 py-2.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-bold border border-emerald-200 dark:border-emerald-700">
+                ✅ Payroll Posted & Closed
+              </span>
             {% endif %}
           </div>
         </div>
 
         {% if active_run %}
-          <!-- Statistics Cards Grid -->
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
-            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm);">
-              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-secondary); font-weight: var(--font-weight-semibold);">Total Gross Pay</span>
-              <h4 style="margin: 8px 0 0 0; font-size: 1.4rem; font-weight: var(--font-weight-bold); color: var(--color-text-primary);">₦{{ active_run.total_gross }}</h4>
+          <!-- KPI Stats Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+              <span class="text-[10px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Gross Pay</span>
+              <div class="text-xl font-black text-slate-900 dark:text-white mt-1">₦{{ active_run.total_gross|default:"—" }}</div>
             </div>
-            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm);">
-              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-secondary); font-weight: var(--font-weight-semibold);">Total Tax (PAYE)</span>
-              <h4 style="margin: 8px 0 0 0; font-size: 1.4rem; font-weight: var(--font-weight-bold); color: #ef4444;">₦{{ active_run.total_tax }}</h4>
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+              <span class="text-[10px] text-slate-400 font-mono font-bold uppercase tracking-wider">PAYE Tax</span>
+              <div class="text-xl font-black text-rose-500 mt-1">₦{{ active_run.total_tax|default:"—" }}</div>
             </div>
-            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm);">
-              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-secondary); font-weight: var(--font-weight-semibold);">Total Pension</span>
-              <h4 style="margin: 8px 0 0 0; font-size: 1.4rem; font-weight: var(--font-weight-bold); color: #f59e0b;">₦{{ active_run.total_pension }}</h4>
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+              <span class="text-[10px] text-slate-400 font-mono font-bold uppercase tracking-wider">Pension</span>
+              <div class="text-xl font-black text-amber-500 mt-1">₦{{ active_run.total_pension|default:"—" }}</div>
             </div>
-            <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-md); box-shadow: var(--shadow-sm);">
-              <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--color-text-secondary); font-weight: var(--font-weight-semibold);">Total Net Salary</span>
-              <h4 style="margin: 8px 0 0 0; font-size: 1.4rem; font-weight: var(--font-weight-bold); color: #10b981;">₦{{ active_run.total_net }}</h4>
+            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+              <span class="text-[10px] text-slate-400 font-mono font-bold uppercase tracking-wider">Net Salary</span>
+              <div class="text-xl font-black text-emerald-500 mt-1">₦{{ active_run.total_net|default:"—" }}</div>
             </div>
           </div>
 
           <!-- Payslip Ledger Table -->
-          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden;">
-            <div style="padding: var(--spacing-md) var(--spacing-lg); background: var(--color-background); border-bottom: 1px solid var(--color-border);">
-              <h4 style="font-weight: var(--font-weight-semibold); margin: 0; font-size: 1.1rem;">Snapshot Payslips</h4>
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white">🧾 Snapshot Payslips</h3>
+              <span class="text-xs text-slate-400 font-mono">Run status: <span class="text-indigo-500 font-bold">{{ active_run.status|title }}</span></span>
             </div>
-            
-            <table style="width: 100%; border-collapse: collapse; text-align: left;">
-              <thead>
-                <tr style="background: var(--color-background); border-bottom: 1px solid var(--color-border); font-size: 0.85rem; text-transform: uppercase; color: var(--color-text-secondary);">
-                  <th style="padding: var(--spacing-md) var(--spacing-lg);">Employee</th>
-                  <th style="padding: var(--spacing-md);">Grade</th>
-                  <th style="padding: var(--spacing-md);">Base Salary</th>
-                  <th style="padding: var(--spacing-md);">Gross Pay</th>
-                  <th style="padding: var(--spacing-md);">Deductions</th>
-                  <th style="padding: var(--spacing-md);">Net Pay</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for payslip in payslips %}
-                <tr style="border-bottom: 1px solid var(--color-border);">
-                  <td style="padding: var(--spacing-md) var(--spacing-lg); font-weight: var(--font-weight-medium);">
-                    {{ payslip.employee.person.first_name }} {{ payslip.employee.person.last_name }}
-                    <span style="display: block; font-size: 0.8rem; color: var(--color-text-secondary);">{{ payslip.employee.employee_number }}</span>
-                  </td>
-                  <td style="padding: var(--spacing-md);">{{ payslip.salary_grade }}</td>
-                  <td style="padding: var(--spacing-md);">₦{{ payslip.base_salary }}</td>
-                  <td style="padding: var(--spacing-md); font-weight: var(--font-weight-semibold);">₦{{ payslip.gross_pay }}</td>
-                  <td style="padding: var(--spacing-md); color: #ef4444;">₦{{ payslip.tax_amount }} (Tax)</td>
-                  <td style="padding: var(--spacing-md); color: #10b981; font-weight: var(--font-weight-bold);">₦{{ payslip.net_pay }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                  <td colspan="6" style="padding: var(--spacing-lg); text-align: center; color: var(--color-text-secondary);">No payslips found for this run.</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+                    <th class="px-6 py-3">Employee</th>
+                    <th class="px-6 py-3">Salary Grade</th>
+                    <th class="px-6 py-3">Base Salary</th>
+                    <th class="px-6 py-3">Gross Pay</th>
+                    <th class="px-6 py-3">Deductions</th>
+                    <th class="px-6 py-3 text-emerald-500">Net Pay</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                  {% for payslip in payslips %}
+                  <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                    <td class="px-6 py-4">
+                      <div class="font-bold text-slate-900 dark:text-white">{{ payslip.employee.person.first_name }} {{ payslip.employee.person.last_name }}</div>
+                      <div class="text-slate-400 font-mono text-[10px] mt-0.5">{{ payslip.employee.employee_number }}</div>
+                    </td>
+                    <td class="px-6 py-4 text-slate-600 dark:text-slate-300 font-mono">{{ payslip.salary_grade|default:"—" }}</td>
+                    <td class="px-6 py-4 text-slate-700 dark:text-slate-300 font-mono">₦{{ payslip.base_salary|default:"—" }}</td>
+                    <td class="px-6 py-4 font-bold text-slate-900 dark:text-white font-mono">₦{{ payslip.gross_pay|default:"—" }}</td>
+                    <td class="px-6 py-4 text-rose-500 font-mono">₦{{ payslip.tax_amount|default:"—" }}</td>
+                    <td class="px-6 py-4 font-black text-emerald-500 font-mono">₦{{ payslip.net_pay|default:"—" }}</td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="px-6 py-12 text-center">
+                      <div class="text-3xl mb-2">🧾</div>
+                      <div class="text-sm font-semibold text-slate-500 dark:text-slate-400">No payslips in this run yet</div>
+                      <div class="text-xs text-slate-400 mt-1">Run payroll calculations for this period to generate payslips.</div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
           </div>
+
         {% else %}
-          <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); text-align: center; color: var(--color-text-secondary);">
-            No payroll run calculated yet. Select calculations action to begin.
+          <!-- No run yet for this period -->
+          <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-12 text-center">
+            <div class="text-4xl mb-3">⚡</div>
+            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200">No Payroll Run Calculated</h3>
+            <p class="text-xs text-slate-400 mt-1">Click <strong>Run Payroll Calculations</strong> above to generate payslips for <strong>{{ selected_period.name }}</strong>.</p>
           </div>
         {% endif %}
 
       {% else %}
-        <!-- Selection Placeholder -->
-        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 50px; text-align: center; color: var(--color-text-secondary);">
-          <div style="font-size: 3rem; margin-bottom: var(--spacing-md);">📅</div>
-          <h3 style="margin: 0; color: var(--color-text-primary);">Select a payroll period from the left ledger to review or generate payslips.</h3>
+        <!-- No period selected yet -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-16 text-center">
+          <div class="text-5xl mb-4">📅</div>
+          <h3 class="text-base font-bold text-slate-700 dark:text-slate-200">Select a Payroll Period</h3>
+          <p class="text-xs text-slate-400 mt-2 max-w-xs mx-auto">Choose a payroll period from the left panel to view payslips, run calculations, or post GL vouchers.</p>
+          {% if not periods %}
+          <div class="mt-6 px-4 py-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl inline-block text-xs text-amber-700 dark:text-amber-300 font-semibold">
+            ⚠️ No payroll periods configured. Set them up in HR Settings first.
+          </div>
+          {% endif %}
         </div>
       {% endif %}
-    </div>
 
+    </div>
   </div>
 
 </div>

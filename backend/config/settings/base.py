@@ -7,7 +7,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 # Initialize environment variables
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+backend_env_path = os.path.join(BASE_DIR, 'backend', '.env')
+root_env_path = os.path.join(BASE_DIR, '.env')
+if os.path.exists(backend_env_path):
+    environ.Env.read_env(backend_env_path)
+elif os.path.exists(root_env_path):
+    environ.Env.read_env(root_env_path)
+
 
 SECRET_KEY = env.str('SECRET_KEY', default='django-insecure-default-secret-key-change-in-prod')
 
@@ -248,4 +254,9 @@ DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', default='EduOrbit ERP <norepl
 TERMII_API_KEY = env.str('TERMII_API_KEY', default='test_termii_api_key_123')
 TERMII_SENDER_ID = env.str('TERMII_SENDER_ID', default='EduOrbit')
 TERMII_BASE_URL = env.str('TERMII_BASE_URL', default='https://api.ng.termii.com')
+
+# Dojah KYC Identity Verification Provider Settings
+DOJAH_API_KEY = env.str('DOJAH_API_KEY', default=None)
+DOJAH_APP_ID = env.str('DOJAH_APP_ID', default=None)
+DOJAH_BASE_URL = env.str('DOJAH_BASE_URL', default='https://api.dojah.io')
 

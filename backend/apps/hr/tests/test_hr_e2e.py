@@ -1,6 +1,7 @@
 from decimal import Decimal
 from datetime import date, datetime, time, timedelta
 from django.test import TestCase, Client
+from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
@@ -63,7 +64,7 @@ class HREndToEndWorkflowTests(TestCase):
         app = RecruitmentService.submit_application(self.tenant, vacancy, first_name="Natasha", last_name="Romanoff", email="natasha@eduorbit.com")
         self.assertEqual(app.stage, "applied")
 
-        panel = RecruitmentService.schedule_interview(self.tenant, app, datetime.now())
+        panel = RecruitmentService.schedule_interview(self.tenant, app, timezone.now())
         self.assertEqual(app.stage, "interviewing")
 
         card = RecruitmentService.submit_scorecard(self.tenant, app, self.admin_emp, score=92.5)
@@ -120,10 +121,10 @@ class HREndToEndWorkflowTests(TestCase):
         """End-to-End Attendance: Clock In -> Clock Out -> Calculation Engine -> Adjustment"""
         shift = AttendanceShift.objects.create(tenant=self.tenant, code="MORNING", name="Morning", start_time=time(8, 0), end_time=time(16, 0), grace_minutes=15)
         
-        rec = AttendanceService.clock_in(self.staff_emp, datetime.now())
+        rec = AttendanceService.clock_in(self.staff_emp, timezone.now())
         self.assertIsNotNone(rec.check_in)
         
-        rec_out = AttendanceService.clock_out(self.staff_emp, datetime.now())
+        rec_out = AttendanceService.clock_out(self.staff_emp, timezone.now())
         self.assertIsNotNone(rec_out.check_out)
 
     def test_seed_demo_accounts_login(self):

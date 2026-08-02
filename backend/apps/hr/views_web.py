@@ -1,30 +1,35 @@
 import json
+import uuid
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.utils import timezone
 from backend.apps.tenants.models import School
 from backend.apps.hr.models import (
-    EmployeeProfile, LeaveRequest, JobVacancy, JobApplication, InterviewPanel, InterviewScorecard, OfferLetter, HRSettings,
+    EmployeeProfile, LeaveRequest, LeaveType, JobVacancy, JobApplication, InterviewPanel, InterviewScorecard, OfferLetter, HRSettings,
     PayrollPeriod, PayrollRun, PayrollPayslip, AttendanceRecord
 )
 from backend.apps.hr.selectors import EmployeeSelector, RecruitmentSelector, OnboardingSelector, HRSettingsSelector, LeaveSelector
-from backend.apps.hr.services import EmployeeService, RecruitmentService, OnboardingService, PayrollService
+from backend.apps.hr.services import EmployeeService, RecruitmentService, OnboardingService, LeaveService, PayrollService
 from backend.apps.efbm.services.finance import AccountingService
 
 class HRDashboardWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-            
-        role = getattr(request, 'hr_role', '')
-        if role not in ['hr_admin', 'hr_officer', 'super_admin']:
+        
+        # Get the hr_role set by HRContextMiddleware
+        role = getattr(request, 'hr_role', 'employee')
+        
+        # Check if user should be redirected based on role
+        allowed_roles = ['hr_admin', 'hr_officer', 'super_admin', 'school_admin']
+        
+        if role not in allowed_roles:
             if role == 'payroll_admin':
                 return redirect('/hr/payroll/')
             elif role == 'supervisor':
                 return redirect('/hr/manager/team/')
-            elif role == 'finance':
-                return redirect('/hr/finance/postings/')
             else:
+                # Regular employees go to ESS portal
                 return redirect('/hr/ess/')
                 
         tenant = getattr(request, 'tenant', None)
@@ -299,7 +304,16 @@ class PayrollWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        if getattr(request, 'hr_role', '') not in ['payroll_admin', 'hr_admin', 'super_admin']:
+        hr_role = getattr(request, 'hr_role', '')
+        # Also accept users whose Django group is hr_admin or payroll_admin
+        user_groups = set(request.user.groups.values_list('name', flat=True))
+        has_payroll_access = (
+            hr_role in ['payroll_admin', 'hr_admin', 'school_admin', 'super_admin']
+            or 'hr_admin' in user_groups
+            or 'payroll_admin' in user_groups
+            or request.user.is_superuser
+        )
+        if not has_payroll_access:
             from django.http import HttpResponseForbidden
             return HttpResponseForbidden("Access Denied: Payroll Administrator privileges required.")
             
@@ -433,8 +447,29 @@ class AttendanceReportWebView(View):
                 writer.writerow([r.employee.employee_number, r.attendance_date, r.check_in, r.check_out, r.total_hours, r.overtime_hours, r.attendance_status])
             return response
         else:
-            # Simple fallback for PDF report
-            response = HttpResponse("PDF report export succeeded.", content_type='text/plain')
+            from reportlab.pdfgen import canvas
+            response = HttpResponse(content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="attendance_report_{today}.pdf"'
+            
+            p = canvas.Canvas(response)
+            p.drawString(100, 800, f"Attendance Report - {today}")
+            p.drawString(100, 785, "=" * 60)
+            
+            y = 750
+            p.drawString(100, y, "Employee ID | Date | Check-In | Check-Out | Status")
+            y -= 15
+            p.drawString(100, y, "-" * 80)
+            y -= 20
+            
+            for r in records:
+                if y < 50:
+                    p.showPage()
+                    y = 800
+                p.drawString(100, y, f"{r.employee.employee_number} | {r.attendance_date} | {r.check_in or '-'} | {r.check_out or '-'} | {r.attendance_status}")
+                y -= 20
+                
+            p.showPage()
+            p.save()
             return response
 
 
@@ -442,14 +477,34 @@ class ESSDashboardWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/ess/dashboard.html')
+        tenant = getattr(request, 'tenant', None)
+        from backend.apps.hr.models import EmployeeProfile, LeaveBalance, EmployeeAsset, PayrollPayslip, LeaveRequest
+        emp = EmployeeProfile.objects.filter(tenant=tenant, person__user=request.user).first()
+        if not emp:
+            emp = EmployeeProfile.objects.filter(tenant=tenant).select_related('person').first()
+
+        leave_balances = LeaveBalance.objects.filter(tenant=tenant, employee=emp) if emp else []
+        assets = EmployeeAsset.objects.filter(tenant=tenant, employee=emp) if emp else []
+        payslips = PayrollPayslip.objects.filter(tenant=tenant, employee=emp) if emp else []
+        leave_requests = LeaveRequest.objects.filter(tenant=tenant, employee=emp) if emp else []
+
+        ctx = {
+            'employee': emp,
+            'leave_balances': leave_balances,
+            'assets': assets,
+            'payslips': payslips,
+            'leave_requests': leave_requests,
+        }
+        return render(request, 'hr/ess/dashboard.html', ctx)
 
 
 class ManagerTeamWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/manager/team_dashboard.html')
+        tenant = getattr(request, 'tenant', None)
+        employees = EmployeeProfile.objects.filter(tenant=tenant).select_related('person')
+        return render(request, 'hr/manager/team_dashboard.html', {'employees': employees})
 
 
 class StaffDirectoryWebView(View):
@@ -461,81 +516,126 @@ class StaffDirectoryWebView(View):
         return render(request, 'hr/admin/directory.html', {'employees': employees})
 
 
+class StaffIdCardWebView(View):
+    def get(self, request, employee_id):
+        if not request.user.is_authenticated:
+            return redirect('login_web')
+        tenant = getattr(request, 'tenant', None)
+        try:
+            employee = EmployeeProfile.objects.select_related('person', 'tenant').get(id=employee_id, tenant=tenant)
+        except EmployeeProfile.DoesNotExist:
+            from django.http import Http404
+            raise Http404("Employee profile not found")
+            
+        return render(request, 'hr/admin/id_card.html', {
+            'employee': employee,
+            'tenant': tenant,
+        })
+
+
 class OrgChartWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/admin/org_chart.html')
+        tenant = getattr(request, 'tenant', None)
+        employees = EmployeeProfile.objects.filter(tenant=tenant).select_related('person')
+        return render(request, 'hr/admin/org_chart.html', {'employees': employees})
 
 
 class OnboardingTrackerWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/recruitment_dashboard.html')
+        tenant = getattr(request, 'tenant', None)
+        from backend.apps.hr.models import OnboardingTask
+        tasks = OnboardingTask.objects.filter(tenant=tenant).select_related('employee__person')
+        pending_count = tasks.filter(is_completed=False).count()
+        completed_count = tasks.filter(is_completed=True).count()
+        onboarding_employees_count = tasks.values('employee').distinct().count()
+
+        ctx = {
+            'tasks': tasks,
+            'pending_count': pending_count,
+            'completed_count': completed_count,
+            'onboarding_employees_count': onboarding_employees_count,
+        }
+        return render(request, 'hr/admin/onboarding_tracker.html', ctx)
 
 
 class PerformanceWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/performance/dashboard.html')
+        tenant = getattr(request, 'tenant', None)
+        from backend.apps.hr.models.appraisal import PerformanceReview
+        reviews = PerformanceReview.objects.filter(tenant=tenant).select_related('employee__person')
+        return render(request, 'hr/performance/dashboard.html', {'reviews': reviews})
 
 
 class TrainingWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/training/dashboard.html')
+        tenant = getattr(request, 'tenant', None)
+        from backend.apps.hr.models.training import TrainingProgram
+        programs = TrainingProgram.objects.filter(tenant=tenant)
+        return render(request, 'hr/training/dashboard.html', {'programs': programs})
 
 
 class DisciplinaryWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/disciplinary/dashboard.html')
+        return render(request, 'hr/disciplinary/dashboard.html', {'cases': []})
 
 
 class RewardsWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/rewards/wall.html')
+        return render(request, 'hr/rewards/wall.html', {'rewards': []})
 
 
 class FinancePostingsWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/finance/postings.html')
+        return render(request, 'hr/finance/postings.html', {'postings': []})
 
 
 class AnalyticsWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/analytics/dashboard.html')
+        tenant = getattr(request, 'tenant', None)
+        employee_count = EmployeeProfile.objects.filter(tenant=tenant).count()
+        return render(request, 'hr/analytics/dashboard.html', {'employee_count': employee_count})
 
 
 class NotificationsWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/notifications/center.html')
+        return render(request, 'hr/notifications/center.html', {'notifications': []})
 
 
 class AuditTrailWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/audit/trail.html')
+        tenant = getattr(request, 'tenant', None)
+        from backend.apps.hr.models.employee import HRAuditLog
+        logs = HRAuditLog.objects.filter(tenant=tenant).order_by('-created_at')[:50]
+        return render(request, 'hr/audit/trail.html', {'logs': logs})
 
 
 class HRSettingsWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/settings/index.html')
+        tenant = getattr(request, 'tenant', None)
+        settings = HRSettingsSelector.get_tenant_settings(tenant)
+        return render(request, 'hr/settings/index.html', {'settings': settings})
 
 
 class ImportWizardWebView(View):
@@ -556,7 +656,10 @@ class EnterpriseSearchWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
-        return render(request, 'hr/search/results.html')
+        q = request.GET.get('q', '')
+        tenant = getattr(request, 'tenant', None)
+        employees = EmployeeSelector.get_all_employees(tenant, {'search': q}) if q else []
+        return render(request, 'hr/search/results.html', {'employees': employees, 'query': q})
 
 
 class ReportsHubWebView(View):

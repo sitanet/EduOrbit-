@@ -1,0 +1,272 @@
+{% extends "base/_document.html" %}
+{% load static %}
+{% block title %}Payment {{ payment.payment_number }} — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Payment {{ payment.payment_number }}</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Payment processing and approval workflow management.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="{% url 'supplier_payments' %}" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl border transition-all">
+                ← Back to Payments
+            </a>
+            {% if payment.status == 'draft' %}
+            <a href="{% url 'supplier_payment_update' payment_id=payment.id %}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                ✏️ Edit Payment
+            </a>
+            {% endif %}
+            {% if payment.voucher %}
+            <a href="{% url 'payment_voucher_detail' voucher_id=payment.voucher.id %}" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs rounded-xl shadow-sm transition-all">
+                📄 View Voucher
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Navigation Breadcrumb -->
+    <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+        <a href="{% url 'payables_dashboard_web' %}" class="hover:text-indigo-600">Payables Dashboard</a>
+        <span>›</span>
+        <a href="{% url 'supplier_payments' %}" class="hover:text-indigo-600">Payments</a>
+        <span>›</span>
+        <span class="font-semibold">{{ payment.payment_number }}</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Main Payment Details -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            <!-- Payment Information -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">Payment Details</h2>
+                    {% if payment.status == 'draft' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-gray-100 text-gray-800">Draft</span>
+                    {% elif payment.status == 'pending' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-blue-100 text-blue-800">Pending Approval</span>
+                    {% elif payment.status == 'approved' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                    {% elif payment.status == 'processed' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-emerald-100 text-emerald-800">Bank Processed</span>
+                    {% elif payment.status == 'cancelled' %}
+                        <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800">Cancelled</span>
+                    {% endif %}
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Payment Number</span>
+                        <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ payment.payment_number }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Reference</span>
+                        <div class="text-sm text-slate-600 dark:text-slate-300">{{ payment.reference }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Payment Method</span>
+                        <div class="text-sm text-slate-600 dark:text-slate-300">{{ payment.get_payment_method_display }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Payment Date</span>
+                        <div class="text-sm text-slate-600 dark:text-slate-300">{{ payment.payment_date|date:"M j, Y g:i A" }}</div>
+                    </div>
+                    {% if payment.bank_account %}
+                    <div class="sm:col-span-2">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Bank Account</span>
+                        <div class="text-sm text-slate-600 dark:text-slate-300">{{ payment.bank_account.account_name }} ({{ payment.bank_account.account_number }})</div>
+                        <div class="text-xs text-slate-400">{{ payment.bank_account.bank_name }}</div>
+                    </div>
+                    {% endif %}
+                    {% if payment.description %}
+                    <div class="sm:col-span-2">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Description</span>
+                        <div class="text-sm text-slate-600 dark:text-slate-300">{{ payment.description }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Bill Information -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Related Supplier Bill</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Bill Number</span>
+                        <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ payment.bill.bill_number }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Supplier</span>
+                        <div class="text-sm text-slate-600 dark:text-slate-300">{{ payment.bill.supplier_name }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Bill Amount</span>
+                        <div class="text-sm font-mono font-bold text-slate-900 dark:text-white">NGN {{ payment.bill.amount|floatformat:2 }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">Outstanding</span>
+                        <div class="text-sm font-mono font-bold text-red-600 dark:text-red-400">NGN {{ payment.bill.outstanding_amount|floatformat:2 }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workflow Actions -->
+            {% if payment.status in 'draft,pending,approved' %}
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Payment Actions</h2>
+                
+                <form method="post" class="space-y-4">
+                    {% csrf_token %}
+                    
+                    {% if payment.status == 'draft' %}
+                    <div class="flex items-center gap-4">
+                        <button type="submit" name="action" value="submit" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-all">
+                            📤 Submit for Approval
+                        </button>
+                        <p class="text-sm text-slate-500">Submit this payment for management approval.</p>
+                    </div>
+                    {% elif payment.status == 'pending' %}
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <button type="submit" name="action" value="approve" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-all">
+                                ✅ Approve Payment
+                            </button>
+                            <p class="text-sm text-slate-500">Approve and create payment voucher.</p>
+                        </div>
+                        <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+                            <div class="flex items-center gap-4">
+                                <button type="button" onclick="showRejectModal()" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-all">
+                                    ❌ Reject Payment
+                                </button>
+                                <p class="text-sm text-slate-500">Reject and return to draft status.</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% elif payment.status == 'approved' %}
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-1 space-y-2">
+                                <label for="bank_reference" class="block text-sm font-semibold text-slate-900 dark:text-white">Bank Reference</label>
+                                <input type="text" name="bank_reference" id="bank_reference" 
+                                    class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+                                    placeholder="Enter bank transaction reference">
+                            </div>
+                            <button type="submit" name="action" value="process" class="mt-6 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-sm transition-all">
+                                🏦 Mark as Processed
+                            </button>
+                        </div>
+                        <p class="text-sm text-slate-500">Mark payment as processed by the bank and post to general ledger.</p>
+                    </div>
+                    {% endif %}
+                </form>
+            </div>
+            {% endif %}
+            
+        </div>
+
+        <!-- Sidebar -->
+        <div class="space-y-6">
+            
+            <!-- Amount Summary -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Amount Breakdown</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-slate-600 dark:text-slate-300">Gross Amount</span>
+                        <span class="text-sm font-mono font-bold text-slate-900 dark:text-white">NGN {{ payment.amount|floatformat:2 }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-slate-600 dark:text-slate-300">Withholding Tax</span>
+                        <span class="text-sm font-mono font-bold text-red-600 dark:text-red-400">- NGN {{ payment.withholding_tax_amount|floatformat:2 }}</span>
+                    </div>
+                    <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-base font-semibold text-slate-900 dark:text-white">Net Amount</span>
+                            <span class="text-lg font-mono font-black text-emerald-600 dark:text-emerald-400">NGN {{ payment.net_amount|floatformat:2 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workflow Timeline -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-6">Workflow Timeline</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <div class="text-sm font-semibold text-slate-900 dark:text-white">Payment Created</div>
+                            <div class="text-xs text-slate-500">{{ payment.created_at|date:"M j, Y g:i A" }}</div>
+                            {% if payment.prepared_by %}
+                            <div class="text-xs text-slate-400">by {{ payment.prepared_by.get_full_name }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    {% if payment.approved_at %}
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <div class="text-sm font-semibold text-slate-900 dark:text-white">Payment Approved</div>
+                            <div class="text-xs text-slate-500">{{ payment.approved_at|date:"M j, Y g:i A" }}</div>
+                            {% if payment.approved_by %}
+                            <div class="text-xs text-slate-400">by {{ payment.approved_by.get_full_name }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if payment.processed_at %}
+                    <div class="flex items-start gap-3">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                        <div class="flex-1">
+                            <div class="text-sm font-semibold text-slate-900 dark:text-white">Bank Processed</div>
+                            <div class="text-xs text-slate-500">{{ payment.processed_at|date:"M j, Y g:i A" }}</div>
+                            {% if payment.processed_by %}
+                            <div class="text-xs text-slate-400">by {{ payment.processed_by.get_full_name }}</div>
+                            {% endif %}
+                            {% if payment.bank_reference %}
+                            <div class="text-xs text-slate-400">Ref: {{ payment.bank_reference }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if payment.voucher %}
+            <!-- Voucher Information -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Payment Voucher</h3>
+                
+                <div class="space-y-3">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Voucher Number</span>
+                        <div class="text-sm font-semibold text-slate-900 dark:text-white">{{ payment.voucher.voucher_number }}</div>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Status</span>
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">{{ payment.voucher.get_status_display }}</span>
+                    </div>
+                    <div class="pt-2">
+                        <a href="{% url 'payment_voucher_detail' voucher_id=payment.voucher.id %}" class="text-sm text-indigo-600 hover:text-indigo-700 font-semibold">
+                            View Voucher Details →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+        </div>
+    </div>
+
+</div>
+{% endblock %}

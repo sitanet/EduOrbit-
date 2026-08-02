@@ -3,11 +3,13 @@ from django.views import View
 from django.http import HttpResponse
 from backend.apps.people.models import StudentProfile
 from backend.apps.students.models import StudentPortfolio, StudentTimeline
+from backend.apps.dashboard.views_web import RoleRequiredMixin
+from backend.apps.dashboard.services import ROLE_STUDENT, ROLE_TEACHER, ROLE_SCHOOL_ADMIN
 
-class StudentPortfolioWebView(View):
+class StudentPortfolioWebView(RoleRequiredMixin, View):
+    required_roles = [ROLE_STUDENT, ROLE_TEACHER, ROLE_SCHOOL_ADMIN]
+
     def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect('login_web')
             
         tenant = getattr(request, 'tenant', None)
         portfolios = StudentPortfolio.objects.filter(tenant=tenant).select_related('student__person')
@@ -58,11 +60,10 @@ class StudentPortfolioWebView(View):
         )
 
 
-class StudentTimelineWebView(View):
+class StudentTimelineWebView(RoleRequiredMixin, View):
+    required_roles = [ROLE_STUDENT, ROLE_TEACHER, ROLE_SCHOOL_ADMIN]
+
     def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect('login_web')
-            
         tenant = getattr(request, 'tenant', None)
         student_id = request.GET.get('student_id')
         

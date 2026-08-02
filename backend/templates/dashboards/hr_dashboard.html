@@ -1,75 +1,166 @@
-{% extends 'base/_document.html' %}
+{% extends "base/_document.html" %}
+{% block title %}HR & Personnel Administration Dashboard — EduOrbit ERP{% endblock %}
 
 {% block content %}
-<div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-
-    <!-- Dashboard Actions -->
-    <div class="sm:flex sm:justify-between sm:items-center mb-8">
-        <!-- Left: Title -->
-        <div class="mb-4 sm:mb-0">
-            <h1 class="text-2xl md:text-3xl text-slate-800 dark:text-slate-100 font-bold">HR Dashboard ✨</h1>
+<div class="space-y-6">
+    <!-- Header Banner -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-2xl border border-indigo-500/30 shadow-xl relative overflow-hidden">
+        <div class="space-y-1 relative z-10">
+            <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2.5">
+                <span>🏢 HR & Personnel Administration Hub</span>
+            </h1>
+            <p class="text-xs text-slate-300">Oversee staff directory, leave requests, onboarding workflows, payroll records, and performance metrics for {{ tenant.name|default:"EduOrbit ERP" }}.</p>
         </div>
-        <!-- Right: Actions -->
-        <div class="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
-            <button class="btn bg-indigo-500 hover:bg-indigo-600 text-slate-900 dark:text-white">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">Add Staff</span>
-            </button>
+        <div class="flex items-center gap-3 relative z-10">
+            <a href="/hr/admin/onboarding/wizard/" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-md">
+                <span>➕</span> Onboard New Staff
+            </a>
+            <a href="/hr/admin/directory/" class="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition border border-slate-700">
+                👥 Staff Directory
+            </a>
         </div>
     </div>
 
-    <!-- Cards -->
-    <div class="grid grid-cols-12 gap-6 mb-8">
-        <!-- Stat Cards -->
-        {% include 'components/stat_card.html' with title="Total Staff" value="142" trend="+3" icon="users" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="On Leave Today" value="5" trend="-1" icon="user-minus" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-        {% include 'components/stat_card.html' with title="Pending Requests" value="12" trend="+4" icon="clipboard-list" cols="col-span-12 sm:col-span-6 xl:col-span-4" %}
-    </div>
-
-    <!-- Recent Leave Requests Table -->
-    <div>
-        <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">Recent Leave Requests</h2>
-        <div class="bg-white dark:bg-slate-800 shadow-sm rounded-sm border border-slate-200 dark:border-slate-700">
-            <div class="overflow-x-auto">
-                <table class="table-auto w-full dark:text-slate-700 dark:text-slate-300">
-                    <!-- Table header -->
-                    <thead class="text-xs uppercase text-slate-600 dark:text-slate-400 dark:text-slate-500 dark:text-slate-500 bg-slate-50 dark:bg-slate-700 dark:bg-opacity-50 rounded-sm">
-                        <tr>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Staff Member</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Role</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Leave Type</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-left">Dates</div></th>
-                            <th class="p-2 whitespace-nowrap"><div class="font-semibold text-center">Status</div></th>
-                        </tr>
-                    </thead>
-                    <!-- Table body -->
-                    <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">Sarah Jenkins</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Mathematics Teacher</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Sick Leave</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Oct 25 - Oct 26</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-amber-100 dark:bg-amber-400/30 text-amber-600 dark:text-amber-400 rounded-full px-2 py-0.5 text-xs">Pending</span></div></td>
-                        </tr>
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">Michael Brown</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">IT Administrator</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Annual Leave</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Nov 1 - Nov 5</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-emerald-100 dark:bg-emerald-400/30 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5 text-xs">Approved</span></div></td>
-                        </tr>
-                        <tr>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left font-medium text-slate-800 dark:text-slate-100">Emily Davis</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Librarian</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Personal Leave</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-left">Oct 28</div></td>
-                            <td class="p-2 whitespace-nowrap"><div class="text-center"><span class="bg-rose-100 dark:bg-rose-400/30 text-rose-600 dark:text-rose-400 rounded-full px-2 py-0.5 text-xs">Rejected</span></div></td>
-                        </tr>
-                    </tbody>
-                </table>
+    <!-- Analytics Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Stat Card 1 -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Total Staff</span>
+                <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">{{ total_staff|default:142 }}</div>
+                <span class="text-[10px] text-emerald-500 font-semibold mt-1 inline-block">Active Employee Profiles</span>
             </div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl font-bold">
+                👥
+            </div>
+        </div>
+
+        <!-- Stat Card 2 -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">On Leave Today</span>
+                <div class="text-2xl font-black text-amber-500 mt-1">5</div>
+                <span class="text-[10px] text-amber-500 font-semibold mt-1 inline-block">Approved Absence</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl font-bold">
+                🌴
+            </div>
+        </div>
+
+        <!-- Stat Card 3 -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Pending Leave Applications</span>
+                <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">12</div>
+                <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Awaiting HR Review</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl font-bold">
+                📋
+            </div>
+        </div>
+
+        <!-- Stat Card 4 -->
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+            <div>
+                <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Monthly Payroll</span>
+                <div class="text-2xl font-black text-emerald-500 mt-1">₦18.4M</div>
+                <span class="text-[10px] text-emerald-500 font-semibold mt-1 inline-block">Dispatched On-Time</span>
+            </div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl font-bold">
+                💳
+            </div>
+        </div>
+    </div>
+
+    <!-- HR Management Hub Quick Modules Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a href="/hr/admin/directory/" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition space-y-2 block">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg font-bold">
+                🪪
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Staff Directory & ID Cards</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">View employee profiles, print CR80 staff ID cards, and update KYC records.</p>
+        </a>
+
+        <a href="/hr/leave-calendar/" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition space-y-2 block">
+            <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg font-bold">
+                📅
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Leave Calendar & Management</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Track staff annual leave, sick leave, maternity leave, and shift covers.</p>
+        </a>
+
+        <a href="/hr/payroll/" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition space-y-2 block">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg font-bold">
+                💰
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Payroll & Payslip Engine</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Process salary advice, tax deductions, pension contributions, and payslips.</p>
+        </a>
+
+        <a href="/hr/admin/onboarding/wizard/" class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition space-y-2 block">
+            <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg font-bold">
+                🚀
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white">Onboarding & Recruitment</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">Launch 4-step wizard to register staff, assign roles, and capture documents.</p>
+        </a>
+    </div>
+
+    <!-- Recent Leave Applications Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center justify-between">
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>📋 Recent Staff Leave Applications</span>
+            </h2>
+            <a href="/hr/leave-calendar/" class="text-xs font-semibold text-indigo-500 hover:underline">View Calendar &rarr;</a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+                        <th class="px-6 py-3">Staff Member</th>
+                        <th class="px-6 py-3">Role / Department</th>
+                        <th class="px-6 py-3">Leave Type</th>
+                        <th class="px-6 py-3">Duration & Dates</th>
+                        <th class="px-6 py-3">Status</th>
+                        <th class="px-6 py-3 text-right">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">Sarah Jenkins</td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-300">Mathematics Teacher</td>
+                        <td class="px-6 py-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 uppercase font-mono">Sick Leave</span></td>
+                        <td class="px-6 py-4 font-mono text-slate-400">Oct 25 – Oct 26 (2 days)</td>
+                        <td class="px-6 py-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">PENDING</span></td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="/hr/leave-calendar/" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold">Review &rarr;</a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">Michael Brown</td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-300">IT Administrator</td>
+                        <td class="px-6 py-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 uppercase font-mono">Annual Leave</span></td>
+                        <td class="px-6 py-4 font-mono text-slate-400">Nov 1 – Nov 5 (5 days)</td>
+                        <td class="px-6 py-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">APPROVED</span></td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="/hr/leave-calendar/" class="px-3 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold">Details &rarr;</a>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+                        <td class="px-6 py-4 font-bold text-slate-900 dark:text-white">Emily Davis</td>
+                        <td class="px-6 py-4 text-slate-600 dark:text-slate-300">Librarian</td>
+                        <td class="px-6 py-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 uppercase font-mono">Personal Leave</span></td>
+                        <td class="px-6 py-4 font-mono text-slate-400">Oct 28 (1 day)</td>
+                        <td class="px-6 py-4"><span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-600 dark:text-rose-400 font-mono">REJECTED</span></td>
+                        <td class="px-6 py-4 text-right">
+                            <a href="/hr/leave-calendar/" class="px-3 py-1 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold">Details &rarr;</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

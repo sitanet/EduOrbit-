@@ -1,6 +1,6 @@
 from django.test import TestCase, TransactionTestCase
 from django.utils import timezone
-from datetime import date, timedelta
+from datetime import date, timedelta, time, datetime
 from django.db import transaction
 from unittest.mock import patch, MagicMock
 from backend.apps.core.events import event_bus, DomainEvent
@@ -507,14 +507,25 @@ class AttendanceIntegrationTests(TestCase):
         self.tenant = Tenant.objects.create(name="Attendance Tenant")
         
         # Create user & employee profile
-        from django.contrib.auth.models import User
-        self.user = User.objects.create_user(username="att_emp", password="password123")
-        self.employee = EmployeeProfile.objects.create(
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        self.user = User.objects.create_user(username="att_emp", email="att_emp@test.com", password="password123")
+        from backend.apps.people.models import Person
+        self.person = Person.objects.create(
             tenant=self.tenant,
             user=self.user,
+            person_number="PER-ATT-001",
+            first_name="Attendance",
+            last_name="Employee",
+            date_of_birth=date(1990, 1, 1),
+            gender="male"
+        )
+        self.employee = EmployeeProfile.objects.create(
+            tenant=self.tenant,
+            person=self.person,
             employee_number="EMP-ATT-001",
             salary_grade="Grade_A",
-            date_of_joining=date(2026, 1, 1)
+            joined_date=date(2026, 1, 1)
         )
         
         # Define Shift

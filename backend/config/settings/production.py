@@ -45,6 +45,11 @@ elif DEFAULT_FILE_STORAGE_PROVIDER == 'gcs':
         "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
     }
 
+# Dojah KYC Identity Verification Provider Settings
+DOJAH_API_KEY = env.str('DOJAH_API_KEY', default=None)
+DOJAH_APP_ID = env.str('DOJAH_APP_ID', default=None)
+DOJAH_BASE_URL = env.str('DOJAH_BASE_URL', default='https://api.dojah.io')
+
 # Structured Enterprise Production Logging
 LOGGING = {
     'version': 1,

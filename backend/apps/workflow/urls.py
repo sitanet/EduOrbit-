@@ -3,6 +3,7 @@ from backend.apps.workflow.views_web import WorkflowDashboardWebView, ApprovalIn
 
 urlpatterns = [
     # Web views
+    path('', WorkflowDashboardWebView.as_view(), name='workflow_root_web'),
     path('dashboard/', WorkflowDashboardWebView.as_view(), name='workflow_dashboard_web'),
     path('inbox/', ApprovalInboxWebView.as_view(), name='approval_inbox_web'),
     

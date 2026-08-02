@@ -3,12 +3,14 @@ from django.views import View
 from django.http import HttpResponse
 from backend.apps.tenants.models import School
 from backend.apps.admissions.models import AdmissionCampaign, AdmissionApplication
+from backend.apps.dashboard.views_web import RoleRequiredMixin
+from backend.apps.dashboard.services import ROLE_SCHOOL_ADMIN
 
-class AdmissionsWizardWebView(View):
+class AdmissionsWizardWebView(RoleRequiredMixin, View):
+    required_role = ROLE_SCHOOL_ADMIN
+
     def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect('login_web')
-            
+        
         schools = School.objects.filter(tenant=getattr(request, 'tenant', None))
         return render(request, 'admissions/setup_wizard.html', {'schools': schools})
 
@@ -51,11 +53,11 @@ class AdmissionsWizardWebView(View):
         )
 
 
-class AdmissionsDashboardWebView(View):
+class AdmissionsDashboardWebView(RoleRequiredMixin, View):
+    required_role = ROLE_SCHOOL_ADMIN
+
     def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect('login_web')
-            
+        
         schools = School.objects.filter(tenant=getattr(request, 'tenant', None))
         active_school = schools.first()
         
@@ -75,6 +77,84 @@ from backend.apps.academic.models import AcademicLevel, AcademicYear
 from backend.apps.admissions.models import AdmissionCampaign, AdmissionIntake, Applicant, AdmissionApplication, FormSubmission, ApplicationDocument
 from backend.apps.people.models import Person, DocumentType
 
+def _ensure_admissions_prerequisites(active_school):
+    if not active_school:
+        return
+    tenant = active_school.tenant
+    from backend.apps.academic.models import AcademicYear, EducationLevel, AcademicLevel
+    from backend.apps.admissions.models import AdmissionCampaign, AdmissionIntake
+    import datetime
+    
+    # 1. Academic Year
+    active_year = AcademicYear.objects.filter(school=active_school, status='active').first()
+    if not active_year:
+        today = datetime.date.today()
+        year_str = f"{today.year}/{today.year + 1}"
+        active_year = AcademicYear.objects.create(
+            tenant=tenant,
+            school=active_school,
+            name=f"{year_str} Academic Session",
+            code=f"{today.year}-{today.year + 1}",
+            start_date=today,
+            end_date=datetime.date(today.year + 1, 7, 31),
+            status='active'
+        )
+        
+    # 2. Admission Campaign
+    campaign = AdmissionCampaign.objects.filter(school=active_school, academic_year=active_year, is_active=True).first()
+    if not campaign:
+        today = datetime.date.today()
+        campaign = AdmissionCampaign.objects.create(
+            tenant=tenant,
+            school=active_school,
+            academic_year=active_year,
+            name=f"{active_year.name} Admissions",
+            start_date=today,
+            end_date=datetime.date(today.year + 1, 8, 31),
+            is_active=True
+        )
+        
+    # 3. Admission Intake
+    intake = AdmissionIntake.objects.filter(campaign=campaign, status='open').first()
+    if not intake:
+        AdmissionIntake.objects.create(
+            tenant=tenant,
+            campaign=campaign,
+            name="General Batch Intake",
+            status="open"
+        )
+        
+    # 4. Education Levels & Academic Levels
+    levels = AcademicLevel.objects.filter(education_level__school=active_school)
+    if not levels.exists():
+        edu_level = EducationLevel.objects.filter(school=active_school).first()
+        if not edu_level:
+            edu_level = EducationLevel.objects.create(
+                tenant=tenant,
+                school=active_school,
+                name="General Education",
+                code="general",
+                is_active=True
+            )
+        default_levels = [
+            ("Primary 1", "pri-1"),
+            ("Primary 2", "pri-2"),
+            ("Primary 3", "pri-3"),
+            ("JSS 1", "jss-1"),
+            ("JSS 2", "jss-2"),
+            ("JSS 3", "jss-3"),
+            ("SSS 1", "sss-1"),
+            ("SSS 2", "sss-2"),
+            ("SSS 3", "sss-3"),
+        ]
+        for lvl_name, lvl_code in default_levels:
+            AcademicLevel.objects.get_or_create(
+                education_level=edu_level,
+                code=lvl_code,
+                defaults={"name": lvl_name, "tenant": tenant}
+            )
+
+
 class AdmissionsApplicationCreateWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
@@ -87,63 +167,49 @@ class AdmissionsApplicationCreateWebView(View):
         if not active_school:
             active_school = School.objects.filter(tenant=tenant).first()
             
+        if request.GET.get('auto_setup') == '1' and active_school:
+            _ensure_admissions_prerequisites(active_school)
+            return redirect('admissions_application_new')
+
+        from backend.apps.academic.models import AcademicYear, AcademicLevel
+
+        prerequisites = {
+            'has_school': active_school is not None,
+            'has_academic_year': False,
+            'has_campaign': False,
+            'has_intake': False,
+            'has_levels': False,
+        }
+        
+        intakes = []
+        levels = []
+        
         if active_school:
             active_year = AcademicYear.objects.filter(school=active_school, status='active').first()
-            if not active_year:
-                import datetime
-                active_year = AcademicYear.objects.create(
-                    school=active_school,
-                    tenant=tenant,
-                    name="2024/2025",
-                    code="2024-2025",
-                    start_date=datetime.date(2024, 9, 1),
-                    end_date=datetime.date(2025, 7, 30),
-                    status='active'
-                )
+            prerequisites['has_academic_year'] = active_year is not None
+            
+            if active_year:
+                campaign = AdmissionCampaign.objects.filter(school=active_school, academic_year=active_year, is_active=True).first()
+                prerequisites['has_campaign'] = campaign is not None
                 
-            campaign = AdmissionCampaign.objects.filter(school=active_school, is_active=True).first()
-            if not campaign:
-                import datetime
-                campaign = AdmissionCampaign.objects.create(
-                    school=active_school,
-                    tenant=tenant,
-                    academic_year=active_year,
-                    name="Main Admissions Campaign",
-                    start_date=datetime.date.today(),
-                    end_date=datetime.date.today() + datetime.timedelta(days=120)
-                )
-                
-            intake = AdmissionIntake.objects.filter(campaign=campaign).first()
-            if not intake:
-                intake = AdmissionIntake.objects.create(
-                    campaign=campaign,
-                    tenant=tenant,
-                    name="First Batch Intake",
-                    status="open"
-                )
-                
-        intakes = AdmissionIntake.objects.filter(campaign__school=active_school)
-        levels = AcademicLevel.objects.filter(education_level__school=active_school)
-        
-        if not levels.exists() and active_school:
-            from backend.apps.academic.models import EducationLevel
-            edu_level, _ = EducationLevel.objects.get_or_create(
-                school=active_school,
-                tenant=tenant,
-                name="Secondary",
-                code="secondary"
-            )
-            levels = [
-                AcademicLevel.objects.create(education_level=edu_level, tenant=tenant, name="JSS 1", code="jss-1"),
-                AcademicLevel.objects.create(education_level=edu_level, tenant=tenant, name="SSS 1", code="sss-1")
-            ]
+                if campaign:
+                    intakes = AdmissionIntake.objects.filter(campaign=campaign, status='open')
+                    prerequisites['has_intake'] = intakes.exists()
+                    
+            levels = AcademicLevel.objects.filter(education_level__school=active_school)
+            prerequisites['has_levels'] = levels.exists()
+
+        prerequisites_missing = not all(prerequisites.values())
             
         context = {
             'intakes': intakes,
             'levels': levels,
-            'active_school': active_school
+            'active_school': active_school,
+            'prerequisites_missing': prerequisites_missing,
+            'prerequisites': prerequisites,
         }
         return render(request, 'admissions/new_application.html', context)
+
         
     def post(self, request):
         if not request.user.is_authenticated:

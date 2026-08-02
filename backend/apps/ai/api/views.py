@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from backend.apps.tenants.models import School
 from backend.apps.identity.models import User
+from backend.apps.people.models import StudentProfile
 from backend.apps.ai.models import AIMessage, AITokenUsage, KnowledgeDocument
 from backend.apps.ai.services.copilot import (
     EduOrbitCopilotService, HRSkillsService, SISSkillsService, FinanceSkillsService,
@@ -68,3 +69,18 @@ class AIUsageAPIView(APIView):
     def get(self, request):
         total_tokens = sum(m.prompt_tokens + m.completion_tokens for m in AITokenUsage.objects.all())
         return Response({"status": "success", "data": {"total_calls": AITokenUsage.objects.count(), "total_tokens_consumed": total_tokens}})
+
+
+class AIPredictAPIView(APIView):
+    """Predictive Intelligence endpoint for student dropout risk."""
+    def post(self, request):
+        student_id = request.data.get('student_id')
+        try:
+            student = StudentProfile.objects.get(id=student_id)
+            result = SISSkillsService.predict_dropout(student)
+            result['probability'] = result.get('dropout_risk_score', 0.05)
+            return Response({"status": "success", "data": result}, status=status.HTTP_200_OK)
+        except StudentProfile.DoesNotExist:
+            return Response({"status": "error", "message": "Student not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({"status": "error", "message": str(e)}, status=status.HTTP_400_BAD_REQUEST)

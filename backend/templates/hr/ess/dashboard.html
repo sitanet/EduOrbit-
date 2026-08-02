@@ -1,168 +1,302 @@
 {% extends "base/_document.html" %}
 {% load hr_permissions %}
-{% block title %}My Portal (ESS) — EduOrbit{% endblock %}
+{% block title %}My Employee Portal (ESS) — EduOrbit HR{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto space-y-6" x-data="{ activeTab: 'overview' }">
+<div class="space-y-6" x-data="{ activeTab: 'overview' }">
 
-    <!-- ESS Header -->
-    <div class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-slate-900 rounded-2xl p-6 text-white shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-        <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-full bg-white/10 border-2 border-white/20 flex items-center justify-center text-2xl font-bold text-indigo-200">
-                {{ request.user.first_name|slice:":1"|upper|default:"E" }}
-            </div>
+  <!-- ── ESS Header Banner ────────────────────────────────────────────── -->
+  <div class="relative bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-2xl border border-indigo-500/30 shadow-xl overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(99,102,241,0.15),_transparent_70%)] pointer-events-none"></div>
+    <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-2xl bg-indigo-600/30 border-2 border-indigo-400/40 flex items-center justify-center text-2xl font-black text-indigo-300 shadow-inner shrink-0">
+          {% if employee %}
+            {{ employee.person.first_name|first|upper }}{{ employee.person.last_name|first|upper }}
+          {% else %}
+            {{ request.user.first_name|first|upper|default:"E" }}
+          {% endif %}
+        </div>
+        <div>
+          <div class="text-[10px] font-bold tracking-widest text-indigo-400 uppercase">EduOrbit · Self Service Portal</div>
+          <h1 class="text-2xl font-extrabold tracking-tight">
+            Welcome,
+            {% if employee %}
+              {{ employee.person.first_name }} {{ employee.person.last_name }}
+            {% else %}
+              {{ request.user.first_name|default:"Staff" }} {{ request.user.last_name }}
+            {% endif %}
+          </h1>
+          <p class="text-slate-300 text-xs mt-0.5">
+            {{ employee.job_title|default:"Staff Member" }} · {{ employee.employee_number|default:"EMP-001" }}
+          </p>
+          <div class="flex items-center gap-2 mt-2">
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 font-mono border border-emerald-500/30">
+              {{ employee.status|default:"Active"|upper }}
+            </span>
+            <span class="text-xs text-indigo-300 font-mono">Grade: {{ employee.salary_grade|default:"Level 1" }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3 shrink-0">
+        <form method="POST" action="/hr/attendance/generate/">
+          {% csrf_token %}
+          <button type="submit" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition shadow-md flex items-center gap-2">
+            <span>⏰</span> Clock In / Out
+          </button>
+        </form>
+        <a href="/hr/leave-calendar/" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs rounded-xl transition border border-white/20 flex items-center gap-2">
+          <span>📅</span> Request Leave
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ESS KPI Quick Stats Grid ────────────────────────────────────── -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Leave Balance</span>
+        <div class="text-2xl font-black text-indigo-500 mt-1">
+          {% if leave_balances %}{{ leave_balances.0.remaining_days }}{% else %}18{% endif %} <span class="text-xs">Days</span>
+        </div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">Annual Allocation</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 flex items-center justify-center text-xl">📅</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Today's Attendance</span>
+        <div class="text-2xl font-black text-emerald-500 mt-1">Present</div>
+        <span class="text-[10px] text-emerald-400 font-semibold mt-1 inline-block">Checked in at 7:55 AM</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-xl">⏰</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Latest Net Pay</span>
+        <div class="text-2xl font-black text-slate-900 dark:text-white mt-1">
+          {% if payslips %}₦{{ payslips.0.net_salary }}{% else %}₦183,000{% endif %}
+        </div>
+        <span class="text-[10px] text-slate-400 font-semibold mt-1 inline-block">Current Payroll Cycle</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-xl">💵</div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between">
+      <div>
+        <span class="text-[11px] text-slate-400 font-mono font-bold uppercase tracking-wider">Assigned Assets</span>
+        <div class="text-2xl font-black text-indigo-500 mt-1">{{ assets|length|default:2 }}</div>
+        <span class="text-[10px] text-indigo-400 font-semibold mt-1 inline-block">School Equipment</span>
+      </div>
+      <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-500 flex items-center justify-center text-xl">💻</div>
+    </div>
+  </div>
+
+  <!-- ── Navigation Tabs ──────────────────────────────────────────────── -->
+  <div class="flex overflow-x-auto border-b border-slate-200 dark:border-slate-700 gap-6">
+    <button @click="activeTab = 'overview'" :class="activeTab === 'overview' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-xs transition-colors whitespace-nowrap uppercase tracking-wider">
+      Overview & Activity
+    </button>
+    <button @click="activeTab = 'profile'" :class="activeTab === 'profile' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-xs transition-colors whitespace-nowrap uppercase tracking-wider">
+      Personal Profile
+    </button>
+    <button @click="activeTab = 'payslips'" :class="activeTab === 'payslips' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-xs transition-colors whitespace-nowrap uppercase tracking-wider">
+      My Payslips
+    </button>
+    <button @click="activeTab = 'leave'" :class="activeTab === 'leave' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-xs transition-colors whitespace-nowrap uppercase tracking-wider">
+      Leave Requests
+    </button>
+    <button @click="activeTab = 'assets'" :class="activeTab === 'assets' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-bold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-xs transition-colors whitespace-nowrap uppercase tracking-wider">
+      Assigned Assets
+    </button>
+  </div>
+
+  <!-- ── Tab Content: Overview ────────────────────────────────────────── -->
+  <div x-show="activeTab === 'overview'" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center justify-between">
+        📋 Recent Attendance & Activity Logs
+        <a href="/hr/attendance/" class="text-xs font-semibold text-indigo-500 hover:underline">Attendance Hub &rarr;</a>
+      </h3>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-black text-xs">IN</div>
             <div>
-                <h1 class="text-2xl font-bold tracking-tight">Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h1>
-                <p class="text-indigo-200 text-sm mt-0.5">{{ request.hr_employee.job_title|default:"Staff Member" }} • {{ request.hr_employee.employee_number|default:"EMP-001" }}</p>
-                <div class="flex items-center gap-2 mt-2">
-                    {% include 'hr/components/_badge.html' with status=request.hr_employee.status|default:'Active' %}
-                    <span class="text-xs text-indigo-300">Grade: {{ request.hr_employee.salary_grade|default:"Grade 1" }}</span>
-                </div>
+              <div class="text-xs font-bold text-slate-900 dark:text-white">Clock In — Staff Web Terminal</div>
+              <div class="text-[10px] text-slate-400 font-mono">Today at 7:55 AM · Grace Main Campus</div>
             </div>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">PRESENT</span>
         </div>
+        <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-black text-xs">LV</div>
+            <div>
+              <div class="text-xs font-bold text-slate-900 dark:text-white">Annual Vacation Leave Application</div>
+              <div class="text-[10px] text-slate-400 font-mono">3 days requested starting next Monday</div>
+            </div>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">SUBMITTED</span>
+        </div>
+      </div>
+    </div>
 
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4">👨‍🏫 Department Supervisor & Team</h3>
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 font-black flex items-center justify-center text-sm shrink-0">
+          CO
+        </div>
+        <div>
+          <div class="text-xs font-bold text-slate-900 dark:text-white">Chioma Okafor</div>
+          <div class="text-[10px] text-slate-400">Head of Academic Sciences</div>
+          <div class="text-[10px] text-indigo-500 font-mono">dept.head@eduorbit.com</div>
+        </div>
+      </div>
+      <div class="text-xs text-slate-500 dark:text-slate-400 space-y-2 border-t border-slate-100 dark:border-slate-700 pt-4">
+        <div class="flex justify-between"><span>Department:</span> <span class="font-bold text-slate-800 dark:text-slate-200">Academic Sciences</span></div>
+        <div class="flex justify-between"><span>Cost Center:</span> <span class="font-mono text-slate-800 dark:text-slate-200">CC-SCI-01</span></div>
+        <div class="flex justify-between"><span>Location:</span> <span class="font-bold text-slate-800 dark:text-slate-200">Main Campus</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tab Content: Profile ─────────────────────────────────────────── -->
+  <div x-show="activeTab === 'profile'" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4">👤 Employee Personal & Banking Record</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+      <div class="space-y-3">
+        <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-400">Full Name</span> <span class="font-bold text-slate-900 dark:text-white">{% if employee %}{{ employee.person.first_name }} {{ employee.person.last_name }}{% else %}{{ request.user.first_name }} {{ request.user.last_name }}{% endif %}</span></div>
+        <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-400">Work Email</span> <span class="font-bold text-slate-900 dark:text-white">{{ request.user.email }}</span></div>
+        <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-400">Employee Number</span> <span class="font-mono font-bold text-indigo-500">{{ employee.employee_number|default:"EMP-004" }}</span></div>
+        <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-400">Designation</span> <span class="font-bold text-slate-900 dark:text-white">{{ employee.job_title|default:"Teacher" }}</span></div>
+      </div>
+      <div class="space-y-3">
+        <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-400">Bank Name</span> <span class="font-bold text-slate-900 dark:text-white">{{ employee.bank_name|default:"Zenith Bank Plc" }}</span></div>
+        <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-400">Account Number</span> <span class="font-mono font-bold text-slate-900 dark:text-white">{{ employee.account_number|default:"1012345678" }}</span></div>
+        <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-400">Confirmation Status</span> <span class="font-bold text-emerald-500">Confirmed Staff</span></div>
+        <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-400">Employment Type</span> <span class="font-bold text-slate-900 dark:text-white">Full-Time Permanent</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tab Content: Payslips ────────────────────────────────────────── -->
+  <div x-show="activeTab === 'payslips'" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4">💵 Salary Payslip History</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 font-mono uppercase text-[10px] border-b border-slate-200 dark:border-slate-700">
+            <th class="px-4 py-3">Pay Period</th>
+            <th class="px-4 py-3">Gross Salary</th>
+            <th class="px-4 py-3">PAYE Tax</th>
+            <th class="px-4 py-3">Pension</th>
+            <th class="px-4 py-3">Net Pay</th>
+            <th class="px-4 py-3 text-right">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
+          {% for slip in payslips %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-4 py-3.5 font-bold text-slate-900 dark:text-white">{{ slip.period.name|default:"Current Period" }}</td>
+            <td class="px-4 py-3.5 font-mono">₦{{ slip.gross_salary }}</td>
+            <td class="px-4 py-3.5 font-mono text-rose-500">-₦{{ slip.tax }}</td>
+            <td class="px-4 py-3.5 font-mono text-rose-500">-₦{{ slip.pension }}</td>
+            <td class="px-4 py-3.5 font-mono font-bold text-emerald-500">₦{{ slip.net_salary }}</td>
+            <td class="px-4 py-3.5 text-right">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">PAID</span>
+            </td>
+          </tr>
+          {% empty %}
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition">
+            <td class="px-4 py-3.5 font-bold text-slate-900 dark:text-white">July 2026</td>
+            <td class="px-4 py-3.5 font-mono">₦210,000.00</td>
+            <td class="px-4 py-3.5 font-mono text-rose-500">-₦22,000.00</td>
+            <td class="px-4 py-3.5 font-mono text-rose-500">-₦16,000.00</td>
+            <td class="px-4 py-3.5 font-mono font-bold text-emerald-500">₦172,000.00</td>
+            <td class="px-4 py-3.5 text-right"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">PAID</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Tab Content: Leave Requests ──────────────────────────────────── -->
+  <div x-show="activeTab === 'leave'" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-sm font-bold text-slate-900 dark:text-white">📅 My Leave Applications</h3>
+      <a href="/hr/leave-calendar/" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition">
+        + Apply for Leave
+      </a>
+    </div>
+    <div class="space-y-3">
+      {% for req in leave_requests %}
+      <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+        <div>
+          <div class="text-xs font-bold text-slate-900 dark:text-white">{{ req.leave_type.name|default:"Annual Leave" }}</div>
+          <div class="text-[10px] text-slate-400 font-mono">{{ req.start_date }} to {{ req.end_date }}</div>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-600 dark:text-amber-400 font-mono">
+          {{ req.status|upper }}
+        </span>
+      </div>
+      {% empty %}
+      <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+        <div>
+          <div class="text-xs font-bold text-slate-900 dark:text-white">Annual Vacation Leave</div>
+          <div class="text-[10px] text-slate-400 font-mono">15 Aug 2026 to 20 Aug 2026 (5 days)</div>
+        </div>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">APPROVED</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- ── Tab Content: Assigned Assets ─────────────────────────────────── -->
+  <div x-show="activeTab === 'assets'" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+    <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4">💻 Assigned School Equipment & Assets</h3>
+    <div class="space-y-3">
+      {% for asset in assets %}
+      <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
         <div class="flex items-center gap-3">
-            <form method="POST" action="/hr/attendance/generate/">
-                {% csrf_token %}
-                <button type="submit" class="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold text-sm rounded-xl transition-all shadow-lg flex items-center gap-2">
-                    <span>⏰</span> Clock In / Out
-                </button>
-            </form>
-            <a href="/hr/leave-calendar/" class="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm rounded-xl transition-all border border-white/20 flex items-center gap-2">
-                <span>📅</span> Request Leave
-            </a>
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-500 flex items-center justify-center font-bold text-xs">💻</div>
+          <div>
+            <div class="text-xs font-bold text-slate-900 dark:text-white">{{ asset.asset_name }}</div>
+            <div class="text-[10px] text-slate-400 font-mono">Tag: {{ asset.asset_code|default:"AST-001" }}</div>
+          </div>
         </div>
-    </div>
-
-    <!-- ESS Quick Stats -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {% include 'hr/components/_stat_card.html' with title="Leave Balance" value="18 Days" subtitle="2 days used this year" icon="calendar" %}
-        {% include 'hr/components/_stat_card.html' with title="Today's Attendance" value="Present" subtitle="Checked in at 7:55 AM" icon="clock" %}
-        {% include 'hr/components/_stat_card.html' with title="Next Payslip" value="₦183,000" subtitle="July 28, 2026" icon="cash" %}
-        {% include 'hr/components/_stat_card.html' with title="Assigned Assets" value="2 Items" subtitle="Laptop, ID Badge" icon="users" %}
-    </div>
-
-    <!-- Navigation Tabs -->
-    <div class="flex overflow-x-auto border-b border-slate-200 dark:border-slate-700 gap-6">
-        <button @click="activeTab = 'overview'" :class="activeTab === 'overview' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-sm transition-colors whitespace-nowrap">
-            Overview
-        </button>
-        <button @click="activeTab = 'profile'" :class="activeTab === 'profile' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-sm transition-colors whitespace-nowrap">
-            Personal Profile
-        </button>
-        <button @click="activeTab = 'payslips'" :class="activeTab === 'payslips' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-sm transition-colors whitespace-nowrap">
-            My Payslips
-        </button>
-        <button @click="activeTab = 'leave'" :class="activeTab === 'leave' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-sm transition-colors whitespace-nowrap">
-            Leave Requests
-        </button>
-        <button @click="activeTab = 'assets'" :class="activeTab === 'assets' ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 font-semibold' : 'border-transparent text-slate-500 hover:text-slate-700 dark:text-slate-400'" class="pb-3 border-b-2 text-sm transition-colors whitespace-nowrap">
-            Assigned Assets
-        </button>
-    </div>
-
-    <!-- Tab Contents -->
-    <div x-show="activeTab === 'overview'" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Recent Activities -->
-        <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Recent Attendance & Activity Log</h3>
-            <div class="space-y-3">
-                <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-750/50 rounded-xl border border-slate-100 dark:border-slate-700">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">IN</div>
-                        <div>
-                            <div class="text-sm font-semibold text-slate-900 dark:text-white">Clock In - Web Terminal</div>
-                            <div class="text-xs text-slate-400">Today at 7:55 AM • Main Campus</div>
-                        </div>
-                    </div>
-                    {% include 'hr/components/_badge.html' with status='Present' %}
-                </div>
-                <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-750/50 rounded-xl border border-slate-100 dark:border-slate-700">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">LV</div>
-                        <div>
-                            <div class="text-sm font-semibold text-slate-900 dark:text-white">Annual Leave Request Submitted</div>
-                            <div class="text-xs text-slate-400">Requested 3 days starting July 30</div>
-                        </div>
-                    </div>
-                    {% include 'hr/components/_badge.html' with status='Submitted' %}
-                </div>
-            </div>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">ASSIGNED</span>
+      </div>
+      {% empty %}
+      <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-500 flex items-center justify-center font-bold text-xs">💻</div>
+          <div>
+            <div class="text-xs font-bold text-slate-900 dark:text-white">Lenovo ThinkPad L14 Gen 3</div>
+            <div class="text-[10px] text-slate-400 font-mono">Serial: LNV-88231920 · Issued 10 Jan 2026</div>
+          </div>
         </div>
-
-        <!-- Direct Manager Card -->
-        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">My Supervisor & Team</h3>
-            <div class="flex items-center gap-4 mb-4">
-                <div class="w-12 h-12 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300 font-bold flex items-center justify-center">
-                    CO
-                </div>
-                <div>
-                    <div class="text-sm font-bold text-slate-900 dark:text-white">Chioma Okafor</div>
-                    <div class="text-xs text-slate-500 dark:text-slate-400">Head of Sciences</div>
-                    <div class="text-[11px] text-indigo-500 font-medium">dept.manager@eduorbit.com</div>
-                </div>
-            </div>
-            <hr class="border-slate-100 dark:border-slate-700 my-4">
-            <div class="text-xs text-slate-500 dark:text-slate-400 space-y-2">
-                <div class="flex justify-between"><span>Department:</span> <span class="font-medium text-slate-700 dark:text-slate-300">Sciences</span></div>
-                <div class="flex justify-between"><span>Cost Centre:</span> <span class="font-medium text-slate-700 dark:text-slate-300">CC-01</span></div>
-                <div class="flex justify-between"><span>Campus:</span> <span class="font-medium text-slate-700 dark:text-slate-300">Grace Main Campus</span></div>
-            </div>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">ASSIGNED</span>
+      </div>
+      <div class="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-slate-700/40 rounded-xl">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-500 flex items-center justify-center font-bold text-xs">🪪</div>
+          <div>
+            <div class="text-xs font-bold text-slate-900 dark:text-white">Smart NFC Staff ID Access Card</div>
+            <div class="text-[10px] text-slate-400 font-mono">Card ID: NFC-998821</div>
+          </div>
         </div>
+        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-mono">ISSUED</span>
+      </div>
+      {% endfor %}
     </div>
-
-    <!-- Personal Profile Tab -->
-    <div x-show="activeTab === 'profile'" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Employee Information</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-            <div class="space-y-3">
-                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-500">Full Name</span> <span class="font-semibold text-slate-900 dark:text-white">{{ request.user.first_name }} {{ request.user.last_name }}</span></div>
-                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-500">Email</span> <span class="font-semibold text-slate-900 dark:text-white">{{ request.user.email }}</span></div>
-                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-500">Staff Number</span> <span class="font-semibold text-slate-900 dark:text-white">{{ request.hr_employee.employee_number|default:"EMP-004" }}</span></div>
-                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-500">Designation</span> <span class="font-semibold text-slate-900 dark:text-white">{{ request.hr_employee.job_title|default:"Teacher" }}</span></div>
-            </div>
-            <div class="space-y-3">
-                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-500">Bank Name</span> <span class="font-semibold text-slate-900 dark:text-white">{{ request.hr_employee.bank_name|default:"Zenith Bank" }}</span></div>
-                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-500">Account Number</span> <span class="font-semibold text-slate-900 dark:text-white">{{ request.hr_employee.account_number|default:"1012345678" }}</span></div>
-                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-500">Confirmation Status</span> <span class="font-semibold text-slate-900 dark:text-white">Confirmed</span></div>
-                <div class="flex justify-between py-2 border-b border-slate-100 dark:border-slate-700"><span class="text-slate-500">Employment Type</span> <span class="font-semibold text-slate-900 dark:text-white">Full Time</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Payslips Tab -->
-    <div x-show="activeTab === 'payslips'" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
-        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">My Salary Payslips</h3>
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm text-left">
-                <thead class="bg-slate-50 dark:bg-slate-750 text-slate-500 uppercase text-xs">
-                    <tr>
-                        <th class="px-4 py-3">Period</th>
-                        <th class="px-4 py-3">Gross Pay</th>
-                        <th class="px-4 py-3">Tax (PAYE)</th>
-                        <th class="px-4 py-3">Pension</th>
-                        <th class="px-4 py-3">Net Pay</th>
-                        <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3 text-right">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                    <tr>
-                        <td class="px-4 py-3.5 font-semibold text-slate-900 dark:text-white">July 2026</td>
-                        <td class="px-4 py-3.5">₦210,000.00</td>
-                        <td class="px-4 py-3.5 text-rose-500">-₦22,000.00</td>
-                        <td class="px-4 py-3.5 text-rose-500">-₦16,000.00</td>
-                        <td class="px-4 py-3.5 font-bold text-emerald-600 dark:text-emerald-400">₦168,250.00</td>
-                        <td class="px-4 py-3.5">{% include 'hr/components/_badge.html' with status='Approved' %}</td>
-                        <td class="px-4 py-3.5 text-right">
-                            <a href="#" class="px-3 py-1 bg-indigo-500/10 text-indigo-600 hover:bg-indigo-500/20 rounded-lg text-xs font-semibold">Download PDF</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+  </div>
 
 </div>
 {% endblock %}

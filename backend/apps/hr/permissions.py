@@ -12,7 +12,7 @@ class IsHRAdmin(BasePermission):
             return False
         if request.user.is_superuser or getattr(request.user, 'is_staff', False):
             return True
-        return getattr(request, 'hr_role', '') in ['hr_admin', 'super_admin']
+        return getattr(request, 'hr_role', '') in ['hr_admin', 'hr_officer', 'school_admin', 'super_admin']
 
 
 class IsPayrollAdmin(BasePermission):

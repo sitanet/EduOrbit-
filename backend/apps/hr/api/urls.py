@@ -6,7 +6,10 @@ from backend.apps.hr.api.views import (
     AttendanceShiftViewSet, AttendanceRecordViewSet, AttendanceAdjustmentViewSet, PublicHolidayViewSet, AttendanceDashboardViewSet
 )
 
-from backend.apps.hr.api.kyc_views import VerifyNINAPIView, VerifyBVNAPIView, ResolveBankAccountAPIView, AutoSaveDraftAPIView
+from backend.apps.hr.api.kyc_views import (
+    VerifyNINAPIView, VerifyBVNAPIView, ResolveBankAccountAPIView, AutoSaveDraftAPIView, SubmitOnboardingAPIView,
+    ReplaceEmployeePhotoAPIView, ProtectedEmployeePhotoView
+)
 
 router = DefaultRouter()
 router.register(r'employees', EmployeeViewSet, basename='hr-employees')
@@ -33,4 +36,7 @@ urlpatterns = [
     path('kyc/verify-bvn/', VerifyBVNAPIView.as_view(), name='hr_kyc_verify_bvn'),
     path('kyc/resolve-bank/', ResolveBankAccountAPIView.as_view(), name='hr_kyc_resolve_bank'),
     path('onboarding/draft/auto-save/', AutoSaveDraftAPIView.as_view(), name='hr_onboarding_auto_save'),
+    path('onboarding/submit/', SubmitOnboardingAPIView.as_view(), name='hr_onboarding_submit'),
+    path('employees/<uuid:employee_id>/replace-photo/', ReplaceEmployeePhotoAPIView.as_view(), name='hr_employee_replace_photo'),
+    path('employees/<uuid:employee_id>/photo/', ProtectedEmployeePhotoView.as_view(), name='hr_employee_protected_photo'),
 ]

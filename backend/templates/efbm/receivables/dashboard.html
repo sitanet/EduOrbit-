@@ -1,0 +1,92 @@
+{% extends "base/_document.html" %}
+{% block title %}Accounts Receivable Dashboard — EduOrbit Financial Engine{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Header Action Bar -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Accounts Receivable Workspace</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1">Live Student Invoicing, Overdue Debt Aging, and Settlement Analytics.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs rounded-xl shadow-sm transition-all cursor-pointer">
+                🖨️ Print Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="flex items-center gap-2 border-b border-slate-200 dark:border-slate-700 pb-3">
+        <a href="{% url 'receivables_dashboard_web' %}" class="px-4 py-2 bg-indigo-600 text-white font-semibold text-xs rounded-xl">Receivables Overview</a>
+        <a href="{% url 'outstanding_invoices_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Outstanding Invoices</a>
+        <a href="{% url 'invoice_aging_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Aging Analysis (0-90+ Days)</a>
+        <a href="{% url 'payment_history_web' %}" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 font-semibold text-xs rounded-xl">Payment History</a>
+    </div>
+
+    <!-- Metric Widgets Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Total Outstanding Debt</span>
+            <div class="text-2xl font-black font-mono text-slate-900 dark:text-white">${{ metrics.total_receivables }}</div>
+            <span class="text-xs font-semibold text-rose-500 block">{{ metrics.overdue_count }} Overdue Invoices</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Collection Efficiency</span>
+            <div class="text-2xl font-black font-mono text-emerald-600 dark:text-emerald-400">{{ metrics.collection_efficiency }}%</div>
+            <span class="text-xs font-semibold text-slate-400 block">${{ metrics.total_collected }} Collected Total</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Current (0 - 30 Days)</span>
+            <div class="text-2xl font-black font-mono text-indigo-600 dark:text-indigo-400">${{ metrics.current_0_30 }}</div>
+            <span class="text-xs font-semibold text-slate-400 block">Active Current Terms</span>
+        </div>
+
+        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-2">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider block">Critical (90+ Days)</span>
+            <div class="text-2xl font-black font-mono text-rose-600 dark:text-rose-400">${{ metrics.critical_90_plus }}</div>
+            <span class="text-xs font-semibold text-rose-500 block">Default Risk Debt</span>
+        </div>
+    </div>
+
+    <!-- Recent Settlements Table -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center bg-slate-50 dark:bg-slate-800/50">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base">Recent Collections & Payments</h3>
+            <a href="{% url 'payment_history_web' %}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">View All ➔</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700 dark:text-slate-300">
+                <thead class="text-xs uppercase bg-slate-100 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
+                    <tr>
+                        <th class="px-6 py-4">Reference</th>
+                        <th class="px-6 py-4">Student Name</th>
+                        <th class="px-6 py-4">Invoice #</th>
+                        <th class="px-6 py-4">Method</th>
+                        <th class="px-6 py-4 text-right">Amount ($)</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700/60">
+                    {% for item in metrics.recent_payments %}
+                    <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30">
+                        <td class="px-6 py-4 font-mono font-bold text-xs text-indigo-600 dark:text-indigo-400">{{ item.reference }}</td>
+                        <td class="px-6 py-4 font-semibold text-slate-900 dark:text-white">{{ item.student_name }}</td>
+                        <td class="px-6 py-4 font-mono text-xs text-slate-500">{{ item.invoice_number }}</td>
+                        <td class="px-6 py-4 text-xs">{{ item.method }}</td>
+                        <td class="px-6 py-4 text-right font-mono font-bold text-emerald-600 dark:text-emerald-400">${{ item.amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-slate-500">No payment collections logged yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -73,12 +73,51 @@ class LoginWebView(View):
         return response
 
 
+class IdentityDashboardWebView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login_web')
+            
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        
+        user_count = User.objects.count()
+        session_count = UserSession.objects.filter(revoked_at=None).count()
+        role_count = Role.objects.count()
+        
+        context = {
+            'user_count': user_count,
+            'session_count': session_count,
+            'role_count': role_count,
+        }
+        return render(request, 'identity/dashboard.html', context)
+
+
 class SessionManagementWebView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login_web')
         sessions = UserSession.objects.filter(user=request.user, revoked_at=None)
         return render(request, 'identity/sessions.html', {'sessions': sessions})
+
+
+class LogoutWebView(View):
+    def get(self, request):
+        """
+        Logout view that clears Django session and redirects to login page.
+        Handles both direct GET requests and HTMX requests.
+        """
+        from django.contrib.auth import logout
+        logout(request)
+        return redirect('login_web')
+    
+    def post(self, request):
+        """
+        POST logout for CSRF-protected forms.
+        """
+        from django.contrib.auth import logout
+        logout(request)
+        return redirect('login_web')
 
 
 class RoleMatrixWebView(View):

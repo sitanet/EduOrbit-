@@ -100,6 +100,19 @@ class Prescription(TenantBaseModel):
         return f"Prescr: {self.drug.name} ({self.dosage})"
 
 
+class DrugDispenseLog(TenantBaseModel):
+    """Audit log for dispensed medications."""
+    drug = models.ForeignKey(Drug, on_delete=models.CASCADE, related_name='dispense_logs')
+    patient = models.ForeignKey(PatientProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='drug_dispenses')
+    dispensed_to = models.CharField(max_length=200, blank=True)
+    quantity = models.IntegerField(default=1)
+    dispensed_at = models.DateTimeField(default=timezone.now)
+    notes = models.CharField(max_length=255, blank=True)
+
+    def __str__(self):
+        return f"Dispensed {self.quantity} x {self.drug.name} to {self.dispensed_to or 'General'} at {self.dispensed_at}"
+
+
 # ==============================================================
 # SICK BAY ADMISSIONS & VACCINATIONS
 # ==============================================================

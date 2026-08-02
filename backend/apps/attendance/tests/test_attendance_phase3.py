@@ -4,7 +4,7 @@ from rest_framework import status
 from backend.apps.tenants.models import Tenant, School
 from backend.apps.people.models import Person
 from backend.apps.attendance.models import AttendanceSession, AttendanceType, AttendanceRecord
-from backend.apps.academic.services.attendance import AttendanceService
+from backend.apps.academic.services import AttendanceService
 
 class AttendancePhase3TestCase(TestCase):
     def setUp(self):
