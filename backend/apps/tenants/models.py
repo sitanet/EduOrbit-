@@ -119,7 +119,6 @@ class SubscriptionPlan(PlatformBaseModel):
     termly_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     yearly_price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
     
-    # Tier Pricing Formula for SCHOOL_PAYS model
     student_tier_rates = models.JSONField(
         default=dict,
         blank=True,
@@ -147,7 +146,6 @@ class SubscriptionPlan(PlatformBaseModel):
 class TenantSubscription(TenantBaseModel):
     """
     Licenses and active subscriptions per Tenant (Organization/School).
-    Used for SCHOOL_PAYS model or School-level activation.
     """
     STATUS_CHOICES = [
         ('TRIAL', 'Trial'),
@@ -196,8 +194,7 @@ class TenantSubscription(TenantBaseModel):
 class ParentSubscription(TenantBaseModel):
     """
     Single subscription per Parent Account activating ALL linked children.
-    Total amount is calculated based on: fee_per_child * child_count
-    (e.g., ₦500 per child x 2 children = ₦1,000 total).
+    Total amount = fee_per_child * child_count
     """
     STATUS_CHOICES = [
         ('ACTIVE', 'Active'),
@@ -223,10 +220,6 @@ class ParentSubscription(TenantBaseModel):
         unique_together = ('tenant', 'parent', 'academic_period')
 
     def calculate_total_amount(self) -> Decimal:
-        """
-        Calculates total parent subscription amount based on child count.
-        e.g., 500 per child x 2 children = 1000 total.
-        """
         self.amount = self.fee_per_child * Decimal(str(self.child_count))
         return self.amount
 
@@ -295,7 +288,6 @@ class SubscriptionInvoice(TenantBaseModel):
 class SubscriptionPayment(TenantBaseModel):
     """
     Transaction records for online Paystack, OPay, and manual payment options.
-    Tracks attempt history, requested gateway vs actual gateway, failover reason, and completion timestamp.
     """
     PAYMENT_METHODS = [
         ('PAYSTACK', 'Paystack Online'),
@@ -315,11 +307,11 @@ class SubscriptionPayment(TenantBaseModel):
     reference = models.CharField(max_length=100, unique=True, db_index=True)
     invoice = models.ForeignKey(SubscriptionInvoice, on_delete=models.CASCADE, related_name='payments')
     
-    attempt_number = models.IntegerField(default=1, help_text="Payment attempt index for this invoice (Attempt 1, Attempt 2, etc.)")
-    requested_gateway = models.CharField(max_length=50, blank=True, help_text="Gateway initially requested by user (e.g. PAYSTACK)")
-    gateway = models.CharField(max_length=50, default='PAYSTACK', help_text="Actual gateway used for processing (e.g. OPAY)")
-    failover_occurred = models.BooleanField(default=False, help_text="True if automatic failover switched gateway")
-    failover_reason = models.TextField(blank=True, help_text="Explanation if gateway failover occurred")
+    attempt_number = models.IntegerField(default=1, help_text="Payment attempt index")
+    requested_gateway = models.CharField(max_length=50, blank=True)
+    gateway = models.CharField(max_length=50, default='PAYSTACK')
+    failover_occurred = models.BooleanField(default=False)
+    failover_reason = models.TextField(blank=True)
     
     payment_method = models.CharField(max_length=30, choices=PAYMENT_METHODS, default='PAYSTACK')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
@@ -328,37 +320,30 @@ class SubscriptionPayment(TenantBaseModel):
     receipt_number = models.CharField(max_length=100, unique=True, null=True, blank=True)
     
     paid_by = models.ForeignKey('identity.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='payments_processed')
-    paid_on_behalf = models.BooleanField(default=False, help_text="True if school admin processed payment on behalf of parent")
+    paid_on_behalf = models.BooleanField(default=False)
     paid_at = models.DateTimeField(null=True, blank=True)
     completed_at = models.DateTimeField(null=True, blank=True)
     raw_response = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
-        return f"Payment Attempt #{self.attempt_number} [{self.gateway}] {self.reference} - {self.status}"
+        return f"Payment #{self.attempt_number} [{self.gateway}] {self.reference} - {self.status}"
 
 
 class SubscriptionAuditLog(TenantBaseModel):
     """
-    Immutable Audit Log of every subscription event, payment, manual override, and activation.
+    Immutable Audit Log of subscription events.
     """
     ACTION_CHOICES = [
-        ('CREATED', 'Created'),
-        ('UPDATED', 'Updated'),
-        ('RENEWED', 'Renewed'),
-        ('SUSPENDED', 'Suspended'),
-        ('ACTIVATED', 'Activated'),
-        ('PAYMENT', 'Payment Received'),
-        ('REFUND_REQUESTED', 'Refund Requested'),
-        ('REFUNDED', 'Refund Processed'),
-        ('MANUAL_OVERRIDE', 'Manual Override'),
-        ('REMINDER', 'Reminder Sent')
+        ('CREATED', 'Created'), ('UPDATED', 'Updated'), ('RENEWED', 'Renewed'),
+        ('SUSPENDED', 'Suspended'), ('ACTIVATED', 'Activated'), ('PAYMENT', 'Payment Received'),
+        ('REFUND_REQUESTED', 'Refund Requested'), ('REFUNDED', 'Refund Processed'),
+        ('MANUAL_OVERRIDE', 'Manual Override'), ('REMINDER', 'Reminder Sent')
     ]
     action = models.CharField(max_length=50, choices=ACTION_CHOICES)
     tenant_subscription = models.ForeignKey(TenantSubscription, on_delete=models.SET_NULL, null=True, blank=True)
     parent_subscription = models.ForeignKey(ParentSubscription, on_delete=models.SET_NULL, null=True, blank=True)
     invoice = models.ForeignKey(SubscriptionInvoice, on_delete=models.SET_NULL, null=True, blank=True)
     payment = models.ForeignKey(SubscriptionPayment, on_delete=models.SET_NULL, null=True, blank=True)
-    
     actor = models.ForeignKey('identity.User', on_delete=models.SET_NULL, null=True, blank=True)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
@@ -370,17 +355,11 @@ class SubscriptionAuditLog(TenantBaseModel):
 
 class PaymentGatewaySetting(PlatformBaseModel):
     """
-    Dedicated Payment Gateway Configuration Model for Software Owner (Super Admin).
-    Keeps BillingSettings clean and allows adding future gateways (Flutterwave, Moniepoint, Stripe, etc.)
-    without model schema bloat.
+    Dedicated Payment Gateway Configuration Model for Super Admin.
     """
     PROVIDER_CHOICES = [
-        ('PAYSTACK', 'Paystack'),
-        ('OPAY', 'OPay'),
-        ('FLUTTERWAVE', 'Flutterwave'),
-        ('MONIEPOINT', 'Moniepoint'),
-        ('STRIPE', 'Stripe'),
-        ('REMITA', 'Remita'),
+        ('PAYSTACK', 'Paystack'), ('OPAY', 'OPay'), ('FLUTTERWAVE', 'Flutterwave'),
+        ('MONIEPOINT', 'Moniepoint'), ('STRIPE', 'Stripe'), ('REMITA', 'Remita'),
         ('INTERSWITCH', 'Interswitch')
     ]
     provider = models.CharField(max_length=30, choices=PROVIDER_CHOICES, unique=True, db_index=True)
@@ -388,11 +367,13 @@ class PaymentGatewaySetting(PlatformBaseModel):
     enabled = models.BooleanField(default=True)
     maintenance_mode = models.BooleanField(default=False)
     is_default = models.BooleanField(default=False)
-    priority = models.IntegerField(default=1, help_text="Priority rank for failover: 1 = primary, 2 = secondary, etc.")
+    priority = models.IntegerField(default=1)
+    supports_refund = models.BooleanField(default=True)
+    supports_webhook = models.BooleanField(default=True)
     
     callback_url = models.CharField(max_length=255, blank=True)
     webhook_url = models.CharField(max_length=255, blank=True)
-    config_json = models.JSONField(default=dict, blank=True, help_text="Provider specific metadata")
+    config_json = models.JSONField(default=dict, blank=True)
 
     class Meta:
         verbose_name = 'Payment Gateway Setting'
@@ -400,31 +381,70 @@ class PaymentGatewaySetting(PlatformBaseModel):
         ordering = ['priority']
 
     def __str__(self):
-        status = 'DISABLED' if not self.enabled else ('MAINTENANCE' if self.maintenance_mode else 'ACTIVE')
-        return f"{self.display_name} ({self.provider}) - Priority {self.priority} [{status}]"
+        return f"{self.display_name} ({self.provider}) - Priority {self.priority}"
 
 
 class BillingSettings(PlatformBaseModel):
     """
-    Platform-wide default billing configurations for business rules.
-    Does NOT store payment provider configurations or secret keys.
+    Platform-wide default billing configurations.
     """
-    reminder_schedule_days = models.JSONField(
-        default=list,
-        help_text="List of reminder threshold days before expiry: [30, 14, 7, 3, 1, 0]"
-    )
+    reminder_schedule_days = models.JSONField(default=list)
     grace_period_days_default = models.IntegerField(default=7)
     currency = models.CharField(max_length=10, default='NGN')
     invoice_prefix = models.CharField(max_length=20, default='INV-')
     receipt_prefix = models.CharField(max_length=20, default='REC-')
     compliance_default_percent = models.DecimalField(max_digits=5, decimal_places=2, default=80.00)
 
-    class Meta:
-        verbose_name = 'Billing Setting'
-        verbose_name_plural = 'Billing Settings'
-
     def __str__(self):
         return f"Global Billing Settings ({self.currency})"
+
+
+# ==============================================================
+# PHASE 5 MOBILE BACKEND & DEVICE SCHEMAS
+# ==============================================================
+
+class UserDevice(TenantBaseModel):
+    """
+    Mobile & Client Device Registration for JWT authentication & FCM Push Notifications.
+    """
+    user = models.ForeignKey('identity.User', on_delete=models.CASCADE, related_name='devices')
+    device_id = models.CharField(max_length=100, db_index=True)
+    device_name = models.CharField(max_length=100, blank=True)
+    device_model = models.CharField(max_length=100, blank=True)
+    os = models.CharField(max_length=50, default='Android') # 'iOS', 'Android', 'Web'
+    app_version = models.CharField(max_length=30, default='1.0.0')
+    push_token = models.TextField(blank=True, help_text="Firebase Cloud Messaging (FCM) Token")
+    is_active = models.BooleanField(default=True)
+    last_active_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = 'User Device'
+        verbose_name_plural = 'User Devices'
+        unique_together = ('user', 'device_id')
+
+    def __str__(self):
+        return f"Device {self.device_name} ({self.os}) for User {self.user.username}"
+
+
+class MobileNotification(TenantBaseModel):
+    """
+    Mobile Push & In-App Notifications for Parents, Students, Teachers, and Admins.
+    """
+    user = models.ForeignKey('identity.User', on_delete=models.CASCADE, related_name='mobile_notifications')
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+    notification_type = models.CharField(max_length=50, default='GENERAL') # 'BILLING', 'ATTENDANCE', 'RESULT'
+    is_read = models.BooleanField(default=False)
+    read_at = models.DateTimeField(null=True, blank=True)
+    data_payload = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        verbose_name = 'Mobile Notification'
+        verbose_name_plural = 'Mobile Notifications'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Notification: {self.title} -> {self.user.username}"
 
 
 # ==============================================================
@@ -432,9 +452,6 @@ class BillingSettings(PlatformBaseModel):
 # ==============================================================
 
 class CustomDomain(TenantBaseModel):
-    """
-    Verified custom web domains pointing to this tenant.
-    """
     domain_name = models.CharField(max_length=255, unique=True, db_index=True)
     is_verified = models.BooleanField(default=False)
     verification_token = models.CharField(max_length=100, default=uuid.uuid4)
