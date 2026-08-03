@@ -1,4 +1,5 @@
 import uuid
+from decimal import Decimal
 from django.db import models
 from django.utils import timezone
 from backend.apps.core.models import PlatformBaseModel, TenantBaseModel
@@ -293,10 +294,12 @@ class SubscriptionInvoice(TenantBaseModel):
 
 class SubscriptionPayment(TenantBaseModel):
     """
-    Transaction records for online Paystack and manual school payment options.
+    Transaction records for online Paystack, OPay, and manual payment options.
+    Tracks attempt history, requested gateway vs actual gateway, failover reason, and completion timestamp.
     """
     PAYMENT_METHODS = [
         ('PAYSTACK', 'Paystack Online'),
+        ('OPAY', 'OPay Wallet/Online'),
         ('CASH', 'Cash'),
         ('BANK_TRANSFER', 'Bank Transfer'),
         ('POS', 'POS Terminal'),
@@ -306,23 +309,32 @@ class SubscriptionPayment(TenantBaseModel):
         ('INITIATED', 'Initiated'),
         ('SUCCESSFUL', 'Successful'),
         ('FAILED', 'Failed'),
+        ('REFUND_REQUESTED', 'Refund Requested'),
         ('REFUNDED', 'Refunded')
     ]
     reference = models.CharField(max_length=100, unique=True, db_index=True)
     invoice = models.ForeignKey(SubscriptionInvoice, on_delete=models.CASCADE, related_name='payments')
-    gateway = models.CharField(max_length=50, default='Paystack')
+    
+    attempt_number = models.IntegerField(default=1, help_text="Payment attempt index for this invoice (Attempt 1, Attempt 2, etc.)")
+    requested_gateway = models.CharField(max_length=50, blank=True, help_text="Gateway initially requested by user (e.g. PAYSTACK)")
+    gateway = models.CharField(max_length=50, default='PAYSTACK', help_text="Actual gateway used for processing (e.g. OPAY)")
+    failover_occurred = models.BooleanField(default=False, help_text="True if automatic failover switched gateway")
+    failover_reason = models.TextField(blank=True, help_text="Explanation if gateway failover occurred")
+    
     payment_method = models.CharField(max_length=30, choices=PAYMENT_METHODS, default='PAYSTACK')
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='INITIATED')
+    failure_reason = models.TextField(blank=True)
     receipt_number = models.CharField(max_length=100, unique=True, null=True, blank=True)
     
     paid_by = models.ForeignKey('identity.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='payments_processed')
     paid_on_behalf = models.BooleanField(default=False, help_text="True if school admin processed payment on behalf of parent")
     paid_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
     raw_response = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
-        return f"Payment {self.reference} - {self.status}"
+        return f"Payment Attempt #{self.attempt_number} [{self.gateway}] {self.reference} - {self.status}"
 
 
 class SubscriptionAuditLog(TenantBaseModel):
@@ -336,6 +348,8 @@ class SubscriptionAuditLog(TenantBaseModel):
         ('SUSPENDED', 'Suspended'),
         ('ACTIVATED', 'Activated'),
         ('PAYMENT', 'Payment Received'),
+        ('REFUND_REQUESTED', 'Refund Requested'),
+        ('REFUNDED', 'Refund Processed'),
         ('MANUAL_OVERRIDE', 'Manual Override'),
         ('REMINDER', 'Reminder Sent')
     ]
@@ -354,10 +368,46 @@ class SubscriptionAuditLog(TenantBaseModel):
         return f"Audit {self.action} @ {self.timestamp}"
 
 
+class PaymentGatewaySetting(PlatformBaseModel):
+    """
+    Dedicated Payment Gateway Configuration Model for Software Owner (Super Admin).
+    Keeps BillingSettings clean and allows adding future gateways (Flutterwave, Moniepoint, Stripe, etc.)
+    without model schema bloat.
+    """
+    PROVIDER_CHOICES = [
+        ('PAYSTACK', 'Paystack'),
+        ('OPAY', 'OPay'),
+        ('FLUTTERWAVE', 'Flutterwave'),
+        ('MONIEPOINT', 'Moniepoint'),
+        ('STRIPE', 'Stripe'),
+        ('REMITA', 'Remita'),
+        ('INTERSWITCH', 'Interswitch')
+    ]
+    provider = models.CharField(max_length=30, choices=PROVIDER_CHOICES, unique=True, db_index=True)
+    display_name = models.CharField(max_length=100, default='Payment Gateway')
+    enabled = models.BooleanField(default=True)
+    maintenance_mode = models.BooleanField(default=False)
+    is_default = models.BooleanField(default=False)
+    priority = models.IntegerField(default=1, help_text="Priority rank for failover: 1 = primary, 2 = secondary, etc.")
+    
+    callback_url = models.CharField(max_length=255, blank=True)
+    webhook_url = models.CharField(max_length=255, blank=True)
+    config_json = models.JSONField(default=dict, blank=True, help_text="Provider specific metadata")
+
+    class Meta:
+        verbose_name = 'Payment Gateway Setting'
+        verbose_name_plural = 'Payment Gateway Settings'
+        ordering = ['priority']
+
+    def __str__(self):
+        status = 'DISABLED' if not self.enabled else ('MAINTENANCE' if self.maintenance_mode else 'ACTIVE')
+        return f"{self.display_name} ({self.provider}) - Priority {self.priority} [{status}]"
+
+
 class BillingSettings(PlatformBaseModel):
     """
-    Platform-wide default billing configurations.
-    Does NOT store Paystack Secret Keys (Keys stored ONLY in environment variables).
+    Platform-wide default billing configurations for business rules.
+    Does NOT store payment provider configurations or secret keys.
     """
     reminder_schedule_days = models.JSONField(
         default=list,

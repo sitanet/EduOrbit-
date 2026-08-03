@@ -12,6 +12,7 @@ urlpatterns = [
     path('dashboard/', include('backend.apps.dashboard.urls')),
     path('', include('backend.apps.identity.urls')),
     path('tenants/', include('backend.apps.tenants.urls')),
+    path('', include('backend.apps.tenants.urls_web')),
     path('academic/', include('backend.apps.academic.urls')),
     path('people/', include('backend.apps.people.urls')),
     path('admissions/', include('backend.apps.admissions.urls')),

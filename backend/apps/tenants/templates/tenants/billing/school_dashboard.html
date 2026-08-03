@@ -1,0 +1,90 @@
+{% extends "tenants/billing/layout_billing.html" %}
+
+{% block title %}School Billing & Compliance Dashboard | EduOrbit{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">{{ tenant.name }} - Billing & Compliance Dashboard</h2>
+        <p class="text-muted">School Parent Payment Progress & Compliance Metrics</p>
+    </div>
+    <div>
+        <a href="{% url 'tenants_web:parent_collection_center' %}" class="btn btn-primary">
+            <i class="fa-solid fa-users me-1"></i> Parent Collection Center
+        </a>
+    </div>
+</div>
+
+<!-- Compliance & Collection Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card kpi-card p-3 border-start border-4 border-info">
+            <div class="text-muted fs-7 text-uppercase fw-bold">Compliance Status</div>
+            <div class="fs-4 fw-bold mt-1">
+                {% if metrics.compliance_status == 'COMPLIANT' %}
+                    <span class="text-success"><i class="fa-solid fa-circle-check me-1"></i>COMPLIANT</span>
+                {% elif metrics.compliance_status == 'GRACE_PERIOD' %}
+                    <span class="text-warning"><i class="fa-solid fa-clock me-1"></i>GRACE PERIOD</span>
+                {% else %}
+                    <span class="text-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i>RESTRICTED</span>
+                {% endif %}
+            </div>
+            <small class="text-muted">Threshold: {{ metrics.compliance_threshold_percent }}%</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card kpi-card p-3 border-start border-4 border-primary">
+            <div class="text-muted fs-7 text-uppercase fw-bold">Payment Compliance</div>
+            <div class="fs-4 fw-bold text-primary mt-1">{{ metrics.payment_percentage }}%</div>
+            <small class="text-muted">{{ metrics.paid_parents }} / {{ metrics.total_parents }} Parents Paid</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card kpi-card p-3 border-start border-4 border-success">
+            <div class="text-muted fs-7 text-uppercase fw-bold">Collected Amount</div>
+            <div class="fs-4 fw-bold text-success mt-1">₦{{ collected_amount|floatformat:2 }}</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card kpi-card p-3 border-start border-4 border-danger">
+            <div class="text-muted fs-7 text-uppercase fw-bold">Outstanding Amount</div>
+            <div class="fs-4 fw-bold text-danger mt-1">₦{{ outstanding_amount|floatformat:2 }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Payments -->
+<div class="card kpi-card p-3">
+    <h5 class="fw-bold mb-3"><i class="fa-solid fa-receipt text-success me-2"></i>Recent Payments</h5>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 fs-7">
+            <thead class="table-light">
+                <tr>
+                    <th>Reference</th>
+                    <th>Method / Gateway</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Receipt</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in recent_payments %}
+                <tr>
+                    <td><code>{{ p.reference }}</code></td>
+                    <td><span class="badge bg-light text-dark border">{{ p.gateway }}</span></td>
+                    <td class="fw-bold text-success">₦{{ p.amount|floatformat:2 }}</td>
+                    <td>{{ p.created_at|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        <a href="{% url 'tenants_web:receipt_pdf' p.id %}" target="_blank" class="btn btn-sm btn-outline-success">
+                            <i class="fa-solid fa-file-pdf"></i> Receipt
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center text-muted">No recent payments.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

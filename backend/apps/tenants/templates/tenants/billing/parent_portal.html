@@ -1,0 +1,67 @@
+{% extends "tenants/billing/layout_billing.html" %}
+
+{% block title %}Parent Access & Renewal Portal | EduOrbit{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="fw-bold mb-1">Parent Access & Subscription Renewal</h2>
+    <p class="text-muted">Single parent subscription activating all linked active enrolled children</p>
+</div>
+
+<!-- Linked Children & Fee Summary Card -->
+<div class="row g-4 mb-4">
+    <div class="col-md-7">
+        <div class="card kpi-card p-4">
+            <h5 class="fw-bold mb-3"><i class="fa-solid fa-child text-primary me-2"></i>Linked Enrolled Children</h5>
+            <div class="list-group list-group-flush mb-3">
+                {% for link in family_links %}
+                <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                        <div class="fw-bold">{{ link.student.get_full_name }}</div>
+                        <small class="text-muted">Student Number: {{ link.student.student_profile.student_number }}</small>
+                    </div>
+                    <span class="badge bg-success">Enrolled</span>
+                </div>
+                {% empty %}
+                <div class="text-muted">No linked active children found.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculation & Pay Card -->
+    <div class="col-md-5">
+        <div class="card kpi-card p-4 border-start border-4 border-primary">
+            <h5 class="fw-bold mb-3"><i class="fa-solid fa-calculator text-info me-2"></i>Subscription Summary</h5>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Fee Per Child:</span>
+                <span class="fw-bold">₦{{ calc_data.fee_per_child|default:"500.00" }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Active Children:</span>
+                <span class="fw-bold">{{ calc_data.active_children_count|default:"1" }}</span>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between mb-4">
+                <span class="fs-5 fw-bold">Total Payable:</span>
+                <span class="fs-4 fw-bold text-success">₦{{ calc_data.subtotal|default:"500.00" }}</span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Select Payment Gateway</label>
+                <select id="gateway_select" class="form-select mb-3">
+                    {% for gw in gateways %}
+                    <option value="{{ gw.provider }}">{{ gw.display_name }} ({{ gw.provider }})</option>
+                    {% empty %}
+                    <option value="PAYSTACK">Paystack Online</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button class="btn btn-success btn-lg w-100 fw-bold">
+                <i class="fa-solid fa-credit-card me-2"></i> Pay & Activate Portal
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

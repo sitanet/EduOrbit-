@@ -1,0 +1,50 @@
+{% extends "tenants/billing/layout_billing.html" %}
+
+{% block title %}Receipt Management | EduOrbit{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Receipt Management</h2>
+        <p class="text-muted">Issued Official Payment Receipts</p>
+    </div>
+</div>
+
+<div class="card kpi-card p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 fs-7">
+            <thead class="table-light">
+                <tr>
+                    <th>Receipt Number</th>
+                    <th>Reference</th>
+                    <th>Tenant</th>
+                    <th>Gateway</th>
+                    <th>Amount</th>
+                    <th>Payment Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in payments %}
+                <tr>
+                    <td><code>{{ p.receipt_number|default:"REC-N/A" }}</code></td>
+                    <td><code>{{ p.reference }}</code></td>
+                    <td>{{ p.tenant.name }}</td>
+                    <td><span class="badge bg-light text-dark border">{{ p.gateway }}</span></td>
+                    <td class="fw-bold text-success">₦{{ p.amount|floatformat:2 }}</td>
+                    <td>{{ p.paid_at|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        <a href="{% url 'tenants_web:receipt_detail' p.id %}" class="btn btn-sm btn-outline-primary me-1">View</a>
+                        <a href="{% url 'tenants_web:receipt_pdf' p.id %}" target="_blank" class="btn btn-sm btn-outline-success">
+                            <i class="fa-solid fa-file-pdf"></i> PDF
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center text-muted">No receipts found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

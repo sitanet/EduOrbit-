@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EduOrbit Billing & Subscription Portal{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body { background-color: #F8FAFC; font-family: 'Inter', system-ui, -apple-system, sans-serif; color: #1E293B; }
+        .sidebar { background-color: #0F172A; min-height: 100vh; color: #F8FAFC; }
+        .sidebar a { color: #94A3B8; text-decoration: none; padding: 10px 16px; border-radius: 8px; display: block; margin-bottom: 4px; font-weight: 500; }
+        .sidebar a:hover, .sidebar a.active { background-color: #1E293B; color: #38BDF8; }
+        .kpi-card { border: none; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-md-3 col-lg-2 sidebar p-3">
+                <div class="d-flex align-items-center mb-4">
+                    <i class="fa-solid fa-graduation-cap text-info fs-3 me-2"></i>
+                    <span class="fs-4 fw-bold text-white">EduOrbit</span>
+                </div>
+                <div class="text-uppercase text-secondary fs-7 fw-bold mb-2 ps-2">Billing & SaaS</div>
+                <nav>
+                    <a href="{% url 'tenants_web:super_admin_dashboard' %}" class="{% if request.resolver_match.url_name == 'super_admin_dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-pie me-2"></i> Super Admin Console
+                    </a>
+                    <a href="{% url 'tenants_web:gateway_management' %}" class="{% if request.resolver_match.url_name == 'gateway_management' %}active{% endif %}">
+                        <i class="fa-solid fa-sliders me-2"></i> Payment Gateways
+                    </a>
+                    <a href="{% url 'tenants_web:school_dashboard' %}" class="{% if request.resolver_match.url_name == 'school_dashboard' %}active{% endif %}">
+                        <i class="fa-solid fa-school me-2"></i> School Dashboard
+                    </a>
+                    <a href="{% url 'tenants_web:parent_collection_center' %}" class="{% if request.resolver_match.url_name == 'parent_collection_center' %}active{% endif %}">
+                        <i class="fa-solid fa-users me-2"></i> Collection Center
+                    </a>
+                    <a href="{% url 'tenants_web:parent_portal' %}" class="{% if request.resolver_match.url_name == 'parent_portal' %}active{% endif %}">
+                        <i class="fa-solid fa-user-shield me-2"></i> Parent Portal
+                    </a>
+                    <a href="{% url 'tenants_web:invoice_list' %}" class="{% if request.resolver_match.url_name == 'invoice_list' %}active{% endif %}">
+                        <i class="fa-solid fa-file-invoice-dollar me-2"></i> Invoices
+                    </a>
+                    <a href="{% url 'tenants_web:receipt_list' %}" class="{% if request.resolver_match.url_name == 'receipt_list' %}active{% endif %}">
+                        <i class="fa-solid fa-receipt me-2"></i> Receipts
+                    </a>
+                    <a href="{% url 'tenants_web:payment_history' %}" class="{% if request.resolver_match.url_name == 'payment_history' %}active{% endif %}">
+                        <i class="fa-solid fa-history me-2"></i> Payment History
+                    </a>
+                    <a href="{% url 'tenants_web:refund_management' %}" class="{% if request.resolver_match.url_name == 'refund_management' %}active{% endif %}">
+                        <i class="fa-solid fa-undo me-2"></i> Refunds
+                    </a>
+                    <a href="{% url 'tenants_web:billing_reports' %}" class="{% if request.resolver_match.url_name == 'billing_reports' %}active{% endif %}">
+                        <i class="fa-solid fa-chart-line me-2"></i> Financial Reports
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-md-9 col-lg-10 p-4">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

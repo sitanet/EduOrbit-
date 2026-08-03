@@ -1,0 +1,58 @@
+{% extends "tenants/billing/layout_billing.html" %}
+
+{% block title %}Invoice Management | EduOrbit{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">Invoice Management</h2>
+        <p class="text-muted">Generated Platform Invoices & Billing Records</p>
+    </div>
+</div>
+
+<div class="card kpi-card p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 fs-7">
+            <thead class="table-light">
+                <tr>
+                    <th>Invoice Number</th>
+                    <th>Tenant / School</th>
+                    <th>Type</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Due Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inv in invoices %}
+                <tr>
+                    <td><code>{{ inv.invoice_number }}</code></td>
+                    <td>{{ inv.tenant.name }}</td>
+                    <td><span class="badge bg-light text-dark border">{{ inv.get_invoice_type_display }}</span></td>
+                    <td class="fw-bold">₦{{ inv.total_amount|floatformat:2 }}</td>
+                    <td>
+                        {% if inv.status == 'PAID' %}
+                            <span class="badge bg-success">PAID</span>
+                        {% elif inv.status == 'PENDING' %}
+                            <span class="badge bg-warning text-dark">PENDING</span>
+                        {% else %}
+                            <span class="badge bg-danger">{{ inv.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ inv.due_date|date:"Y-m-d" }}</td>
+                    <td>
+                        <a href="{% url 'tenants_web:invoice_detail' inv.id %}" class="btn btn-sm btn-outline-primary me-1">View</a>
+                        <a href="{% url 'tenants_web:invoice_pdf' inv.id %}" target="_blank" class="btn btn-sm btn-outline-success">
+                            <i class="fa-solid fa-file-pdf"></i> PDF
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center text-muted">No invoices found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

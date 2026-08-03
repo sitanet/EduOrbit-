@@ -1,0 +1,12 @@
+{% extends "tenants/billing/layout_billing.html" %}
+
+{% block title %}Access Denied | EduOrbit{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <i class="fa-solid fa-lock text-danger display-1 mb-3"></i>
+    <h2 class="fw-bold text-danger">Access Denied</h2>
+    <p class="text-muted fs-5">You do not have permission to view this billing module or tenant section.</p>
+    <a href="{% url 'tenants_web:parent_portal' %}" class="btn btn-primary mt-3">Return to Portal</a>
+</div>
+{% endblock %}

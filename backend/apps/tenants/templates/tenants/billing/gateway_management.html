@@ -1,0 +1,63 @@
+{% extends "tenants/billing/layout_billing.html" %}
+
+{% block title %}Payment Gateway Management | EduOrbit{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="fw-bold mb-1">Payment Gateway Management</h2>
+    <p class="text-muted">Configure Paystack & OPay enabled state, priority rankings, and maintenance mode</p>
+</div>
+
+<div class="row g-4">
+    {% for gw in gateways %}
+    <div class="col-md-6">
+        <div class="card kpi-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0">{{ gw.display_name }} ({{ gw.provider }})</h4>
+                {% if not gw.enabled %}
+                    <span class="badge bg-secondary fs-6">Disabled</span>
+                {% elif gw.maintenance_mode %}
+                    <span class="badge bg-warning text-dark fs-6">Maintenance Mode</span>
+                {% else %}
+                    <span class="badge bg-success fs-6">Active & Online</span>
+                {% endif %}
+            </div>
+
+            <form method="POST" action="{% url 'tenants_web:gateway_management' %}">
+                {% csrf_token %}
+                <input type="hidden" name="provider" value="{{ gw.provider }}">
+
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" name="enabled" id="enabled_{{ gw.provider }}" {% if gw.enabled %}checked{% endif %}>
+                    <label class="form-check-label fw-bold" for="enabled_{{ gw.provider }}">Enable Provider</label>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" name="maintenance_mode" id="maint_{{ gw.provider }}" {% if gw.maintenance_mode %}checked{% endif %}>
+                    <label class="form-check-label text-warning fw-bold" for="maint_{{ gw.provider }}">Enable Maintenance Mode</label>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Failover Priority Rank</label>
+                    <input type="number" class="form-control" name="priority" value="{{ gw.priority }}" min="1" max="10">
+                    <small class="text-muted">1 = Primary Gateway, 2 = Backup Failover, etc.</small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Callback URL</label>
+                    <input type="url" class="form-control" name="callback_url" value="{{ gw.callback_url|default:'' }}" placeholder="https://eduorbit.com/billing/callback">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fa-solid fa-save me-1"></i> Save Configuration
+                </button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">No gateway settings found in database.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

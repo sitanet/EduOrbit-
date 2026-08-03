@@ -1,0 +1,45 @@
+<div class="card kpi-card p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 fs-7">
+            <thead class="table-light">
+                <tr>
+                    <th>Parent Number</th>
+                    <th>Parent Name</th>
+                    <th>Active Children</th>
+                    <th>Amount Due</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in parent_list %}
+                <tr>
+                    <td><code>{{ p.parent_number }}</code></td>
+                    <td class="fw-bold">{{ p.full_name }}</td>
+                    <td><span class="badge bg-info text-dark">{{ p.active_children }} Children</span></td>
+                    <td class="fw-bold text-dark">₦{{ p.amount_due|floatformat:2 }}</td>
+                    <td>
+                        {% if p.sub_status == 'ACTIVE' %}
+                            <span class="badge bg-success">PAID / ACTIVE</span>
+                        {% else %}
+                            <span class="badge bg-danger">UNPAID</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.sub_status != 'ACTIVE' %}
+                        <button class="btn btn-sm btn-outline-success"
+                                @click="$dispatch('open-pay-modal', { id: '{{ p.parent_id }}', name: '{{ p.full_name }}' })">
+                            <i class="fa-solid fa-hand-holding-dollar me-1"></i> Pay on Behalf
+                        </button>
+                        {% else %}
+                        <span class="text-muted fs-8"><i class="fa-solid fa-check text-success me-1"></i> Paid</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center text-muted">No parents found matching criteria.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
