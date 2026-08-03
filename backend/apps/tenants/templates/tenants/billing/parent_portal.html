@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="mb-4">
-    <h2 class="fw-bold mb-1">Parent Access & Subscription Renewal</h2>
+    <h2 class="fw-bold mb-1">Parent Access & Subscription Renewal - {{ parent_profile.person.get_full_name }}</h2>
     <p class="text-muted">Single parent subscription activating all linked active enrolled children</p>
 </div>
 
@@ -53,7 +53,7 @@
                     {% for gw in gateways %}
                     <option value="{{ gw.provider }}">{{ gw.display_name }} ({{ gw.provider }})</option>
                     {% empty %}
-                    <option value="PAYSTACK">Paystack Online</option>
+                    <option value="PAYSTACK">Paystack Direct (PAYSTACK)</option>
                     {% endfor %}
                 </select>
             </div>
