@@ -10,12 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cached_network_image: ^3.3.1
-  flutter_svg: ^2.0.10
-  shimmer: ^3.0.0
-  fl_chart: ^0.65.0 # For bar and pie charts
-  mobile_scanner: ^3.5.2 # For QR scanning
-  qr_flutter: ^4.1.0 # For QR display
 
 dev_dependencies:
   flutter_test:
